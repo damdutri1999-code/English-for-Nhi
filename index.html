@@ -384,6 +384,9 @@ const CONFIG = {
   // firebase: { apiKey:"...", authDomain:"...", projectId:"...", appId:"..." },
   firebase: { apiKey:"AIzaSyBGbWYk-imYu8YK5RHuPgX_Fkem_imib9k", authDomain:"english-for-nhi---efn-by.firebaseapp.com",
     projectId:"english-for-nhi---efn-by", appId:"1:619394380133:web:df8dc7bac340bfa7c5718c" },
+  // Không đăng nhập: dữ liệu lưu ở một tài liệu cố định. Phải trùng với tên trong firestore.rules.
+  noLogin: true,
+  docId: "nhi-7k3q9x2m",
   firebaseSdk: "https://www.gstatic.com/firebasejs/10.14.1/"
 };
 const KEY = "a1-english-progress-v1";
@@ -583,12 +586,17 @@ async function initCloud(){
   setStatus("saving");
   try {
     const b = CONFIG.firebaseSdk;
-    const [A, Au, F] = await Promise.all([import(b+"firebase-app.js"), import(b+"firebase-auth.js"), import(b+"firebase-firestore.js")]);
+    const [A, F, Au] = await Promise.all([import(b+"firebase-app.js"), import(b+"firebase-firestore.js"), CONFIG.noLogin ? null : import(b+"firebase-auth.js")]);
     const fbApp = A.initializeApp(CONFIG.firebase);
-    const auth = Au.getAuth(fbApp); const db = F.getFirestore(fbApp);
-    const user = await new Promise(res => { const un = Au.onAuthStateChanged(auth, u => { un(); res(u); }); });
-    if (!user) await showLogin(auth, Au.signInWithEmailAndPassword);
-    Cloud.uid = auth.currentUser.uid; Cloud.db = db; Cloud.fb = { doc:F.doc, setDoc:F.setDoc, getDoc:F.getDoc };
+    const db = F.getFirestore(fbApp);
+    if (CONFIG.noLogin) Cloud.uid = CONFIG.docId || "main";
+    else {
+      const auth = Au.getAuth(fbApp);
+      const user = await new Promise(res => { const un = Au.onAuthStateChanged(auth, u => { un(); res(u); }); });
+      if (!user) await showLogin(auth, Au.signInWithEmailAndPassword);
+      Cloud.uid = auth.currentUser.uid;
+    }
+    Cloud.db = db; Cloud.fb = { doc:F.doc, setDoc:F.setDoc, getDoc:F.getDoc };
     const snap = await F.getDoc(F.doc(db, "learners", Cloud.uid));
     if (snap.exists() && (snap.data().updatedAt || 0) > (S.updatedAt || 0)) {
       S = normalize(snap.data()); ensureStart();

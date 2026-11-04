@@ -1,14 +1,14 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Tiến độ: mỗi tài khoản chỉ đọc/ghi tiến độ của chính mình
-    match /learners/{uid} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+    // Không đăng nhập: chỉ mở đúng một tài liệu tiến độ (tên phải trùng CONFIG.docId trong index.html)
+    match /learners/nhi-7k3q9x2m {
+      allow read, write: if true;
     }
-    // Nội dung bài học: ai đã đăng nhập đều đọc được, chỉ tài khoản giáo viên được ghi
+    // Nội dung bài học: chỉ các tài liệu w1..w18, đúng định dạng
     match /content/{doc} {
-      allow read: if request.auth != null;
-      allow write: if request.auth != null && request.auth.token.email == 'damdutri1999@gmail.com';
+      allow read: if doc.matches('w[0-9]+');
+      allow write: if doc.matches('w[0-9]+') && request.resource.data.keys().hasOnly(['json','at','deleted']);
     }
   }
 }
