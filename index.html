@@ -374,6 +374,7 @@ html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index
 .spk.ask,.bub.ask{opacity:.9}
 .bub.ask{border-style:dashed; background:var(--p50); color:var(--ink2); font-weight:600; font-size:.9rem}
 .qlabel{margin:6px 0 8px; font-weight:800; color:var(--p700)}
+.fbtxt.note{background:var(--p50); border-color:var(--p300); color:var(--ink)}
 </style>
 </head>
 <body>
@@ -1450,7 +1451,8 @@ function textItem(it, onChange){
   return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, it.prompt), it.instruction ? h("p",{class:"muted small",style:"margin:-4px 0 8px"},"👉 "+it.instruction) : null, input, fbSlot), fbSlot,
     isAnswered:() => input.value.trim() !== "",
     check(){ input.readOnly = true;
-      if (it.self) return { ok:true, self:true, correct: it.answer + ((it.alt && it.alt.length) ? "   (hoặc: "+it.alt.join(" / ")+")" : ""), why: it.why, prompt: it.prompt };
+      if (it.self){ const match = anyOk(it, input.value); input.classList.add(match ? "right" : "wrong");
+        return { ok:true, self:true, match, correct: it.answer + ((it.alt && it.alt.length) ? "   (hoặc: "+it.alt.join(" / ")+")" : ""), why: it.why, prompt: it.prompt }; }
       const ok = anyOk(it, input.value); input.classList.add(ok ? "right" : "wrong"); return { ok, correct: it.answer, why: it.why, prompt: it.prompt }; } };
 }
 function shadowItem(it, onChange){
@@ -1505,8 +1507,8 @@ function exerciseSet(set, onDone){
       if (r.retry){ tried[i] = true; it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, "Chưa đúng. Kéo từ khác vào để thay nhé.")); return; }
       done[i] = true; if (tried[i]) r.ok = false; res[i] = r; cnt++;
       const quiet = it.quietOk && r.ok;
-      it.fbSlot.replaceChildren(quiet ? null : h("div",{class:"fbtxt "+(r.ok?"ok":"bad")},
-        r.self ? ["Đáp án mẫu: ", h("b",null,r.correct)] : r.ok ? "Đúng rồi!" : tried[i] && r.retry === false && it.retry ? ["Đúng rồi! (lần đầu chưa đúng, tính là sai)"] : ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null));
+      it.fbSlot.replaceChildren(quiet ? null : h("div",{class:"fbtxt "+(r.self && r.match === false ? "note" : r.ok ? "ok" : "bad")},
+        r.self ? [r.match === true ? "Giống đáp án mẫu, giỏi lắm! " : r.match === false ? "Chưa giống đáp án mẫu, bạn so sánh nhé. " : "", "Đáp án mẫu: ", h("b",null,r.correct)] : r.ok ? "Đúng rồi!" : tried[i] && r.retry === false && it.retry ? ["Đúng rồi! (lần đầu chưa đúng, tính là sai)"] : ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null));
       if (cbs[i]) cbs[i].remove();
       if (counted){ PG.done++; pgDraw(); }
       if (cnt === N) finishSet();
