@@ -910,7 +910,7 @@ function validateItem(type, it, w, E, W){
   } else if (type === "dictation" || type === "shadow"){ need(isStr(it.say), "thiếu say");
   } else if (type === "transform" || type === "translate" || type === "answer"){ need(isStr(it.prompt) && isStr(it.answer), "thiếu prompt hoặc answer");
   } else if (type === "cloze"){ need(isStr(it.answer), "thiếu answer"); }
-  if (!SELF_TYPES.has(type) && type !== "dictation" && !isStr(it.why)) W.push(w + ": nên có why (giải thích tiếng Việt)");
+  if (!SELF_TYPES.has(type) && type !== "dictation" && type !== "match" && !isStr(it.why)) W.push(w + ": nên có why (giải thích tiếng Việt)");
 }
 function validateSet(raw, w, E, W, seen){
   if (!raw || typeof raw !== "object") { E.push(w + ": bộ bài không hợp lệ"); return {n:0, core:0, sec:0}; }
@@ -919,8 +919,11 @@ function validateSet(raw, w, E, W, seen){
   const type = raw.type;
   raw.items.forEach((it, i) => {
     validateItem(type, it, w + " (" + type + ") câu " + (i+1), E, W);
-    const key = it && norm(it.q || it.text || it.prompt || it.say || it.passage || it.wrong || it.left || (it.words||[]).join(" ") || "");
-    if (key && key.length > 8 && type !== "cloze"){ if (seen.has(type + key)) W.push(w + " câu " + (i+1) + ": trùng nội dung với " + seen.get(type + key)); else seen.set(type + key, w + " câu " + (i+1)); }
+    if (raw.ungraded || !it || typeof it !== "object") return;   // câu khởi động được phép lặp lại ở phần luyện tập
+    const base = norm([it.q, it.say, it.text, it.prompt, it.wrong, it.left, (it.words || []).join(" ")].filter(isStr).join(" "));
+    const ans = norm(String(typeof it.answer === "number" && it.options ? it.options[it.answer] : (it.answer != null ? it.answer : (it.right || ""))));
+    const key = base + "|" + ans;
+    if (base.length > 8 && type !== "cloze"){ if (seen.has(type + key)) W.push(w + " câu " + (i+1) + ": trùng cả câu hỏi lẫn đáp án với " + seen.get(type + key)); else seen.set(type + key, w + " câu " + (i+1)); }
   });
   if (type === "cloze"){
     if (!isStr(raw.passage)) E.push(w + ": cloze thiếu passage");
