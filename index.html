@@ -379,15 +379,10 @@ const CONFIG = {
   // "Microsoft Sonia Online (Natural) - English (United Kingdom)". Máy nào không có giọng
   // này thì tự dùng giọng tiếng Anh khác. Để "" nếu không muốn ưu tiên giọng nào.
   voiceName: "Sonia",
-  // Điền cấu hình Firebase (Project settings > Your apps > Web app) để bật đồng bộ.
-  // Để null thì tiến độ chỉ lưu trong trình duyệt (localStorage).
-  // firebase: { apiKey:"...", authDomain:"...", projectId:"...", appId:"..." },
-  firebase: { apiKey:"AIzaSyBGbWYk-imYu8YK5RHuPgX_Fkem_imib9k", authDomain:"english-for-nhi---efn-by.firebaseapp.com",
-    projectId:"english-for-nhi---efn-by", appId:"1:619394380133:web:df8dc7bac340bfa7c5718c" },
-  // Không đăng nhập: dữ liệu lưu ở một tài liệu cố định. Phải trùng với tên trong firestore.rules.
-  noLogin: true,
-  docId: "nhi-7k3q9x2m",
-  firebaseSdk: "https://www.gstatic.com/firebasejs/10.14.1/"
+  // Đồng bộ qua Supabase (không đăng nhập). Để null thì tiến độ chỉ lưu trong trình duyệt.
+  supabase: { url:"https://knxubkyjvkzltvgvpnfx.supabase.co", key:"sb_publishable_n4w0ocz9UE-yErwG6zW8pw__0okshxg" },
+  // Tên dòng lưu tiến độ. Phải trùng với đoạn SQL (policy) trong Supabase.
+  docId: "learner-nhi-7k3q9x2m"
 };
 const KEY = "a1-english-progress-v1";
 
@@ -528,7 +523,7 @@ function applyBrand(){
 }
 
 /* =====================================================================
-   TRẠNG THÁI & LƯU TRỮ (localStorage + Firebase tùy chọn)
+   TRẠNG THÁI & LƯU TRỮ (localStorage + Supabase tùy chọn)
    ===================================================================== */
 const defaultState = () => ({
   v:2, updatedAt:0, sessions:{}, vocab:{}, mistakes:[], activeDays:[], writing:{}, results:{},
@@ -545,7 +540,20 @@ function normalize(o){
 let S = defaultState();
 function ensureStart(){ if (!S.settings.startDate) S.settings.startDate = dkey(mondayOf(new Date())); }
 function loadLocal(){ try { return normalize(JSON.parse(localStorage.getItem(KEY))); } catch(e){ return defaultState(); } }
-const Cloud = { ready:false, uid:null, db:null, fb:null };
+const Cloud = { ready:false };
+const DB = {
+  h(extra){ return Object.assign({ apikey:CONFIG.supabase.key, Authorization:"Bearer " + CONFIG.supabase.key }, extra || {}); },
+  async get(ids){
+    const list = [].concat(ids).map(encodeURIComponent).join(",");
+    const r = await fetch(CONFIG.supabase.url + "/rest/v1/kv?id=in.(" + list + ")&select=id,data,at", { headers:DB.h() });
+    if (!r.ok) throw new Error("Supabase " + r.status + " " + (await r.text()).slice(0, 200));
+    return r.json();
+  },
+  async set(id, data, at){
+    const r = await fetch(CONFIG.supabase.url + "/rest/v1/kv", { method:"POST", headers:DB.h({ "Content-Type":"application/json", Prefer:"resolution=merge-duplicates,return=minimal" }), body:JSON.stringify({ id, data, at }) });
+    if (!r.ok) throw new Error("Supabase " + r.status + " " + (await r.text()).slice(0, 200));
+  }
+};
 let pushTimer = null;
 function setStatus(kind){
   const map = { local:"💾 Lưu trên máy", cloud:"☁️ Đã đồng bộ", saving:"☁️ Đang lưu…", error:"⚠️ Chưa đồng bộ" };
@@ -562,7 +570,7 @@ function scheduleCloud(){
   if (!Cloud.ready) return;
   setStatus("saving"); clearTimeout(pushTimer);
   pushTimer = setTimeout(async () => {
-    try { await Cloud.fb.setDoc(Cloud.fb.doc(Cloud.db, "learners", Cloud.uid), JSON.parse(JSON.stringify(S))); setStatus("cloud"); }
+    try { await DB.set(CONFIG.docId, JSON.parse(JSON.stringify(S)), S.updatedAt || Date.now()); setStatus("cloud"); }
     catch(e){ console.error(e); setStatus("error"); }
   }, 1200);
 }
@@ -582,28 +590,16 @@ function showLogin(auth, signIn){
   });
 }
 async function initCloud(){
-  if (!CONFIG.firebase) { setStatus("local"); return; }
+  if (!CONFIG.supabase) { setStatus("local"); return; }
   setStatus("saving");
   try {
-    const b = CONFIG.firebaseSdk;
-    const [A, F, Au] = await Promise.all([import(b+"firebase-app.js"), import(b+"firebase-firestore.js"), CONFIG.noLogin ? null : import(b+"firebase-auth.js")]);
-    const fbApp = A.initializeApp(CONFIG.firebase);
-    const db = F.getFirestore(fbApp);
-    if (CONFIG.noLogin) Cloud.uid = CONFIG.docId || "main";
-    else {
-      const auth = Au.getAuth(fbApp);
-      const user = await new Promise(res => { const un = Au.onAuthStateChanged(auth, u => { un(); res(u); }); });
-      if (!user) await showLogin(auth, Au.signInWithEmailAndPassword);
-      Cloud.uid = auth.currentUser.uid;
-    }
-    Cloud.db = db; Cloud.fb = { doc:F.doc, setDoc:F.setDoc, getDoc:F.getDoc };
-    const snap = await F.getDoc(F.doc(db, "learners", Cloud.uid));
-    if (snap.exists() && (snap.data().updatedAt || 0) > (S.updatedAt || 0)) {
-      S = normalize(snap.data()); ensureStart();
+    const rows = await DB.get(CONFIG.docId), row = rows[0];
+    if (row && row.data && (row.at || 0) > (S.updatedAt || 0)) {
+      S = normalize(row.data); ensureStart();
       try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){}
     }
     Cloud.ready = true;
-    await F.setDoc(F.doc(db, "learners", Cloud.uid), JSON.parse(JSON.stringify(S)));
+    await DB.set(CONFIG.docId, JSON.parse(JSON.stringify(S)), S.updatedAt || Date.now());
     setStatus("cloud");
   } catch(e){ console.error(e); Cloud.ready = false; setStatus("error"); }
 }
@@ -1002,23 +998,23 @@ function loadContentLocal(){
 }
 async function saveWeek(json){
   const n = json.week; CONTENT[n] = { json, at:Date.now(), src:"local" }; saveContentLocal(); applyContent(n, json);
-  if (Cloud.ready && Cloud.fb.setDoc){ try { await Cloud.fb.setDoc(Cloud.fb.doc(Cloud.db, "content", "w"+n), { json:JSON.stringify(json), at:CONTENT[n].at }); } catch(e){ console.error(e); toast("Đã lưu trên máy, chưa lên được Firebase"); return false; } }
+  if (Cloud.ready){ try { await DB.set("w"+n, { json:JSON.stringify(json) }, CONTENT[n].at); } catch(e){ console.error(e); toast("Đã lưu trên máy, chưa lên được đám mây"); return false; } }
   return true;
 }
 async function deleteWeek(n){
   delete CONTENT[n]; saveContentLocal(); unloadWeek(n); if (!WEEKS[1]) restoreDemo();
-  if (Cloud.ready && Cloud.fb.setDoc){ try { await Cloud.fb.setDoc(Cloud.fb.doc(Cloud.db, "content", "w"+n), { json:"", at:Date.now(), deleted:true }); } catch(e){ console.error(e); } }
+  if (Cloud.ready){ try { await DB.set("w"+n, { json:"", deleted:true }, Date.now()); } catch(e){ console.error(e); } }
 }
 async function loadContentCloud(){
-  if (!Cloud.ready || !Cloud.fb.getDoc) return;
-  await Promise.all(Array.from({length:18}, (_, i) => i + 1).map(async n => {
-    try { const snap = await Cloud.fb.getDoc(Cloud.fb.doc(Cloud.db, "content", "w"+n)); if (!snap.exists()) return;
-      const d = snap.data(), cur = CONTENT[n];
-      if (cur && (cur.at || 0) >= (d.at || 0)) return;
-      if (d.deleted || !d.json){ if (cur){ delete CONTENT[n]; unloadWeek(n); } return; }
-      const json = JSON.parse(d.json); if (validateWeek(json).E.length) return;
-      CONTENT[n] = { json, at:d.at || 0, src:"cloud" }; applyContent(n, json);
-    } catch(e){} }));
+  if (!Cloud.ready) return;
+  let rows = []; try { rows = await DB.get(Array.from({length:18}, (_, i) => "w" + (i + 1))); } catch(e){ console.error(e); return; }
+  rows.forEach(row => { try {
+    const n = parseInt(String(row.id).slice(1), 10), d = row.data || {}, cur = CONTENT[n];
+    if (cur && (cur.at || 0) >= (row.at || 0)) return;
+    if (d.deleted || !d.json){ if (cur){ delete CONTENT[n]; unloadWeek(n); } return; }
+    const json = JSON.parse(d.json); if (validateWeek(json).E.length) return;
+    CONTENT[n] = { json, at:row.at || 0, src:"cloud" }; applyContent(n, json);
+  } catch(e){} });
   saveContentLocal(); if (!WEEKS[1]) restoreDemo();
 }
 async function loadContentStatic(){
@@ -1756,7 +1752,7 @@ function settingsView(){
     h("div",{class:"card"}, h("h3",null,"Linh vật"), h("div",{class:"row",style:"flex-wrap:nowrap"}, mk("bunny"), mk("hang"))),
     h("div",{class:"card"}, h("h3",null,"Ngày bắt đầu khóa học"), h("p",{class:"muted small"},"Chọn ngày thứ Hai đầu tuần 1. Trang chủ dựa vào ngày này để biết hôm nay học buổi nào."), dateIn,
       notMon ? h("p",{class:"err small"},"Ngày này không phải thứ Hai, nhãn Thứ 2 đến Thứ 7 sẽ lệch.") : null),
-    h("div",{class:"card"}, h("h3",null,"Đồng bộ"), h("p",{class:"muted small",style:"margin:0"}, Cloud.ready ? "Đang đồng bộ qua Firebase." : "Chưa bật Firebase, tiến độ chỉ lưu trong trình duyệt này. Điền cấu hình ở đầu file để bật đồng bộ.")),
+    h("div",{class:"card"}, h("h3",null,"Đồng bộ"), h("p",{class:"muted small",style:"margin:0"}, Cloud.ready ? "Đang đồng bộ qua Supabase." : "Chưa đồng bộ được, tiến độ đang lưu trong trình duyệt này. Kiểm tra mạng hoặc cấu hình Supabase.")),
     h("div",{class:"card"}, h("h3",null,"Khu dành cho người hướng dẫn"), h("p",{class:"muted small"},"Xem tiến độ, đọc bài viết, nhận xét và để lại lời nhắn."), h("a",{class:"btn soft",href:"#/teacher"},"Mở khu người hướng dẫn")),
     h("div",{class:"card tint"}, h("h3",null,"Dữ liệu demo"), h("p",{class:"muted small"},"Nạp tiến độ mẫu (3 buổi đã xong, chuỗi 4 ngày, vài câu sai, từ vựng đến hạn ôn) để xem báo cáo, lịch, sticker khi có dữ liệu."),
       h("div",{class:"row"}, h("button",{class:"btn",type:"button",onClick:() => { if (confirm("Thay toàn bộ tiến độ hiện tại bằng dữ liệu demo?")){ S = demoState(); save(); applyBrand(); toast("Đã nạp dữ liệu demo"); location.hash = "#/home"; route(); } }},"Nạp dữ liệu demo"),
@@ -1911,7 +1907,7 @@ function contentView(){
       ok && pending ? h("button",{class:"btn block",type:"button",onClick:async () => { for (const j of pending) await saveWeek(j); toast("Đã lưu "+pending.length+" tuần"); ta.value = ""; out.replaceChildren(); route(); }}, "Lưu vào web") : null);
   }
   const rows = Object.keys(WEEKS).map(Number).sort((a, b) => a - b).map(n => { const w = WEEKS[n], c = CONTENT[n];
-    const src = !w.json ? "Bản demo" : c ? (c.src === "cloud" ? "Firebase" : "Đã tải lên") : "Từ repo";
+    const src = !w.json ? "Bản demo" : c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Từ repo";
     return h("div",{class:"vrow"}, h("div",{class:"grow"}, h("b",null,"Tuần "+n+": "+w.title), h("div",{class:"small muted"},w.grammar+" · "+src)),
       h("a",{class:"pill",href:"#/lesson/w"+n+"-mon/0",style:"text-decoration:none"},"Xem thử"),
       c ? h("button",{class:"pill",type:"button",onClick:() => { const a = h("a",{href:URL.createObjectURL(new Blob([JSON.stringify(c.json,null,2)],{type:"application/json"})),download:"week-"+n+".json"}); document.body.append(a); a.click(); a.remove(); }},"Tải JSON") : null,
@@ -1921,7 +1917,7 @@ function contentView(){
     h("div",{class:"card"}, h("h3",null,"Dán hoặc chọn file JSON"), ta,
       h("div",{class:"row",style:"margin-top:10px"}, h("button",{class:"btn",type:"button",onClick:check},"Kiểm tra"), h("button",{class:"btn soft",type:"button",onClick:() => fileIn.click()},"Chọn file…"), fileIn)),
     out, h("div",{class:"card"}, h("h3",null,"Các tuần đang có"), rows.length ? rows : h("p",{class:"muted"},"Chưa có tuần nào.")),
-    h("div",{class:"card flat small muted"}, Cloud.ready ? "Nội dung đang được lưu trên Firebase, mọi thiết bị của học viên sẽ thấy." : "Chưa bật Firebase: nội dung chỉ lưu trong trình duyệt này. Muốn mọi thiết bị thấy, hãy bật Firebase hoặc đưa file vào thư mục weeks/ của repo (xem README)."));
+    h("div",{class:"card flat small muted"}, Cloud.ready ? "Nội dung đang được lưu trên đám mây, mọi thiết bị của học viên sẽ thấy." : "Chưa kết nối đám mây: nội dung chỉ lưu trong trình duyệt này. Muốn mọi thiết bị thấy, hãy kiểm tra kết nối hoặc đưa file vào thư mục weeks/ của repo (xem README)."));
 }
 
 /* =====================================================================
