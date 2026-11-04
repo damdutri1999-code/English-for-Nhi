@@ -24,6 +24,7 @@
   --p500:#f2639b; --p600:#c92f72; --p700:#9c2159;
   --ink:#4b2335; --ink2:#7d5566; --paper:#ffffff; --line:#ffd9e6;
   --ok:#1b7f55; --ok-bg:#e6f8ee; --bad:#b8323f; --bad-bg:#ffecee; --warn-bg:#fff2c4;
+  --task:#e8f0ff; --task-line:#b9cdf5; --task-ink:#27478f; --doc:#fff9e8; --doc-line:#efdca8;
   --r:22px;
   --lift:0 5px 0 rgba(242,99,155,.16), 0 12px 26px rgba(201,47,114,.10);
 }
@@ -350,9 +351,10 @@ html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index
 .weeknav{display:flex;align-items:center;gap:8px}
 .txt.over{border-color:var(--p500);background:var(--p100);border-style:dashed}
 
-.topprog{position:fixed; top:0; left:0; right:0; height:9px; background:var(--p100); z-index:60; box-shadow:0 1px 0 var(--p200)}
-.topprog i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--p400),var(--p500)); border-radius:0 99px 99px 0; transition:width .4s}
-.topprog span{position:absolute; top:12px; right:10px; font-size:.72rem; font-weight:800; color:var(--ink2); background:var(--paper); border:1px solid var(--p200); border-radius:99px; padding:1px 9px}
+.topprog{position:fixed; top:0; left:0; right:0; height:20px; background:var(--p100); z-index:60; box-shadow:0 1px 0 var(--p200)}
+.topprog i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--p300),var(--p400)); border-radius:0 99px 99px 0; transition:width .4s}
+body.hasprog{padding-top:20px}
+.topprog span{position:absolute; inset:0; display:grid; place-items:center; font-size:.72rem; font-weight:800; color:var(--p700); letter-spacing:.02em}
 .drg{touch-action:none; user-select:none; -webkit-user-select:none; cursor:grab}
 .chip.ghost{position:fixed; z-index:999; pointer-events:none; transform:translate(-50%,-50%) scale(1.1); box-shadow:0 8px 20px rgba(0,0,0,.25); opacity:.95}
 .lifting{opacity:.35}
@@ -375,6 +377,37 @@ html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index
 .bub.ask{border-style:dashed; background:var(--p50); color:var(--ink2); font-weight:600; font-size:.9rem}
 .qlabel{margin:6px 0 8px; font-weight:800; color:var(--p700)}
 .fbtxt.note{background:var(--p50); border-color:var(--p300); color:var(--ink)}
+
+.mlines{position:relative; display:grid; grid-template-columns:minmax(0,1fr) 72px minmax(0,1fr); margin:6px 0 14px}
+.mlines svg{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible}
+.mlines .mchip{position:relative}
+.mlines .port{position:absolute; top:50%; width:12px; height:12px; margin-top:-6px; border-radius:50%; background:var(--p300); border:2px solid var(--paper); z-index:2}
+.mlines .ml .port{right:-7px}
+.mlines .mr .port{left:-7px}
+.mlines .chip.on .port{background:var(--p500)}
+.mlines .port.right{background:var(--ok)} .mlines .port.wrong{background:var(--bad)}
+
+/* phân tầng thị giác: yêu cầu (xanh dương) > đề bài (nền hồng nhạt, vạch hồng) > nội dung đọc (nền kem) > phần trả lời (ô trắng viền hồng) */
+.exset{counter-reset:qn}
+.taskhead{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:2px 0 8px}
+.tbadge{background:var(--task); color:var(--task-ink); border:2px solid var(--task-line); border-radius:99px; padding:3px 12px; font-weight:800; font-size:.9rem}
+.ttitle{font-weight:800; color:var(--ink2); font-size:.95rem}
+.taskhow{background:var(--task); color:var(--task-ink); border:2px solid var(--task-line); border-radius:14px; padding:9px 13px; font-weight:700; font-size:.98rem; margin:0 0 10px; line-height:1.45}
+.taskhow b{font-weight:800}
+.dhint{margin:0 0 10px; padding:0 2px; font-size:.88rem; font-weight:700; color:var(--task-ink)}
+.q{counter-increment:qn; padding:12px 0 14px; border-top:2px dashed var(--line); position:relative}
+.q:not(.nocount)::before{content:"Câu " counter(qn); display:inline-block; background:var(--p100); color:var(--p700); border-radius:99px; padding:1px 11px; font-weight:800; font-size:.8rem; margin-bottom:8px}
+.qtext{background:var(--p50); border-left:5px solid var(--p500); border-radius:6px 14px 14px 6px; padding:10px 14px; font-weight:800; font-size:1.1rem; color:var(--ink); margin:0 0 12px}
+.q.gap{font-size:1.1rem; font-weight:700; line-height:2.3}
+.opts::before,.bank::before{display:block; flex-basis:100%; font-size:.78rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--ink2); margin:0 0 2px}
+.opts::before{content:"👇 Chọn đáp án"}
+.bank::before{content:"🧰 Kho từ"}
+.reading,.cloze{background:var(--doc); border:2px solid var(--doc-line); border-radius:16px; padding:12px 16px}
+.reading::before,.cloze::before{display:block; font-size:.78rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:#8a6b1f; margin-bottom:4px; line-height:1.4}
+.reading::before{content:"📖 Bài đọc"}
+.cloze::before{content:"📝 Đoạn văn"}
+.chat{background:var(--doc); border:2px solid var(--doc-line); border-radius:16px; padding:10px}
+.txt{background:var(--paper)}
 </style>
 </head>
 <body>
@@ -1294,7 +1327,7 @@ const PG = { on:false, total:0, done:0, base:0, span:1, label:"", stepDone:null 
 function pgDraw(){
   let el = document.getElementById("topprog");
   if (!el){ el = h("div",{id:"topprog",class:"topprog",hidden:true}, h("i"), h("span")); document.body.append(el); }
-  el.hidden = !PG.on; if (!PG.on) return;
+  el.hidden = !PG.on; document.body.classList.toggle("hasprog", PG.on); if (!PG.on) return;
   const f = PG.stepDone && PG.stepDone() ? 1 : (PG.total ? Math.min(1, PG.done / PG.total) : 0);
   el.firstChild.style.width = Math.round(Math.min(1, PG.base + PG.span * f) * 100) + "%";
   el.lastChild.textContent = PG.label + (PG.total ? " · " + PG.done + "/" + PG.total + " câu" : "");
@@ -1327,7 +1360,7 @@ function dragSource(el, getPayload, onTap, canDrag){
   });
 }
 const dropZone = (el, fn) => { el.classList.add("dz"); el._drop = fn; return el; };
-const dragHint = t => h("p",{class:"muted small",style:"margin:4px 0 8px"}, "👆 " + t);
+const dragHint = t => h("p",{class:"dhint"}, "👆 " + t);
 
 function buildGap(set, onChange){
   const bank = set.bank.map((w,i) => ({w, i, used:false}));
@@ -1374,7 +1407,7 @@ function buildCloze(set, onChange){
   }
   refresh();
   const items = set.items.map((it, i) => { const fbSlot = h("div"); fbs[i] = fbSlot;
-    return { el:h("div",{class:"q"}, h("div",{class:"small muted"},"Chỗ trống "+(i+1)), fbSlot), fbSlot, retry:!typed,
+    return { el:h("div",{class:"q nocount"}, h("div",{class:"small muted"},"Chỗ trống "+(i+1)), fbSlot), fbSlot, retry:!typed,
       isAnswered:() => typed ? blanks[i].value.trim() !== "" : vals[i] != null,
       check(){ const user = typed ? blanks[i].value : bank[vals[i]].w; const ok = anyOk(it, user);
         if (typed) blanks[i].readOnly = true; blanks[i].classList.remove("right","wrong"); blanks[i].classList.add(ok ? "right" : "wrong"); if (ok) locked[i] = true;
@@ -1383,30 +1416,50 @@ function buildCloze(set, onChange){
 }
 function buildMatch(set, onChange){
   const state = set.items.map(() => ({r:null})), marks = {}, draws = [];
-  const head = [dragHint("Kéo một ô sang ô còn lại để nối cặp (hoặc chạm ô bên trái rồi chạm ô bên phải). Mỗi cặp được chấm ngay."), ], items = [];
+  const head = [dragHint("Chạm một từ bên trái rồi chạm nghĩa bên phải (hoặc kéo ô này sang ô kia). Mỗi cặp được chấm ngay. Nối sai thì cứ nối lại, đường cũ sẽ tự bỏ.")], items = [];
+  const NS = "http://www.w3.org/2000/svg", sv = (t, at) => { const e = document.createElementNS(NS, t); for (const k in at) e.setAttribute(k, at[k]); return e; };
   for (let s = 0; s < set.items.length; s += 5){
-    const ids = set.items.slice(s, s+5).map((_, k) => s + k), rights = shuffle(ids); let pick = null;
-    const colL = h("div",{class:"mcol"}), colR = h("div",{class:"mcol"});
-    const pair = (gi, ri) => { if (marks[gi] || state[gi].r != null || state.some(x => x.r === ri)) return; state[gi].r = ri; pick = null; draw(); onChange(); };
+    const ids = set.items.slice(s, s+5).map((_, k) => s + k), rights = shuffle(ids); let pick = null; const ports = {};
+    const box = h("div",{class:"mlines"}), svg = sv("svg", {}), colL = h("div",{class:"mcol ml"}), colR = h("div",{class:"mcol mr"});
+    box.append(svg, colL, h("div"), colR);
+    const lockedL = gi => marks[gi] === "right";
+    const ownerOf = ri => state.findIndex(x => x.r === ri);
+    const pair = (gi, ri) => {
+      if (lockedL(gi)) return; const ow = ownerOf(ri); if (ow >= 0 && ow !== gi && lockedL(ow)) return;
+      if (ow >= 0 && ow !== gi){ state[ow].r = null; delete marks[ow]; }   // bỏ nối cũ (sai) của ô phải này
+      state[gi].r = ri; delete marks[gi]; pick = null; draw(); onChange();
+    };
+    const lines = () => { const bb = box.getBoundingClientRect(); svg.replaceChildren();
+      ids.forEach(gi => { const st = state[gi]; if (st.r == null || !ports["l"+gi] || !ports["r"+st.r]) return;
+        const a = ports["l"+gi].getBoundingClientRect(), c = ports["r"+st.r].getBoundingClientRect();
+        const x1 = a.left + a.width/2 - bb.left, y1 = a.top + a.height/2 - bb.top, x2 = c.left + c.width/2 - bb.left, y2 = c.top + c.height/2 - bb.top, d = (x2 - x1) * .5;
+        const col = marks[gi] === "right" ? "var(--ok)" : marks[gi] === "wrong" ? "var(--bad)" : "var(--p500)";
+        svg.append(sv("path", { d:"M"+x1+" "+y1+" C"+(x1+d)+" "+y1+" "+(x2-d)+" "+y2+" "+x2+" "+y2, fill:"none", stroke:col, "stroke-width":2.5, "stroke-linecap":"round" }));
+        if (marks[gi]){ const mx = (x1+x2)/2, my = (y1+y2)/2; svg.append(sv("circle", { cx:mx, cy:my, r:11, fill:col }));
+          const t = sv("text", { x:mx, y:my+5, "text-anchor":"middle", "font-size":"14", "font-weight":"800", fill:"#fff" }); t.textContent = marks[gi] === "right" ? "✓" : "✗"; svg.append(t); } }); };
     const draw = () => {
       colL.replaceChildren(...ids.map(gi => { const st = state[gi];
-        const b = h("button",{class:"chip mchip"+(pick===gi?" on":"")+(st.r!=null?" paired":"")+(marks[gi]?" "+marks[gi]:""),type:"button"},
-          set.items[gi].left, st.r != null ? h("small",null,"→ "+set.items[st.r].right) : null);
+        const b = h("button",{class:"chip mchip"+(pick===gi?" on":"")+(marks[gi]?" "+marks[gi]:""),type:"button"}, h("span",null,set.items[gi].left));
+        const pt = h("span",{class:"port"+(marks[gi]?" "+marks[gi]:"")}); ports["l"+gi] = pt; b.append(pt);
         dropZone(b, p => { if (p.side === "r") pair(gi, p.i); });
-        if (st.r == null) dragSource(b, () => ({side:"l", i:gi}), () => { pick = pick === gi ? null : gi; draw(); });
+        if (!lockedL(gi)) dragSource(b, () => ({side:"l", i:gi}), () => {
+          if (st.r != null){ st.r = null; delete marks[gi]; pick = gi; draw(); onChange(); return; }   // chạm ô đã nối sai để nối lại
+          pick = pick === gi ? null : gi; draw(); });
         return b; }));
-      colR.replaceChildren(...rights.map(ri => { const taken = state.some(x => x.r === ri);
-        const b = h("button",{class:"chip mchip"+(taken?" used":""),type:"button",disabled:taken}, set.items[ri].right);
+      colR.replaceChildren(...rights.map(ri => { const ow = ownerOf(ri), mk = ow >= 0 ? marks[ow] : null;
+        const b = h("button",{class:"chip mchip"+(mk?" "+mk:"")+(ow >= 0 && !mk ? " paired" : ""),type:"button"}, h("span",null,set.items[ri].right));
+        const pt = h("span",{class:"port"+(mk?" "+mk:"")}); ports["r"+ri] = pt; b.append(pt);
         dropZone(b, p => { if (p.side === "l") pair(p.i, ri); });
-        dragSource(b, () => ({side:"r", i:ri}), () => { if (pick != null) pair(pick, ri); });
+        if (mk !== "right") dragSource(b, () => ({side:"r", i:ri}), () => { if (pick != null) pair(pick, ri); });
         return b; }));
+      requestAnimationFrame(lines);
     };
-    draws.push(draw); draw(); head.push(h("div",{class:"mgrid"}, colL, colR));
+    draws.push(draw); new ResizeObserver(lines).observe(box); draw(); head.push(box);
   }
   set.items.forEach((it, gi) => { const fbSlot = h("div");
-    items[gi] = { el:fbSlot, fbSlot, quietOk:true, isAnswered:() => state[gi].r != null,
+    items[gi] = { el:fbSlot, fbSlot, quietOk:true, quietRetry:true, retry:true, isAnswered:() => state[gi].r != null,
       check(){ const ok = state[gi].r === gi; marks[gi] = ok ? "right" : "wrong"; draws.forEach(d => d());
-        return { ok, correct: it.left+" = "+it.right, why: it.why, prompt: it.left }; } }; });
+        return { ok, retry:!ok, correct: it.left+" = "+it.right, why: it.why, prompt: it.left }; } }; });
   return { head, items };
 }
 function reorderItem(it, onChange){
@@ -1504,7 +1557,7 @@ function exerciseSet(set, onDone){
     const checkOne = i => {
       if (done[i] || !built) return; const it = built.items[i]; if (!it.isAnswered()) return;
       const r = it.check();
-      if (r.retry){ tried[i] = true; it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, "Chưa đúng. Kéo từ khác vào để thay nhé.")); return; }
+      if (r.retry){ tried[i] = true; if (!it.quietRetry) it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, "Chưa đúng. Kéo từ khác vào để thay nhé.")); return; }
       done[i] = true; if (tried[i]) r.ok = false; res[i] = r; cnt++;
       const quiet = it.quietOk && r.ok;
       it.fbSlot.replaceChildren(quiet ? null : h("div",{class:"fbtxt "+(r.self && r.match === false ? "note" : r.ok ? "ok" : "bad")},
@@ -1522,7 +1575,9 @@ function exerciseSet(set, onDone){
       cbs[i] = cb; if (it.fbSlot && it.fbSlot.parentNode === it.el) it.el.insertBefore(cb, it.fbSlot); else it.el.append(cb);
       it.el.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.tagName === "INPUT"){ e.preventDefault(); checkOne(i); } });
     });
-    return [h("h3",null,set.title), set.instruction ? h("p",{class:"muted small"}, set.instruction) : null,
+    const T = TYPES[main.type] || { icon:"", label:"", how:"" };
+    return [h("div",{class:"taskhead"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), set.title && set.title !== T.label ? h("span",{class:"ttitle"}, set.title) : null),
+      h("div",{class:"taskhow"}, h("b",null,"📌 Yêu cầu: "), set.instruction || T.how),
       ...built.head, ...built.items.map(i => i.el).filter(Boolean), scoreBox, extraHost];
   }
   wrap.replaceChildren(...build());

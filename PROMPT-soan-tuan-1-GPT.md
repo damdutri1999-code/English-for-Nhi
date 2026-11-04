@@ -299,6 +299,17 @@ Lần thử trước, file bị lỗi vì **nội dung được sinh bằng vòn
 10. **Mỗi chỗ trống phải chỉ có một đáp án hợp lý** trong ngữ cảnh. Với `gap` và `cloze` có `bank`, đảm bảo mỗi từ trong bank chỉ hợp với đúng một câu (hoặc nếu hợp nhiều câu thì các câu đó phải có đáp án riêng rõ ràng), để học viên không chọn một từ hợp lý nhưng bị chấm sai.
 11. Chất lượng quan trọng hơn tốc độ.
 
+# BƯỚC BẮT BUỘC: TỰ RÀ SOÁT NGỮ PHÁP SAU KHI VIẾT MỖI PHẦN
+
+Sau khi viết xong **mỗi phần** (mỗi file) và **trước khi lưu hay gửi**, bạn phải làm một lượt **rà soát ngữ pháp riêng**, đọc lại **từng câu một** (không đọc lướt), và kiểm tra:
+1. **Chia động từ theo chủ ngữ**: I am, he/she/it is, we/you/they are, danh từ số ít dùng is, số nhiều dùng are ("My parents are", "My aunt and I are"). Đáp án điền vào chỗ trống phải làm câu **đúng ngữ pháp và đúng nghĩa**.
+2. **Đáp án thật sự đúng**: với trắc nghiệm, điền từ, sửa lỗi, chuyển câu: tự làm lại từng câu như học viên và đối chiếu với `answer`. Chỉ có **một** đáp án đúng trong `options` (trừ khi `alt` ghi sẵn các đáp án chấp nhận được).
+3. **Mạo từ, số ít/số nhiều, đại từ, sở hữu** (a/an, my/his/her, this/these), **chính tả**, dấu câu, chữ hoa đầu câu.
+4. **Câu có nghĩa và tự nhiên**; tên người khớp giới tính; không có câu vô lý.
+5. **Bản dịch tiếng Việt khớp câu tiếng Anh** (đúng từ vựng: "relative" là họ hàng, "neighbour" là hàng xóm), và `why` giải thích đúng.
+6. **Các chỗ trống trong `cloze`/`gap`**: thứ tự `items` phải khớp **đúng thứ tự các chỗ trống** trong đoạn văn; số chỗ trống bằng số `items`; đoạn văn không lặp câu.
+Nếu thấy lỗi ở bất kỳ câu nào, **sửa ngay** rồi rà lại. Khi gửi, ghi một dòng: "Rà ngữ pháp: đã đọc N câu, sửa M câu." Chỉ lưu hoặc gửi file **sau khi** rà xong. Không được bỏ bước này vì tiết kiệm thời gian.
+
 # CÁCH GIAO KẾT QUẢ: TỰ LÀM HẾT 13 FILE TRONG MỘT LẦN CHẠY, KHÔNG DỪNG, KHÔNG HỎI
 
 Bạn phải **tự làm liên tục cả 13 file trong cùng một lần chạy**. Tôi sẽ không gõ "tiếp". **Cấm** dừng giữa chừng, cấm báo "chưa hoàn thành khối lượng", cấm hỏi lại. Hãy dùng công cụ **Python / phân tích dữ liệu (nếu có)** để ghi file theo nhịp sau:
@@ -318,6 +329,7 @@ Bạn phải **tự làm liên tục cả 13 file trong cùng một lần chạy
 
 # TỰ KIỂM TRA TRƯỚC KHI GỬI MỖI PHẦN
 
+- [ ] **Đã rà soát ngữ pháp từng câu (chia động từ, đáp án đúng, mạo từ, chính tả, bản dịch khớp, thứ tự chỗ trống khớp `items`) và ghi dòng "Rà ngữ pháp: đã đọc N câu, sửa M câu."**
 - [ ] **Mọi câu do tôi tự viết, không sinh bằng mẫu hay vòng lặp; mỗi `why` riêng cho từng câu; đã tự kiểm tra ngữ pháp của từng đáp án.**
 - [ ] `answer` trùng từng ký tự với một chuỗi trong `options`; các `options` không trùng nhau.
 - [ ] Tên người, đại từ và từ chỉ quan hệ cùng giới tính ("Tom is my grandmother" là sai). Chỗ trống giữa câu thì đáp án, bank, options viết thường.

@@ -107,12 +107,13 @@ def main():
     ap.add_argument("--model", default="gpt-5"); ap.add_argument("--out", default="out")
     ap.add_argument("--prompt", default=os.path.join(os.path.dirname(__file__), "..", "PROMPT-soan-tuan-1-GPT.md"))
     ap.add_argument("--only", nargs="*"); ap.add_argument("--retries", type=int, default=3)
-    ap.add_argument("--max-tokens", type=int, default=32000)
+    ap.add_argument("--max-tokens", type=int, default=32000); ap.add_argument("--no-review", action="store_true", help="bỏ lượt rà ngữ pháp thứ hai")
     a = ap.parse_args()
+    a_noreview = a.no_review
     from openai import OpenAI
     client = OpenAI()
     system = open(a.prompt, encoding="utf-8").read() + \
-      "\n\n# CHẾ ĐỘ TỰ ĐỘNG\nBạn chạy trong script. Mỗi lần chỉ trả về MỘT đối tượng JSON của đúng phần được yêu cầu, không kèm lời giải thích, không bỏ qua câu nào."
+      "\n\n# CHẾ ĐỘ TỰ ĐỘNG\nBạn chạy trong script. Mỗi lần chỉ trả về MỘT đối tượng JSON của đúng phần được yêu cầu, không kèm lời giải thích, không bỏ qua câu nào. Trước khi trả JSON, hãy tự rà ngữ pháp từng câu theo mục \"Bước bắt buộc: tự rà soát ngữ pháp\" và sửa mọi lỗi."
     os.makedirs(a.out, exist_ok=True)
     meta_path = os.path.join(a.out, "week1-meta.json")
     for p in (a.only or PARTS):
@@ -134,6 +135,15 @@ def main():
                      {"role":"user","content":"Phần này còn lỗi, hãy sửa đúng các chỗ sau và trả lại TOÀN BỘ JSON của phần này (câu nào đã đúng thì giữ nguyên):\n- " + "\n- ".join(errs)}]
         if good is None:
             print(f"[{p}] KHÔNG đạt sau {a.retries} lần, lưu bản cuối vào {path}.bad"); open(path+".bad","w",encoding="utf-8").write(out); continue
+        if not a_noreview:
+            print(f"[{p}] rà ngữ pháp lượt 2...", flush=True)
+            msgs += [{"role":"assistant","content":json.dumps(good, ensure_ascii=False)},
+                     {"role":"user","content":"Hãy đóng vai giáo viên tiếng Anh khó tính, đọc lại TỪNG câu của phần này và kiểm tra: chia động từ theo chủ ngữ, đáp án thật sự đúng, mạo từ, chính tả, tên người khớp giới tính, bản dịch tiếng Việt khớp, thứ tự items của cloze khớp thứ tự chỗ trống. Sửa mọi lỗi và trả lại TOÀN BỘ JSON của phần này."}]
+            try:
+                out2 = call(client, a.model, system, msgs, a.max_tokens); d2, e2 = validate(p, extract_json(out2))
+                if not e2: good = d2; print(f"[{p}] đã chấp nhận bản đã rà")
+                else: print(f"[{p}] bản rà còn lỗi, giữ bản trước:", *e2[:3], sep="\n   - ")
+            except Exception as e: print("  lỗi API khi rà:", e)
         json.dump(good, open(path,"w",encoding="utf-8"), ensure_ascii=False, indent=1)
         print(f"[{p}] OK -> {path}")
     print("\nXong. Kéo thả các file trong thư mục", a.out, "vào trang tải bài của web.")
