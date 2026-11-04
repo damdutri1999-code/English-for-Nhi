@@ -64,6 +64,30 @@ def validate(p, text):
         if "___" in tx and isinstance(ans, str):
             before = tx.split("___")[0].strip()
             if before and not re.search(r"[.?!]$", before) and ans[:1].isupper() and not ans.startswith("I") and before: errs.append(f'chỗ trống giữa câu nhưng đáp án viết hoa: "{tx[:50]}" -> {ans}')
+    PL = "parents|friends|brothers|sisters|cousins|students|children|teachers|grandparents|people"; SG = "mother|father|brother|sister|cousin|uncle|aunt|grandmother|grandfather|teacher|driver|doctor|neighbour|neighbor|name|family|friend|student|nurse"
+    def be_expect(before):
+        s_ = re.sub(r"\s+", " ", re.sub(r"[^a-z' ]+", " ", before.lower())).strip()
+        if not s_: return None
+        if re.search(r"\b\w+ and \w+$", s_): return "are"
+        w_ = s_.split(" ")[-1]
+        if w_ == "i": return "am"
+        if w_ in ("we","you","they"): return "are"
+        if w_ in ("he","she","it"): return "is"
+        if re.fullmatch(PL, w_): return "are"
+        if re.fullmatch(SG, w_): return "is"
+        return None
+    def be_check(before, ans):
+        e = be_expect(before)
+        if e and isinstance(ans, str) and ans.lower() in ("am","is","are") and ans.lower() != e: errs.append(f'sai ngữ pháp: "{before.strip()[-30:]} ___" cần "{e}" nhưng đáp án là "{ans}"')
+    for o in walk(d):
+        if isinstance(o.get("text"), str) and "___" in o["text"] and isinstance(o.get("answer"), str): be_check(o["text"].split("___")[0], o["answer"])
+        if isinstance(o.get("passage"), str) and isinstance(o.get("items"), list):
+            ps = o["passage"].split("___")
+            if len(ps) - 1 != len(o["items"]): errs.append(f'cloze có {len(ps)-1} chỗ trống nhưng {len(o["items"])} items')
+            for k, it in enumerate(o["items"]):
+                if k < len(ps) - 1 and isinstance(it, dict): be_check(ps[k], it.get("answer"))
+            sents = [x.strip().lower() for x in re.split(r"(?<=[.!?])\s+", o["passage"]) if x.strip()]
+            if len(sents) != len(set(sents)): errs.append("đoạn cloze lặp lại câu, hãy viết đoạn văn không lặp")
     generic = sum(1 for o in walk(d) if str(o.get("q","")).strip().lower().startswith("who or what is mentioned"))
     if generic: errs.append(f'{generic} câu hỏi chung chung "Who or what is mentioned?": phải hỏi đúng nội dung câu nghe')
     if p != "meta" and n < 15: errs.append(f"chỉ có {n} câu trắc nghiệm, quá ít so với bảng số lượng")
