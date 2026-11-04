@@ -408,6 +408,8 @@ body.hasprog{padding-top:20px}
 .cloze::before{content:"📝 Đoạn văn"}
 .chat{background:var(--doc); border:2px solid var(--doc-line); border-radius:16px; padding:10px}
 .txt{background:var(--paper)}
+.lhead .gear{flex:none}
+body.isfs .sync{display:none}
 </style>
 </head>
 <body>
@@ -420,7 +422,7 @@ body.hasprog{padding-top:20px}
 </defs></svg>
 <header class="top">
   <div class="brand"><span id="logo"></span><div><b>Học tiếng Anh</b><small id="mname">cùng Thỏ ngọc</small></div></div>
-  <div class="hr"><span class="sync" id="sync" role="status">💾 Lưu trên máy</span><button class="gear themebtn" id="themebtn" type="button" aria-label="Đổi giao diện sáng hoặc đêm"></button><a class="gear" href="#/settings" aria-label="Cài đặt">⚙️</a></div>
+  <div class="hr"><span class="sync" id="sync" role="status">💾 Lưu trên máy</span><button class="gear fsbtn" id="fsbtn" type="button" aria-label="Toàn màn hình">⛶</button><button class="gear themebtn" id="themebtn" type="button" aria-label="Đổi giao diện sáng hoặc đêm"></button><a class="gear" href="#/settings" aria-label="Cài đặt">⚙️</a></div>
 </header>
 <main id="app" class="wrap"></main>
 <nav class="tabs" id="tabs" aria-label="Điều hướng"></nav>
@@ -476,7 +478,25 @@ const norm = s => String(s).toLowerCase().replace(/[’]/g,"'").replace(/[^a-z0-
 const fmt = sec => Math.floor(sec/60) + ":" + String(sec%60).padStart(2,"0");
 function shuffle(a){ const b=a.slice(); for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b; }
 let toastTimer;
-function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"),2400); }
+/* chế độ toàn màn hình: Android và máy tính dùng Fullscreen API; iPhone phải thêm vào màn hình chính */
+const FS = {
+  on:() => !!(document.fullscreenElement || document.webkitFullscreenElement),
+  can:() => !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen),
+  app:() => (window.matchMedia && matchMedia("(display-mode: standalone), (display-mode: fullscreen)").matches) || navigator.standalone === true,
+  toggle(){
+    if (FS.app()){ toast("Bạn đang mở app toàn màn hình rồi."); return; }
+    if (!FS.can()){ toast("iPhone: bấm nút Chia sẻ, chọn “Thêm vào MH chính”, rồi mở app từ biểu tượng để được toàn màn hình."); return; }
+    try { const d = document.documentElement;
+      if (FS.on()) (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+      else { const r = (d.requestFullscreen || d.webkitRequestFullscreen).call(d); if (r && r.catch) r.catch(() => toast("Trình duyệt không cho bật toàn màn hình.")); }
+    } catch(e){ toast("Trình duyệt không cho bật toàn màn hình."); }
+  },
+  sync(){ const on = FS.on(); document.body.classList.toggle("isfs", on);
+    document.querySelectorAll(".fsbtn").forEach(b => { if (b.classList.contains("gear")) b.textContent = on ? "🗗" : "⛶"; else b.textContent = on ? "🗗 Thoát toàn màn hình" : "⛶ Bật toàn màn hình"; b.setAttribute("aria-label", on ? "Thoát toàn màn hình" : "Toàn màn hình"); }); }
+};
+["fullscreenchange","webkitfullscreenchange"].forEach(ev => document.addEventListener(ev, FS.sync));
+const fsBtn = () => h("button",{class:"gear fsbtn",type:"button","aria-label":"Toàn màn hình",title:"Toàn màn hình",onClick:FS.toggle}, FS.on() ? "🗗" : "⛶");
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"), msg.length > 60 ? 6000 : 2400); }
 
 /* =====================================================================
    LINH VẬT & HOA (3 linh vật để chọn thử)
@@ -1803,7 +1823,7 @@ function lessonView(id, idx){
   refresh();
   return h("div",null,
     h("div",{class:"lhead"}, h("a",{class:"back",href:"#/week","aria-label":"Quay lại"},"←"), h("div",{class:"grow"}, h("h1",null,meta.title), h("div",{class:"small muted"}, meta.day+", "+KIND[meta.kind])),
-      h("div",{class:"clock",id:"clock"},"⏱ "+fmt(sess.seconds || 0))),
+      h("div",{class:"clock",id:"clock"},"⏱ "+fmt(sess.seconds || 0)), fsBtn()),
     lesson.demo ? h("div",{class:"card tint flat small"}, "🧪 "+DEMO_NOTE) : null,
     nav, body, skip,
     h("div",{class:"lbar"}, idx > 0 ? h("button",{class:"btn soft",type:"button","aria-label":"Bước trước",onClick:() => go(idx-1)},"←") : null, next));
@@ -1977,6 +1997,8 @@ function settingsView(){
   const dateIn = h("input",{class:"txt",type:"date",value:startVal,onChange:e => { if (e.target.value){ S.settings.startDate = e.target.value; save(); toast("Đã lưu ngày bắt đầu"); route(); } }});
   return h("div",null, h("h1",null,"Cài đặt"),
     h("div",{class:"card tint"}, h("h3",null,"📚 Tải bài học lên"), h("p",{class:"muted small"},"Dán JSON do GPT soạn, kiểm tra rồi dùng ngay."), h("a",{class:"btn",href:"#/content"},"Mở trang tải bài")),
+    h("div",{class:"card"}, h("h3",null,"Toàn màn hình"), h("p",{class:"muted small"}, FS.app() ? "Bạn đang mở app ở chế độ toàn màn hình." : FS.can() ? "Ẩn thanh địa chỉ của trình duyệt để học cho tập trung." : "Trên iPhone: bấm nút Chia sẻ, chọn “Thêm vào MH chính”, rồi mở app từ biểu tượng trên màn hình, app sẽ chạy toàn màn hình."),
+      FS.app() ? null : h("button",{class:"btn fsbtn",type:"button",onClick:FS.toggle}, FS.on() ? "🗗 Thoát toàn màn hình" : "⛶ Bật toàn màn hình")),
     h("div",{class:"card"}, h("h3",null,"Học viên"), h("p",{class:"muted small"},"Tên hiện trong lời chào ở trang chủ."), nameIn),
     h("div",{class:"card"}, h("h3",null,"Giao diện"), h("div",{class:"row",style:"flex-wrap:nowrap"}, tk("light"), tk("night"))),
     h("div",{class:"card"}, h("h3",null,"Linh vật"), h("div",{class:"row",style:"flex-wrap:nowrap"}, mk("bunny"), mk("hang"))),
@@ -2232,6 +2254,7 @@ document.addEventListener("focusout", () => setTimeout(() => { const a = documen
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 async function boot(){
   S = loadLocal(); ensureStart(); applyBrand(); loadContentLocal();
+  document.getElementById("fsbtn").addEventListener("click", FS.toggle); FS.sync();
   document.getElementById("themebtn").addEventListener("click", () => {
     S.settings.theme = themeKind() === "night" ? "light" : "night"; save(); applyBrand();
     if (location.hash.startsWith("#/settings")) route();
