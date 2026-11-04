@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Tiến độ: mỗi tài khoản chỉ đọc/ghi tiến độ của chính mình
+    match /learners/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+    // Nội dung bài học: ai đã đăng nhập đều đọc được, chỉ tài khoản giáo viên được ghi
+    match /content/{doc} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.token.email == 'damdutri1999@gmail.com';
+    }
+  }
+}
