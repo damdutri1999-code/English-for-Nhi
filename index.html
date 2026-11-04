@@ -1337,10 +1337,12 @@ function mcqItem(it, onChange, pre){
   const fbSlot = h("div");
   const el = h("div", {class:"q"}, it.q ? h("p",{class:"qtext"}, it.q) : null, pre || null,
     h("div",{class:"opts"}, order.map((oi,i) => { const b = h("button",{class:"opt",type:"button",onClick:() => {
-      if (locked) return; sel = i; btns.forEach((x,j) => x.classList.toggle("sel", j===i)); onChange(); }}, it.options[oi]); btns.push(b); return b; })), fbSlot);
-  return { el, fbSlot, isAnswered:() => sel >= 0, check(){ locked = true;
-    btns.forEach((b,j) => { if (order[j] === it.answer) b.classList.add("right"); else if (j === sel) b.classList.add("wrong"); });
-    return { ok: sel >= 0 && order[sel] === it.answer, correct: it.options[it.answer], why: (it.say ? "Bài nghe: “"+it.say+"”. " : "") + (it.why || ""), prompt: it.q || it.say || (it.lines||[]).join(" / ") }; } };
+      if (locked) return; sel = i; btns.forEach((x,j) => { x.classList.toggle("sel", j===i); x.classList.remove("wrong"); }); onChange(); }}, it.options[oi]); btns.push(b); return b; })), fbSlot);
+  return { el, fbSlot, retry:true, isAnswered:() => sel >= 0,
+    lock(){ locked = true; btns.forEach((b,j) => { if (order[j] === it.answer) b.classList.add("right"); }); },
+    check(){ const ok = sel >= 0 && order[sel] === it.answer;
+    if (ok){ locked = true; btns[sel].classList.add("right"); } else if (sel >= 0) btns[sel].classList.add("wrong");
+    return { ok, retry:!ok, correct: it.options[it.answer], why: (it.say ? "Bài nghe: “"+it.say+"”. " : "") + (it.why || ""), prompt: it.q || it.say || (it.lines||[]).join(" / ") }; } };
 }
 /* thanh tiến độ cố định ở đầu trang khi làm bài */
 const PG = { on:false, total:0, done:0, base:0, span:1, label:"", stepDone:null };
@@ -1404,7 +1406,7 @@ function buildGap(set, onChange){
   }
   refresh();
   const items = set.items.map((it, qi) => ({ el:rows[qi].el, fbSlot:rows[qi].fbSlot, isAnswered:() => blanks[qi].v != null,
-    retry:true,
+    retry:true, lock(){ locked[qi] = true; },
     check(){ const user = bank[blanks[qi].v].w; const ok = anyOk(it, user);
       rows[qi].blankBtn.classList.remove("right","wrong"); rows[qi].blankBtn.classList.add(ok ? "right" : "wrong"); if (ok) locked[qi] = true;
       return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.text }; } }));
@@ -1427,11 +1429,11 @@ function buildCloze(set, onChange){
   }
   refresh();
   const items = set.items.map((it, i) => { const fbSlot = h("div"); fbs[i] = fbSlot;
-    return { el:h("div",{class:"q nocount"}, h("div",{class:"small muted"},"Chỗ trống "+(i+1)), fbSlot), fbSlot, retry:!typed,
+    return { el:h("div",{class:"q nocount"}, h("div",{class:"small muted"},"Chỗ trống "+(i+1)), fbSlot), fbSlot, retry:true, lock(){ locked[i] = true; if (typed) blanks[i].readOnly = true; },
       isAnswered:() => typed ? blanks[i].value.trim() !== "" : vals[i] != null,
       check(){ const user = typed ? blanks[i].value : bank[vals[i]].w; const ok = anyOk(it, user);
-        if (typed) blanks[i].readOnly = true; blanks[i].classList.remove("right","wrong"); blanks[i].classList.add(ok ? "right" : "wrong"); if (ok) locked[i] = true;
-        return { ok, retry:!typed && !ok, correct: it.answer, why: it.why, prompt: it.text || it.answer }; } }; });
+        if (typed && ok) blanks[i].readOnly = true; blanks[i].classList.remove("right","wrong"); blanks[i].classList.add(ok ? "right" : "wrong"); if (ok) locked[i] = true;
+        return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.text || it.answer }; } }; });
   return { head:[typed ? null : dragHint("Kéo từ thả vào đúng chỗ trống trong đoạn (hoặc chạm vào từ rồi chạm vào chỗ trống). Mỗi chỗ được chấm ngay."), h("div",{class:"cloze"}, nodes), bankEl], items };
 }
 function buildMatch(set, onChange){
@@ -1491,42 +1493,43 @@ function reorderItem(it, onChange){
       dragSource(b, () => ti, () => add(ti)); return b; }));
     ansEl.replaceChildren(...ans.map((t,k) => h("button",{class:"chip on",type:"button",onClick:() => {
       if (locked) return; t.used = false; ans.splice(k,1); refresh(); }}, t.w)));
-    ansEl.classList.toggle("empty", ans.length === 0);
+    ansEl.classList.toggle("empty", ans.length === 0); ansEl.classList.remove("wrong");
   }
   refresh();
-  return { el:h("div",{class:"q"}, ansEl, bankEl, fbSlot), fbSlot, isAnswered:() => ans.length === tiles.length,
-    check(){ locked = true; const user = ans.map(t => t.w).join(" "); const ok = same(user, it.answer);
-      ansEl.classList.add(ok ? "right" : "wrong"); return { ok, correct: it.answer, why: it.why, prompt: it.words.join(" / ") }; } };
+  return { el:h("div",{class:"q"}, ansEl, bankEl, fbSlot), fbSlot, retry:true, isAnswered:() => ans.length === tiles.length, lock(){ locked = true; },
+    check(){ const user = ans.map(t => t.w).join(" "); const ok = same(user, it.answer); if (ok) locked = true;
+      ansEl.classList.remove("right","wrong"); ansEl.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.words.join(" / ") }; } };
 }
 function fixItem(it, onChange){
   const fbSlot = h("div");
   const input = h("input",{class:"txt",type:"text",value:it.wrong,autocapitalize:"off",autocomplete:"off",spellcheck:"false",onInput:onChange});
   return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, "Câu sai: ", h("span",{style:"color:var(--bad)"}, it.wrong)), input, fbSlot), fbSlot,
+    retry:true, lock(){ input.readOnly = true; },
     isAnswered:() => input.value.trim() !== "" && input.value.trim() !== it.wrong,
-    check(){ input.readOnly = true; const ok = anyOk(it, input.value);
-      input.classList.add(ok ? "right" : "wrong"); return { ok, correct: it.answer, why: it.why, prompt: it.wrong }; } };
+    check(){ const ok = anyOk(it, input.value); if (ok) input.readOnly = true;
+      input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.wrong }; } };
 }
 function formItem(it, onChange){
   const parts = it.text.split("___"), fbSlot = h("div");
   const input = h("input",{class:"txt inline",type:"text",autocapitalize:"off",autocomplete:"off",spellcheck:"false",onInput:onChange});
-  return { el:h("div",{class:"q gap"}, parts[0], input, parts[1] || "", fbSlot), fbSlot, isAnswered:() => input.value.trim() !== "",
-    check(){ input.readOnly = true; const ok = anyOk(it, input.value);
-      input.classList.add(ok ? "right" : "wrong"); return { ok, correct: it.answer, why: it.why, prompt: it.text }; } };
+  return { el:h("div",{class:"q gap"}, parts[0], input, parts[1] || "", fbSlot), fbSlot, retry:true, lock(){ input.readOnly = true; }, isAnswered:() => input.value.trim() !== "",
+    check(){ const ok = anyOk(it, input.value); if (ok) input.readOnly = true;
+      input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.text }; } };
 }
 function dictItem(it, onChange){
   const fbSlot = h("div"), input = h("input",{class:"txt",type:"text",placeholder:"Gõ câu bạn nghe được",onInput:onChange});
-  return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, it.q || "Nghe rồi gõ lại câu."), audioBar(it.say, it.audioSrc), input, fbSlot), fbSlot, isAnswered:() => input.value.trim() !== "",
-    check(){ input.readOnly = true; const ok = [it.say].concat(it.alt || []).some(a => same(a, input.value));
-      input.classList.add(ok ? "right" : "wrong"); return { ok, correct: it.say, why: it.why, prompt: it.say }; } };
+  return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, it.q || "Nghe rồi gõ lại câu."), audioBar(it.say, it.audioSrc), input, fbSlot), fbSlot, retry:true, lock(){ input.readOnly = true; }, isAnswered:() => input.value.trim() !== "",
+    check(){ const ok = [it.say].concat(it.alt || []).some(a => same(a, input.value)); if (ok) input.readOnly = true;
+      input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: it.say, why: it.why, prompt: it.say }; } };
 }
 function textItem(it, onChange){
   const fbSlot = h("div"), input = h("input",{class:"txt",type:"text",placeholder:"Gõ câu của bạn",onInput:onChange});
   return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, it.prompt), it.instruction ? h("p",{class:"muted small",style:"margin:-4px 0 8px"},"👉 "+it.instruction) : null, input, fbSlot), fbSlot,
-    isAnswered:() => input.value.trim() !== "",
-    check(){ input.readOnly = true;
+    retry:!it.self, lock(){ input.readOnly = true; }, isAnswered:() => input.value.trim() !== "",
+    check(){ if (it.self) input.readOnly = true;
       if (it.self){ const match = anyOk(it, input.value); input.classList.add(match ? "right" : "wrong");
         return { ok:true, self:true, match, correct: it.answer + ((it.alt && it.alt.length) ? "   (hoặc: "+it.alt.join(" / ")+")" : ""), why: it.why, prompt: it.prompt }; }
-      const ok = anyOk(it, input.value); input.classList.add(ok ? "right" : "wrong"); return { ok, correct: it.answer, why: it.why, prompt: it.prompt }; } };
+      const ok = anyOk(it, input.value); if (ok) input.readOnly = true; input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.prompt }; } };
 }
 function shadowItem(it, onChange){
   let done = false; const fbSlot = h("div");
@@ -1573,11 +1576,17 @@ function exerciseSet(set, onDone){
         h("div",null, quietScore || main.doneMsg ? "Xong rồi" : right+" / "+total+" câu đúng", h("div",{class:"small muted"}, msg)), retry), exBtn);
       recordResult(main, res); onDone && onDone(right, total, res);
     };
-    const tried = Array(N).fill(false);
+    const tried = Array(N).fill(false), lastR = Array(N).fill(null);
+    const reveal = i => { if (done[i]) return; const it = built.items[i]; it.lock && it.lock(); done[i] = true; cnt++;
+      const r = Object.assign({}, lastR[i], { ok:false, retry:false }); res[i] = r;
+      it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null));
+      if (cbs[i]) cbs[i].remove(); if (counted){ PG.done++; pgDraw(); } if (cnt === N) finishSet(); };
     const checkOne = i => {
       if (done[i] || !built) return; const it = built.items[i]; if (!it.isAnswered()) return;
       const r = it.check();
-      if (r.retry){ tried[i] = true; if (!it.quietRetry) it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, "Chưa đúng. Kéo từ khác vào để thay nhé.")); return; }
+      if (r.retry){ tried[i] = true; lastR[i] = r;
+        const msg = /^(gap|cloze)$/.test(main.type) && main.mode !== "type" ? "Chưa đúng. Kéo từ khác vào để thay nhé." : MCQLIKE.includes(main.type) ? "Chưa đúng, bạn chọn lại nhé." : main.type === "reorder" ? "Chưa đúng, bạn xếp lại nhé." : "Chưa đúng, bạn sửa lại rồi kiểm tra lại nhé.";
+        if (!it.quietRetry) it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, msg + " ", it.lock ? h("button",{class:"linkbtn",type:"button",onClick:() => reveal(i)}, "Xem đáp án") : null)); return; }
       done[i] = true; if (tried[i]) r.ok = false; res[i] = r; cnt++;
       const quiet = it.quietOk && r.ok;
       it.fbSlot.replaceChildren(quiet ? null : h("div",{class:"fbtxt "+(r.self && r.match === false ? "note" : r.ok ? "ok" : "bad")},
