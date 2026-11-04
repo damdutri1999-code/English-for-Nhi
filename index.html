@@ -348,6 +348,7 @@ html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index
 .cloze{line-height:2.5;font-weight:600;margin:6px 0 10px}
 .errlist{padding-left:20px}
 .weeknav{display:flex;align-items:center;gap:8px}
+.txt.over{border-color:var(--p500);background:var(--p100);border-style:dashed}
 </style>
 </head>
 <body>
@@ -1872,9 +1873,16 @@ function draftProgress(n){
     complete:!!d.meta && DAYK.every(k => d.sessions[k] && d.challenges[k]) };
 }
 function contentView(){
-  const ta = h("textarea",{class:"txt",rows:7,placeholder:"Dán nội dung JSON do GPT xuất ra vào đây…",spellcheck:"false"});
+  const ta = h("textarea",{class:"txt",rows:7,placeholder:"Kéo thả file .json vào đây, hoặc dán nội dung JSON do GPT xuất ra…",spellcheck:"false"});
   const out = h("div"); let pending = null;
-  const fileIn = h("input",{type:"file",accept:".json,application/json,text/plain",hidden:true,onChange:async e => { const f = e.target.files[0]; if (!f) return; ta.value = await f.text(); e.target.value = ""; check(); }});
+  const readFiles = async files => { const list = [...files].filter(f => /\.(json|txt)$/i.test(f.name) || /json|text/.test(f.type));
+    if (!list.length){ toast("Hãy thả file .json"); return; }
+    const texts = []; for (const f of list) texts.push(await f.text());
+    ta.value = texts.length === 1 ? texts[0] : texts.map(t => "```json\n" + t + "\n```").join("\n\n"); check(); };
+  ["dragenter","dragover"].forEach(ev => ta.addEventListener(ev, e => { e.preventDefault(); ta.classList.add("over"); }));
+  ["dragleave","dragend"].forEach(ev => ta.addEventListener(ev, () => ta.classList.remove("over")));
+  ta.addEventListener("drop", e => { if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length){ e.preventDefault(); ta.classList.remove("over"); readFiles(e.dataTransfer.files); } else ta.classList.remove("over"); });
+  const fileIn = h("input",{type:"file",multiple:true,accept:".json,application/json,text/plain",hidden:true,onChange:async e => { const fs = e.target.files; if (!fs.length) return; await readFiles(fs); e.target.value = ""; }});
   function check(){
     pending = null;
     if (!ta.value.trim()){ out.replaceChildren(h("p",{class:"muted"},"Hãy dán JSON hoặc chọn file trước.")); return; }
