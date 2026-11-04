@@ -841,7 +841,8 @@ const MCQLIKE = ["mcq","oddone","listenpick","dialogue"];
 
 function prepItem(type, it){
   const o = Object.assign({}, it);
-  if (MCQLIKE.includes(type) && typeof o.answer === "string") o.answer = (o.options || []).indexOf(o.answer);
+  if (MCQLIKE.includes(type) && typeof o.answer === "string") o.answer = optIndex(o.options || [], o.answer);
+  if (MCQLIKE.includes(type) && Array.isArray(o.options) && typeof o.answer === "number"){ const seenO = new Set(), keep = [], ans = o.options[o.answer]; o.options.forEach(x => { const k = String(x).trim().toLowerCase(); if (!seenO.has(k)){ seenO.add(k); keep.push(x); } }); if (keep.length !== o.options.length && keep.length >= 2){ const ai = keep.findIndex(x => String(x).trim().toLowerCase() === String(ans).trim().toLowerCase()); if (ai >= 0){ o.options = keep; o.answer = ai; } } }
   if (type === "truefalse"){ o.options = ["Đúng","Sai"]; o.answer = (o.answer === true || /^(true|đúng|dung)$/i.test(String(o.answer))) ? 0 : 1; }
   if (type === "oddone" && !o.q) o.q = "Chọn từ khác loại với các từ còn lại.";
   if (SELF_TYPES.has(type)) o.self = true;
@@ -880,6 +881,7 @@ function unloadWeek(n){
 }
 
 /* ---- Kiểm tra file JSON, báo lỗi dễ hiểu ---- */
+const optIndex = (opts, a) => { let i = opts.indexOf(a); if (i < 0){ const k = String(a).trim().toLowerCase(); i = opts.findIndex(o => String(o).trim().toLowerCase() === k); } return i; };
 const isStr = v => typeof v === "string" && v.trim() !== "";
 const wordsOf = s => norm(String(s)).split(" ").filter(Boolean);
 function validateItem(type, it, w, E, W){
@@ -888,8 +890,8 @@ function validateItem(type, it, w, E, W){
   if (MCQLIKE.includes(type)){
     need(Array.isArray(it.options) && it.options.length >= 2 && it.options.every(isStr), "thiếu options (mảng ít nhất 2 chuỗi)");
     if (Array.isArray(it.options)){
-      need(typeof it.answer === "number" ? (it.answer >= 0 && it.answer < it.options.length) : it.options.includes(it.answer), "answer phải trùng đúng một chuỗi trong options");
-      need(new Set(it.options).size === it.options.length, "options bị trùng nhau");
+      need(typeof it.answer === "number" ? (it.answer >= 0 && it.answer < it.options.length) : optIndex(it.options, it.answer) >= 0, "answer phải trùng một chuỗi trong options (đang là \"" + it.answer + "\", options: " + it.options.join(" / ") + ")");
+      if (new Set(it.options.map(o => String(o).trim().toLowerCase())).size !== it.options.length) W.push(w + ": options bị trùng nhau (" + it.options.join(" / ") + "), web tự bỏ lựa chọn trùng");
       if (type === "oddone") need(it.options.length === 4, "oddone nên có đúng 4 lựa chọn");
     }
     if (type === "mcq") need(isStr(it.q), "thiếu q");
@@ -923,7 +925,9 @@ function validateSet(raw, w, E, W, seen){
     const base = norm([it.q, it.say, it.text, it.prompt, it.wrong, it.left, (it.words || []).join(" ")].filter(isStr).join(" "));
     const ans = norm(String(typeof it.answer === "number" && it.options ? it.options[it.answer] : (it.answer != null ? it.answer : (it.right || ""))));
     const key = base + "|" + ans;
-    if (base.length > 8 && type !== "cloze"){ if (seen.has(type + key)) W.push(w + " câu " + (i+1) + ": trùng cả câu hỏi lẫn đáp án với " + seen.get(type + key)); else seen.set(type + key, w + " câu " + (i+1)); }
+    if (isStr(it.why)){ const wk = it.why.trim(); const r = seen.why.get(wk) || { n:0, at:w + " câu " + (i+1) }; r.n++; seen.why.set(wk, r); }
+    { const pk = (it.q || it.text || it.say || it.prompt || "").replace(/\b[A-Z][a-z]+\b/g, "N").replace(/\b(father|mother|sister|brother|parents|grandmother|grandfather|uncle|aunt|cousin|teacher|doctor|driver|nurse)\b/gi, "W").trim(); if (pk.length > 12){ const r = seen.pat.get(pk) || { n:0, at:w + " câu " + (i+1) }; r.n++; seen.pat.set(pk, r); } }
+    if (base.length > 8 && type !== "cloze"){ { const r = seen.get(type + key); if (r) { r.n++; if (r.n === 4) W.push(w + " câu " + (i+1) + ": câu này đã xuất hiện quá 3 lần (cả câu hỏi lẫn đáp án), lần đầu ở " + r.at); } else seen.set(type + key, { n:1, at:w + " câu " + (i+1) }); } }
   });
   if (type === "cloze"){
     if (!isStr(raw.passage)) E.push(w + ": cloze thiếu passage");
@@ -936,7 +940,7 @@ function validateSet(raw, w, E, W, seen){
   return { n:raw.items.length, core, sec:core * EST_SEC[type] };
 }
 function validateWeek(j){
-  const E = [], W = [], stats = { sessions:[], vocab:0 }, seen = new Map();
+  const E = [], W = [], stats = { sessions:[], vocab:0 }, seen = new Map(); seen.why = new Map(); seen.pat = new Map();
   if (!j || typeof j !== "object" || Array.isArray(j)) return { E:["File phải là một object JSON (bắt đầu bằng {)."], W, stats };
   if (j.schema !== SCHEMA) W.push("schema nên là \"" + SCHEMA + "\".");
   if (!Number.isInteger(j.week) || j.week < 1 || j.week > 18) E.push("week phải là số nguyên từ 1 đến 18.");
@@ -978,6 +982,8 @@ function validateWeek(j){
       (g.sets || []).forEach((raw, xi) => { const r = validateSet(raw, w + " challenge chặng " + (gi+1) + " bộ " + (xi+1), E, W, seen); cn += r.n; csec += r.sec; }); });
     stats.sessions.push({ day:w, title:s.title || "", n, core, extra:n - core, min:Math.round(sec / 60), cn, cmin:Math.round(csec / 60) });
   });
+  [...seen.why].filter(([, r]) => r.n >= 5).slice(0, 5).forEach(([t, r]) => W.push("⚠ Lời giải thích giống hệt nhau ở " + r.n + " câu (đầu tiên: " + r.at + "): \"" + t.slice(0, 70) + "\". Có vẻ soạn bằng mẫu tự động, nên viết lại cho từng câu."));
+  [...seen.pat].filter(([, r]) => r.n >= 8).slice(0, 5).forEach(([t, r]) => W.push("⚠ " + r.n + " câu gần như cùng một khuôn (đầu tiên: " + r.at + "): \"" + t.slice(0, 60) + "\". Nên đa dạng hóa."));
   stats.vocab = vocab.size;
   if (vocab.size && vocab.size < 24) W.push("Mới có " + vocab.size + " từ vựng trong các bài đọc (mục tiêu khoảng 32 từ mỗi tuần).");
   return { E, W, stats };
@@ -1911,7 +1917,8 @@ function contentView(){
     const results = whole.map(j => ({ j, v:validateWeek(j) })), ok = results.every(r => !r.v.E.length);
     if (ok && results.length) pending = (pending || []).concat(results.map(r => r.j));
     if (parts.length && !whole.length){ out.replaceChildren(...draftCards, pending ? h("button",{class:"btn block",type:"button",onClick:async () => { for (const j of pending){ await saveWeek(j); delete DRAFT[j.week]; } saveDraft(); toast("Đã lưu vào web"); ta.value = ""; out.replaceChildren(); route(); }},"Lưu vào web") : null); ta.value = ""; return; }
-    out.replaceChildren(...draftCards, ...results.map(({ j, v }) => h("div",{class:"card"},
+    const mkSave = (st) => ok && pending ? h("button",{class:"btn block",type:"button",style:st,onClick:async () => { for (const j of pending) await saveWeek(j); toast("Đã lưu "+pending.length+" tuần"); ta.value = ""; out.replaceChildren(); route(); }}, "💾 Lưu vào web") : null;
+    out.replaceChildren(...draftCards, mkSave("position:sticky;top:8px;z-index:5;margin-bottom:12px"), ...results.map(({ j, v }) => h("div",{class:"card"},
       h("h3",null, v.E.length ? "❌ Có "+v.E.length+" lỗi cần sửa" : "✅ Hợp lệ" + (j && j.week ? ": Tuần "+j.week+" · "+j.title : "")),
       v.E.length ? h("ul",{class:"errlist"}, v.E.slice(0, 30).map(x => h("li",{style:"color:var(--bad)"}, x)), v.E.length > 30 ? h("li",null,"… và "+(v.E.length-30)+" lỗi nữa") : null) : null,
       v.W.length ? h("details",null, h("summary",{style:"font-weight:800;cursor:pointer"},"⚠️ "+v.W.length+" lưu ý (không chặn lưu)"), h("ul",null, v.W.slice(0, 25).map(x => h("li",{class:"small"}, x)))) : null,
@@ -1919,7 +1926,7 @@ function contentView(){
         h("thead",null,h("tr",null,["Buổi","Câu chính","Làm thêm","≈ phút","Challenge"].map(t => h("th",null,t)))),
         h("tbody",null, v.stats.sessions.map(s => h("tr",null, h("td",null,s.day), h("td",null,String(s.core)), h("td",null,String(s.extra)), h("td",null,"~"+s.min), h("td",null,s.cn ? s.cn+" câu (~"+s.cmin+"′)" : "–")))))) : null,
       v.stats.vocab ? h("p",{class:"muted small"},"Từ vựng trong các bài đọc: "+v.stats.vocab+" từ.") : null)),
-      ok && pending ? h("button",{class:"btn block",type:"button",onClick:async () => { for (const j of pending) await saveWeek(j); toast("Đã lưu "+pending.length+" tuần"); ta.value = ""; out.replaceChildren(); route(); }}, "Lưu vào web") : null);
+      mkSave("margin-top:12px"));
   }
   const rows = Object.keys(WEEKS).map(Number).sort((a, b) => a - b).map(n => { const w = WEEKS[n], c = CONTENT[n];
     const src = !w.json ? "Bản demo" : c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Từ repo";

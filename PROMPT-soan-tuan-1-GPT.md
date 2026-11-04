@@ -1,7 +1,7 @@
 # PROMPT: GPT soạn nội dung TUẦN 1 cho web học tiếng Anh A1–A2
 
 > Cách dùng: mở một cuộc trò chuyện mới với GPT, dán **toàn bộ phần bên dưới đường kẻ** vào. GPT sẽ hỏi bạn xác nhận rồi soạn từng phần.
-> GPT tạo **một file `week-1.json`** để tải về (nếu GPT không tạo được file thì nó gửi các khối JSON, bạn gõ "tiếp" khi nó dừng). Vào web: **Cài đặt, Mở trang tải bài, Chọn file…**, chọn file vừa tải, xem kết quả kiểm tra rồi bấm Lưu.
+> GPT gửi **một file `week-1.json`**. Vào web: **Cài đặt, Mở trang tải bài**, kéo thả file vào ô, web kiểm tra, xem kết quả rồi bấm Lưu. (Nếu GPT không tạo được file, nó gửi các khối JSON, bạn dán vào.)
 > Bản này thay thế file PROMPT-soan-noi-dung-bai-hoc.md cũ.
 
 ---
@@ -107,14 +107,14 @@ Bước `read` đọc trước và các bước chỉ để làm quen (`preview`
 
 **Tỉ lệ nội dung của bộ luyện tập:** 60% thuộc sub hiện tại, 20% thuộc các sub trước, 20% là câu "bẫy tích lũy" (dùng nền tảng: đại từ, chào hỏi, số, am/is/are).
 
-**KHÔNG LẶP CÂU (quy tắc cứng):** Trong toàn bộ file, **không có bất kỳ câu nào xuất hiện hai lần**. Một câu là "lặp" nếu giống câu khác về nội dung (kể cả chỉ đổi tên người, đổi một từ, hay đổi dạng bài). Cụ thể:
-- Không lặp giữa các buổi, giữa bước đọc, nghe, luyện tập, Challenge, và giữa câu chính với câu làm thêm. Câu hiểu bài ở bước đọc/nghe không được dùng lại ở phần luyện tập.
-- Không lặp giữa các câu trong cùng một bộ, và không để hai câu hỏi cùng kiểm tra đúng một thông tin theo cùng một cách.
+**HẠN CHẾ LẶP CÂU (quy tắc cứng):** Một câu hỏi **được phép xuất hiện lặp lại, nhưng tối đa 3 lần trong toàn bộ file** (tính cả bản gốc; lần thứ 4 trở đi là vi phạm). Khi một câu lặp lại thì **lời giải thích (`why`) được giữ nguyên giống bản gốc**. Chỉ lặp khi thật sự có lợi cho việc ôn tập, và ưu tiên câu mới. Các lần lặp nên đổi dạng bài hoặc đổi thứ tự lựa chọn. Một câu là "lặp" nếu giống câu khác về nội dung (kể cả chỉ đổi tên người hoặc đổi một từ). Cụ thể:
+- Mỗi câu lặp tối đa 3 lần, kể cả giữa các buổi, giữa bước đọc, nghe, luyện tập, Challenge, và giữa câu chính với câu làm thêm. Câu hiểu bài ở bước đọc/nghe không được dùng lại ở phần luyện tập.
+- Trong cùng một bộ bài, không lặp câu; và không để hai câu hỏi cùng kiểm tra đúng một thông tin theo cùng một cách.
 - Câu khởi động và câu quiz Thứ 7 cũng phải là câu **mới**, không lấy lại câu đã dùng trước đó.
 - Buổi ôn kiểm tra lại kiến thức cũ bằng câu hoàn toàn mới, không nhắc lại câu cũ.
 - Các câu `listenpick`, `dictation`, `shadow` dùng câu nói (`say`) khác nhau.
 - Bài đọc và bài nghe của một buổi là cùng một văn bản (được phép), nhưng mọi câu hỏi, câu bài tập phải khác nhau.
-Trước khi xuất, hãy **tự rà toàn bộ câu để phát hiện câu trùng** (nếu tạo file bằng code, hãy kiểm tra trùng bằng chương trình rồi thay câu trùng bằng câu mới). Web sẽ báo cảnh báo nếu còn trùng.
+Trước khi xuất, hãy **tự rà toàn bộ câu, đếm số lần mỗi câu xuất hiện** (nếu tạo file bằng code, hãy kiểm tra bằng chương trình; câu nào xuất hiện từ 4 lần trở lên thì thay bằng câu mới). Web sẽ báo cảnh báo nếu một câu lặp quá 3 lần.
 
 **Tránh nhàm chán:** mỗi buổi dùng ít nhất 4 dạng khác nhau; câu của buổi ôn không được trùng câu của buổi học trước; không có hai câu có cùng khung câu và chỉ đổi mỗi tên người. Vì số câu nhiều, hãy đa dạng hóa: đổi chủ ngữ, đổi tình huống, đổi từ vựng, đổi kiểu hỏi.
 
@@ -283,43 +283,46 @@ Với `cloze` và `match`, `items` của `cloze` không có `text`; `items` củ
 ```
 Dùng đúng các bộ và số câu trong mục "Challenge cho mỗi buổi". Không dùng `core`.
 
-# CÁCH GIAO KẾT QUẢ: MỘT FILE DUY NHẤT (ƯU TIÊN)
+# QUY TẮC CHẤT LƯỢNG (QUAN TRỌNG NHẤT): CẤM SINH NỘI DUNG TỰ ĐỘNG
 
-Mục tiêu của tôi là **chỉ tải về một file duy nhất** rồi đưa vào web, không phải chép nhiều khối.
+Lần thử trước, file bị lỗi vì **nội dung được sinh bằng vòng lặp và mẫu câu trong code**. Hậu quả: hàng chục câu lặp, lời giải thích giống hệt nhau, câu vô nghĩa ("father means a type of weather"), đáp án sai ngữ pháp ("My parents ___ funny" với đáp án "is"), options bị trùng. Vì vậy:
 
-- **Nếu bạn tạo được file tải về** (công cụ Data Analysis / Code Interpreter / Canvas / tạo file): hãy gộp toàn bộ thành **một file `week-1.json`** theo "định dạng cả tuần" bên dưới, rồi đưa đường dẫn tải về. Soạn nội dung từng phần trong code (ví dụ Python, dựng dict rồi `json.dump(..., ensure_ascii=False, indent=1)`), sau đó **tự mở lại file bằng `json.load` để kiểm tra hợp lệ**, và in ra số câu từng dạng của từng buổi. Nếu tin nhắn không đủ chỗ, bạn cứ ghi nội dung dần vào file qua nhiều bước, không cần hỏi tôi.
-- **Nếu bạn không tạo được file**: xuất theo từng phần (meta, session, challenge) như mục dưới, mỗi phần một khối mã JSON, dừng ở cuối khối hoàn chỉnh khi hết chỗ và để tôi gõ "tiếp".
+1. **Mỗi câu hỏi phải do bạn tự nghĩ và tự viết, từng câu một**, như một giáo viên thật soạn bài. Tuyệt đối **không** dùng vòng lặp, `random`, hàm sinh câu, mẫu có chỗ điền tên/từ, hay "template" để tạo câu. Code (nếu dùng) chỉ để **ghi file và kiểm tra**, không để sinh nội dung.
+2. **Mỗi câu hỏi khác nhau có một `why` riêng** (1 đến 2 câu tiếng Việt, nêu lý do cụ thể). Không dùng chung một lời giải thích cho các câu hỏi khác nhau. Riêng khi chính câu hỏi đó được lặp lại (tối đa 3 lần), `why` giống nhau là bình thường.
+3. **Tự kiểm tra ngữ pháp từng câu**: câu đúng/sai phải đúng thật. Ví dụ "My parents ___" thì đáp án là "are", không bao giờ là "is". Đáp án `answer` phải đúng với chủ ngữ.
+4. **`answer` phải trùng từng ký tự (kể cả viết hoa) với một chuỗi trong `options`.** Các `options` phải **khác nhau**, không trùng. Nếu câu có chỗ trống giữa câu thì các lựa chọn viết thường ("is", "are", "am"); chỉ viết hoa khi chúng đứng đầu câu.
+5. **`listenpick`**: câu hỏi `q` phải liên quan trực tiếp đến câu `say`, và đáp án phải **nghe được từ chính câu `say`**. Cấm các câu hỏi chung chung như "Who or what is mentioned?" lặp lại nhiều lần. Ví dụ tốt: say "My uncle is a doctor." / q "Chú của bạn ấy làm nghề gì?" / options doctor, driver, nurse.
+6. **`truefalse`**: mỗi câu là một nhận định có nghĩa, đúng hoặc sai rõ ràng theo bài đọc, theo ngữ pháp hoặc theo nghĩa từ. Cấm nhận định phi lý (ví dụ "brother là một loại thời tiết").
+7. Đa dạng hóa thật sự: đổi chủ ngữ, tình huống, từ vựng, kiểu hỏi. Không có 10 câu cùng một khuôn chỉ đổi một từ.
+8. Chất lượng quan trọng hơn tốc độ. Nếu bạn thấy mình sắp viết câu thứ 10 theo cùng một khuôn, hãy dừng lại và nghĩ một kiểu câu khác.
 
-## Định dạng cả tuần (cho file duy nhất)
+# CÁCH GIAO KẾT QUẢ: TỰ LÀM HẾT 13 FILE TRONG MỘT LẦN CHẠY, KHÔNG DỪNG, KHÔNG HỎI
 
-Là một object JSON gộp mọi phần: các trường của `meta`, thêm `sessions` (chứa 6 buổi theo khóa `mon`, `tue`, `wed`, `thu`, `fri`, `sat`) và `challenges` (cũng 6 khóa đó). Trong cách này **không dùng** các trường `part`, `week`, `day` ở từng buổi hoặc từng challenge.
+Bạn phải **tự làm liên tục cả 13 file trong cùng một lần chạy**. Tôi sẽ không gõ "tiếp". **Cấm** dừng giữa chừng, cấm báo "chưa hoàn thành khối lượng", cấm hỏi lại. Hãy dùng công cụ **Python / phân tích dữ liệu (nếu có)** để ghi file theo nhịp sau:
 
-```json
-{ "schema": "a1-week/1", "week": 1, "title": "Family", "grammar": "to be (am / is / are)",
-  "subs": ["Family members", "Describing family", "Asking about family", "Extended family"],
-  "sessions": {
-    "mon": { "title": "Sub 1: Family members", "kind": "new", "steps": [ BƯỚC, ... ] },
-    "tue": { ... }, "wed": { ... }, "thu": { ... }, "fri": { ... }, "sat": { ... } },
-  "challenges": {
-    "mon": { "title": "Challenge Thứ 2: Family members", "stages": [ {"title":"...","sets":[...]}, ... ] },
-    "tue": { ... }, "wed": { ... }, "thu": { ... }, "fri": { ... }, "sat": { ... } } }
-```
+1. Lặp lại 13 lần, mỗi lần **một lần gọi công cụ ghi đúng một file** (không phải một tin nhắn dài; 13 file này chỉ là file trung gian): `week1-meta.json`, `week1-mon.json`, `week1-tue.json`, `week1-wed.json`, `week1-thu.json`, `week1-fri.json`, `week1-sat.json`, `week1-ch-mon.json`, `week1-ch-tue.json`, `week1-ch-wed.json`, `week1-ch-thu.json`, `week1-ch-fri.json`, `week1-ch-sat.json`.
+2. Trong mỗi lần gọi, nội dung JSON được **dán thẳng thành chuỗi văn bản do bạn tự viết** (ví dụ `open("week1-mon.json","w").write(r'''{...}''')`), **không** dựng bằng vòng lặp hay hàm sinh câu (xem mục "Quy tắc chất lượng"). Ngay sau khi ghi, mở lại bằng `json.load` và kiểm tra: `answer` nằm trong `options`, `options` không trùng, không có `why` lặp. Nếu lỗi thì sửa file ngay trong lần chạy đó.
+3. Nếu một buổi quá dài cho một lần ghi, chia thành `week1-mon-a.json` và `week1-mon-b.json` (cùng `part`, `week`, `day`, `title`; phần b chỉ chứa các `steps` còn lại).
+4. Khi **cả 13 file đã xong**, dùng code **ghép** (chỉ ghép, không sửa nội dung) thành **MỘT file duy nhất `week-1.json`** có dạng: `{"schema":"a1-week/1","week":1,"title":...,"grammar":...,"subs":...,"sessions":{"mon":{"title":...,"kind":...,"steps":[...]},...,"sat":{...}},"challenges":{"mon":{"title":...,"stages":[...]},...,"sat":{...}}}`. Lấy `schema`, `week`, `title`, `grammar`, `subs` từ file meta. Với mỗi buổi, lấy `title`, `kind`, `steps` từ file session (nếu có file a và b thì nối `steps` của a rồi b). Với mỗi Challenge, lấy `title`, `stages` từ file challenge. Mở lại `week-1.json` bằng `json.load` để chắc chắn hợp lệ. **Chỉ gửi tôi file `week-1.json` này** (không gửi 13 file lẻ, không zip), kèm bảng đếm số câu từng dạng.
+5. **Nếu môi trường của bạn không có công cụ tạo file**, hãy xuất lần lượt từng khối mã JSON, mỗi khối một phần, và **tiếp tục sang phần kế ngay trong cùng tin nhắn hoặc tin nhắn kế tiếp mà không chờ tôi**.
 
 # QUY TRÌNH LÀM VIỆC
 
 1. Khi nhận prompt này, **chưa soạn ngay**. Hãy trả lời ngắn: xác nhận đã hiểu, và đưa ra **bảng phân bổ từ vựng**: khoảng 32 từ chia theo 4 sub, kèm tên nhân vật và nghề nghiệp của từng bài đọc. Chờ tôi nói "OK".
-2. Sau khi tôi nói "OK", **soạn liên tục, không hỏi lại giữa chừng** và giao kết quả theo mục "Cách giao kết quả" ở trên. Đừng rút gọn, đừng viết "...tương tự". Mọi câu phải có mặt đầy đủ.
-3. Cuối cùng gửi một bảng ngắn đếm số câu từng dạng của từng buổi và từng Challenge để tôi đối chiếu với bảng số lượng.
-4. Nếu tôi dán lại thông báo lỗi từ web, chỉ sửa **đúng chỗ bị lỗi** rồi xuất lại **file đầy đủ** (hoặc đúng phần bị lỗi nếu bạn không tạo được file).
+2. Sau khi tôi nói "OK", **tự làm liên tục hết 13 file, không dừng**, theo mục "Cách giao kết quả" ở trên. Mọi câu phải tự viết, đầy đủ. Đừng rút gọn, đừng viết "...tương tự", đừng sinh bằng code.
+3. Cuối cùng gửi một bảng ngắn đếm số câu từng dạng của từng buổi và từng Challenge để tôi đối chiếu với bảng số lượng. Nêu rõ nếu có phần nào bạn chưa làm kịp.
+4. Nếu tôi dán lại thông báo lỗi từ web, chỉ sửa **đúng chỗ bị lỗi** và xuất lại **đúng file (phần) bị lỗi**, không làm lại các phần khác.
 
 # TỰ KIỂM TRA TRƯỚC KHI GỬI MỖI PHẦN
 
+- [ ] **Mọi câu do tôi tự viết, không sinh bằng mẫu hay vòng lặp; mỗi `why` riêng cho từng câu; đã tự kiểm tra ngữ pháp của từng đáp án.**
+- [ ] `answer` trùng từng ký tự với một chuỗi trong `options`; các `options` không trùng nhau.
 - [ ] JSON hợp lệ: nháy kép thẳng, không dấu phẩy thừa, không chú thích, `true/false` không có nháy.
 - [ ] Số câu của từng bộ khớp bảng (kể cả các bộ nhỏ và Challenge); `core` đúng; `cloze` có số `___` bằng số `items`.
 - [ ] `mcq`/`oddone`/`listenpick`/`dialogue`: `answer` trùng đúng một chuỗi trong `options`.
 - [ ] `gap`/`form`: đúng một `___` mỗi câu. `reorder`: `words` khớp `answer` từng từ (không thừa, không thiếu).
 - [ ] Mọi câu tiếng Anh đúng ngữ pháp, tự nhiên, từ vựng A1–A2; `why` bằng tiếng Việt, 1 đến 2 câu, nêu lý do.
-- [ ] **Không có câu nào lặp lại trong toàn file** (đã rà toàn bộ, đã thay các câu trùng). Buổi ôn dùng dạng khác và câu mới; Challenge không trùng câu của buổi cùng ngày.
+- [ ] **Không câu nào xuất hiện quá 3 lần trong toàn file** (đã rà toàn bộ, đã thay các câu lặp từ lần thứ 4). Buổi ôn ưu tiên dạng khác và câu mới.
 - [ ] Bước `output` có `sample`, `model` khác nhau, và `checklist` đúng 3 ý.
 - [ ] `key` của các bước trong cùng buổi không trùng nhau.
 
