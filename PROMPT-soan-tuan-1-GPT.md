@@ -43,9 +43,9 @@ Ngữ pháp đi theo tuần: Thứ 2 khẳng định; Thứ 4 phủ định và 
 
 | Bước | `type` | `key` | `min` | Nội dung |
 |---|---|---|---|---|
-| Nhớ lại / Khởi động | `sets` | `warmup` | `0–3′` | Thứ 2: 3 câu mcq đoán nghĩa từ mới (`"ungraded": true`). Thứ 4, 6: 3 câu mcq nhớ lại bài trước |
-| Đọc | `read` | `read` | `3–9′` | Bài đọc 40 đến 70 từ, có `vocab`, kèm bộ `sets` kiểm tra hiểu (4 đến 6 câu mcq hoặc truefalse) |
-| Nghe | `listen` | `listen` | `9–13′` | Dùng lại đúng bài đọc, kèm 3 đến 4 câu `listenpick` hoặc `mcq` |
+| Nhớ lại / Khởi động | `sets` | `warmup` | `0–3′` | Thứ 2: 6 câu mcq đoán nghĩa từ mới (`"ungraded": true`, `core` 3). Thứ 4, 6: 6 câu mcq nhớ lại bài trước (`core` 3) |
+| Đọc | `read` | `read` | `3–9′` | Bài đọc 40 đến 70 từ, có `vocab`, kèm bộ `sets` kiểm tra hiểu (câu chính 4 đến 6, cộng thêm 3 câu làm thêm; mcq hoặc truefalse) |
+| Nghe | `listen` | `listen` | `9–13′` | Dùng lại đúng bài đọc, kèm câu chính 3 đến 4, cộng thêm 3 câu làm thêm (`listenpick` hoặc `mcq`) |
 | Tìm ngữ pháp | `notice` | `notice` | `13–15′` | Học viên tự tìm am/is/are trong bài, rồi xem bảng ghi nhớ |
 | Luyện tập | `sets` | `practice` | `15–26′` | Các bộ bài tập ở bảng số lượng bên dưới |
 | Tự viết | `output` | `output` | `26–30′` | Xem phần "Bước tự viết" |
@@ -56,46 +56,55 @@ Ngữ pháp đi theo tuần: Thứ 2 khẳng định; Thứ 4 phủ định và 
 
 # SỐ LƯỢNG BÀI TẬP (BẮT BUỘC TUÂN THỦ)
 
-Mỗi bộ có **tổng số câu** (`items`) và **số câu chính** (`core`). Học viên làm câu chính trước, các câu còn lại hiện thành nút "Làm thêm". Với `match`, một câu là một cặp. Với `cloze`, một câu là một chỗ trống.
+Mỗi bộ có **tổng số câu** (`items`) và **số câu chính** (`core`). Học viên làm câu chính trước (vừa 30 phút), các câu còn lại hiện thành nút "Làm thêm" để luyện nhiều hơn. Với `match`, một câu là một cặp. Với `cloze`, một câu là một chỗ trống. **Các câu "làm thêm" phải là câu mới hoàn toàn, không lặp câu chính, đủ chất lượng như câu chính.**
 
 | Buổi | Dạng (`type`) | Tổng câu | `core` |
 |---|---|---|---|
-| Thứ 2 `practice` | match | 10 cặp | 6 |
-| | mcq | 11 | 6 |
-| | gap | 11 | 6 |
-| | reorder | 9 | 5 |
-| Thứ 3 `review` | truefalse | 12 | 7 |
-| | listenpick | 11 | 6 |
-| | form | 10 | 6 |
-| | transform | 8 | 5 |
-| | fix | 8 | 5 |
-| Thứ 4 `practice` | oddone | 11 | 6 |
-| | listenpick | 10 | 5 |
-| | gap | 11 | 6 |
-| | form | 10 | 6 |
-| Thứ 5 `review` | mcq | 11 | 6 |
-| | cloze | 11 chỗ trống (1 đoạn hoặc 2 đoạn) | 7 |
-| | reorder | 10 | 6 |
-| | fix | 9 | 6 |
-| | match | 10 cặp | 6 |
-| Thứ 6 `practice` | dialogue | 12 | 8 |
-| | gap | 10 | 5 |
-| | mcq | 10 | 5 |
-| | reorder | 8 | 4 |
-| Thứ 7 `mix` | cloze | 10 chỗ trống | 6 |
-| | fix | 7 | 4 |
-| | transform | 6 | 3 |
-| | dialogue | 10 | 6 |
-| | listenpick | 9 | 4 |
-| | dictation | 2 (thưởng) | 1 |
+| Thứ 2 `practice` | match | 14 cặp | 6 |
+| | mcq | 17 | 6 |
+| | gap | 17 | 6 |
+| | reorder | 13 | 5 |
+| Thứ 3 `review` | truefalse | 18 | 7 |
+| | listenpick | 17 | 6 |
+| | form | 14 | 6 |
+| | transform | 11 | 5 |
+| | fix | 11 | 5 |
+| Thứ 4 `practice` | oddone | 17 | 6 |
+| | listenpick | 16 | 5 |
+| | gap | 17 | 6 |
+| | form | 14 | 6 |
+| Thứ 5 `review` | mcq | 17 | 6 |
+| | cloze | 15 chỗ trống (1 đến 3 đoạn) | 7 |
+| | reorder | 14 | 6 |
+| | fix | 12 | 6 |
+| | match | 14 cặp | 6 |
+| Thứ 6 `practice` | dialogue | 16 | 8 |
+| | gap | 16 | 5 |
+| | mcq | 16 | 5 |
+| | reorder | 12 | 4 |
+| Thứ 7 `mix` | cloze | 14 chỗ trống | 6 |
+| | fix | 10 | 4 |
+| | transform | 9 | 3 |
+| | dialogue | 14 | 6 |
+| | listenpick | 15 | 4 |
+| | dictation | 5 (thưởng) | 1 |
 
-Các bộ nhỏ ngoài bảng (khởi động, hiểu bài đọc, câu nghe, quiz Thứ 7) thì không cần `core`.
-Thứ 7: `quiz` gồm 8 câu mcq/truefalse trộn các sub, và 4 câu hiểu bài của bài đọc mới.
+**Các bộ nhỏ cũng phải tăng thêm 3 câu "làm thêm"** (xuyên suốt cả tuần), `core` bằng số câu gốc:
+
+| Bộ nhỏ | Câu chính (`core`) | Tổng câu |
+|---|---|---|
+| Khởi động / Nhớ lại (`warmup`, mcq) | 3 | 6 |
+| Hiểu bài đọc (bộ trong bước `read`) | 4 đến 6 | thêm 3 câu mỗi bộ |
+| Câu nghe (bộ trong bước `listen`) | 3 đến 4 | thêm 3 câu mỗi bộ |
+| Thứ 7 `quiz` (mcq/truefalse trộn các sub) | 8 | 14 |
+| Thứ 7 hiểu bài đọc mới | 4 | 7 |
+
+Bước `read` đọc trước và các bước chỉ để làm quen (`preview`) vẫn không có câu hỏi.
 
 **Tỉ lệ nội dung của bộ luyện tập:** 60% thuộc sub hiện tại, 20% thuộc các sub trước, 20% là câu "bẫy tích lũy" (dùng nền tảng: đại từ, chào hỏi, số, am/is/are).
 
 **KHÔNG LẶP CÂU (quy tắc cứng):** Trong toàn bộ file, **không có bất kỳ câu nào xuất hiện hai lần**. Một câu là "lặp" nếu giống câu khác về nội dung (kể cả chỉ đổi tên người, đổi một từ, hay đổi dạng bài). Cụ thể:
-- Không lặp giữa các buổi, giữa bước đọc, nghe, luyện tập, Challenge. Câu hiểu bài ở bước đọc/nghe không được dùng lại ở phần luyện tập.
+- Không lặp giữa các buổi, giữa bước đọc, nghe, luyện tập, Challenge, và giữa câu chính với câu làm thêm. Câu hiểu bài ở bước đọc/nghe không được dùng lại ở phần luyện tập.
 - Không lặp giữa các câu trong cùng một bộ, và không để hai câu hỏi cùng kiểm tra đúng một thông tin theo cùng một cách.
 - Câu khởi động và câu quiz Thứ 7 cũng phải là câu **mới**, không lấy lại câu đã dùng trước đó.
 - Buổi ôn kiểm tra lại kiến thức cũ bằng câu hoàn toàn mới, không nhắc lại câu cũ.
@@ -103,17 +112,17 @@ Thứ 7: `quiz` gồm 8 câu mcq/truefalse trộn các sub, và 4 câu hiểu b�
 - Bài đọc và bài nghe của một buổi là cùng một văn bản (được phép), nhưng mọi câu hỏi, câu bài tập phải khác nhau.
 Trước khi xuất, hãy **tự rà toàn bộ câu để phát hiện câu trùng** (nếu tạo file bằng code, hãy kiểm tra trùng bằng chương trình rồi thay câu trùng bằng câu mới). Web sẽ báo cảnh báo nếu còn trùng.
 
-**Tránh nhàm chán:** mỗi buổi dùng ít nhất 4 dạng khác nhau; câu của buổi ôn không được trùng câu của buổi học trước; không có hai câu có cùng khung câu và chỉ đổi mỗi tên người.
+**Tránh nhàm chán:** mỗi buổi dùng ít nhất 4 dạng khác nhau; câu của buổi ôn không được trùng câu của buổi học trước; không có hai câu có cùng khung câu và chỉ đổi mỗi tên người. Vì số câu nhiều, hãy đa dạng hóa: đổi chủ ngữ, đổi tình huống, đổi từ vựng, đổi kiểu hỏi.
 
 # CHALLENGE CHO MỖI BUỔI (6 Challenge)
 
-Mỗi buổi có thêm **một worksheet Challenge tùy chọn** (không tính vào chuỗi ngày học). Gồm **3 chặng**, khoảng **45 câu**, 18 đến 22 phút. Nội dung: **70% sub hiện tại, 30% các sub trước**. **Không được trùng câu** với bất kỳ câu nào trong buổi học cùng ngày. Challenge thứ 7 là "Boss cả tuần", trộn cả 4 sub. Challenge KHÔNG dùng `core` (làm hết).
+Mỗi buổi có thêm **một worksheet Challenge tùy chọn** (không tính vào chuỗi ngày học). Gồm **3 chặng**, khoảng **93 câu** (học viên làm theo sức, không bắt buộc làm hết trong một lần). Nội dung: **70% sub hiện tại, 30% các sub trước**. **Không được trùng câu** với bất kỳ câu nào trong buổi học cùng ngày. Challenge thứ 7 là "Boss cả tuần", trộn cả 4 sub. Challenge KHÔNG dùng `core` (làm hết).
 
 | Chặng | Tiêu đề gợi ý | Các bộ (`type` và số câu) |
 |---|---|---|
-| 1 | Khởi động nhanh | truefalse 3, mcq 3, oddone 2, match 4 cặp, listenpick 3, dictation 2 |
-| 2 | Điền và ghép | gap 3, cloze 4 chỗ trống, reorder 3, form 3, dialogue 3 |
-| 3 | Viết và nói | fix 3, transform 2, translate 3, answer 2, shadow 2 |
+| 1 | Khởi động nhanh | truefalse 6, mcq 6, oddone 5, match 7 cặp, listenpick 6, dictation 5 |
+| 2 | Điền và ghép | gap 6, cloze 7 chỗ trống, reorder 6, form 6, dialogue 6 |
+| 3 | Viết và nói | fix 6, transform 5, translate 6, answer 5, shadow 5 |
 
 Chặng 3: `translate`, `answer`, `shadow` là dạng **tự chấm** (học viên so với đáp án mẫu, không tính điểm). Với `answer` (trả lời một câu), hãy hỏi câu mà có thể có nhiều đáp án đúng, đáp án chỉ là mẫu.
 
@@ -302,7 +311,7 @@ Là một object JSON gộp mọi phần: các trường của `meta`, thêm `se
 # TỰ KIỂM TRA TRƯỚC KHI GỬI MỖI PHẦN
 
 - [ ] JSON hợp lệ: nháy kép thẳng, không dấu phẩy thừa, không chú thích, `true/false` không có nháy.
-- [ ] Số câu của từng bộ khớp bảng; `core` đúng; `cloze` có số `___` bằng số `items`.
+- [ ] Số câu của từng bộ khớp bảng (kể cả các bộ nhỏ và Challenge); `core` đúng; `cloze` có số `___` bằng số `items`.
 - [ ] `mcq`/`oddone`/`listenpick`/`dialogue`: `answer` trùng đúng một chuỗi trong `options`.
 - [ ] `gap`/`form`: đúng một `___` mỗi câu. `reorder`: `words` khớp `answer` từng từ (không thừa, không thiếu).
 - [ ] Mọi câu tiếng Anh đúng ngữ pháp, tự nhiên, từ vựng A1; `why` bằng tiếng Việt, 1 đến 2 câu, nêu lý do.
