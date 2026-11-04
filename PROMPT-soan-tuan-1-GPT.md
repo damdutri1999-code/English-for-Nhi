@@ -1,7 +1,7 @@
 # PROMPT: GPT soạn nội dung TUẦN 1 cho web học tiếng Anh A1
 
 > Cách dùng: mở một cuộc trò chuyện mới với GPT, dán **toàn bộ phần bên dưới đường kẻ** vào. GPT sẽ hỏi bạn xác nhận rồi soạn từng phần.
-> GPT trả về 13 khối JSON (có thể chia vài tin nhắn, bạn gõ "tiếp" khi nó dừng). Vào web: **Cài đặt, Mở trang tải bài**, dán nhiều khối cùng lúc cũng được, bấm Kiểm tra, web tự ghép lại. Đủ 13 phần thì bấm Lưu.
+> GPT tạo **một file `week-1.json`** để tải về (nếu GPT không tạo được file thì nó gửi các khối JSON, bạn gõ "tiếp" khi nó dừng). Vào web: **Cài đặt, Mở trang tải bài, Chọn file…**, chọn file vừa tải, xem kết quả kiểm tra rồi bấm Lưu.
 > Bản này thay thế file PROMPT-soan-noi-dung-bai-hoc.md cũ.
 
 ---
@@ -261,13 +261,34 @@ Với `cloze` và `match`, `items` của `cloze` không có `text`; `items` củ
 ```
 Dùng đúng các bộ và số câu trong mục "Challenge cho mỗi buổi". Không dùng `core`.
 
+# CÁCH GIAO KẾT QUẢ: MỘT FILE DUY NHẤT (ƯU TIÊN)
+
+Mục tiêu của tôi là **chỉ tải về một file duy nhất** rồi đưa vào web, không phải chép nhiều khối.
+
+- **Nếu bạn tạo được file tải về** (công cụ Data Analysis / Code Interpreter / Canvas / tạo file): hãy gộp toàn bộ thành **một file `week-1.json`** theo "định dạng cả tuần" bên dưới, rồi đưa đường dẫn tải về. Soạn nội dung từng phần trong code (ví dụ Python, dựng dict rồi `json.dump(..., ensure_ascii=False, indent=1)`), sau đó **tự mở lại file bằng `json.load` để kiểm tra hợp lệ**, và in ra số câu từng dạng của từng buổi. Nếu tin nhắn không đủ chỗ, bạn cứ ghi nội dung dần vào file qua nhiều bước, không cần hỏi tôi.
+- **Nếu bạn không tạo được file**: xuất theo từng phần (meta, session, challenge) như mục dưới, mỗi phần một khối mã JSON, dừng ở cuối khối hoàn chỉnh khi hết chỗ và để tôi gõ "tiếp".
+
+## Định dạng cả tuần (cho file duy nhất)
+
+Là một object JSON gộp mọi phần: các trường của `meta`, thêm `sessions` (chứa 6 buổi theo khóa `mon`, `tue`, `wed`, `thu`, `fri`, `sat`) và `challenges` (cũng 6 khóa đó). Trong cách này **không dùng** các trường `part`, `week`, `day` ở từng buổi hoặc từng challenge.
+
+```json
+{ "schema": "a1-week/1", "week": 1, "title": "Family", "grammar": "to be (am / is / are)",
+  "subs": ["Family members", "Describing family", "Asking about family", "Extended family"],
+  "sessions": {
+    "mon": { "title": "Sub 1: Family members", "kind": "new", "steps": [ BƯỚC, ... ] },
+    "tue": { ... }, "wed": { ... }, "thu": { ... }, "fri": { ... }, "sat": { ... } },
+  "challenges": {
+    "mon": { "title": "Challenge Thứ 2: Family members", "stages": [ {"title":"...","sets":[...]}, ... ] },
+    "tue": { ... }, "wed": { ... }, "thu": { ... }, "fri": { ... }, "sat": { ... } } }
+```
+
 # QUY TRÌNH LÀM VIỆC
 
 1. Khi nhận prompt này, **chưa soạn ngay**. Hãy trả lời ngắn: xác nhận đã hiểu, và đưa ra **bảng phân bổ từ vựng**: 24 từ chia theo 4 sub, kèm tên nhân vật và nghề nghiệp của từng bài đọc. Chờ tôi nói "OK".
-2. Sau khi tôi nói "OK", **soạn liên tục, không hỏi lại giữa chừng**: lần lượt `meta`, 6 buổi, 6 Challenge. Mỗi phần là **một khối mã JSON riêng** (```json ... ```), đặt nối tiếp nhau trong cùng một tin nhắn. Đừng rút gọn, đừng viết "...tương tự". Mọi câu phải có mặt đầy đủ.
-3. Nếu tin nhắn sắp hết độ dài: **dừng ở cuối một khối hoàn chỉnh** (không bao giờ cắt giữa một khối JSON), viết một dòng "Đã xong: ... Còn lại: ... Gõ 'tiếp' để mình gửi tiếp", rồi chờ tôi gõ "tiếp". Khi tôi gõ "tiếp", gửi tiếp các khối còn lại theo cùng cách.
-4. Giữa các khối chỉ ghi một dòng ngắn như "Phần 3/13: session wed, số câu: mcq 5, gap 6..." để tôi đối chiếu. Dòng này nằm ngoài khối mã.
-5. Nếu tôi dán lại thông báo lỗi từ web, chỉ gửi lại **đúng phần bị lỗi** (đã sửa), không gửi lại các phần khác.
+2. Sau khi tôi nói "OK", **soạn liên tục, không hỏi lại giữa chừng** và giao kết quả theo mục "Cách giao kết quả" ở trên. Đừng rút gọn, đừng viết "...tương tự". Mọi câu phải có mặt đầy đủ.
+3. Cuối cùng gửi một bảng ngắn đếm số câu từng dạng của từng buổi và từng Challenge để tôi đối chiếu với bảng số lượng.
+4. Nếu tôi dán lại thông báo lỗi từ web, chỉ sửa **đúng chỗ bị lỗi** rồi xuất lại **file đầy đủ** (hoặc đúng phần bị lỗi nếu bạn không tạo được file).
 
 # TỰ KIỂM TRA TRƯỚC KHI GỬI MỖI PHẦN
 
