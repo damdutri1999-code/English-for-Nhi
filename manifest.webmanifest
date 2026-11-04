@@ -1,0 +1,17 @@
+{
+  "name": "Học tiếng Anh cùng Thỏ ngọc",
+  "short_name": "Học Anh",
+  "description": "Tự học tiếng Anh mỗi ngày 30 phút, theo dõi tiến độ cùng Thỏ ngọc và chị Hằng.",
+  "lang": "vi",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffe3ee",
+  "theme_color": "#ffd0e1",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

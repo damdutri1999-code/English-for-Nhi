@@ -6,6 +6,14 @@
 <title>Học tiếng Anh cùng Thỏ ngọc</title>
 <meta name="theme-color" content="#ffd0e1">
 <script>try{var t=localStorage.getItem("a1-theme");if(t==="night"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Học Anh">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Baloo 2 và Nunito đều có đủ dấu tiếng Việt -->
@@ -279,7 +287,6 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .swatch.night{background:linear-gradient(180deg,#f9b4cf,#9a4478 55%,#3f1a47)}
 @media (prefers-reduced-motion:reduce){ .mascot,.pulse{animation:none} }
 
-html[data-theme=night] body{background:linear-gradient(180deg,#f9b4cf 0%,#e27aa7 22%,#9a4478 48%,#3f1a47 100%); background-attachment:fixed}
 html[data-theme=night] .top{background:rgba(58,22,64,.94); border-bottom-color:rgba(255,255,255,.12)}
 html[data-theme=night] .brand b{color:#fff}
 html[data-theme=night] .brand small{color:#e9c3d8}
@@ -293,6 +300,40 @@ html[data-theme=night] .stat b,html[data-theme=night] .stat span{color:#fff}
 html[data-theme=night] .const{background:rgba(255,255,255,.16); border:1.5px solid rgba(255,255,255,.35); backdrop-filter:blur(6px); box-shadow:0 14px 28px rgba(63,26,71,.3)}
 html[data-theme=night] .card.today{background:#ffc2d8; border-color:#ffb0cd}
 html[data-theme=night] .card.today .pill{background:#fff}
+
+/* ===== Tối ưu điện thoại ===== */
+html{-webkit-tap-highlight-color:transparent}
+body{overscroll-behavior-y:none; touch-action:manipulation}
+button,.btn,.tabs a,.stepbtn,.opt,.chip,.tok,.say,.mchoice{-webkit-user-select:none; user-select:none; -webkit-touch-callout:none}
+.top{padding-top:calc(8px + env(safe-area-inset-top)); padding-left:calc(12px + env(safe-area-inset-left)); padding-right:calc(12px + env(safe-area-inset-right))}
+.tabs{bottom:calc(10px + env(safe-area-inset-bottom))}
+.wrap{padding-left:calc(16px + env(safe-area-inset-left)); padding-right:calc(16px + env(safe-area-inset-right))}
+.gear{width:40px; height:40px}
+a.pill,button.pill{min-height:38px}
+.tabs a{white-space:nowrap; font-size:.72rem}
+.tabs a.on{padding-left:10px; padding-right:10px}
+body.immersive .top{display:none}
+body.immersive .wrap{padding-top:calc(14px + env(safe-area-inset-top))}
+body.kb .lbar,body.kb .tabs{display:none}
+body.kb .wrap{padding-bottom:40vh}
+.opt,.chip,.stepbtn,.say{min-height:44px}
+.chip{display:inline-flex; align-items:center}
+.txt{font-size:16px}
+@media (max-width:400px){
+  .sync{width:40px; height:40px; padding:0; border-radius:50%; overflow:hidden; white-space:nowrap; line-height:36px; text-align:center}
+  .sync .st{display:none}
+  .tabs a{padding:6px 2px}
+  .tabs a.on{padding-left:8px; padding-right:8px}
+  .wrap{padding-top:14px}
+  h1{font-size:1.5rem}
+  .reading{font-size:1.14rem; line-height:1.9}
+  .card{padding:16px}
+  .btn{padding:13px 18px}
+}
+html[data-theme=night]{background:#3f1a47}
+html[data-theme=night] body{background:none; background-image:none}
+html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index:-1; background:linear-gradient(180deg,#f9b4cf 0%,#e27aa7 22%,#9a4478 48%,#3f1a47 100%)}
+</style>
 </style>
 </head>
 <body>
@@ -305,7 +346,7 @@ html[data-theme=night] .card.today .pill{background:#fff}
 </defs></svg>
 <header class="top">
   <div class="brand"><span id="logo"></span><div><b>Học tiếng Anh</b><small id="mname">cùng Thỏ ngọc</small></div></div>
-  <div class="hr"><span class="sync" id="sync">💾 Lưu trên máy</span><button class="gear themebtn" id="themebtn" type="button" aria-label="Đổi giao diện sáng hoặc đêm"></button><a class="gear" href="#/settings" aria-label="Cài đặt">⚙️</a></div>
+  <div class="hr"><span class="sync" id="sync" role="status">💾 Lưu trên máy</span><button class="gear themebtn" id="themebtn" type="button" aria-label="Đổi giao diện sáng hoặc đêm"></button><a class="gear" href="#/settings" aria-label="Cài đặt">⚙️</a></div>
 </header>
 <main id="app" class="wrap"></main>
 <nav class="tabs" id="tabs" aria-label="Điều hướng"></nav>
@@ -490,7 +531,9 @@ const Cloud = { ready:false, uid:null, db:null, fb:null };
 let pushTimer = null;
 function setStatus(kind){
   const map = { local:"💾 Lưu trên máy", cloud:"☁️ Đã đồng bộ", saving:"☁️ Đang lưu…", error:"⚠️ Chưa đồng bộ" };
-  document.getElementById("sync").textContent = map[kind] || map.local;
+  const st = String(map[kind] || map.local), sp = st.search(/\s/), el = document.getElementById("sync");
+  el.replaceChildren(h("span",null, sp > 0 ? st.slice(0,sp) : st), h("span",{class:"st"}, sp > 0 ? st.slice(sp) : ""));
+  el.setAttribute("aria-label", st);
 }
 function save(){
   S.updatedAt = Date.now();
@@ -1154,6 +1197,7 @@ function lessonView(id, idx){
     nav.replaceChildren(...steps.map((s,i) => h("button",{class:"stepbtn"+(i===idx?" on":"")+(sess.steps[s.key]?" done":""),type:"button",onClick:() => go(i)},
       h("span",null,sess.steps[s.key] ? "✅" : s.icon), s.title, h("small",null,s.min))));
     const ok = !!sess.steps[step.key];
+    setTimeout(() => { const on = nav.querySelector(".stepbtn.on"); if (on && on.scrollIntoView) on.scrollIntoView({inline:"center", block:"nearest"}); }, 0);
     next.disabled = !ok; next.textContent = last ? "Hoàn thành buổi học" : "Tiếp tục";
     skip.replaceChildren(!ok && !last ? h("button",{class:"linkbtn",type:"button",onClick:() => go(idx+1)},"Bỏ qua bước này") : null);
   }
@@ -1457,6 +1501,14 @@ setInterval(() => {
   if (s.seconds % 10 === 0) save();
 }, 1000);
 
+document.addEventListener("focusin", e => {
+  const t = e.target; if (!t.matches || !t.matches("input.txt,textarea.txt")) return;
+  if (t.type !== "date"){ t.setAttribute("autocapitalize","off"); t.setAttribute("autocomplete","off"); t.setAttribute("autocorrect","off"); t.spellcheck = false; }
+  document.body.classList.add("kb");
+  if (t.type !== "date") setTimeout(() => { try { t.scrollIntoView({block:"center", behavior:"smooth"}); } catch(e){} }, 250);
+});
+document.addEventListener("focusout", () => setTimeout(() => { const a = document.activeElement; if (!(a && a.matches && a.matches("input.txt,textarea.txt"))) document.body.classList.remove("kb"); }, 60));
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 async function boot(){
   S = loadLocal(); ensureStart(); applyBrand();
   document.getElementById("themebtn").addEventListener("click", () => {
