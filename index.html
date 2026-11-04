@@ -979,14 +979,18 @@ function validateWeek(j){
   return { E, W, stats };
 }
 function parseWeekText(txt){
-  let t = String(txt || "").replace(/^﻿/, "").trim();
-  const m = t.match(/```(?:json)?\s*([\s\S]*?)```/i); if (m) t = m[1].trim();
-  try { const v = JSON.parse(t); return { v }; }
-  catch(e){
-    const pos = (String(e.message).match(/position (\d+)/) || [])[1];
-    let hint = ""; if (pos != null){ const p = +pos, before = t.slice(0, p), line = before.split("\n").length; hint = " (gần dòng " + line + ": …" + t.slice(Math.max(0, p-30), p+30).replace(/\s+/g," ") + "…)"; }
-    return { err:"Không đọc được JSON: thường do thiếu dấu phẩy, thừa dấu phẩy cuối danh sách, hoặc dấu \" chưa đóng." + hint };
+  let t = String(txt || "").replace(/^\uFEFF/, "").trim();
+  const fences = [...t.matchAll(/```(?:json)?\s*([\s\S]*?)```/gi)].map(m => m[1].trim()).filter(Boolean);
+  const chunks = fences.length ? fences : [t], out = [];
+  for (let i = 0; i < chunks.length; i++){
+    try { const v = JSON.parse(chunks[i]); if (Array.isArray(v)) out.push(...v); else out.push(v); }
+    catch(e){
+      const pos = (String(e.message).match(/position (\d+)/) || [])[1];
+      let hint = ""; if (pos != null){ const p = +pos, line = chunks[i].slice(0, p).split("\n").length; hint = " (gần dòng " + line + ": …" + chunks[i].slice(Math.max(0, p-30), p+30).replace(/\s+/g," ") + "…)"; }
+      return { err:"Không đọc được JSON" + (chunks.length > 1 ? " ở khối thứ " + (i+1) : "") + ": thường do thiếu dấu phẩy, thừa dấu phẩy cuối danh sách, hoặc dấu \" chưa đóng." + hint };
+    }
   }
+  return { v: out.length === 1 ? out[0] : out };
 }
 
 /* ---- Lưu, tải, đồng bộ ---- */

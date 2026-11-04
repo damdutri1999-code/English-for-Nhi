@@ -1,7 +1,7 @@
 # PROMPT: GPT soạn nội dung TUẦN 1 cho web học tiếng Anh A1
 
 > Cách dùng: mở một cuộc trò chuyện mới với GPT, dán **toàn bộ phần bên dưới đường kẻ** vào. GPT sẽ hỏi bạn xác nhận rồi soạn từng phần.
-> Mỗi phần GPT trả về là một khối JSON. Vào web: **Cài đặt, Khu người hướng dẫn, Tải bài học lên**, dán từng khối vào, bấm Kiểm tra, web tự ghép các phần lại. Đủ 13 phần thì bấm Lưu.
+> GPT trả về 13 khối JSON (có thể chia vài tin nhắn, bạn gõ "tiếp" khi nó dừng). Vào web: **Cài đặt, Mở trang tải bài**, dán nhiều khối cùng lúc cũng được, bấm Kiểm tra, web tự ghép lại. Đủ 13 phần thì bấm Lưu.
 > Bản này thay thế file PROMPT-soan-noi-dung-bai-hoc.md cũ.
 
 ---
@@ -130,7 +130,7 @@ Chặng 3: `translate`, `answer`, `shadow` là dạng **tự chấm** (học vi�
 
 # ĐỊNH DẠNG ĐẦU RA: JSON THEO TỪNG PHẦN
 
-Bạn xuất **13 phần**, mỗi phần là **một khối mã JSON riêng** (```json ... ```). Trong mỗi tin nhắn chỉ xuất **một phần** rồi dừng, hỏi "Tiếp tục phần kế tiếp?". Thứ tự: `meta`, 6 phần `session` (mon, tue, wed, thu, fri, sat), 6 phần `challenge` (mon đến sat). Người dùng dán từng phần vào web, web tự ghép lại.
+Bạn xuất **13 phần**, mỗi phần là **một khối mã JSON riêng** (```json ... ```). Thứ tự: `meta`, 6 phần `session` (mon, tue, wed, thu, fri, sat), 6 phần `challenge` (mon đến sat). Người dùng dán các khối vào web (một lần nhiều khối cũng được), web tự ghép lại.
 
 **Luật JSON (vi phạm là web báo lỗi):**
 - Chỉ dùng dấu nháy kép thẳng `"`. Không dùng nháy cong “ ”. Muốn có dấu nháy trong chuỗi thì viết `\"`.
@@ -264,9 +264,10 @@ Dùng đúng các bộ và số câu trong mục "Challenge cho mỗi buổi". K
 # QUY TRÌNH LÀM VIỆC
 
 1. Khi nhận prompt này, **chưa soạn ngay**. Hãy trả lời ngắn: xác nhận đã hiểu, và đưa ra **bảng phân bổ từ vựng**: 24 từ chia theo 4 sub, kèm tên nhân vật và nghề nghiệp của từng bài đọc. Chờ tôi nói "OK".
-2. Soạn phần `meta`, rồi từng buổi theo thứ tự, rồi từng Challenge. Mỗi tin nhắn **một phần**, trong **một khối mã JSON duy nhất**. Đừng rút gọn, đừng viết "...tương tự". Mọi câu phải có mặt đầy đủ.
-3. Sau mỗi phần, viết bên ngoài khối JSON một dòng đếm số câu theo từng dạng, để tôi đối chiếu với bảng số lượng.
-4. Nếu tôi dán lại thông báo lỗi từ web, chỉ gửi lại **đúng phần bị lỗi** (đã sửa), không gửi lại các phần khác.
+2. Sau khi tôi nói "OK", **soạn liên tục, không hỏi lại giữa chừng**: lần lượt `meta`, 6 buổi, 6 Challenge. Mỗi phần là **một khối mã JSON riêng** (```json ... ```), đặt nối tiếp nhau trong cùng một tin nhắn. Đừng rút gọn, đừng viết "...tương tự". Mọi câu phải có mặt đầy đủ.
+3. Nếu tin nhắn sắp hết độ dài: **dừng ở cuối một khối hoàn chỉnh** (không bao giờ cắt giữa một khối JSON), viết một dòng "Đã xong: ... Còn lại: ... Gõ 'tiếp' để mình gửi tiếp", rồi chờ tôi gõ "tiếp". Khi tôi gõ "tiếp", gửi tiếp các khối còn lại theo cùng cách.
+4. Giữa các khối chỉ ghi một dòng ngắn như "Phần 3/13: session wed, số câu: mcq 5, gap 6..." để tôi đối chiếu. Dòng này nằm ngoài khối mã.
+5. Nếu tôi dán lại thông báo lỗi từ web, chỉ gửi lại **đúng phần bị lỗi** (đã sửa), không gửi lại các phần khác.
 
 # TỰ KIỂM TRA TRƯỚC KHI GỬI MỖI PHẦN
 
