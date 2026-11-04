@@ -94,6 +94,15 @@ Thứ 7: `quiz` gồm 8 câu mcq/truefalse trộn các sub, và 4 câu hiểu b�
 
 **Tỉ lệ nội dung của bộ luyện tập:** 60% thuộc sub hiện tại, 20% thuộc các sub trước, 20% là câu "bẫy tích lũy" (dùng nền tảng: đại từ, chào hỏi, số, am/is/are).
 
+**KHÔNG LẶP CÂU (quy tắc cứng):** Trong toàn bộ file, **không có bất kỳ câu nào xuất hiện hai lần**. Một câu là "lặp" nếu giống câu khác về nội dung (kể cả chỉ đổi tên người, đổi một từ, hay đổi dạng bài). Cụ thể:
+- Không lặp giữa các buổi, giữa bước đọc, nghe, luyện tập, Challenge. Câu hiểu bài ở bước đọc/nghe không được dùng lại ở phần luyện tập.
+- Không lặp giữa các câu trong cùng một bộ, và không để hai câu hỏi cùng kiểm tra đúng một thông tin theo cùng một cách.
+- Câu khởi động và câu quiz Thứ 7 cũng phải là câu **mới**, không lấy lại câu đã dùng trước đó.
+- Buổi ôn kiểm tra lại kiến thức cũ bằng câu hoàn toàn mới, không nhắc lại câu cũ.
+- Các câu `listenpick`, `dictation`, `shadow` dùng câu nói (`say`) khác nhau.
+- Bài đọc và bài nghe của một buổi là cùng một văn bản (được phép), nhưng mọi câu hỏi, câu bài tập phải khác nhau.
+Trước khi xuất, hãy **tự rà toàn bộ câu để phát hiện câu trùng** (nếu tạo file bằng code, hãy kiểm tra trùng bằng chương trình rồi thay câu trùng bằng câu mới). Web sẽ báo cảnh báo nếu còn trùng.
+
 **Tránh nhàm chán:** mỗi buổi dùng ít nhất 4 dạng khác nhau; câu của buổi ôn không được trùng câu của buổi học trước; không có hai câu có cùng khung câu và chỉ đổi mỗi tên người.
 
 # CHALLENGE CHO MỖI BUỔI (6 Challenge)
@@ -297,7 +306,7 @@ Là một object JSON gộp mọi phần: các trường của `meta`, thêm `se
 - [ ] `mcq`/`oddone`/`listenpick`/`dialogue`: `answer` trùng đúng một chuỗi trong `options`.
 - [ ] `gap`/`form`: đúng một `___` mỗi câu. `reorder`: `words` khớp `answer` từng từ (không thừa, không thiếu).
 - [ ] Mọi câu tiếng Anh đúng ngữ pháp, tự nhiên, từ vựng A1; `why` bằng tiếng Việt, 1 đến 2 câu, nêu lý do.
-- [ ] Buổi ôn dùng dạng khác và câu mới; Challenge không trùng câu của buổi cùng ngày.
+- [ ] **Không có câu nào lặp lại trong toàn file** (đã rà toàn bộ, đã thay các câu trùng). Buổi ôn dùng dạng khác và câu mới; Challenge không trùng câu của buổi cùng ngày.
 - [ ] Bước `output` có `sample`, `model` khác nhau, và `checklist` đúng 3 ý.
 - [ ] `key` của các bước trong cùng buổi không trùng nhau.
 
