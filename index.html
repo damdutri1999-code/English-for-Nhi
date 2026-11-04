@@ -333,7 +333,21 @@ body.kb .wrap{padding-bottom:40vh}
 html[data-theme=night]{background:#3f1a47}
 html[data-theme=night] body{background:none; background-image:none}
 html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index:-1; background:linear-gradient(180deg,#f9b4cf 0%,#e27aa7 22%,#9a4478 48%,#3f1a47 100%)}
-</style>
+.chat{display:grid;gap:6px;margin:4px 0 10px}
+.bub{max-width:88%;padding:8px 12px;border-radius:16px;font-weight:700;border:2px solid var(--p200);background:var(--paper)}
+.bub.l{justify-self:start;border-bottom-left-radius:4px}
+.bub.r{justify-self:end;background:var(--p100);border-bottom-right-radius:4px}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0 14px}
+.mcol{display:grid;gap:8px;align-content:start}
+.mchip{width:100%;text-align:left;display:block;min-height:44px}
+.mchip small{display:block;font-weight:700;color:var(--ink2)}
+.mchip.on{box-shadow:0 0 0 3px var(--p200)}
+.mchip.paired{background:var(--p100)}
+.mchip.right{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.mchip.wrong{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+.cloze{line-height:2.5;font-weight:600;margin:6px 0 10px}
+.errlist{padding-left:20px}
+.weeknav{display:flex;align-items:center;gap:8px}
 </style>
 </head>
 <body>
@@ -499,7 +513,7 @@ function constellationEl(list){
     + (rest ? '<path d="'+rest+'" stroke="#ffc2d8" stroke-width="2.2" stroke-dasharray="1 7" stroke-linecap="round" fill="none"/>' : "")
     + (lit ? '<path d="'+lit+'" stroke="#ffe27a" stroke-width="7" fill="none" stroke-linecap="round" opacity=".45" filter="url(#cgl)"/><path d="'+lit+'" stroke="#ffe27a" stroke-width="3" fill="none" stroke-linecap="round"/>' : "")
     + stars + '<g font-family="Nunito,sans-serif" font-weight="800" font-size="12" text-anchor="middle">'+labels+'</g></svg>'
-    + '<div class="ct">Tuần 1 · '+WEEK1.title+'</div><div class="cp">'+nDone+' / 6 sao</div>'
+    + '<div class="ct">Tuần '+weekNo()+' · '+((WEEKS[weekNo()]||WEEK1).title)+'</div><div class="cp">'+nDone+' / 6 sao</div>'
     + '<div class="cb"><i style="width:'+Math.round(nDone/6*100)+'%"></i></div><div class="corner">'+mascotSVG(nDone >= 6 ? "cheer" : "happy", other)+'</div>';
   return el;
 }
@@ -515,7 +529,7 @@ function applyBrand(){
 const defaultState = () => ({
   v:2, updatedAt:0, sessions:{}, vocab:{}, mistakes:[], activeDays:[], writing:{}, results:{},
   settings:{ name:"", mascot:"bunny", theme:"light", startDate:null },
-  teacherNote:null, feedback:{}, log:[], dayMin:{},
+  teacherNote:null, feedback:{}, log:[], dayMin:{}, challenges:{},
   stats:{ plays:0, fixed:0, perfect:0, best:0 }, placement:null, lastUnlocked:[]
 });
 function normalize(o){
@@ -573,7 +587,7 @@ async function initCloud(){
     const auth = Au.getAuth(fbApp); const db = F.getFirestore(fbApp);
     const user = await new Promise(res => { const un = Au.onAuthStateChanged(auth, u => { un(); res(u); }); });
     if (!user) await showLogin(auth, Au.signInWithEmailAndPassword);
-    Cloud.uid = auth.currentUser.uid; Cloud.db = db; Cloud.fb = { doc:F.doc, setDoc:F.setDoc };
+    Cloud.uid = auth.currentUser.uid; Cloud.db = db; Cloud.fb = { doc:F.doc, setDoc:F.setDoc, getDoc:F.getDoc };
     const snap = await F.getDoc(F.doc(db, "learners", Cloud.uid));
     if (snap.exists() && (snap.data().updatedAt || 0) > (S.updatedAt || 0)) {
       S = normalize(snap.data()); ensureStart();
@@ -702,7 +716,7 @@ const SET = {
     {text:"___ (she) name is Lan.", answer:"Her", why:"she thành her (của cô ấy)."},
     {text:"Nam and Lan ___ (be) my parents.", answer:"are", why:"Hai người (they) dùng are."} ]}
 };
-Object.keys(SET).forEach(k => { SET[k].key = k; });
+Object.keys(SET).forEach(k => { SET[k].key = k; if (/^(warm|comp|listen)/.test(k)) SET[k].ctx = true; });
 
 const PLACEMENT = { type:"mcq", ungraded:true, showScore:true, key:"placement", title:"Test đầu vào",
   instruction:"8 câu từ dễ đến khó. Cứ chọn đáp án bạn thấy đúng, không cần đoán may.", items:[
@@ -722,9 +736,10 @@ function recallWeekSet(){
 function refItems(key, idxs){ return idxs.map(i => Object.assign({}, SET[key].items[i], {_ref:key+"#"+i})); }
 function subsetOf(key, n){ const idx = shuffle(SET[key].items.map((_,i) => i)).slice(0,n); return refItems(key, idx); }
 function mixSets(){
-  const mk = (type, key, title) => { const items = subsetOf(key, 2); const set = { type, title, instruction:SET[key].instruction, items };
-    if (type === "gap") set.bank = shuffle(items.map(i => i.answer)); return set; };
-  return [mk("mcq","mcq1","Trắc nghiệm"), mk("gap","gap1","Điền từ"), mk("reorder","reorder1","Sắp xếp câu"), mk("fix","fix1","Sửa lỗi sai"), mk("form","form1","Word form")];
+  const out = [];
+  ["mcq","gap","reorder","fix","form","truefalse","transform"].forEach(t => { const items = shuffle(poolItems(t)).slice(0, 3);
+    if (items.length) out.push({ type:t, title:TYPES[t].label, instruction:TYPES[t].how, items }); });
+  return out.slice(0, 5);
 }
 function resolveRef(ref){
   const [k, i] = String(ref).split("#"), s = SET[k];
@@ -737,7 +752,7 @@ function buildMistakeSets(){
     const r = resolveRef(m.ref); if (!r) continue; seen.add(m.ref); (by[r.type] = by[r.type] || []).push(r.item);
   }
   return Object.keys(by).map(t => { const set = { type:t, title:"Ôn câu sai: "+TYPE_LABEL[t], instruction:"Làm đúng thì câu này sẽ biến khỏi danh sách.", items:by[t] };
-    if (t === "gap") set.bank = shuffle(by[t].map(i => i.answer)); return set; });
+    return set; });
 }
 
 const DEMO_NOTE = "Nội dung demo: buổi này dùng lại bài của Thứ 2 và Thứ 3 để bạn thử luồng học. Khi soạn bài thật, chỉ cần thay dữ liệu.";
@@ -799,20 +814,231 @@ const LESSONS = {
     {key:"report", type:"report", icon:"📊", title:"Báo cáo tuần", min:"28–30′"}
   ]}
 };
-const PRACTICE = {
-  mcq:{label:"Trắc nghiệm", icon:"☑️", desc:"Chọn đáp án đúng", set:SET.mcq1},
-  gap:{label:"Điền từ", icon:"🧩", desc:"Chọn từ cho sẵn để điền", set:SET.gap1},
-  reorder:{label:"Sắp xếp câu", icon:"🔀", desc:"Ghép từ thành câu", set:SET.reorder1},
-  fix:{label:"Sửa lỗi sai", icon:"🔧", desc:"Tìm và sửa lỗi trong câu", set:SET.fix1},
-  form:{label:"Word form", icon:"✨", desc:"Điền dạng đúng của từ", set:SET.form1}
-};
-const TYPE_LABEL = { mcq:"Trắc nghiệm", gap:"Điền từ", reorder:"Sắp xếp câu", fix:"Sửa lỗi sai", form:"Word form", notice:"Tìm ngữ pháp" };
+const WEEKS = {};
+WEEKS[1] = WEEK1;
+const DEMO_LESSONS = Object.assign({}, LESSONS);
+function restoreDemo(){ if (!WEEKS[1]){ WEEKS[1] = WEEK1; Object.assign(LESSONS, DEMO_LESSONS); } }
+/* =====================================================================
+   NỘI DUNG TỪ FILE JSON (GPT soạn, giáo viên tải lên)
+   ===================================================================== */
+const SCHEMA = "a1-week/1";
+const DAYK = ["mon","tue","wed","thu","fri","sat"], DAYN = ["Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7"];
+const DEFAULT_KIND = ["new","review","new","review","new","week"];
+const STEP_DEF = { sets:{icon:"✏️",title:"Luyện tập"}, read:{icon:"📖",title:"Đọc"}, listen:{icon:"🎧",title:"Nghe"},
+  notice:{icon:"🔍",title:"Tìm ngữ pháp"}, output:{icon:"🌷",title:"Tự viết"}, report:{icon:"📊",title:"Báo cáo tuần"} };
+const EST_SEC = { mcq:25, truefalse:15, oddone:20, match:12, listenpick:30, dictation:60, dialogue:30, gap:25, form:30, cloze:30, reorder:40, fix:45, transform:60, translate:70, answer:70, shadow:40 };
+// WEEKS ở trên; số tuần -> {id,title,grammar,subs,sessions}
+const CH = {};         // id buổi -> challenge
+let CONTENT = {};      // số tuần -> {json, at, src}
+const CKEY = "a1-content-v1";
+const MCQLIKE = ["mcq","oddone","listenpick","dialogue"];
+
+function prepItem(type, it){
+  const o = Object.assign({}, it);
+  if (MCQLIKE.includes(type) && typeof o.answer === "string") o.answer = (o.options || []).indexOf(o.answer);
+  if (type === "truefalse"){ o.options = ["Đúng","Sai"]; o.answer = (o.answer === true || /^(true|đúng|dung)$/i.test(String(o.answer))) ? 0 : 1; }
+  if (type === "oddone" && !o.q) o.q = "Chọn từ khác loại với các từ còn lại.";
+  if (SELF_TYPES.has(type)) o.self = true;
+  return o;
+}
+function prepSet(raw, key, ctx){
+  const set = Object.assign({}, raw); set.key = key;
+  set.items = (raw.items || []).map((it, i) => Object.assign(prepItem(raw.type, it), { _ref:key + "#" + i }));
+  if (ctx) set.ctx = true;
+  if (!set.title) set.title = TYPES[set.type].label;
+  if (!set.instruction) set.instruction = TYPES[set.type].how;
+  SET[key] = set; return set;
+}
+function compileWeek(j){
+  const n = j.week, subs = j.subs || [];
+  const sessions = DAYK.map((k, i) => ({ id:"w"+n+"-"+k, day:DAYN[i], kind:j.sessions[k].kind || DEFAULT_KIND[i], title:j.sessions[k].title }));
+  DAYK.forEach(k => {
+    const s = j.sessions[k], id = "w"+n+"-"+k;
+    LESSONS[id] = { steps:s.steps.map((st, si) => {
+      const d = STEP_DEF[st.type], step = Object.assign({ key:st.type + si, icon:d.icon, title:d.title, min:"" }, st);
+      if (st.type === "sets") step.sets = (st.sets || []).map((x, xi) => prepSet(x, id+"."+step.key+"."+xi, false));
+      if (st.type === "read" || st.type === "listen") step.sets = (st.sets || []).map((x, xi) => prepSet(x, id+"."+step.key+"."+xi, true));
+      if (st.type === "read") step.vocab = st.vocab || {};
+      return step; }) };
+    const c = j.challenges && j.challenges[k];
+    if (c) CH[id] = { title:c.title || "Challenge", stages:(c.stages || []).map((g, gi) => ({ title:g.title, sets:(g.sets || []).map((x, xi) => prepSet(x, id+".c"+gi+"."+xi, false)) })) };
+    else delete CH[id];
+  });
+  WEEKS[n] = { id:n, title:j.title, grammar:j.grammar, subs, sessions, json:true };
+}
+function unloadWeek(n){
+  const w = WEEKS[n]; if (!w) return;
+  w.sessions.forEach(s => { delete LESSONS[s.id]; delete CH[s.id]; });
+  Object.keys(SET).forEach(k => { if (k.startsWith("w"+n+"-")) delete SET[k]; });
+  delete WEEKS[n];
+}
+
+/* ---- Kiểm tra file JSON, báo lỗi dễ hiểu ---- */
+const isStr = v => typeof v === "string" && v.trim() !== "";
+const wordsOf = s => norm(String(s)).split(" ").filter(Boolean);
+function validateItem(type, it, w, E, W){
+  const need = (cond, msg) => { if (!cond) E.push(w + ": " + msg); };
+  if (!it || typeof it !== "object") { E.push(w + ": câu không phải object"); return; }
+  if (MCQLIKE.includes(type)){
+    need(Array.isArray(it.options) && it.options.length >= 2 && it.options.every(isStr), "thiếu options (mảng ít nhất 2 chuỗi)");
+    if (Array.isArray(it.options)){
+      need(typeof it.answer === "number" ? (it.answer >= 0 && it.answer < it.options.length) : it.options.includes(it.answer), "answer phải trùng đúng một chuỗi trong options");
+      need(new Set(it.options).size === it.options.length, "options bị trùng nhau");
+      if (type === "oddone") need(it.options.length === 4, "oddone nên có đúng 4 lựa chọn");
+    }
+    if (type === "mcq") need(isStr(it.q), "thiếu q");
+    if (type === "listenpick") need(isStr(it.say), "thiếu say (câu sẽ được đọc)");
+    if (type === "dialogue") need(Array.isArray(it.lines) && it.lines.length >= 1 && it.lines.every(isStr), "thiếu lines (mảng các lượt thoại)");
+  } else if (type === "truefalse"){ need(isStr(it.q), "thiếu q"); need(typeof it.answer === "boolean", "answer phải là true hoặc false (không có dấu nháy)");
+  } else if (type === "gap" || type === "form"){
+    need(isStr(it.text) && it.text.split("___").length === 2, "text phải có đúng một chỗ trống ___"); need(isStr(it.answer), "thiếu answer");
+    if (type === "form" && isStr(it.text) && !/\(/.test(it.text)) W.push(w + ": word form nên có từ gốc trong ngoặc, ví dụ (be)");
+  } else if (type === "reorder"){
+    need(Array.isArray(it.words) && it.words.length >= 3 && it.words.every(isStr), "thiếu words (mảng ít nhất 3 từ)"); need(isStr(it.answer), "thiếu answer");
+    if (Array.isArray(it.words) && isStr(it.answer) && it.words.every(isStr)){
+      const a = wordsOf(it.words.join(" ")).sort().join("|"), b = wordsOf(it.answer).sort().join("|");
+      need(a === b, "các từ trong words không khớp với answer (thừa hoặc thiếu từ)");
+    }
+  } else if (type === "fix"){ need(isStr(it.wrong) && isStr(it.answer), "thiếu wrong hoặc answer"); if (isStr(it.wrong) && isStr(it.answer)) need(norm(it.wrong) !== norm(it.answer), "wrong và answer giống nhau");
+  } else if (type === "match"){ need(isStr(it.left) && isStr(it.right), "thiếu left hoặc right");
+  } else if (type === "dictation" || type === "shadow"){ need(isStr(it.say), "thiếu say");
+  } else if (type === "transform" || type === "translate" || type === "answer"){ need(isStr(it.prompt) && isStr(it.answer), "thiếu prompt hoặc answer");
+  } else if (type === "cloze"){ need(isStr(it.answer), "thiếu answer"); }
+  if (!SELF_TYPES.has(type) && type !== "dictation" && !isStr(it.why)) W.push(w + ": nên có why (giải thích tiếng Việt)");
+}
+function validateSet(raw, w, E, W, seen){
+  if (!raw || typeof raw !== "object") { E.push(w + ": bộ bài không hợp lệ"); return {n:0, core:0, sec:0}; }
+  if (!TYPES[raw.type]) { E.push(w + ": type \"" + raw.type + "\" không có. Dùng: " + Object.keys(TYPES).join(", ")); return {n:0, core:0, sec:0}; }
+  if (!Array.isArray(raw.items) || !raw.items.length){ E.push(w + ": thiếu items"); return {n:0, core:0, sec:0}; }
+  const type = raw.type;
+  raw.items.forEach((it, i) => {
+    validateItem(type, it, w + " (" + type + ") câu " + (i+1), E, W);
+    const key = it && norm(it.q || it.text || it.prompt || it.say || it.passage || it.wrong || it.left || (it.words||[]).join(" ") || "");
+    if (key && key.length > 8 && type !== "cloze"){ if (seen.has(type + key)) W.push(w + " câu " + (i+1) + ": trùng nội dung với " + seen.get(type + key)); else seen.set(type + key, w + " câu " + (i+1)); }
+  });
+  if (type === "cloze"){
+    if (!isStr(raw.passage)) E.push(w + ": cloze thiếu passage");
+    else if (raw.passage.split("___").length - 1 !== raw.items.length) E.push(w + ": passage có " + (raw.passage.split("___").length - 1) + " chỗ trống ___ nhưng items có " + raw.items.length);
+    if (raw.mode && !["pick","type"].includes(raw.mode)) E.push(w + ": mode chỉ là pick hoặc type");
+  }
+  if (type === "match" && raw.items.length < 4) W.push(w + ": match nên có từ 4 cặp trở lên");
+  let core = raw.items.length;
+  if (raw.core != null){ if (!Number.isInteger(raw.core) || raw.core < 1 || raw.core > raw.items.length) E.push(w + ": core phải là số nguyên từ 1 đến " + raw.items.length); else core = raw.core; }
+  return { n:raw.items.length, core, sec:core * EST_SEC[type] };
+}
+function validateWeek(j){
+  const E = [], W = [], stats = { sessions:[], vocab:0 }, seen = new Map();
+  if (!j || typeof j !== "object" || Array.isArray(j)) return { E:["File phải là một object JSON (bắt đầu bằng {)."], W, stats };
+  if (j.schema !== SCHEMA) W.push("schema nên là \"" + SCHEMA + "\".");
+  if (!Number.isInteger(j.week) || j.week < 1 || j.week > 18) E.push("week phải là số nguyên từ 1 đến 18.");
+  if (!isStr(j.title)) E.push("Thiếu title (tên chủ đề của tuần)."); if (!isStr(j.grammar)) E.push("Thiếu grammar (điểm ngữ pháp của tuần).");
+  if (!Array.isArray(j.subs) || j.subs.length < 3) W.push("subs nên là mảng 4 tên sub-topic.");
+  if (!j.sessions || typeof j.sessions !== "object"){ E.push("Thiếu sessions."); return { E, W, stats }; }
+  const vocab = new Set();
+  DAYK.forEach((k, di) => {
+    const s = j.sessions[k], w = DAYN[di];
+    if (!s){ E.push("Thiếu buổi " + w + " (sessions." + k + ")."); return; }
+    if (!isStr(s.title)) E.push(w + ": thiếu title.");
+    if (s.kind && !KIND[s.kind]) E.push(w + ": kind chỉ là new, review hoặc week.");
+    if (!Array.isArray(s.steps) || !s.steps.length){ E.push(w + ": thiếu steps."); return; }
+    const keys = new Set(); let n = 0, core = 0, sec = 0;
+    s.steps.forEach((st, si) => {
+      const sw = w + " bước " + (si+1) + (st && st.type ? " (" + st.type + ")" : "");
+      if (!st || !STEP_DEF[st.type]){ E.push(sw + ": type phải là " + Object.keys(STEP_DEF).join(", ") + "."); return; }
+      const key = st.key || (st.type + si); if (keys.has(key)) E.push(sw + ": key \"" + key + "\" bị trùng trong buổi."); keys.add(key);
+      if (st.type === "read"){
+        if (!isStr(st.heading)) E.push(sw + ": thiếu heading."); if (!Array.isArray(st.text) || !st.text.length || !st.text.every(isStr)) E.push(sw + ": text phải là mảng các đoạn.");
+        if (!st.vocab || typeof st.vocab !== "object" || Array.isArray(st.vocab)) E.push(sw + ": vocab phải là object {\"word\":\"nghĩa\"}.");
+        else Object.keys(st.vocab).forEach(x => { if (!isStr(st.vocab[x])) E.push(sw + ": vocab \"" + x + "\" thiếu nghĩa."); vocab.add(x.toLowerCase()); });
+      }
+      if (st.type === "listen" && (!Array.isArray(st.text) || !st.text.length || !st.text.every(isStr))) E.push(sw + ": text phải là mảng các đoạn.");
+      if (st.type === "notice"){
+        if (!Array.isArray(st.text) || !st.text.length) E.push(sw + ": thiếu text (bài đọc để tìm ngữ pháp)."); if (!Array.isArray(st.target) || !st.target.length) E.push(sw + ": thiếu target (mảng các từ cần tìm).");
+        if (!st.box || !Array.isArray(st.box.rows) || !st.box.rows.length) E.push(sw + ": thiếu box.rows (bảng ghi nhớ).");
+      }
+      if (st.type === "output"){ ["prompt","hint","sample","model"].forEach(f => { if (!isStr(st[f])) E.push(sw + ": thiếu " + f + "."); });
+        if (st.checklist && (!Array.isArray(st.checklist) || !st.checklist.every(isStr))) E.push(sw + ": checklist phải là mảng chuỗi."); }
+      if (st.type === "sets" && (!Array.isArray(st.sets) || !st.sets.length)) E.push(sw + ": thiếu sets.");
+      (st.sets || []).forEach((raw, xi) => { const r = validateSet(raw, sw + " bộ " + (xi+1), E, W, seen); n += r.n; core += r.core; sec += r.sec; });
+    });
+    if (k === "sat" && !s.steps.some(x => x && x.type === "report")) W.push(w + ": buổi cuối tuần nên có bước report.");
+    const c = j.challenges && j.challenges[k]; let cn = 0, csec = 0;
+    if (!c) W.push(w + ": chưa có challenge.");
+    else if (!Array.isArray(c.stages) || !c.stages.length) E.push(w + " challenge: thiếu stages.");
+    else c.stages.forEach((g, gi) => { if (!isStr(g.title)) E.push(w + " challenge chặng " + (gi+1) + ": thiếu title.");
+      (g.sets || []).forEach((raw, xi) => { const r = validateSet(raw, w + " challenge chặng " + (gi+1) + " bộ " + (xi+1), E, W, seen); cn += r.n; csec += r.sec; }); });
+    stats.sessions.push({ day:w, title:s.title || "", n, core, extra:n - core, min:Math.round(sec / 60), cn, cmin:Math.round(csec / 60) });
+  });
+  stats.vocab = vocab.size;
+  if (vocab.size && vocab.size < 18) W.push("Mới có " + vocab.size + " từ vựng trong các bài đọc (mục tiêu khoảng 24 từ mỗi tuần).");
+  return { E, W, stats };
+}
+function parseWeekText(txt){
+  let t = String(txt || "").replace(/^﻿/, "").trim();
+  const m = t.match(/```(?:json)?\s*([\s\S]*?)```/i); if (m) t = m[1].trim();
+  try { const v = JSON.parse(t); return { v }; }
+  catch(e){
+    const pos = (String(e.message).match(/position (\d+)/) || [])[1];
+    let hint = ""; if (pos != null){ const p = +pos, before = t.slice(0, p), line = before.split("\n").length; hint = " (gần dòng " + line + ": …" + t.slice(Math.max(0, p-30), p+30).replace(/\s+/g," ") + "…)"; }
+    return { err:"Không đọc được JSON: thường do thiếu dấu phẩy, thừa dấu phẩy cuối danh sách, hoặc dấu \" chưa đóng." + hint };
+  }
+}
+
+/* ---- Lưu, tải, đồng bộ ---- */
+function saveContentLocal(){ try { localStorage.setItem(CKEY, JSON.stringify(CONTENT)); } catch(e){} }
+function applyContent(n, json){ unloadWeek(n); compileWeek(json); if (n === 1 && !WEEKS[1]) restoreDemo(); }
+function loadContentLocal(){
+  try { const o = JSON.parse(localStorage.getItem(CKEY) || "{}"); Object.keys(o).forEach(n => { const e = o[n];
+    if (e && e.json && !validateWeek(e.json).E.length){ CONTENT[n] = e; applyContent(+n, e.json); } }); } catch(e){}
+}
+async function saveWeek(json){
+  const n = json.week; CONTENT[n] = { json, at:Date.now(), src:"local" }; saveContentLocal(); applyContent(n, json);
+  if (Cloud.ready && Cloud.fb.setDoc){ try { await Cloud.fb.setDoc(Cloud.fb.doc(Cloud.db, "content", "w"+n), { json:JSON.stringify(json), at:CONTENT[n].at }); } catch(e){ console.error(e); toast("Đã lưu trên máy, chưa lên được Firebase"); return false; } }
+  return true;
+}
+async function deleteWeek(n){
+  delete CONTENT[n]; saveContentLocal(); unloadWeek(n); if (!WEEKS[1]) restoreDemo();
+  if (Cloud.ready && Cloud.fb.setDoc){ try { await Cloud.fb.setDoc(Cloud.fb.doc(Cloud.db, "content", "w"+n), { json:"", at:Date.now(), deleted:true }); } catch(e){ console.error(e); } }
+}
+async function loadContentCloud(){
+  if (!Cloud.ready || !Cloud.fb.getDoc) return;
+  await Promise.all(Array.from({length:18}, (_, i) => i + 1).map(async n => {
+    try { const snap = await Cloud.fb.getDoc(Cloud.fb.doc(Cloud.db, "content", "w"+n)); if (!snap.exists()) return;
+      const d = snap.data(), cur = CONTENT[n];
+      if (cur && (cur.at || 0) >= (d.at || 0)) return;
+      if (d.deleted || !d.json){ if (cur){ delete CONTENT[n]; unloadWeek(n); } return; }
+      const json = JSON.parse(d.json); if (validateWeek(json).E.length) return;
+      CONTENT[n] = { json, at:d.at || 0, src:"cloud" }; applyContent(n, json);
+    } catch(e){} }));
+  saveContentLocal(); if (!WEEKS[1]) restoreDemo();
+}
+async function loadContentStatic(){
+  try {
+    const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 2500);
+    const r = await fetch("weeks/index.json", { cache:"no-cache", signal:ctl.signal }); clearTimeout(tm); if (!r.ok) return;
+    const list = await r.json();
+    await Promise.all((Array.isArray(list) ? list : []).map(async f => { try {
+      const j = await (await fetch("weeks/" + String(f).replace(/[^\w.\-]/g, ""), { cache:"no-cache" })).json();
+      if (!j || !Number.isInteger(j.week) || CONTENT[j.week] || validateWeek(j).E.length) return;
+      applyContent(j.week, j); WEEKS[j.week].src = "static"; } catch(e){} }));
+  } catch(e){}
+}
+
 
 /* =====================================================================
    PHIÊN HỌC, TỪ VỰNG, CHUỖI NGÀY, STICKER
    ===================================================================== */
-const allSessions = () => WEEK1.sessions;
-const findSession = id => allSessions().find(s => s.id === id);
+function weekNo(){
+  const ti = todayInfo(), have = Object.keys(WEEKS).map(Number).sort((a, b) => a - b);
+  if (!have.length) return 1;
+  const w = ti.state === "before" ? have[0] : (ti.week || 1);
+  if (WEEKS[w]) return w;
+  const lower = have.filter(x => x <= w); return lower.length ? lower[lower.length-1] : have[0];
+}
+const sessionsOf = n => (WEEKS[n] || WEEK1).sessions;
+const allSessions = () => sessionsOf(weekNo());
+const findSession = id => { for (const n of Object.keys(WEEKS)){ const f = WEEKS[n].sessions.find(s => s.id === id); if (f) return f; } return null; };
+const weekComplete = () => Object.keys(WEEKS).some(n => WEEKS[n].sessions.every(s => isDone(s.id)));
 function ensureSession(id){
   if (!S.sessions[id]) { S.sessions[id] = { steps:{}, seconds:0, startedAt:Date.now(), done:false }; save(); }
   return S.sessions[id];
@@ -844,14 +1070,15 @@ function addVocab(map){
 const dueWords = () => Object.keys(S.vocab).filter(w => S.vocab[w].due <= dkey(new Date()));
 const INTERVALS = [1,3,7,14,30];
 function recordResult(set, res){
-  if (set.ungraded) return;
+  if (set.ungraded || SELF_TYPES.has(set.type)) return;
+  const noMist = set.type === "cloze" || set.type === "match";
   const r = S.results[set.type] || (S.results[set.type] = {right:0, total:0});
   res.forEach((x, i) => {
     r.total++;
     const ref = (set.items[i] && set.items[i]._ref) || (set.key ? set.key + "#" + i : null);
     const at = ref ? S.mistakes.findIndex(m => m.ref === ref) : -1;
     if (x.ok){ r.right++; if (at >= 0){ S.mistakes.splice(at, 1); S.stats.fixed++; } }
-    else {
+    else if (!noMist) {
       const rec = { ref, t:set.type, q:x.prompt, a:x.correct, why:x.why, at:dkey(new Date()) };
       if (at >= 0) S.mistakes[at] = rec; else S.mistakes.push(rec);
     }
@@ -862,7 +1089,8 @@ function recordResult(set, res){
 }
 const STICKERS = [
   {id:"first",    icon:"🌱", name:"Buổi đầu tiên",    how:"Hoàn thành 1 buổi học",           ok:() => doneCount() >= 1},
-  {id:"week1",    icon:"🌸", name:"Tuần 1 trọn vẹn",  how:"Hoàn thành cả 6 buổi của tuần 1", ok:() => doneCount() >= 6},
+  {id:"week1",    icon:"🌸", name:"Tuần trọn vẹn",    how:"Hoàn thành cả 6 buổi của một tuần", ok:() => weekComplete()},
+  {id:"challenger", icon:"🏆", name:"Người thử thách", how:"Hoàn thành 1 Challenge",           ok:() => Object.keys(S.challenges || {}).length >= 1},
   {id:"streak3",  icon:"🔥", name:"3 ngày liên tiếp", how:"Học 3 ngày liên tiếp",            ok:() => Math.max(S.stats.best, streak()) >= 3},
   {id:"perfect",  icon:"⭐", name:"Đúng hết",         how:"Làm đúng hết một bài tập",        ok:() => S.stats.perfect >= 1},
   {id:"listener", icon:"🎧", name:"Thính tai",        how:"Nghe audio đủ 10 lần",            ok:() => S.stats.plays >= 10},
@@ -879,9 +1107,9 @@ function todayInfo(){
   const diff = Math.round((now - start) / 86400000);
   if (diff < 0) return { state:"before", days:-diff };
   const week = Math.floor(diff / 7) + 1, wd = diff % 7;
-  if (week > 1) return { state:"beyond", week };
-  if (wd === 6) return { state:"rest" };
-  return { state:"day", wd, session:allSessions()[wd] };
+  if (!WEEKS[week]) return { state:"beyond", week };
+  if (wd === 6) return { state:"rest", week };
+  return { state:"day", wd, week, session:WEEKS[week].sessions[wd] };
 }
 
 /* =====================================================================
@@ -909,17 +1137,55 @@ function playAudio({text, src, rate}, onend){
 }
 
 /* =====================================================================
-   BỘ BÀI TẬP (5 dạng)
+   BỘ BÀI TẬP: 16 dạng (13 dạng chấm điểm + 3 dạng tự chấm)
    ===================================================================== */
-function mcqItem(it, onChange){
+const TYPES = {
+  mcq:{label:"Trắc nghiệm", icon:"☑️", desc:"Chọn đáp án đúng", how:"Chọn đáp án đúng."},
+  truefalse:{label:"Đúng / Sai", icon:"✔️", desc:"Đúng hay sai theo bài", how:"Câu này đúng hay sai?"},
+  oddone:{label:"Từ khác loại", icon:"🧐", desc:"Tìm từ không cùng nhóm", how:"Chọn từ khác loại với các từ còn lại."},
+  match:{label:"Nối cặp", icon:"🔗", desc:"Nối từ với nghĩa", how:"Chạm một mục bên trái, rồi chạm mục tương ứng bên phải."},
+  listenpick:{label:"Nghe và chọn", icon:"🎧", desc:"Nghe rồi chọn đáp án", how:"Nghe rồi chọn đáp án đúng."},
+  dictation:{label:"Nghe và chép", icon:"✍️", desc:"Nghe rồi gõ lại câu", how:"Nghe rồi gõ lại câu bạn nghe được."},
+  dialogue:{label:"Hội thoại", icon:"💬", desc:"Chọn câu đáp phù hợp", how:"Chọn câu đáp phù hợp."},
+  gap:{label:"Điền từ", icon:"🧩", desc:"Chọn từ cho sẵn để điền", how:"Chạm vào từ trong khung để điền vào chỗ trống. Chạm vào ô đã điền để gỡ ra."},
+  form:{label:"Word form", icon:"✨", desc:"Điền dạng đúng của từ", how:"Điền dạng đúng của từ trong ngoặc."},
+  cloze:{label:"Điền đoạn văn", icon:"📝", desc:"Điền nhiều chỗ trống trong đoạn", how:"Điền các chỗ trống trong đoạn văn."},
+  reorder:{label:"Sắp xếp câu", icon:"🔀", desc:"Ghép từ thành câu", how:"Ghép các từ thành câu đúng."},
+  fix:{label:"Sửa lỗi sai", icon:"🔧", desc:"Tìm và sửa lỗi trong câu", how:"Mỗi câu có một lỗi. Sửa trực tiếp trong ô (viết hoa và dấu chấm không ảnh hưởng)."},
+  transform:{label:"Chuyển câu", icon:"🔄", desc:"Viết lại câu theo yêu cầu", how:"Viết lại câu theo yêu cầu."},
+  translate:{label:"Dịch Việt sang Anh", icon:"🌏", desc:"Tự dịch rồi so với đáp án mẫu", how:"Dịch sang tiếng Anh, rồi so với đáp án mẫu.", self:true},
+  answer:{label:"Trả lời một câu", icon:"🗣️", desc:"Tự trả lời rồi so với mẫu", how:"Trả lời bằng một câu tiếng Anh, rồi so với đáp án mẫu.", self:true},
+  shadow:{label:"Đọc to theo audio", icon:"🎤", desc:"Nghe rồi đọc theo", how:"Nghe rồi đọc to theo, nghe lại để so sánh.", self:true}
+};
+const SELF_TYPES = new Set(["translate","answer","shadow"]);
+const TYPE_LABEL = Object.assign({}, ...Object.keys(TYPES).map(k => ({[k]:TYPES[k].label})), {notice:"Tìm ngữ pháp"});
+
+/* so sánh câu: bỏ hoa/thường, dấu câu, và coi I'm = I am, isn't = is not... */
+function expand(s){
+  return String(s).toLowerCase().replace(/[’‘]/g,"'")
+    .replace(/\bi'm\b/g,"i am").replace(/\b(he|she|it|that|there|what|who|where|here)'s\b/g,"$1 is").replace(/\b(we|you|they)'re\b/g,"$1 are")
+    .replace(/\bcan't\b/g,"can not").replace(/\bcannot\b/g,"can not").replace(/\bwon't\b/g,"will not")
+    .replace(/\b(is|are|was|were|do|does|did|have|has|had|could|would|should)n't\b/g,"$1 not");
+}
+const same = (a, b) => norm(expand(a)) === norm(expand(b));
+const anyOk = (it, v) => [it.answer].concat(it.alt || []).some(a => same(a, v));
+
+const audioBar = (text, src) => h("div",{class:"row",style:"gap:8px;margin:2px 0 10px"},
+  h("button",{class:"btn soft",type:"button",onClick:() => { S.stats.plays++; playAudio({text, src, rate:1}); }},"🔊 Nghe"),
+  h("button",{class:"btn soft",type:"button",onClick:() => { playAudio({text, src, rate:.75}); }},"🐢 Chậm"));
+const chatEl = lines => h("div",{class:"chat"}, lines.map((l,i) => h("div",{class:"bub "+(i%2?"r":"l")}, l)));
+
+function mcqItem(it, onChange, pre){
   let sel = -1, locked = false; const btns = [];
+  const fixed = it.noShuffle || (it.options.length === 2 && it.options[0] === "Đúng");
+  const order = fixed ? it.options.map((_, i) => i) : shuffle(it.options.map((_, i) => i));
   const fbSlot = h("div");
-  const el = h("div", {class:"q"}, h("p",{class:"qtext"}, it.q),
-    h("div",{class:"opts"}, it.options.map((o,i) => { const b = h("button",{class:"opt",type:"button",onClick:() => {
-      if (locked) return; sel = i; btns.forEach((x,j) => x.classList.toggle("sel", j===i)); onChange(); }}, o); btns.push(b); return b; })), fbSlot);
+  const el = h("div", {class:"q"}, it.q ? h("p",{class:"qtext"}, it.q) : null, pre || null,
+    h("div",{class:"opts"}, order.map((oi,i) => { const b = h("button",{class:"opt",type:"button",onClick:() => {
+      if (locked) return; sel = i; btns.forEach((x,j) => x.classList.toggle("sel", j===i)); onChange(); }}, it.options[oi]); btns.push(b); return b; })), fbSlot);
   return { el, fbSlot, isAnswered:() => sel >= 0, check(){ locked = true;
-    btns.forEach((b,j) => { if (j === it.answer) b.classList.add("right"); else if (j === sel) b.classList.add("wrong"); });
-    return { ok: sel === it.answer, correct: it.options[it.answer], why: it.why, prompt: it.q }; } };
+    btns.forEach((b,j) => { if (order[j] === it.answer) b.classList.add("right"); else if (j === sel) b.classList.add("wrong"); });
+    return { ok: sel >= 0 && order[sel] === it.answer, correct: it.options[it.answer], why: (it.say ? "Bài nghe: “"+it.say+"”. " : "") + (it.why || ""), prompt: it.q || it.say || (it.lines||[]).join(" / ") }; } };
 }
 function buildGap(set, onChange){
   const bank = set.bank.map((w,i) => ({w, i, used:false}));
@@ -940,13 +1206,57 @@ function buildGap(set, onChange){
   }
   refresh();
   const items = set.items.map((it, qi) => ({ el:rows[qi].el, fbSlot:rows[qi].fbSlot, isAnswered:() => blanks[qi].v != null,
-    check(){ locked = true; const user = bank[blanks[qi].v].w; const ok = user === it.answer;
+    check(){ locked = true; const user = bank[blanks[qi].v].w; const ok = anyOk(it, user);
       rows[qi].blankBtn.classList.add(ok ? "right" : "wrong");
       return { ok, correct: it.answer, why: it.why, prompt: it.text }; } }));
   return { head:[bankEl], items };
 }
+function buildCloze(set, onChange){
+  const typed = set.mode === "type", parts = set.passage.split("___"), n = set.items.length, vals = Array(n).fill(null);
+  const bank = typed ? [] : set.bank.map((w,i) => ({w, i, used:false})), bankEl = h("div",{class:"bank"}), blanks = [], nodes = []; let locked = false;
+  parts.forEach((p, i) => { nodes.push(p); if (i < n){
+    if (typed){ const inp = h("input",{class:"txt inline",type:"text",onInput:onChange}); blanks.push(inp); nodes.push(inp); }
+    else { const b = h("button",{class:"blank",type:"button",onClick:() => { if (locked) return; if (vals[i] != null){ bank[vals[i]].used = false; vals[i] = null; refresh(); onChange(); } }}); blanks.push(b); nodes.push(b); } } });
+  function refresh(){
+    if (typed) return;
+    bankEl.replaceChildren(...bank.map(c => h("button",{class:"chip"+(c.used?" used":""),type:"button",disabled:c.used,onClick:() => {
+      if (locked) return; const qi = vals.findIndex(v => v == null); if (qi < 0) return; vals[qi] = c.i; c.used = true; refresh(); onChange(); }}, c.w)));
+    blanks.forEach((b, i) => { b.textContent = vals[i] == null ? "＿＿＿" : bank[vals[i]].w; });
+  }
+  refresh();
+  const items = set.items.map((it, i) => { const fbSlot = h("div");
+    return { el:h("div",{class:"q"}, h("div",{class:"small muted"},"Chỗ trống "+(i+1)), fbSlot), fbSlot,
+      isAnswered:() => typed ? blanks[i].value.trim() !== "" : vals[i] != null,
+      check(){ locked = true; const user = typed ? blanks[i].value : bank[vals[i]].w; const ok = anyOk(it, user);
+        if (typed) blanks[i].readOnly = true; blanks[i].classList.add(ok ? "right" : "wrong");
+        return { ok, correct: it.answer, why: it.why, prompt: it.text || it.answer }; } }; });
+  return { head:[h("div",{class:"cloze"}, nodes), bankEl], items };
+}
+function buildMatch(set, onChange){
+  const state = set.items.map(() => ({r:null})), marks = {}, draws = []; let locked = false;
+  const head = [], items = [];
+  for (let s = 0; s < set.items.length; s += 5){
+    const ids = set.items.slice(s, s+5).map((_, k) => s + k), rights = shuffle(ids); let pick = null;
+    const colL = h("div",{class:"mcol"}), colR = h("div",{class:"mcol"});
+    const draw = () => {
+      colL.replaceChildren(...ids.map(gi => { const st = state[gi];
+        return h("button",{class:"chip mchip"+(pick===gi?" on":"")+(st.r!=null?" paired":"")+(marks[gi]?" "+marks[gi]:""),type:"button",onClick:() => {
+          if (locked) return; if (st.r != null){ st.r = null; pick = gi; } else pick = pick === gi ? null : gi; draw(); onChange(); }},
+          set.items[gi].left, st.r != null ? h("small",null,"→ "+set.items[st.r].right) : null); }));
+      colR.replaceChildren(...rights.map(ri => { const taken = state.some(x => x.r === ri);
+        return h("button",{class:"chip mchip"+(taken?" used":""),type:"button",disabled:taken,onClick:() => {
+          if (locked || pick == null) return; state[pick].r = ri; pick = null; draw(); onChange(); }}, set.items[ri].right); }));
+    };
+    draws.push(draw); draw(); head.push(h("div",{class:"mgrid"}, colL, colR));
+  }
+  set.items.forEach((it, gi) => { const fbSlot = h("div");
+    items[gi] = { el:fbSlot, fbSlot, quietOk:true, isAnswered:() => state[gi].r != null,
+      check(){ locked = true; const ok = state[gi].r === gi; marks[gi] = ok ? "right" : "wrong"; if (gi === set.items.length-1) draws.forEach(d => d());
+        return { ok, correct: it.left+" = "+it.right, why: it.why, prompt: it.left }; } }; });
+  return { head, items };
+}
 function reorderItem(it, onChange){
-  const tiles = it.words.map((w,i) => ({w, i, used:false})), ans = []; let locked = false;
+  const tiles = shuffle(it.words.map((w,i) => ({w, i, used:false}))), ans = []; let locked = false;
   const bankEl = h("div",{class:"bank"}), ansEl = h("div",{class:"answer-line empty"}), fbSlot = h("div");
   function refresh(){
     bankEl.replaceChildren(...tiles.map(t => h("button",{class:"chip"+(t.used?" used":""),type:"button",disabled:t.used,onClick:() => {
@@ -957,7 +1267,7 @@ function reorderItem(it, onChange){
   }
   refresh();
   return { el:h("div",{class:"q"}, ansEl, bankEl, fbSlot), fbSlot, isAnswered:() => ans.length === tiles.length,
-    check(){ locked = true; const user = ans.map(t => t.w).join(" "); const ok = norm(user) === norm(it.answer);
+    check(){ locked = true; const user = ans.map(t => t.w).join(" "); const ok = same(user, it.answer);
       ansEl.classList.add(ok ? "right" : "wrong"); return { ok, correct: it.answer, why: it.why, prompt: it.words.join(" / ") }; } };
 }
 function fixItem(it, onChange){
@@ -965,48 +1275,94 @@ function fixItem(it, onChange){
   const input = h("input",{class:"txt",type:"text",value:it.wrong,autocapitalize:"off",autocomplete:"off",spellcheck:"false",onInput:onChange});
   return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, "Câu sai: ", h("span",{style:"color:var(--bad)"}, it.wrong)), input, fbSlot), fbSlot,
     isAnswered:() => input.value.trim() !== "" && input.value.trim() !== it.wrong,
-    check(){ input.readOnly = true; const ok = [it.answer].concat(it.alt || []).some(a => norm(a) === norm(input.value));
+    check(){ input.readOnly = true; const ok = anyOk(it, input.value);
       input.classList.add(ok ? "right" : "wrong"); return { ok, correct: it.answer, why: it.why, prompt: it.wrong }; } };
 }
 function formItem(it, onChange){
   const parts = it.text.split("___"), fbSlot = h("div");
   const input = h("input",{class:"txt inline",type:"text",autocapitalize:"off",autocomplete:"off",spellcheck:"false",onInput:onChange});
   return { el:h("div",{class:"q gap"}, parts[0], input, parts[1] || "", fbSlot), fbSlot, isAnswered:() => input.value.trim() !== "",
-    check(){ input.readOnly = true; const ok = norm(input.value) === norm(it.answer);
+    check(){ input.readOnly = true; const ok = anyOk(it, input.value);
       input.classList.add(ok ? "right" : "wrong"); return { ok, correct: it.answer, why: it.why, prompt: it.text }; } };
 }
+function dictItem(it, onChange){
+  const fbSlot = h("div"), input = h("input",{class:"txt",type:"text",placeholder:"Gõ câu bạn nghe được",onInput:onChange});
+  return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, it.q || "Nghe rồi gõ lại câu."), audioBar(it.say, it.audioSrc), input, fbSlot), fbSlot, isAnswered:() => input.value.trim() !== "",
+    check(){ input.readOnly = true; const ok = [it.say].concat(it.alt || []).some(a => same(a, input.value));
+      input.classList.add(ok ? "right" : "wrong"); return { ok, correct: it.say, why: it.why, prompt: it.say }; } };
+}
+function textItem(it, onChange){
+  const fbSlot = h("div"), input = h("input",{class:"txt",type:"text",placeholder:"Gõ câu của bạn",onInput:onChange});
+  return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, it.prompt), it.instruction ? h("p",{class:"muted small",style:"margin:-4px 0 8px"},"👉 "+it.instruction) : null, input, fbSlot), fbSlot,
+    isAnswered:() => input.value.trim() !== "",
+    check(){ input.readOnly = true;
+      if (it.self) return { ok:true, self:true, correct: it.answer + ((it.alt && it.alt.length) ? "   (hoặc: "+it.alt.join(" / ")+")" : ""), why: it.why, prompt: it.prompt };
+      const ok = anyOk(it, input.value); input.classList.add(ok ? "right" : "wrong"); return { ok, correct: it.answer, why: it.why, prompt: it.prompt }; } };
+}
+function shadowItem(it, onChange){
+  let done = false; const fbSlot = h("div");
+  const btn = h("button",{class:"btn soft",type:"button",onClick:() => { done = !done; btn.textContent = done ? "✅ Mình đã đọc theo" : "Mình đã đọc theo"; onChange(); }},"Mình đã đọc theo");
+  return { el:h("div",{class:"q"}, h("p",{class:"qtext"},"Nghe rồi đọc to theo, nghe lại để so sánh:"), audioBar(it.say, it.audioSrc), it.vi ? h("p",{class:"muted small"}, it.vi) : null, btn, fbSlot), fbSlot,
+    isAnswered:() => done, check(){ return { ok:true, self:true, correct: it.say, why: it.why, prompt: it.say }; } };
+}
+const mapItems = (fn, pre) => (set, ch) => ({ head:[], items:set.items.map(it => fn(it, ch, pre ? pre(it) : null)) });
 const BUILD = {
-  mcq:(set, ch) => ({ head:[], items:set.items.map(it => mcqItem(it, ch)) }),
-  gap:buildGap,
-  reorder:(set, ch) => ({ head:[], items:set.items.map(it => reorderItem(it, ch)) }),
-  fix:(set, ch) => ({ head:[], items:set.items.map(it => fixItem(it, ch)) }),
-  form:(set, ch) => ({ head:[], items:set.items.map(it => formItem(it, ch)) })
+  mcq:mapItems(mcqItem), truefalse:mapItems(mcqItem), oddone:mapItems(mcqItem),
+  listenpick:mapItems(mcqItem, it => audioBar(it.say, it.audioSrc)), dialogue:mapItems(mcqItem, it => chatEl(it.lines)),
+  gap:buildGap, cloze:buildCloze, match:buildMatch,
+  reorder:mapItems(reorderItem), fix:mapItems(fixItem), form:mapItems(formItem), dictation:mapItems(dictItem),
+  transform:mapItems(textItem), translate:mapItems(textItem), answer:mapItems(textItem), shadow:mapItems(shadowItem)
 };
+const makeBank = (items, extra) => shuffle(items.map(i => i.answer).concat(extra || []));
+function subView(set, items){
+  const v = Object.assign({}, set, { items });
+  if (set.type === "gap" || (set.type === "cloze" && set.mode !== "type")) v.bank = makeBank(items, set.distractors);
+  return v;
+}
 function exerciseSet(set, onDone){
   const wrap = h("section",{class:"exset"});
+  const coreN = set.core && set.core > 0 && set.core < set.items.length ? set.core : set.items.length;
+  const main = subView(set, set.items.slice(0, coreN));
+  const extra = coreN < set.items.length ? subView(set, set.items.slice(coreN)) : null;
   function build(){
     let checked = false;
     const upd = () => { btn.disabled = checked || !built.items.every(i => i.isAnswered()); };
-    const built = BUILD[set.type](set, upd);
+    const built = BUILD[main.type](main, upd);
+    const extraHost = h("div");
     const btn = h("button",{class:"btn block",type:"button",disabled:true,style:"margin-top:14px",onClick:() => {
       if (checked) return; checked = true;
-      const res = built.items.map(i => { const r = i.check(); i.fbSlot.replaceChildren(h("div",{class:"fbtxt "+(r.ok?"ok":"bad")},
-        r.ok ? "Đúng rồi!" : ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null)); return r; });
+      const res = built.items.map(i => { const r = i.check(); const quiet = i.quietOk && r.ok;
+        i.fbSlot.replaceChildren(...(quiet ? [] : [h("div",{class:"fbtxt "+(r.ok?"ok":"bad")},
+          r.self ? ["Đáp án mẫu: ", h("b",null,r.correct)] : r.ok ? "Đúng rồi!" : ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null)])); return r; });
       const right = res.filter(r => r.ok).length, total = res.length;
-      const quiet = set.ungraded && !set.showScore;
-      const msg = quiet ? "Đoán xong rồi, không tính điểm. Lát nữa mình sẽ gặp lại các từ này."
+      const quietScore = (main.ungraded && !main.showScore) || SELF_TYPES.has(main.type);
+      const msg = main.doneMsg ? main.doneMsg : SELF_TYPES.has(main.type) ? "Bạn đã so với đáp án mẫu. Phần này không tính điểm." : quietScore ? "Đoán xong rồi, không tính điểm. Lát nữa mình sẽ gặp lại các từ này."
         : right === total ? "Tuyệt vời, đúng hết!" : right/total >= 0.6 ? "Khá lắm! Xem lại các câu sai nhé." : "Không sao, đọc phần giải thích rồi thử lại nhé.";
       const retry = h("button",{class:"btn soft",type:"button",style:"margin-left:auto",onClick:() => { wrap.replaceChildren(...build()); }}, "Làm lại");
+      const exBtn = extra ? h("button",{class:"btn soft block",type:"button",style:"margin-top:10px",onClick:() => {
+        exBtn.hidden = true; extraHost.replaceChildren(h("div",{class:"card tint flat small",style:"margin-top:12px"},"Làm thêm "+extra.items.length+" câu để chắc hơn (không bắt buộc)."),
+          exerciseSet(Object.assign({}, extra, {title:"Làm thêm: "+set.title, core:null}))); }}, "➕ Làm thêm "+extra.items.length+" câu") : null;
       scoreBox.replaceChildren(h("div",{class:"score"}, mascot(right === total ? "cheer" : "happy"),
-        h("div",null, quiet ? "Xong rồi" : right+" / "+total+" câu đúng", h("div",{class:"small muted"}, msg)), retry));
-      btn.hidden = true; recordResult(set, res); onDone && onDone(right, total, res);
+        h("div",null, quietScore || main.doneMsg ? "Xong rồi" : right+" / "+total+" câu đúng", h("div",{class:"small muted"}, msg)), retry), ...(exBtn ? [exBtn] : []));
+      btn.hidden = true; recordResult(main, res); onDone && onDone(right, total, res);
     }}, "Kiểm tra");
     const scoreBox = h("div");
     return [h("h3",null,set.title), set.instruction ? h("p",{class:"muted small"}, set.instruction) : null,
-      ...built.head, ...built.items.map(i => i.el), btn, scoreBox];
+      ...built.head, ...built.items.map(i => i.el).filter(Boolean), btn, scoreBox, extraHost];
   }
   wrap.replaceChildren(...build());
   return wrap;
+}
+function setsBlock(sets, onCoreDone){
+  const core = sets.filter(s => !s.extra), extra = sets.filter(s => s.extra); let n = 0;
+  const out = core.map(s => h("div",{class:"card"}, exerciseSet(s, () => { if (++n >= core.length) onCoreDone(); })));
+  if (!core.length) onCoreDone();
+  if (extra.length){
+    const host = h("div"), cnt = extra.reduce((a, s) => a + s.items.length, 0);
+    const btn = h("button",{class:"btn soft",type:"button",onClick:() => { btn.hidden = true; host.replaceChildren(...extra.map(s => h("div",{class:"card"}, exerciseSet(s)))); }}, "➕ Làm thêm "+cnt+" câu");
+    out.push(h("div",{class:"card tint flat"}, h("h3",null,"Làm thêm"), h("p",{class:"muted small"}, cnt+" câu nữa để chắc hơn, không bắt buộc."), btn), host);
+  }
+  return out;
 }
 
 /* =====================================================================
@@ -1016,8 +1372,8 @@ function tokenize(p){
   return p.split(/\s+/).map(c => { const m = c.match(/^([^A-Za-z]*)([A-Za-z][A-Za-z'’-]*)?(.*)$/); return { pre:m[1], word:m[2] || "", post:m[3] }; });
 }
 function setsStep(step, ctx){
-  const sets = step.gen ? step.gen() : step.sets; let n = 0;
-  return h("div",null, sets.map(s => h("div",{class:"card"}, exerciseSet(s, () => { if (++n >= sets.length) ctx.done(); }))));
+  const sets = step.gen ? step.gen() : step.sets;
+  return h("div",null, setsBlock(sets, () => ctx.done()));
 }
 function readStep(step, ctx){
   const gloss = h("div",{class:"gloss"}, h("span",{class:"muted"}, "Chạm vào từ gạch chân để xem nghĩa."));
@@ -1073,8 +1429,14 @@ function grammarBox(){
         h("tr",null,h("td",null,"He / She / It, tên một người, My mother"),h("td",null,"is"),h("td",null,"She is a teacher.")),
         h("tr",null,h("td",null,"We / You / They, My parents"),h("td",null,"are"),h("td",null,"They are my parents.")))));
 }
+function grammarBoxFrom(b){
+  return h("div",{class:"card tint"}, h("h3",null,b.title || "Ghi nhớ"), b.intro ? h("p",null,b.intro) : null,
+    h("table",{class:"gtable"}, h("thead",null,h("tr",null,h("th",null,"Chủ ngữ"),h("th",null,b.formLabel || "Dạng"),h("th",null,"Ví dụ"))),
+      h("tbody",null, b.rows.map(r => h("tr",null,h("td",null,r.subject),h("td",null,r.form),h("td",null,r.example))))),
+    b.note ? h("p",{class:"muted small"},b.note) : null);
+}
 function noticeStep(step, ctx){
-  const target = /^(am|is|are)$/i, sel = new Set(), spans = []; let id = 0, total = 0, locked = false;
+  const tw = ((step.target && step.target.length) ? step.target : ["am","is","are"]).map(x => String(x).toLowerCase()), target = { test:w => tw.includes(w.toLowerCase()) }, sel = new Set(), spans = []; let id = 0, total = 0, locked = false;
   const counter = h("div",{class:"muted small"}, "Đã chọn: 0 từ");
   const btn = h("button",{class:"btn block",type:"button",disabled:true,style:"margin-top:12px"}, "Kiểm tra");
   const result = h("div");
@@ -1093,10 +1455,10 @@ function noticeStep(step, ctx){
     const r = S.results.notice || (S.results.notice = {right:0, total:0}); r.right += right; r.total += total; save();
     result.replaceChildren(h("div",{class:"score"}, mascot(wrong === 0 && miss === 0 ? "cheer" : "happy"),
       h("div",null, "Tìm được "+right+" / "+total+" từ", h("div",{class:"small muted"}, (wrong ? wrong+" từ chọn nhầm (gạch đỏ). " : "") + (miss ? miss+" từ còn sót (viền vàng)." : "Không sót từ nào!")))),
-      grammarBox());
+      step.box ? grammarBoxFrom(step.box) : grammarBox());
     ctx.done(); });
-  return h("div",null, h("div",{class:"card"}, h("h2",null,"Tìm am, is, are"),
-    h("p",{class:"muted"},"Đọc lại bài và chạm vào tất cả các từ am, is, are mà bạn thấy."), box, counter, btn, result));
+  return h("div",null, h("div",{class:"card"}, h("h2",null,"Tìm "+(step.find || "am, is, are")),
+    h("p",{class:"muted"},"Đọc lại bài và chạm vào tất cả các từ "+(step.find || "am, is, are")+" mà bạn thấy."), box, counter, btn, result));
 }
 function outputStep(step, ctx){
   const sid = ctx.sessionId;
@@ -1113,7 +1475,7 @@ function outputStep(step, ctx){
         h("div",{class:"model"}, h("div",{class:"small muted"},"Bài của bạn"), ta.value.trim()),
         h("div",{class:"model"}, h("div",{class:"small muted"},"Bài mẫu để so sánh"), step.model)),
       h("div",{class:"card flat",style:"margin-top:12px"}, h("h3",null,"Tự kiểm tra"),
-        ["Mỗi câu đều có động từ (am / is / are hoặc động từ khác)","Chữ đầu câu viết hoa, cuối câu có dấu chấm hoặc dấu hỏi","Dùng His / Her đúng với người đó"].map(t => h("label",{class:"check"}, h("input",{type:"checkbox"}), t))));
+        (step.checklist || ["Mỗi câu đều có động từ (am / is / are hoặc động từ khác)","Chữ đầu câu viết hoa, cuối câu có dấu chấm hoặc dấu hỏi","Dùng His / Her đúng với người đó"]).map(t => h("label",{class:"check"}, h("input",{type:"checkbox"}), t))));
     ctx.done(); }}, "Lưu bài viết và xem câu mẫu");
   return h("div",{class:"card"}, h("h2",null,"Tự viết"), h("p",null,step.prompt), sample, h("p",{class:"muted small"},"Gợi ý: "+step.hint), ta, btn, model);
 }
@@ -1139,9 +1501,9 @@ function reportEl(){
   let advice;
   if (!rated.length) advice = "Làm thêm vài bài tập để có nhận xét chi tiết.";
   else if (acc(worst) < 0.7) advice = "Tuần sau nên luyện thêm dạng \""+TYPE_LABEL[worst]+"\". Bạn làm tốt nhất ở dạng \""+TYPE_LABEL[best]+"\".";
-  else advice = "Bạn nắm khá chắc cả tuần. Sẵn sàng sang tuần 2: this / that / these / those.";
+  else { const nx = ROADMAP.find(x => x[0] === weekNo()+1); advice = "Bạn nắm khá chắc cả tuần." + (nx ? " Sẵn sàng sang tuần "+nx[0]+": "+nx[2]+"." : ""); }
   return h("div",null,
-    h("div",{class:"hello"}, mascot(doneN >= 4 ? "cheer" : "happy"), h("div",{class:"bubble"}, "Tuần 1 của "+learnerName()+": "+doneN+" / "+list.length+" buổi xong!")),
+    h("div",{class:"hello"}, mascot(doneN >= 4 ? "cheer" : "happy"), h("div",{class:"bubble"}, "Tuần "+weekNo()+" của "+learnerName()+": "+doneN+" / "+list.length+" buổi xong!")),
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneN+"/"+list.length),h("span",null,"buổi xong")),
       h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút học")),
       h("div",{class:"stat"},h("b",null,tt ? Math.round(tr/tt*100)+"%" : "–"),h("span",null,"làm đúng"))),
@@ -1236,7 +1598,7 @@ function doneView(id){
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,Math.max(1,Math.round((s.seconds||0)/60))),h("span",null,"phút học")),
       h("div",{class:"stat"},h("b",null,n+"/"+steps.length),h("span",null,"bước xong")), h("div",{class:"stat"},h("b",null,streak()),h("span",null,"ngày liên tiếp"))),
     fresh.length ? h("div",{class:"card tint"}, h("h3",null,"Sticker mới!"), h("div",{class:"stks"}, STICKERS.filter(x => fresh.includes(x.id)).map(x => h("div",{class:"stk"}, h("i",null,x.icon), h("b",null,x.name), h("small",null,x.how))))) : null,
-    h("div",{class:"row",style:"justify-content:center"}, h("a",{class:"btn",href:"#/home"},"Về trang chủ"), h("a",{class:"btn soft",href:"#/week"},"Xem lịch tuần")));
+    h("div",{class:"row",style:"justify-content:center"}, h("a",{class:"btn",href:"#/home"},"Về trang chủ"), h("a",{class:"btn soft",href:"#/week"},"Xem lịch tuần"), CH[id] ? h("a",{class:"btn soft",href:"#/challenge/"+id},"🏆 Thử Challenge") : null));
 }
 function gardenEl(big){
   return h("div",{class:"garden"+(big?" big":"")}, allSessions().map(s => h("div",{class:"pot"+(isDone(s.id)?" on":""), html:flowerSVG(isDone(s.id))+s.day.replace("Thứ ","T")})));
@@ -1259,8 +1621,8 @@ function homeView(){
   else if (ti.state === "rest") main = h("div",{class:"card tint"}, h("h2",null,"Hôm nay là Chủ nhật, ngày nghỉ"), h("p",{class:"muted"},"Nghỉ ngơi nhé. Nếu muốn, ôn 10 phút từ vựng cho vui."),
       h("a",{class:"btn soft",href:"#/vocab"},"Ôn từ vựng"));
   else if (ti.state === "before") main = nextUndone ? startCard(nextUndone, "Khóa học bắt đầu sau "+ti.days+" ngày, bạn có thể học trước")
-      : h("div",{class:"card tint"}, h("h2",null,"Khóa học bắt đầu sau "+ti.days+" ngày"), h("p",{class:"muted"},"Tuần 1 đã học xong hết rồi. Trong lúc chờ, bạn có thể ôn từ vựng và câu sai."));
-  else main = nextUndone ? startCard(nextUndone, "Tuần "+ti.week+" chưa có nội dung, ôn lại tuần 1 nhé") : h("div",{class:"card tint"}, h("h2",null,"Tuần 1 đã xong hết rồi"));
+      : h("div",{class:"card tint"}, h("h2",null,"Khóa học bắt đầu sau "+ti.days+" ngày"), h("p",{class:"muted"},"Tuần này đã học xong hết rồi. Trong lúc chờ, bạn có thể ôn từ vựng và câu sai."));
+  else main = nextUndone ? startCard(nextUndone, "Chưa có bài cho tuần "+ti.week+", mình ôn lại tuần "+weekNo()+" nhé") : h("div",{class:"card tint"}, h("h2",null,"Tuần "+weekNo()+" đã xong hết rồi"));
   const missed = ti.state === "day" ? list.filter((s,i) => i < ti.wd && !isDone(s.id)) : (ti.state === "rest" || ti.state === "beyond") ? list.filter(s => !isDone(s.id)) : [];
   const sleepy = ti.state === "rest" || (ti.state === "day" && missed.length >= 2);
   const say2 = ti.state === "rest" ? "Chủ nhật rồi, mình nghỉ ngơi cho khỏe nhé!" : sleepy ? "Mình hơi buồn ngủ, học bù một chút cho tỉnh nhé?" : say;
@@ -1274,28 +1636,32 @@ function homeView(){
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,sk),h("span",null,"ngày liên tiếp")), h("div",{class:"stat"},h("b",null,doneN),h("span",null,"sao đã sáng")), h("div",{class:"stat"},h("b",null,due),h("span",null,"từ cần ôn"))),
     due ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},due+" từ đang chờ ôn"), h("div",{class:"small muted"},"Ôn 3 phút là đủ")), h("a",{class:"btn soft",href:"#/vocab"},"Ôn ngay"))) : null,
     S.mistakes.length ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},S.mistakes.length+" câu cần ôn lại"), h("div",{class:"small muted"},"Làm đúng thì câu sẽ biến mất")), h("a",{class:"btn soft",href:"#/mistakes"},"Ôn câu sai"))) : null,
-    h("p",{class:"muted small",style:"text-align:center"},"Đây là bản demo để xem các chức năng. Vào Cài đặt để nạp dữ liệu mẫu hoặc đổi linh vật."));
+    WEEKS[weekNo()] && !WEEKS[weekNo()].json ? h("p",{class:"muted small",style:"text-align:center"},"Đây là bản demo để xem các chức năng. Vào Cài đặt để nạp dữ liệu mẫu hoặc đổi linh vật.") : null);
 }
 function weekView(){
-  const list = allSessions(), ti = todayInfo();
-  return h("div",null, h("h1",null,"Tuần 1: "+WEEK1.title), h("p",{class:"muted"},"Ngữ pháp: "+WEEK1.grammar),
-    h("div",{class:"chips",style:"margin-bottom:16px"}, WEEK1.subs.map((t,i) => h("span",{class:"pill"}, "Sub "+(i+1)+": "+t))),
+  const have = Object.keys(WEEKS).map(Number).sort((a, b) => a - b), vw = viewWeek && WEEKS[viewWeek] ? viewWeek : weekNo(), W = WEEKS[vw] || WEEK1, list = W.sessions, ti = todayInfo();
+  const mv = d => { const i = have.indexOf(vw) + d; if (i >= 0 && i < have.length){ viewWeek = have[i]; route(); } };
+  return h("div",null, h("div",{class:"weeknav"}, have.length > 1 ? h("button",{class:"say",type:"button","aria-label":"Tuần trước",onClick:() => mv(-1)},"‹") : null,
+      h("h1",{style:"margin:0"},"Tuần "+vw+": "+W.title), have.length > 1 ? h("button",{class:"say",type:"button","aria-label":"Tuần sau",onClick:() => mv(1)},"›") : null),
+    h("p",{class:"muted"},"Ngữ pháp: "+W.grammar),
+    h("div",{class:"chips",style:"margin-bottom:16px"}, (W.subs || []).map((t,i) => h("span",{class:"pill"}, "Sub "+(i+1)+": "+t))),
     list.map((s,i) => {
       const done = isDone(s.id), started = !!S.sessions[s.id], demo = !!LESSONS[s.id].demo;
-      const isToday = ti.state === "day" && ti.wd === i;
-      const missed = !done && ((ti.state === "day" && i < ti.wd) || ti.state === "rest" || ti.state === "beyond");
-      return h("a",{class:"card day"+(done?" is-done":""),href:"#/lesson/"+s.id+"/0"},
+      const isToday = ti.state === "day" && ti.week === vw && ti.wd === i;
+      const missed = !done && (ti.week > vw || (ti.week === vw && ((ti.state === "day" && i < ti.wd) || ti.state === "rest")) || ti.state === "beyond");
+      const card = h("a",{class:"card day"+(done?" is-done":""),href:"#/lesson/"+s.id+"/0"},
         h("div",{class:"when"}, s.day.replace("Thứ ","T"), h("small",null,"30′")),
         h("div",{class:"grow"}, h("div",{style:"font-weight:800"},s.title), h("div",{class:"small muted",style:"margin:2px 0 6px"},KIND[s.kind]),
           h("div",{class:"chips"}, done ? h("span",{class:"pill ok"},"✅ Xong") : started ? h("span",{class:"pill"},"Đang học") : h("span",{class:"pill"},"Chưa học"),
-            isToday ? h("span",{class:"pill"},"📍 Hôm nay") : null, missed ? h("span",{class:"pill lock"},"Chưa học bù") : null, demo ? h("span",{class:"pill lock"},"🧪 Demo") : null))); }),
+            isToday ? h("span",{class:"pill"},"📍 Hôm nay") : null, missed ? h("span",{class:"pill lock"},"Chưa học bù") : null, demo ? h("span",{class:"pill lock"},"🧪 Demo") : null)));
+      return CH[s.id] ? [card, h("a",{class:"pill",href:"#/challenge/"+s.id,style:"text-decoration:none;margin:-8px 0 14px 8px"}, "🏆 Challenge"+(S.challenges[s.id] ? " ✅" : ""))] : card; }),
     h("div",{class:"card day is-lock"}, h("div",{class:"when",style:"background:#f4eef1; border-color:#e6dde2"},"CN",h("small",null,"nghỉ")),
       h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Chủ nhật: nghỉ ngơi"), h("div",{class:"small muted",style:"margin-bottom:8px"},"Tùy chọn: 10 phút ôn từ vựng. Ngày nghỉ không làm đứt chuỗi ngày học."),
         h("a",{class:"pill",href:"#/vocab",style:"text-decoration:none"},"📖 Ôn từ vựng"))),
     h("div",{class:"row",style:"margin-bottom:16px"}, h("a",{class:"btn soft",href:"#/report"},"📊 Báo cáo tuần"), h("a",{class:"btn soft",href:"#/placement"},"🧭 Test đầu vào")),
     S.placement ? h("p",{class:"muted small"},"Test đầu vào gần nhất: gợi ý bắt đầu từ tuần "+S.placement.startWeek+".") : null,
     h("details",{class:"card flat"}, h("summary",{style:"font-weight:800; cursor:pointer"},"Lộ trình 18 tuần"),
-      h("div",{style:"margin-top:10px"}, ROADMAP.map(([n,t,g]) => h("div",{class:"vrow"}, h("span",{class:"pill"+(n===1?"":" lock")},"Tuần "+n), h("div",{class:"grow"}, h("b",null,t), h("div",{class:"small muted"},g)))))));
+      h("div",{style:"margin-top:10px"}, ROADMAP.map(([n,t,g]) => h("div",{class:"vrow"}, h("span",{class:"pill"+(n===vw?"":" lock")},"Tuần "+n), h("div",{class:"grow"}, h("b",null,t), h("div",{class:"small muted"},g)))))));
 }
 let review = null;
 function vocabView(){
@@ -1331,14 +1697,15 @@ function practiceView(type){
   if (type === "mix"){
     const sets = mixSets();
     return h("div",null, h("a",{class:"btn soft",href:"#/practice"},"← Các dạng bài"), h("h1",{style:"margin-top:16px"},"Ôn tổng hợp"),
-      h("p",{class:"muted"},"Mỗi lần mở là một bộ câu khác nhau, lấy từ các bài đã học."), sets.map(s => h("div",{class:"card"}, exerciseSet(s))));
+      h("p",{class:"muted"},"Mỗi lần mở là một bộ câu khác nhau, lấy từ các bài đã học."), sets.map(x => h("div",{class:"card"}, exerciseSet(x))));
   }
-  const p = PRACTICE[type];
-  if (!p) return h("div",null, h("h1",null,"Bài tập"), h("p",{class:"muted"},"Làm lại từng dạng bài bất cứ lúc nào, không cần đợi đến buổi học."),
+  const p = type && TYPES[type] ? practiceSetFor(type) : null;
+  if (!p) return h("div",null, h("h1",null,"Bài tập"), h("p",{class:"muted"},"Làm lại từng dạng bài bất cứ lúc nào, câu được lấy từ các bài đã học."),
     S.mistakes.length ? h("a",{class:"card day",href:"#/mistakes"}, h("div",{class:"when",style:"font-size:1.7rem"},"🩹"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Ôn câu sai"), h("div",{class:"small muted"},S.mistakes.length+" câu đang chờ bạn sửa"))) : null,
-    h("a",{class:"card day",href:"#/practice/mix"}, h("div",{class:"when",style:"font-size:1.7rem"},"🎲"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Ôn tổng hợp"), h("div",{class:"small muted"},"Trộn đủ 5 dạng, mỗi lần một bộ khác"))),
-    Object.entries(PRACTICE).map(([k,v]) => h("a",{class:"card day",href:"#/practice/"+k}, h("div",{class:"when",style:"font-size:1.7rem"},v.icon), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},v.label), h("div",{class:"small muted"},v.desc)))));
-  return h("div",null, h("a",{class:"btn soft",href:"#/practice"},"← Các dạng bài"), h("div",{class:"card",style:"margin-top:16px"}, exerciseSet(p.set)));
+    h("a",{class:"card day",href:"#/practice/mix"}, h("div",{class:"when",style:"font-size:1.7rem"},"🎲"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Ôn tổng hợp"), h("div",{class:"small muted"},"Trộn nhiều dạng, mỗi lần một bộ khác"))),
+    PRACTICE_TYPES.filter(k => poolSets(k).length).map(k => { const v = TYPES[k];
+      return h("a",{class:"card day",href:"#/practice/"+k}, h("div",{class:"when",style:"font-size:1.7rem"},v.icon), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},v.label), h("div",{class:"small muted"},v.desc))); }));
+  return h("div",null, h("a",{class:"btn soft",href:"#/practice"},"← Các dạng bài"), h("div",{class:"card",style:"margin-top:16px"}, exerciseSet(p)));
 }
 function mistakesView(){
   const sets = buildMistakeSets();
@@ -1392,8 +1759,9 @@ function teacherView(){
   const ta = h("textarea",{class:"txt",rows:3,placeholder:"Ví dụ: Tuần này em làm tốt phần am/is/are, nhớ đọc to các câu nhé!"}); ta.value = S.teacherNote ? S.teacherNote.text : "";
   const writings = Object.entries(S.writing);
   return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"), h("h1",{style:"margin-top:16px"},"Khu người hướng dẫn"),
+    h("a",{class:"card day",href:"#/content"}, h("div",{class:"when",style:"font-size:1.7rem"},"📚"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Tải bài học lên"), h("div",{class:"small muted"},"Dán JSON do GPT soạn, kiểm tra rồi dùng ngay"))),
     h("div",{class:"card tint flat small"},"🧪 Đây là bản demo. Khi dùng thật, nên bảo vệ trang này bằng một tài khoản đăng nhập riêng để học viên không vào nhầm."),
-    h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneCount()+"/6"),h("span",null,"buổi xong")), h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút học")), h("div",{class:"stat"},h("b",null,streak()),h("span",null,"ngày liên tiếp"))),
+    h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneCount()+"/"+allSessions().length),h("span",null,"buổi xong")), h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút học")), h("div",{class:"stat"},h("b",null,streak()),h("span",null,"ngày liên tiếp"))),
     h("p",{class:"muted"}, lastDay ? "Lần học gần nhất: "+lastDay+"." : "Chưa có buổi học nào."),
     h("div",{class:"card"}, h("h3",null,"Lịch sử buổi học"),
       S.log.length ? S.log.slice(-8).reverse().map(l => { const m = findSession(l.id); return h("div",{class:"tl"}, h("span",{class:"pill"},l.d), h("div",{class:"grow"}, h("b",null,m ? m.title : l.id), h("div",{class:"small muted"},Math.max(1,Math.round(l.sec/60))+" phút"))); })
@@ -1421,8 +1789,8 @@ function progressView(){
   const writings = Object.entries(S.writing);
   return h("div",null, h("h1",null,"Tiến độ"),
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneN),h("span",null,"buổi xong")), h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút đã học")), h("div",{class:"stat"},h("b",null,Object.keys(S.vocab).length),h("span",null,"từ đã gặp"))),
-    h("a",{class:"btn soft block",href:"#/report",style:"margin-bottom:16px"},"📊 Xem báo cáo tuần 1"),
-    h("div",{class:"card"}, h("h3",null,"Chòm sao tuần 1"), gardenEl(true)),
+    h("a",{class:"btn soft block",href:"#/report",style:"margin-bottom:16px"},"📊 Xem báo cáo tuần "+weekNo()),
+    h("div",{class:"card"}, h("h3",null,"Chòm sao tuần "+weekNo()), gardenEl(true)),
     h("div",{class:"card"}, h("h3",null,"Lịch học"), calendarEl()),
     h("div",{class:"card"}, h("h3",null,"Bộ sưu tập sticker"), stickersEl()),
     h("div",{class:"card"}, h("h3",null,"Độ chính xác theo dạng bài"), accuracyBars()),
@@ -1437,6 +1805,114 @@ function progressView(){
       h("div",{class:"row"}, h("button",{class:"btn soft",type:"button",onClick:() => {
           const a = h("a",{href:URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:"application/json"})),download:"tien-do-hoc.json"}); document.body.append(a); a.click(); a.remove(); }},"Tải về"),
         h("button",{class:"btn soft",type:"button",onClick:() => fileIn.click()},"Khôi phục"), fileIn)));
+}
+
+/* =====================================================================
+   BÀI TẬP LẺ (lấy từ kho câu của mọi tuần), CHALLENGE, TRANG NỘI DUNG CHO GV
+   ===================================================================== */
+const PRACTICE_TYPES = ["mcq","truefalse","oddone","match","listenpick","dictation","dialogue","gap","form","cloze","reorder","fix","transform","translate","answer","shadow"];
+const poolSets = type => Object.values(SET).filter(s => s.type === type && !s.ungraded && !s.ctx && s.items && s.items.length);
+function poolItems(type){
+  const all = []; poolSets(type).forEach(s => s.items.forEach((it, i) => all.push(Object.assign({}, it, { _ref:it._ref || s.key + "#" + i }))));
+  return all;
+}
+function practiceSetFor(type){
+  const pool = poolSets(type); if (!pool.length) return null;
+  if (type === "cloze" || type === "match"){ const s = pool[Math.floor(Math.random() * pool.length)]; return Object.assign({}, s, { core:null, extra:false, title:TYPES[type].label }); }
+  return { type, title:TYPES[type].label, instruction:TYPES[type].how, items:shuffle(poolItems(type)).slice(0, 8) };
+}
+function challengeView(sid){
+  const c = CH[sid], meta = findSession(sid);
+  if (!c || !meta) return h("div",null, h("a",{class:"btn soft",href:"#/week"},"Về lịch tuần"), h("div",{class:"card",style:"margin-top:16px"}, h("h2",null,"Buổi này chưa có Challenge")));
+  const all = c.stages.reduce((a, g) => a + g.sets.length, 0); let left = all, right = 0, total = 0;
+  const end = h("div"), prev = S.challenges[sid];
+  const onSet = (r, t) => { right += r; total += t; if (--left === 0){
+    S.challenges[sid] = { at:dkey(new Date()), right, total }; save(); setTimeout(petals, 200);
+    end.replaceChildren(h("div",{class:"card tint celebrate"}, mascot("cheer"), h("h2",null,"🏅 Xong Challenge rồi!"),
+      h("p",null,"Bạn làm đúng "+right+" / "+total+" câu."), h("p",{class:"muted small"},"Challenge không tính vào chuỗi ngày học, nhưng kết quả đã được ghi lại."),
+      h("a",{class:"btn",href:"#/week"},"Về lịch tuần"))); } };
+  return h("div",null, h("a",{class:"btn soft",href:"#/week"},"← Lịch tuần"), h("h1",{style:"margin-top:16px"},"🏆 "+c.title),
+    h("p",{class:"muted"},meta.day+": "+meta.title),
+    h("div",{class:"card tint flat small"}, "Bài làm thêm cho ai muốn thử sức: khoảng 20 phút, chia "+c.stages.length+" chặng. Không bắt buộc và không tính vào chuỗi ngày học."
+      + (prev ? " Lần gần nhất: "+prev.right+" / "+prev.total+" câu đúng." : "")),
+    c.stages.map((g, gi) => h("div",null, h("h2",{style:"margin:20px 0 10px"},"Chặng "+(gi+1)+": "+g.title), g.sets.map(s => h("div",{class:"card"}, exerciseSet(s, onSet))))), end);
+}
+let viewWeek = null;
+const DKEY = "a1-draft-v1";
+let DRAFT = {};
+try { DRAFT = JSON.parse(localStorage.getItem(DKEY) || "{}"); } catch(e){ DRAFT = {}; }
+const saveDraft = () => { try { localStorage.setItem(DKEY, JSON.stringify(DRAFT)); } catch(e){} };
+function mergePart(p){
+  const n = p.week; if (!Number.isInteger(n)) return "Phần này thiếu số tuần (week).";
+  const d = DRAFT[n] || (DRAFT[n] = { meta:null, sessions:{}, challenges:{} });
+  if (p.part === "meta"){ const { part, ...m } = p; d.meta = m; }
+  else if (p.part === "session" || p.part === "challenge"){
+    if (!DAYK.includes(p.day)) return "day phải là một trong: " + DAYK.join(", ") + ".";
+    const { part, week, day, ...rest } = p;
+    if (part === "session") d.sessions[day] = rest; else d.challenges[day] = rest;
+  } else return "part phải là meta, session hoặc challenge.";
+  saveDraft(); return null;
+}
+function assembleDraft(n){
+  const d = DRAFT[n]; if (!d) return null;
+  return Object.assign({ schema:SCHEMA, week:n }, d.meta || {}, { week:n, sessions:d.sessions, challenges:d.challenges });
+}
+function draftProgress(n){
+  const d = DRAFT[n] || { meta:null, sessions:{}, challenges:{} };
+  return { meta:!!d.meta, sessions:DAYK.filter(k => d.sessions[k]), challenges:DAYK.filter(k => d.challenges[k]),
+    complete:!!d.meta && DAYK.every(k => d.sessions[k] && d.challenges[k]) };
+}
+function contentView(){
+  const ta = h("textarea",{class:"txt",rows:7,placeholder:"Dán nội dung JSON do GPT xuất ra vào đây…",spellcheck:"false"});
+  const out = h("div"); let pending = null;
+  const fileIn = h("input",{type:"file",accept:".json,application/json,text/plain",hidden:true,onChange:async e => { const f = e.target.files[0]; if (!f) return; ta.value = await f.text(); e.target.value = ""; check(); }});
+  function check(){
+    pending = null;
+    if (!ta.value.trim()){ out.replaceChildren(h("p",{class:"muted"},"Hãy dán JSON hoặc chọn file trước.")); return; }
+    const p = parseWeekText(ta.value);
+    if (p.err){ out.replaceChildren(h("div",{class:"card",style:"border-color:var(--bad)"}, h("h3",{style:"color:var(--bad)"},"Chưa đọc được file"), h("p",null,p.err))); return; }
+    let arr = Array.isArray(p.v) ? p.v : [p.v]; const extra = [];
+    const parts = arr.filter(x => x && x.part), whole = arr.filter(x => !(x && x.part)), weeksTouched = new Set();
+    parts.forEach(x => { const e = mergePart(x); if (e) extra.push(e); else weeksTouched.add(x.week); });
+    if (extra.length){ out.replaceChildren(h("div",{class:"card",style:"border-color:var(--bad)"}, h("h3",{style:"color:var(--bad)"},"Phần này chưa dùng được"), h("ul",null, extra.map(x => h("li",null,x))))); return; }
+    const draftCards = [...weeksTouched].map(n => {
+      const pr = draftProgress(n), j = assembleDraft(n), v = validateWeek(j);
+      const E = v.E.filter(x => !/^Thiếu buổi|^Thiếu sessions/.test(x)), W = v.W.filter(x => !/chưa có challenge/.test(x));
+      const mark = (ok, t) => h("span",{class:"pill"+(ok ? " ok" : " lock")}, (ok ? "✓ " : "· ") + t);
+      const ready = pr.complete && !E.length;
+      if (ready) pending = (pending || []).concat([j]);
+      return h("div",{class:"card"}, h("h3",null,"Bản nháp tuần "+n+(ready ? ": đã đủ, hợp lệ ✅" : "")),
+        h("div",{class:"chips",style:"margin:6px 0"}, mark(pr.meta,"meta"), DAYK.map((k, i) => mark(pr.sessions.includes(k), DAYN[i])), DAYK.map((k, i) => mark(pr.challenges.includes(k), "CH " + DAYN[i].replace("Thứ ","T")))),
+        E.length ? h("ul",{class:"errlist"}, E.slice(0, 30).map(x => h("li",{style:"color:var(--bad)"}, x))) : h("p",{class:"muted small"}, ready ? "Bấm Lưu để dùng." : "Phần vừa dán không có lỗi. Tiếp tục dán các phần còn thiếu."),
+        W.length ? h("details",null, h("summary",{style:"font-weight:800;cursor:pointer"},"⚠️ "+W.length+" lưu ý"), h("ul",null, W.slice(0, 25).map(x => h("li",{class:"small"}, x)))) : null,
+        ready ? h("div",{style:"overflow-x:auto;margin-top:10px"}, h("table",{class:"gtable"}, h("thead",null,h("tr",null,["Buổi","Câu chính","Làm thêm","≈ phút","Challenge"].map(t => h("th",null,t)))),
+          h("tbody",null, v.stats.sessions.map(x => h("tr",null, h("td",null,x.day), h("td",null,String(x.core)), h("td",null,String(x.extra)), h("td",null,"~"+x.min), h("td",null,x.cn ? x.cn+" câu (~"+x.cmin+"′)" : "–")))))) : null,
+        h("button",{class:"btn danger",type:"button",style:"margin-top:10px",onClick:() => { if (confirm("Xóa bản nháp tuần "+n+"?")){ delete DRAFT[n]; saveDraft(); route(); } }},"Xóa bản nháp")); });
+    const results = whole.map(j => ({ j, v:validateWeek(j) })), ok = results.every(r => !r.v.E.length);
+    if (ok && results.length) pending = (pending || []).concat(results.map(r => r.j));
+    if (parts.length && !whole.length){ out.replaceChildren(...draftCards, pending ? h("button",{class:"btn block",type:"button",onClick:async () => { for (const j of pending){ await saveWeek(j); delete DRAFT[j.week]; } saveDraft(); toast("Đã lưu vào web"); ta.value = ""; out.replaceChildren(); route(); }},"Lưu vào web") : null); ta.value = ""; return; }
+    out.replaceChildren(...draftCards, ...results.map(({ j, v }) => h("div",{class:"card"},
+      h("h3",null, v.E.length ? "❌ Có "+v.E.length+" lỗi cần sửa" : "✅ Hợp lệ" + (j && j.week ? ": Tuần "+j.week+" · "+j.title : "")),
+      v.E.length ? h("ul",{class:"errlist"}, v.E.slice(0, 30).map(x => h("li",{style:"color:var(--bad)"}, x)), v.E.length > 30 ? h("li",null,"… và "+(v.E.length-30)+" lỗi nữa") : null) : null,
+      v.W.length ? h("details",null, h("summary",{style:"font-weight:800;cursor:pointer"},"⚠️ "+v.W.length+" lưu ý (không chặn lưu)"), h("ul",null, v.W.slice(0, 25).map(x => h("li",{class:"small"}, x)))) : null,
+      v.stats.sessions.length ? h("div",{style:"overflow-x:auto;margin-top:10px"}, h("table",{class:"gtable"},
+        h("thead",null,h("tr",null,["Buổi","Câu chính","Làm thêm","≈ phút","Challenge"].map(t => h("th",null,t)))),
+        h("tbody",null, v.stats.sessions.map(s => h("tr",null, h("td",null,s.day), h("td",null,String(s.core)), h("td",null,String(s.extra)), h("td",null,"~"+s.min), h("td",null,s.cn ? s.cn+" câu (~"+s.cmin+"′)" : "–")))))) : null,
+      v.stats.vocab ? h("p",{class:"muted small"},"Từ vựng trong các bài đọc: "+v.stats.vocab+" từ.") : null)),
+      ok && pending ? h("button",{class:"btn block",type:"button",onClick:async () => { for (const j of pending) await saveWeek(j); toast("Đã lưu "+pending.length+" tuần"); ta.value = ""; out.replaceChildren(); route(); }}, "Lưu vào web") : null);
+  }
+  const rows = Object.keys(WEEKS).map(Number).sort((a, b) => a - b).map(n => { const w = WEEKS[n], c = CONTENT[n];
+    const src = !w.json ? "Bản demo" : c ? (c.src === "cloud" ? "Firebase" : "Đã tải lên") : "Từ repo";
+    return h("div",{class:"vrow"}, h("div",{class:"grow"}, h("b",null,"Tuần "+n+": "+w.title), h("div",{class:"small muted"},w.grammar+" · "+src)),
+      h("a",{class:"pill",href:"#/lesson/w"+n+"-mon/0",style:"text-decoration:none"},"Xem thử"),
+      c ? h("button",{class:"pill",type:"button",onClick:() => { const a = h("a",{href:URL.createObjectURL(new Blob([JSON.stringify(c.json,null,2)],{type:"application/json"})),download:"week-"+n+".json"}); document.body.append(a); a.click(); a.remove(); }},"Tải JSON") : null,
+      c ? h("button",{class:"pill lock",type:"button",onClick:async () => { if (confirm("Xóa nội dung tuần "+n+"? Tiến độ của học viên vẫn được giữ.")){ await deleteWeek(n); route(); } }},"Xóa") : null); });
+  return h("div",null, h("a",{class:"btn soft",href:"#/teacher"},"← Khu người hướng dẫn"), h("h1",{style:"margin-top:16px"},"Tải bài học lên"),
+    h("div",{class:"card tint flat small"}, "1) Dùng prompt trong file PROMPT-soan-tuan-1-GPT.md để GPT soạn bài. 2) Dán JSON hoặc chọn file ở dưới. 3) Xem kết quả kiểm tra rồi bấm Lưu. Tuần có sẵn sẽ được thay bằng bản mới."),
+    h("div",{class:"card"}, h("h3",null,"Dán hoặc chọn file JSON"), ta,
+      h("div",{class:"row",style:"margin-top:10px"}, h("button",{class:"btn",type:"button",onClick:check},"Kiểm tra"), h("button",{class:"btn soft",type:"button",onClick:() => fileIn.click()},"Chọn file…"), fileIn)),
+    out, h("div",{class:"card"}, h("h3",null,"Các tuần đang có"), rows.length ? rows : h("p",{class:"muted"},"Chưa có tuần nào.")),
+    h("div",{class:"card flat small muted"}, Cloud.ready ? "Nội dung đang được lưu trên Firebase, mọi thiết bị của học viên sẽ thấy." : "Chưa bật Firebase: nội dung chỉ lưu trong trình duyệt này. Muốn mọi thiết bị thấy, hãy bật Firebase hoặc đưa file vào thư mục weeks/ của repo (xem README)."));
 }
 
 /* =====================================================================
@@ -1467,7 +1943,7 @@ function demoState(){
    ĐIỀU HƯỚNG
    ===================================================================== */
 const TABS = [["home","🏠","Trang chủ"],["week","📅","Tuần học"],["vocab","📖","Từ vựng"],["practice","✏️","Bài tập"],["progress","⭐","Tiến độ"]];
-const TAB_OF = { lesson:"week", done:"week", placement:"week", mistakes:"practice", report:"progress" };
+const TAB_OF = { challenge:"week", content:"week", lesson:"week", done:"week", placement:"week", mistakes:"practice", report:"progress" };
 const tabsEl = document.getElementById("tabs");
 tabsEl.replaceChildren(...TABS.map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, h("span",null,ic), t)));
 function route(){
@@ -1479,11 +1955,13 @@ function route(){
     case "week": view = weekView(); break;
     case "lesson": view = lessonView(parts[1], parseInt(parts[2] || "0", 10)); break;
     case "done": view = doneView(parts[1]); break;
+    case "challenge": view = challengeView(parts[1]); break;
+    case "content": view = contentView(); break;
     case "vocab": view = vocabView(); break;
     case "practice": view = practiceView(parts[1]); break;
     case "mistakes": view = mistakesView(); break;
     case "placement": view = placementView(); break;
-    case "report": view = h("div",null, h("h1",null,"Báo cáo tuần 1"), reportEl()); break;
+    case "report": view = h("div",null, h("h1",null,"Báo cáo tuần "+weekNo()), reportEl()); break;
     case "settings": view = settingsView(); break;
     case "teacher": view = teacherView(); break;
     case "progress": view = progressView(); break;
@@ -1510,12 +1988,12 @@ document.addEventListener("focusin", e => {
 document.addEventListener("focusout", () => setTimeout(() => { const a = document.activeElement; if (!(a && a.matches && a.matches("input.txt,textarea.txt"))) document.body.classList.remove("kb"); }, 60));
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 async function boot(){
-  S = loadLocal(); ensureStart(); applyBrand();
+  S = loadLocal(); ensureStart(); applyBrand(); loadContentLocal();
   document.getElementById("themebtn").addEventListener("click", () => {
     S.settings.theme = themeKind() === "night" ? "light" : "night"; save(); applyBrand();
     if (location.hash.startsWith("#/settings")) route();
   });
-  await initCloud(); applyBrand();
+  await initCloud(); applyBrand(); await loadContentCloud(); await loadContentStatic();
   window.addEventListener("hashchange", route);
   route();
 }
