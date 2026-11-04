@@ -56,6 +56,14 @@ def validate(p, text):
         if c >= 5: errs.append(f'lời giải thích lặp {c} lần (mỗi câu phải có why riêng): "{w[:60]}"')
     for (q, _), c in qs.items():
         if c >= 4: errs.append(f'câu hỏi lặp {c} lần (tối đa 3): "{q[:60]}"')
+    MALE = "Tom|Ben|Jack|David|Peter|Nam|Minh|John|Mike|Sam|Bob|Tony|Long|Huy|Khoa"; FEM = "grandmother|mother|sister|aunt|mom|mum|grandma|daughter|girl|woman|wife"
+    for o in walk(d):
+        tx = str(o.get("text") or o.get("q") or ""); ans = o.get("answer")
+        full = tx.replace("___", ans) if isinstance(ans, str) else tx
+        if re.search(rf"\b({MALE})\b\s+(is|was)\s+(my|his|her|a|the)\s+({FEM})\b", full, re.I): errs.append(f'tên con trai đi với từ chỉ nữ: "{full[:60]}"')
+        if "___" in tx and isinstance(ans, str):
+            before = tx.split("___")[0].strip()
+            if before and not re.search(r"[.?!]$", before) and ans[:1].isupper() and not ans.startswith("I") and before: errs.append(f'chỗ trống giữa câu nhưng đáp án viết hoa: "{tx[:50]}" -> {ans}')
     generic = sum(1 for o in walk(d) if str(o.get("q","")).strip().lower().startswith("who or what is mentioned"))
     if generic: errs.append(f'{generic} câu hỏi chung chung "Who or what is mentioned?": phải hỏi đúng nội dung câu nghe')
     if p != "meta" and n < 15: errs.append(f"chỉ có {n} câu trắc nghiệm, quá ít so với bảng số lượng")

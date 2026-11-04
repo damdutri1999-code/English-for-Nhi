@@ -349,6 +349,15 @@ html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index
 .errlist{padding-left:20px}
 .weeknav{display:flex;align-items:center;gap:8px}
 .txt.over{border-color:var(--p500);background:var(--p100);border-style:dashed}
+
+.topprog{position:fixed; top:0; left:0; right:0; height:9px; background:var(--p100); z-index:60; box-shadow:0 1px 0 var(--p200)}
+.topprog i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--p400),var(--p500)); border-radius:0 99px 99px 0; transition:width .4s}
+.topprog span{position:absolute; top:12px; right:10px; font-size:.72rem; font-weight:800; color:var(--ink2); background:var(--paper); border:1px solid var(--p200); border-radius:99px; padding:1px 9px}
+.drg{touch-action:none; user-select:none; -webkit-user-select:none; cursor:grab}
+.chip.ghost{position:fixed; z-index:999; pointer-events:none; transform:translate(-50%,-50%) scale(1.1); box-shadow:0 8px 20px rgba(0,0,0,.25); opacity:.95}
+.lifting{opacity:.35}
+.dz.over{outline:3px dashed var(--p500); outline-offset:2px; background:var(--p100)}
+.btn.sm{padding:6px 14px; font-size:.92rem; min-height:0}
 </style>
 </head>
 <body>
@@ -391,6 +400,9 @@ const KEY = "a1-english-progress-v1";
    TIỆN ÍCH
    ===================================================================== */
 const app = document.getElementById("app");
+/* null/false không bao giờ được in ra thành chữ "null" */
+["replaceChildren","append","prepend"].forEach(m => { const orig = Element.prototype[m];
+  Element.prototype[m] = function(...a){ return orig.apply(this, a.flat(Infinity).filter(x => x != null && x !== false)); }; });
 function h(tag, attrs, ...kids){
   const el = document.createElement(tag);
   if (attrs) for (const [k, v] of Object.entries(attrs)){
@@ -926,6 +938,11 @@ function validateSet(raw, w, E, W, seen){
     const ans = norm(String(typeof it.answer === "number" && it.options ? it.options[it.answer] : (it.answer != null ? it.answer : (it.right || ""))));
     const key = base + "|" + ans;
     if (isStr(it.why)){ const wk = it.why.trim(); const r = seen.why.get(wk) || { n:0, at:w + " câu " + (i+1) }; r.n++; seen.why.set(wk, r); }
+    { const tx = String(it.text || it.q || ""), ans = String(it.answer == null ? "" : it.answer);
+      if (/___/.test(tx) && typeof it.answer === "string"){ const pos = tx.indexOf("___"), atStart = !tx.slice(0, pos).trim();
+        if (!atStart && /^[A-Z]/.test(ans) && !/^I\b/.test(ans) && !/(^|[.?!]\s)$/.test(tx.slice(0, pos))) W.push(w + " câu " + (i+1) + ": chỗ trống giữa câu nhưng đáp án viết hoa (\"" + ans + "\"). Nên viết thường nếu không phải tên riêng."); }
+      const MALE = "Tom|Ben|Jack|David|Peter|Nam|Minh|John|Mike|Sam|Bob|Tony|Long|Huy|Khoa", FEM = "grandmother|mother|sister|aunt|mom|mum|grandma|daughter|girl|woman|wife";
+      if (new RegExp("\\b(" + MALE + ")\\b[^.?!]*\\b(" + FEM + ")\\b", "i").test(tx + " " + ans) && !/\b(his|brother|my friend)\b.*\b(mother|sister|aunt|grandmother)/i.test(tx) && new RegExp("\\b(" + MALE + ")\\b\\s+(is|was)\\s+(my|his|her|a|the)\\s+(" + FEM + ")\\b", "i").test(tx.replace("___", ans))) W.push(w + " câu " + (i+1) + ": tên con trai đi với từ chỉ nữ, kiểm tra lại giới tính: \"" + tx.slice(0, 60) + "\"."); }
     { const pk = (it.q || it.text || it.say || it.prompt || "").replace(/\b[A-Z][a-z]+\b/g, "N").replace(/\b(father|mother|sister|brother|parents|grandmother|grandfather|uncle|aunt|cousin|teacher|doctor|driver|nurse)\b/gi, "W").trim(); if (pk.length > 12){ const r = seen.pat.get(pk) || { n:0, at:w + " câu " + (i+1) }; r.n++; seen.pat.set(pk, r); } }
     if (base.length > 8 && type !== "cloze"){ { const r = seen.get(type + key); if (r) { r.n++; if (r.n === 4) W.push(w + " câu " + (i+1) + ": câu này đã xuất hiện quá 3 lần (cả câu hỏi lẫn đáp án), lần đầu ở " + r.at); } else seen.set(type + key, { n:1, at:w + " câu " + (i+1) }); } }
   });
@@ -1206,82 +1223,129 @@ function mcqItem(it, onChange, pre){
     btns.forEach((b,j) => { if (order[j] === it.answer) b.classList.add("right"); else if (j === sel) b.classList.add("wrong"); });
     return { ok: sel >= 0 && order[sel] === it.answer, correct: it.options[it.answer], why: (it.say ? "Bài nghe: “"+it.say+"”. " : "") + (it.why || ""), prompt: it.q || it.say || (it.lines||[]).join(" / ") }; } };
 }
+/* thanh tiến độ cố định ở đầu trang khi làm bài */
+const PG = { on:false, total:0, done:0, base:0, span:1, label:"", stepDone:null };
+function pgDraw(){
+  let el = document.getElementById("topprog");
+  if (!el){ el = h("div",{id:"topprog",class:"topprog",hidden:true}, h("i"), h("span")); document.body.append(el); }
+  el.hidden = !PG.on; if (!PG.on) return;
+  const f = PG.stepDone && PG.stepDone() ? 1 : (PG.total ? Math.min(1, PG.done / PG.total) : 0);
+  el.firstChild.style.width = Math.round(Math.min(1, PG.base + PG.span * f) * 100) + "%";
+  el.lastChild.textContent = PG.label + (PG.total ? " · " + PG.done + "/" + PG.total + " câu" : "");
+}
+function pgReset(){ Object.assign(PG, { on:false, total:0, done:0, base:0, span:1, label:"", stepDone:null }); pgDraw(); }
+/* kéo thả bằng chuột và cảm ứng. Chạm nhẹ = chọn từ, rồi chạm vào ô để thả. */
+function dragSource(el, getPayload, onTap, canDrag){
+  el.classList.add("drg");
+  el.addEventListener("click", ev => { if (ev.detail === 0 && onTap) onTap(); });
+  el.addEventListener("pointerdown", e => {
+    if ((e.button || 0) > 0 || (canDrag && !canDrag())) return;
+    const sx = e.clientX, sy = e.clientY; let ghost = null, over = null, moved = false;
+    const hit = (x, y) => { const t = document.elementFromPoint(x, y); return t && t.closest ? t.closest(".dz") : null; };
+    const mv = ev => {
+      if (!moved && Math.hypot(ev.clientX - sx, ev.clientY - sy) < 8) return;
+      if (!moved){ moved = true; ghost = el.cloneNode(true); ghost.className += " ghost"; document.body.append(ghost); el.classList.add("lifting"); }
+      ghost.style.left = ev.clientX + "px"; ghost.style.top = ev.clientY + "px";
+      const z = hit(ev.clientX, ev.clientY);
+      if (z !== over){ if (over) over.classList.remove("over"); over = z; if (over) over.classList.add("over"); }
+      ev.preventDefault();
+    };
+    const end = (ev, cancelled) => {
+      document.removeEventListener("pointermove", mv); document.removeEventListener("pointerup", up); document.removeEventListener("pointercancel", cn);
+      if (ghost) ghost.remove(); el.classList.remove("lifting"); if (over) over.classList.remove("over");
+      if (moved){ const z = cancelled ? null : hit(ev.clientX, ev.clientY); if (z && z._drop) z._drop(getPayload()); }
+      else if (!cancelled && onTap) onTap();
+    };
+    const up = ev => end(ev, false), cn = ev => end(ev, true);
+    document.addEventListener("pointermove", mv, {passive:false}); document.addEventListener("pointerup", up); document.addEventListener("pointercancel", cn);
+  });
+}
+const dropZone = (el, fn) => { el.classList.add("dz"); el._drop = fn; return el; };
+const dragHint = t => h("p",{class:"muted small",style:"margin:4px 0 8px"}, "👆 " + t);
+
 function buildGap(set, onChange){
   const bank = set.bank.map((w,i) => ({w, i, used:false}));
-  const blanks = set.items.map(() => ({v:null})); let locked = false;
+  const blanks = set.items.map(() => ({v:null})), locked = set.items.map(() => false); let armed = null;
   const bankEl = h("div",{class:"bank"});
+  const place = (qi, ci) => { if (locked[qi] || blanks[qi].v != null || bank[ci].used) return;
+    blanks[qi].v = ci; bank[ci].used = true; armed = null; refresh(); onChange(); };
   const rows = set.items.map((it, qi) => {
     const parts = it.text.split("___");
-    const blankBtn = h("button",{class:"blank",type:"button",onClick:() => {
-      if (locked) return; const b = blanks[qi]; if (b.v != null){ bank[b.v].used = false; b.v = null; refresh(); onChange(); } }});
+    const blankBtn = dropZone(h("button",{class:"blank",type:"button",onClick:() => { if (armed != null) place(qi, armed); }}), ci => place(qi, ci));
     const fbSlot = h("div");
     return { blankBtn, fbSlot, el:h("div",{class:"q gap"}, parts[0], blankBtn, parts[1] || "", fbSlot) };
   });
   function refresh(){
-    bankEl.replaceChildren(...bank.map(c => h("button",{class:"chip"+(c.used?" used":""),type:"button",disabled:c.used,onClick:() => {
-      if (locked) return; const qi = blanks.findIndex(b => b.v == null); if (qi < 0) return;
-      blanks[qi].v = c.i; c.used = true; refresh(); onChange(); }}, c.w)));
+    bankEl.replaceChildren(...bank.map(c => { const b = h("button",{class:"chip"+(c.used?" used":"")+(armed === c.i?" on":""),type:"button",disabled:c.used}, c.w);
+      dragSource(b, () => c.i, () => { armed = armed === c.i ? null : c.i; refresh(); }); return b; }));
     rows.forEach((r, qi) => { const v = blanks[qi].v; r.blankBtn.textContent = v == null ? "＿＿＿" : bank[v].w; });
   }
   refresh();
   const items = set.items.map((it, qi) => ({ el:rows[qi].el, fbSlot:rows[qi].fbSlot, isAnswered:() => blanks[qi].v != null,
-    check(){ locked = true; const user = bank[blanks[qi].v].w; const ok = anyOk(it, user);
+    check(){ locked[qi] = true; const user = bank[blanks[qi].v].w; const ok = anyOk(it, user);
       rows[qi].blankBtn.classList.add(ok ? "right" : "wrong");
       return { ok, correct: it.answer, why: it.why, prompt: it.text }; } }));
-  return { head:[bankEl], items };
+  return { head:[dragHint("Kéo từ bên dưới thả vào đúng chỗ trống (hoặc chạm vào từ rồi chạm vào chỗ trống). Mỗi câu được chấm ngay."), bankEl], items };
 }
 function buildCloze(set, onChange){
-  const typed = set.mode === "type", parts = set.passage.split("___"), n = set.items.length, vals = Array(n).fill(null);
-  const bank = typed ? [] : set.bank.map((w,i) => ({w, i, used:false})), bankEl = h("div",{class:"bank"}), blanks = [], nodes = []; let locked = false;
+  const typed = set.mode === "type", parts = set.passage.split("___"), n = set.items.length, vals = Array(n).fill(null), locked = Array(n).fill(false); let armed = null;
+  const bank = typed ? [] : set.bank.map((w,i) => ({w, i, used:false})), bankEl = h("div",{class:"bank"}), blanks = [], nodes = [];
+  const place = (i, ci) => { if (locked[i] || vals[i] != null || bank[ci].used) return; vals[i] = ci; bank[ci].used = true; armed = null; refresh(); onChange(); };
   parts.forEach((p, i) => { nodes.push(p); if (i < n){
-    if (typed){ const inp = h("input",{class:"txt inline",type:"text",onInput:onChange}); blanks.push(inp); nodes.push(inp); }
-    else { const b = h("button",{class:"blank",type:"button",onClick:() => { if (locked) return; if (vals[i] != null){ bank[vals[i]].used = false; vals[i] = null; refresh(); onChange(); } }}); blanks.push(b); nodes.push(b); } } });
+    if (typed){ const inp = h("input",{class:"txt inline",type:"text",autocapitalize:"off",autocomplete:"off",spellcheck:"false",onInput:onChange}); blanks.push(inp); nodes.push(inp); }
+    else { const b = dropZone(h("button",{class:"blank",type:"button",onClick:() => { if (armed != null) place(i, armed); }}), ci => place(i, ci)); blanks.push(b); nodes.push(b); } } });
   function refresh(){
     if (typed) return;
-    bankEl.replaceChildren(...bank.map(c => h("button",{class:"chip"+(c.used?" used":""),type:"button",disabled:c.used,onClick:() => {
-      if (locked) return; const qi = vals.findIndex(v => v == null); if (qi < 0) return; vals[qi] = c.i; c.used = true; refresh(); onChange(); }}, c.w)));
+    bankEl.replaceChildren(...bank.map(c => { const b = h("button",{class:"chip"+(c.used?" used":"")+(armed === c.i?" on":""),type:"button",disabled:c.used}, c.w);
+      dragSource(b, () => c.i, () => { armed = armed === c.i ? null : c.i; refresh(); }); return b; }));
     blanks.forEach((b, i) => { b.textContent = vals[i] == null ? "＿＿＿" : bank[vals[i]].w; });
   }
   refresh();
   const items = set.items.map((it, i) => { const fbSlot = h("div");
     return { el:h("div",{class:"q"}, h("div",{class:"small muted"},"Chỗ trống "+(i+1)), fbSlot), fbSlot,
       isAnswered:() => typed ? blanks[i].value.trim() !== "" : vals[i] != null,
-      check(){ locked = true; const user = typed ? blanks[i].value : bank[vals[i]].w; const ok = anyOk(it, user);
+      check(){ locked[i] = true; const user = typed ? blanks[i].value : bank[vals[i]].w; const ok = anyOk(it, user);
         if (typed) blanks[i].readOnly = true; blanks[i].classList.add(ok ? "right" : "wrong");
         return { ok, correct: it.answer, why: it.why, prompt: it.text || it.answer }; } }; });
-  return { head:[h("div",{class:"cloze"}, nodes), bankEl], items };
+  return { head:[typed ? null : dragHint("Kéo từ thả vào đúng chỗ trống trong đoạn (hoặc chạm vào từ rồi chạm vào chỗ trống). Mỗi chỗ được chấm ngay."), h("div",{class:"cloze"}, nodes), bankEl], items };
 }
 function buildMatch(set, onChange){
-  const state = set.items.map(() => ({r:null})), marks = {}, draws = []; let locked = false;
-  const head = [], items = [];
+  const state = set.items.map(() => ({r:null})), marks = {}, draws = [];
+  const head = [dragHint("Kéo một ô sang ô còn lại để nối cặp (hoặc chạm ô bên trái rồi chạm ô bên phải). Mỗi cặp được chấm ngay."), ], items = [];
   for (let s = 0; s < set.items.length; s += 5){
     const ids = set.items.slice(s, s+5).map((_, k) => s + k), rights = shuffle(ids); let pick = null;
     const colL = h("div",{class:"mcol"}), colR = h("div",{class:"mcol"});
+    const pair = (gi, ri) => { if (marks[gi] || state[gi].r != null || state.some(x => x.r === ri)) return; state[gi].r = ri; pick = null; draw(); onChange(); };
     const draw = () => {
       colL.replaceChildren(...ids.map(gi => { const st = state[gi];
-        return h("button",{class:"chip mchip"+(pick===gi?" on":"")+(st.r!=null?" paired":"")+(marks[gi]?" "+marks[gi]:""),type:"button",onClick:() => {
-          if (locked) return; if (st.r != null){ st.r = null; pick = gi; } else pick = pick === gi ? null : gi; draw(); onChange(); }},
-          set.items[gi].left, st.r != null ? h("small",null,"→ "+set.items[st.r].right) : null); }));
+        const b = h("button",{class:"chip mchip"+(pick===gi?" on":"")+(st.r!=null?" paired":"")+(marks[gi]?" "+marks[gi]:""),type:"button"},
+          set.items[gi].left, st.r != null ? h("small",null,"→ "+set.items[st.r].right) : null);
+        dropZone(b, p => { if (p.side === "r") pair(gi, p.i); });
+        if (st.r == null) dragSource(b, () => ({side:"l", i:gi}), () => { pick = pick === gi ? null : gi; draw(); });
+        return b; }));
       colR.replaceChildren(...rights.map(ri => { const taken = state.some(x => x.r === ri);
-        return h("button",{class:"chip mchip"+(taken?" used":""),type:"button",disabled:taken,onClick:() => {
-          if (locked || pick == null) return; state[pick].r = ri; pick = null; draw(); onChange(); }}, set.items[ri].right); }));
+        const b = h("button",{class:"chip mchip"+(taken?" used":""),type:"button",disabled:taken}, set.items[ri].right);
+        dropZone(b, p => { if (p.side === "l") pair(p.i, ri); });
+        dragSource(b, () => ({side:"r", i:ri}), () => { if (pick != null) pair(pick, ri); });
+        return b; }));
     };
     draws.push(draw); draw(); head.push(h("div",{class:"mgrid"}, colL, colR));
   }
   set.items.forEach((it, gi) => { const fbSlot = h("div");
     items[gi] = { el:fbSlot, fbSlot, quietOk:true, isAnswered:() => state[gi].r != null,
-      check(){ locked = true; const ok = state[gi].r === gi; marks[gi] = ok ? "right" : "wrong"; if (gi === set.items.length-1) draws.forEach(d => d());
+      check(){ const ok = state[gi].r === gi; marks[gi] = ok ? "right" : "wrong"; draws.forEach(d => d());
         return { ok, correct: it.left+" = "+it.right, why: it.why, prompt: it.left }; } }; });
   return { head, items };
 }
 function reorderItem(it, onChange){
   const tiles = shuffle(it.words.map((w,i) => ({w, i, used:false}))), ans = []; let locked = false;
-  const bankEl = h("div",{class:"bank"}), ansEl = h("div",{class:"answer-line empty"}), fbSlot = h("div");
+  const bankEl = h("div",{class:"bank"}), ansEl = dropZone(h("div",{class:"answer-line empty"}), t => add(t)), fbSlot = h("div");
+  const add = t => { if (locked || tiles[t].used) return; tiles[t].used = true; ans.push(tiles[t]); refresh(); onChange(); };
   function refresh(){
-    bankEl.replaceChildren(...tiles.map(t => h("button",{class:"chip"+(t.used?" used":""),type:"button",disabled:t.used,onClick:() => {
-      if (locked) return; t.used = true; ans.push(t); refresh(); onChange(); }}, t.w)));
+    bankEl.replaceChildren(...tiles.map((t, ti) => { const b = h("button",{class:"chip"+(t.used?" used":""),type:"button",disabled:t.used}, t.w);
+      dragSource(b, () => ti, () => add(ti)); return b; }));
     ansEl.replaceChildren(...ans.map((t,k) => h("button",{class:"chip on",type:"button",onClick:() => {
-      if (locked) return; t.used = false; ans.splice(k,1); refresh(); onChange(); }}, t.w)));
+      if (locked) return; t.used = false; ans.splice(k,1); refresh(); }}, t.w)));
     ansEl.classList.toggle("empty", ans.length === 0);
   }
   refresh();
@@ -1338,36 +1402,52 @@ function subView(set, items){
   if (set.type === "gap" || (set.type === "cloze" && set.mode !== "type")) v.bank = makeBank(items, set.distractors);
   return v;
 }
+const MANUAL = new Set(["form","fix","dictation","transform","translate","answer"]);
 function exerciseSet(set, onDone){
   const wrap = h("section",{class:"exset"});
   const coreN = set.core && set.core > 0 && set.core < set.items.length ? set.core : set.items.length;
   const main = subView(set, set.items.slice(0, coreN));
   const extra = coreN < set.items.length ? subView(set, set.items.slice(coreN)) : null;
   function build(){
-    let checked = false;
-    const upd = () => { btn.disabled = checked || !built.items.every(i => i.isAnswered()); };
-    const built = BUILD[main.type](main, upd);
-    const extraHost = h("div");
-    const btn = h("button",{class:"btn block",type:"button",disabled:true,style:"margin-top:14px",onClick:() => {
-      if (checked) return; checked = true;
-      const res = built.items.map(i => { const r = i.check(); const quiet = i.quietOk && r.ok;
-        i.fbSlot.replaceChildren(...(quiet ? [] : [h("div",{class:"fbtxt "+(r.ok?"ok":"bad")},
-          r.self ? ["Đáp án mẫu: ", h("b",null,r.correct)] : r.ok ? "Đúng rồi!" : ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null)])); return r; });
+    const N = main.items.length, done = Array(N).fill(false), res = Array(N).fill(null), cbs = []; let cnt = 0, built = null;
+    const manual = MANUAL.has(main.type) || (main.type === "cloze" && main.mode === "type"), counted = !main._np;
+    if (counted){ PG.total += N; pgDraw(); }
+    const scoreBox = h("div"), extraHost = h("div");
+    const finishSet = () => {
       const right = res.filter(r => r.ok).length, total = res.length;
       const quietScore = (main.ungraded && !main.showScore) || SELF_TYPES.has(main.type);
       const msg = main.doneMsg ? main.doneMsg : SELF_TYPES.has(main.type) ? "Bạn đã so với đáp án mẫu. Phần này không tính điểm." : quietScore ? "Đoán xong rồi, không tính điểm. Lát nữa mình sẽ gặp lại các từ này."
         : right === total ? "Tuyệt vời, đúng hết!" : right/total >= 0.6 ? "Khá lắm! Xem lại các câu sai nhé." : "Không sao, đọc phần giải thích rồi thử lại nhé.";
-      const retry = h("button",{class:"btn soft",type:"button",style:"margin-left:auto",onClick:() => { wrap.replaceChildren(...build()); }}, "Làm lại");
+      const retry = h("button",{class:"btn soft",type:"button",style:"margin-left:auto",onClick:() => {
+        if (counted){ PG.total -= N; PG.done -= cnt; pgDraw(); } wrap.replaceChildren(...build()); }}, "Làm lại");
       const exBtn = extra ? h("button",{class:"btn soft block",type:"button",style:"margin-top:10px",onClick:() => {
         exBtn.hidden = true; extraHost.replaceChildren(h("div",{class:"card tint flat small",style:"margin-top:12px"},"Làm thêm "+extra.items.length+" câu để chắc hơn (không bắt buộc)."),
-          exerciseSet(Object.assign({}, extra, {title:"Làm thêm: "+set.title, core:null}))); }}, "➕ Làm thêm "+extra.items.length+" câu") : null;
+          exerciseSet(Object.assign({}, extra, {title:"Làm thêm: "+set.title, core:null, _np:true}))); }}, "➕ Làm thêm "+extra.items.length+" câu") : null;
       scoreBox.replaceChildren(h("div",{class:"score"}, mascot(right === total ? "cheer" : "happy"),
-        h("div",null, quietScore || main.doneMsg ? "Xong rồi" : right+" / "+total+" câu đúng", h("div",{class:"small muted"}, msg)), retry), ...(exBtn ? [exBtn] : []));
-      btn.hidden = true; recordResult(main, res); onDone && onDone(right, total, res);
-    }}, "Kiểm tra");
-    const scoreBox = h("div");
+        h("div",null, quietScore || main.doneMsg ? "Xong rồi" : right+" / "+total+" câu đúng", h("div",{class:"small muted"}, msg)), retry), exBtn);
+      recordResult(main, res); onDone && onDone(right, total, res);
+    };
+    const checkOne = i => {
+      if (done[i] || !built) return; const it = built.items[i]; if (!it.isAnswered()) return;
+      done[i] = true; const r = it.check(); res[i] = r; cnt++;
+      const quiet = it.quietOk && r.ok;
+      it.fbSlot.replaceChildren(quiet ? null : h("div",{class:"fbtxt "+(r.ok?"ok":"bad")},
+        r.self ? ["Đáp án mẫu: ", h("b",null,r.correct)] : r.ok ? "Đúng rồi!" : ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null));
+      if (cbs[i]) cbs[i].remove();
+      if (counted){ PG.done++; pgDraw(); }
+      if (cnt === N) finishSet();
+    };
+    const upd = () => { if (!built) return;
+      if (!manual) built.items.forEach((_, i) => checkOne(i));
+      else built.items.forEach((_, i) => { if (cbs[i]) cbs[i].disabled = done[i] || !built.items[i].isAnswered(); }); };
+    built = BUILD[main.type](main, upd);
+    if (manual) built.items.forEach((it, i) => {
+      const cb = h("button",{class:"btn soft sm",type:"button",disabled:true,style:"margin-top:8px",onClick:() => checkOne(i)}, SELF_TYPES.has(main.type) ? "So với đáp án mẫu" : "Kiểm tra câu này");
+      cbs[i] = cb; if (it.fbSlot && it.fbSlot.parentNode === it.el) it.el.insertBefore(cb, it.fbSlot); else it.el.append(cb);
+      it.el.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.tagName === "INPUT"){ e.preventDefault(); checkOne(i); } });
+    });
     return [h("h3",null,set.title), set.instruction ? h("p",{class:"muted small"}, set.instruction) : null,
-      ...built.head, ...built.items.map(i => i.el).filter(Boolean), btn, scoreBox, extraHost];
+      ...built.head, ...built.items.map(i => i.el).filter(Boolean), scoreBox, extraHost];
   }
   wrap.replaceChildren(...build());
   return wrap;
@@ -1378,7 +1458,7 @@ function setsBlock(sets, onCoreDone){
   if (!core.length) onCoreDone();
   if (extra.length){
     const host = h("div"), cnt = extra.reduce((a, s) => a + s.items.length, 0);
-    const btn = h("button",{class:"btn soft",type:"button",onClick:() => { btn.hidden = true; host.replaceChildren(...extra.map(s => h("div",{class:"card"}, exerciseSet(s)))); }}, "➕ Làm thêm "+cnt+" câu");
+    const btn = h("button",{class:"btn soft",type:"button",onClick:() => { btn.hidden = true; host.replaceChildren(...extra.map(s => h("div",{class:"card"}, exerciseSet(Object.assign({}, s, {_np:true}))))); }}, "➕ Làm thêm "+cnt+" câu");
     out.push(h("div",{class:"card tint flat"}, h("h3",null,"Làm thêm"), h("p",{class:"muted small"}, cnt+" câu nữa để chắc hơn, không bắt buộc."), btn), host);
   }
   return out;
@@ -1579,9 +1659,11 @@ function lessonView(id, idx){
       h("span",null,sess.steps[s.key] ? "✅" : s.icon), s.title, h("small",null,s.min))));
     const ok = !!sess.steps[step.key];
     setTimeout(() => { const on = nav.querySelector(".stepbtn.on"); if (on && on.scrollIntoView) on.scrollIntoView({inline:"center", block:"nearest"}); }, 0);
+    pgDraw();
     next.disabled = !ok; next.textContent = last ? "Hoàn thành buổi học" : "Tiếp tục";
     skip.replaceChildren(!ok && !last ? h("button",{class:"linkbtn",type:"button",onClick:() => go(idx+1)},"Bỏ qua bước này") : null);
   }
+  Object.assign(PG, { on:true, base:steps.filter((s, i) => i !== idx && sess.steps[s.key]).length / steps.length, span:1 / steps.length, label:"Bước " + (idx+1) + "/" + steps.length, stepDone:() => !!sess.steps[step.key] });
   const ctx = { sessionId:id, done(){ if (!sess.steps[step.key]){ sess.steps[step.key] = true; save(); } refresh(); } };
   next.addEventListener("click", () => { if (last){ finish(id); } else go(idx+1); });
   const body = { sets:setsStep, read:readStep, listen:listenStep, notice:noticeStep, output:outputStep, report:reportStep }[step.type](step, ctx);
@@ -1844,6 +1926,7 @@ function challengeView(sid){
   const c = CH[sid], meta = findSession(sid);
   if (!c || !meta) return h("div",null, h("a",{class:"btn soft",href:"#/week"},"Về lịch tuần"), h("div",{class:"card",style:"margin-top:16px"}, h("h2",null,"Buổi này chưa có Challenge")));
   const all = c.stages.reduce((a, g) => a + g.sets.length, 0); let left = all, right = 0, total = 0;
+  Object.assign(PG, { on:true, label:"Challenge" });
   const end = h("div"), prev = S.challenges[sid];
   const onSet = (r, t) => { right += r; total += t; if (--left === 0){
     S.challenges[sid] = { at:dkey(new Date()), right, total }; save(); setTimeout(petals, 200);
@@ -1974,7 +2057,7 @@ const TAB_OF = { challenge:"week", content:"week", lesson:"week", done:"week", p
 const tabsEl = document.getElementById("tabs");
 tabsEl.replaceChildren(...TABS.map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, h("span",null,ic), t)));
 function route(){
-  stopAudio(); activeLesson = null; review = null;
+  stopAudio(); activeLesson = null; review = null; pgReset();
   const parts = location.hash.replace(/^#\/?/,"").split("/"), page = parts[0] || "home";
   document.body.classList.toggle("immersive", page === "lesson");
   let view;

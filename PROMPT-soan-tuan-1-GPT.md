@@ -294,7 +294,10 @@ Lần thử trước, file bị lỗi vì **nội dung được sinh bằng vòn
 5. **`listenpick`**: câu hỏi `q` phải liên quan trực tiếp đến câu `say`, và đáp án phải **nghe được từ chính câu `say`**. Cấm các câu hỏi chung chung như "Who or what is mentioned?" lặp lại nhiều lần. Ví dụ tốt: say "My uncle is a doctor." / q "Chú của bạn ấy làm nghề gì?" / options doctor, driver, nurse.
 6. **`truefalse`**: mỗi câu là một nhận định có nghĩa, đúng hoặc sai rõ ràng theo bài đọc, theo ngữ pháp hoặc theo nghĩa từ. Cấm nhận định phi lý (ví dụ "brother là một loại thời tiết").
 7. Đa dạng hóa thật sự: đổi chủ ngữ, tình huống, từ vựng, kiểu hỏi. Không có 10 câu cùng một khuôn chỉ đổi một từ.
-8. Chất lượng quan trọng hơn tốc độ. Nếu bạn thấy mình sắp viết câu thứ 10 theo cùng một khuôn, hãy dừng lại và nghĩ một kiểu câu khác.
+8. **Tên người và giới tính phải khớp.** Tên con trai (Tom, Ben, Jack, Nam, Minh, David, Peter...) chỉ đi với he/his/father/brother/grandfather/uncle/boy/man. Tên con gái (Lan, Mai, Anna, Linda, Nhi, Lucy, Sara...) chỉ đi với she/her/mother/sister/grandmother/aunt/girl/woman. **Cấm** các câu như "Tom is my grandmother", "Lan is my father". Khi viết câu về quan hệ gia đình, hãy kiểm tra lại từng câu: tên, đại từ và từ chỉ quan hệ có cùng giới tính không. Nên dùng tên ít gây nhầm (Tom, Anna) và ghi rõ giới tính trong bài đọc.
+9. **Chữ hoa trong câu điền từ.** Với mọi dạng có chỗ trống `___` (`gap`, `cloze`, `form`) và với các lựa chọn của câu trắc nghiệm điền từ: nếu chỗ trống nằm **giữa câu** thì đáp án, `bank` và `options` phải viết **thường** ("is", "my", "mother"). Chỉ viết hoa khi chỗ trống đứng **đầu câu**, hoặc khi đó là danh từ riêng hay chữ "I" ("Tom", "Vietnam", "I"). Cấm viết hoa lung tung như "My ___ is Tom" với đáp án "Mother" hay "The ___ is a doctor" với đáp án "Father".
+10. **Mỗi chỗ trống phải chỉ có một đáp án hợp lý** trong ngữ cảnh. Với `gap` và `cloze` có `bank`, đảm bảo mỗi từ trong bank chỉ hợp với đúng một câu (hoặc nếu hợp nhiều câu thì các câu đó phải có đáp án riêng rõ ràng), để học viên không chọn một từ hợp lý nhưng bị chấm sai.
+11. Chất lượng quan trọng hơn tốc độ.
 
 # CÁCH GIAO KẾT QUẢ: TỰ LÀM HẾT 13 FILE TRONG MỘT LẦN CHẠY, KHÔNG DỪNG, KHÔNG HỎI
 
@@ -317,6 +320,7 @@ Bạn phải **tự làm liên tục cả 13 file trong cùng một lần chạy
 
 - [ ] **Mọi câu do tôi tự viết, không sinh bằng mẫu hay vòng lặp; mỗi `why` riêng cho từng câu; đã tự kiểm tra ngữ pháp của từng đáp án.**
 - [ ] `answer` trùng từng ký tự với một chuỗi trong `options`; các `options` không trùng nhau.
+- [ ] Tên người, đại từ và từ chỉ quan hệ cùng giới tính ("Tom is my grandmother" là sai). Chỗ trống giữa câu thì đáp án, bank, options viết thường.
 - [ ] JSON hợp lệ: nháy kép thẳng, không dấu phẩy thừa, không chú thích, `true/false` không có nháy.
 - [ ] Số câu của từng bộ khớp bảng (kể cả các bộ nhỏ và Challenge); `core` đúng; `cloze` có số `___` bằng số `items`.
 - [ ] `mcq`/`oddone`/`listenpick`/`dialogue`: `answer` trùng đúng một chuỗi trong `options`.
