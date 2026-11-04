@@ -1747,6 +1747,7 @@ function settingsView(){
   const notMon = parseKey(startVal).getDay() !== 1;
   const dateIn = h("input",{class:"txt",type:"date",value:startVal,onChange:e => { if (e.target.value){ S.settings.startDate = e.target.value; save(); toast("Đã lưu ngày bắt đầu"); route(); } }});
   return h("div",null, h("h1",null,"Cài đặt"),
+    h("div",{class:"card tint"}, h("h3",null,"📚 Tải bài học lên"), h("p",{class:"muted small"},"Dán JSON do GPT soạn, kiểm tra rồi dùng ngay."), h("a",{class:"btn",href:"#/content"},"Mở trang tải bài")),
     h("div",{class:"card"}, h("h3",null,"Học viên"), h("p",{class:"muted small"},"Tên hiện trong lời chào ở trang chủ."), nameIn),
     h("div",{class:"card"}, h("h3",null,"Giao diện"), h("div",{class:"row",style:"flex-wrap:nowrap"}, tk("light"), tk("night"))),
     h("div",{class:"card"}, h("h3",null,"Linh vật"), h("div",{class:"row",style:"flex-wrap:nowrap"}, mk("bunny"), mk("hang"))),
@@ -1764,7 +1765,6 @@ function teacherView(){
   const ta = h("textarea",{class:"txt",rows:3,placeholder:"Ví dụ: Tuần này em làm tốt phần am/is/are, nhớ đọc to các câu nhé!"}); ta.value = S.teacherNote ? S.teacherNote.text : "";
   const writings = Object.entries(S.writing);
   return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"), h("h1",{style:"margin-top:16px"},"Khu người hướng dẫn"),
-    h("a",{class:"card day",href:"#/content"}, h("div",{class:"when",style:"font-size:1.7rem"},"📚"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Tải bài học lên"), h("div",{class:"small muted"},"Dán JSON do GPT soạn, kiểm tra rồi dùng ngay"))),
     h("div",{class:"card tint flat small"},"🧪 Đây là bản demo. Khi dùng thật, nên bảo vệ trang này bằng một tài khoản đăng nhập riêng để học viên không vào nhầm."),
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneCount()+"/"+allSessions().length),h("span",null,"buổi xong")), h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút học")), h("div",{class:"stat"},h("b",null,streak()),h("span",null,"ngày liên tiếp"))),
     h("p",{class:"muted"}, lastDay ? "Lần học gần nhất: "+lastDay+"." : "Chưa có buổi học nào."),
@@ -1912,7 +1912,7 @@ function contentView(){
       h("a",{class:"pill",href:"#/lesson/w"+n+"-mon/0",style:"text-decoration:none"},"Xem thử"),
       c ? h("button",{class:"pill",type:"button",onClick:() => { const a = h("a",{href:URL.createObjectURL(new Blob([JSON.stringify(c.json,null,2)],{type:"application/json"})),download:"week-"+n+".json"}); document.body.append(a); a.click(); a.remove(); }},"Tải JSON") : null,
       c ? h("button",{class:"pill lock",type:"button",onClick:async () => { if (confirm("Xóa nội dung tuần "+n+"? Tiến độ của học viên vẫn được giữ.")){ await deleteWeek(n); route(); } }},"Xóa") : null); });
-  return h("div",null, h("a",{class:"btn soft",href:"#/teacher"},"← Khu người hướng dẫn"), h("h1",{style:"margin-top:16px"},"Tải bài học lên"),
+  return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"), h("h1",{style:"margin-top:16px"},"Tải bài học lên"),
     h("div",{class:"card tint flat small"}, "1) Dùng prompt trong file PROMPT-soan-tuan-1-GPT.md để GPT soạn bài. 2) Dán JSON hoặc chọn file ở dưới. 3) Xem kết quả kiểm tra rồi bấm Lưu. Tuần có sẵn sẽ được thay bằng bản mới."),
     h("div",{class:"card"}, h("h3",null,"Dán hoặc chọn file JSON"), ta,
       h("div",{class:"row",style:"margin-top:10px"}, h("button",{class:"btn",type:"button",onClick:check},"Kiểm tra"), h("button",{class:"btn soft",type:"button",onClick:() => fileIn.click()},"Chọn file…"), fileIn)),
