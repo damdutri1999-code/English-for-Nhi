@@ -410,6 +410,19 @@ body.hasprog{padding-top:20px}
 .txt{background:var(--paper)}
 .lhead .gear{flex:none}
 body.isfs .sync{display:none}
+
+/* cloze và điền từ trên điện thoại: chữ gọn, khung chọn từ luôn nằm sát đáy màn hình */
+.cloze{line-height:2.05; font-size:1.02rem; font-weight:600; text-align:left; word-spacing:normal; letter-spacing:normal}
+.cloze .blank{min-width:60px; padding:1px 8px; margin:0 2px; font-size:1rem}
+.cloze .txt.inline{min-width:70px; width:90px}
+.bank.stick{position:sticky; bottom:calc(10px + env(safe-area-inset-bottom)); z-index:6; background:var(--paper); border:2px solid var(--p200); border-radius:16px; padding:8px 10px; margin:10px 0; gap:6px; box-shadow:0 -6px 16px rgba(156,33,89,.14)}
+body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
+.bank.stick::before{content:"🧰 Kho từ (kéo hoặc chạm vào ô trống)"; font-size:.72rem}
+.bank.stick .chip{padding:5px 11px; font-size:.98rem; border-radius:11px}
+@media (max-width:480px){
+  .cloze{font-size:1rem; line-height:2}
+  .reading{font-size:1.05rem; line-height:1.7; text-align:left}
+}
 </style>
 </head>
 <body>
@@ -1387,7 +1400,7 @@ const dragHint = t => h("p",{class:"dhint"}, "👆 " + t);
 function buildGap(set, onChange){
   const bank = set.bank.map((w,i) => ({w, i, used:false}));
   const blanks = set.items.map(() => ({v:null})), locked = set.items.map(() => false); let armed = null;
-  const bankEl = h("div",{class:"bank"});
+  const bankEl = h("div",{class:"bank stick"});
   const place = (qi, ci) => { if (locked[qi] || bank[ci].used) return;
     if (blanks[qi].v != null) bank[blanks[qi].v].used = false;   // thả từ mới vào ô đã có từ thì thay từ cũ
     blanks[qi].v = ci; bank[ci].used = true; armed = null; refresh(); onChange(); };
@@ -1414,7 +1427,7 @@ function buildGap(set, onChange){
 }
 function buildCloze(set, onChange){
   const typed = set.mode === "type", parts = set.passage.split("___"), n = set.items.length, vals = Array(n).fill(null), locked = Array(n).fill(false); let armed = null;
-  const bank = typed ? [] : set.bank.map((w,i) => ({w, i, used:false})), bankEl = h("div",{class:"bank"}), blanks = [], nodes = [];
+  const bank = typed ? [] : set.bank.map((w,i) => ({w, i, used:false})), bankEl = h("div",{class:"bank stick"}), blanks = [], nodes = [];
   const place = (i, ci) => { if (locked[i] || bank[ci].used) return; if (vals[i] != null) bank[vals[i]].used = false; vals[i] = ci; bank[ci].used = true; armed = null; refresh(); onChange(); };
   const fbs = [];
   const clearBlank = i => { if (locked[i] || vals[i] == null) return; bank[vals[i]].used = false; vals[i] = null; blanks[i].classList.remove("right","wrong"); if (fbs[i]) fbs[i].replaceChildren(); armed = null; refresh(); };
