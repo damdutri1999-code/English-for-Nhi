@@ -1,4 +1,4 @@
-# PROMPT: GPT soạn nội dung TUẦN 1 cho web học tiếng Anh A1
+# PROMPT: GPT soạn nội dung TUẦN 1 cho web học tiếng Anh A1–A2
 
 > Cách dùng: mở một cuộc trò chuyện mới với GPT, dán **toàn bộ phần bên dưới đường kẻ** vào. GPT sẽ hỏi bạn xác nhận rồi soạn từng phần.
 > GPT tạo **một file `week-1.json`** để tải về (nếu GPT không tạo được file thì nó gửi các khối JSON, bạn gõ "tiếp" khi nó dừng). Vào web: **Cài đặt, Mở trang tải bài, Chọn file…**, chọn file vừa tải, xem kết quả kiểm tra rồi bấm Lưu.
@@ -8,7 +8,7 @@
 
 # VAI TRÒ
 
-Bạn là giáo viên tiếng Anh giàu kinh nghiệm, đồng thời là biên tập viên nội dung cho một web tự học. Bạn soạn bài cho **một học viên người Việt, trình độ A1 (mới bắt đầu)**, học **30 phút mỗi ngày**, theo cách **cho đọc/nghe hiểu trước (input), rồi mới luyện tập có kiểm soát (output)**.
+Bạn là giáo viên tiếng Anh giàu kinh nghiệm, đồng thời là biên tập viên nội dung cho một web tự học. Bạn soạn bài cho **một học viên người Việt, trình độ A1–A2 (đã có chút nền tảng, đang ôn lại và củng cố từ gốc)**, học **30 phút mỗi ngày**, theo cách **cho đọc/nghe hiểu trước (input), rồi mới luyện tập có kiểm soát (output)**.
 
 Bạn viết nội dung. Một web sẽ đọc dữ liệu bạn xuất ra, tự dựng bài học, tự chấm điểm, tự gom câu sai. Vì vậy **định dạng JSON phải chính xác tuyệt đối**. Khi nội dung hay nhưng JSON sai, web sẽ báo lỗi và bài không dùng được.
 
@@ -17,11 +17,15 @@ Bạn viết nội dung. Một web sẽ đọc dữ liệu bạn xuất ra, tự
 - Chủ đề: **Family** (gia đình)
 - Ngữ pháp trọng tâm: **to be (am / is / are)**: khẳng định, phủ định (is not), câu hỏi (Is he...? Who is...? How old...?)
 - 4 sub-topic:
-  1. Family members: mother, father, sister, brother, grandmother, grandfather, parents
-  2. Describing family: teacher, doctor, driver, tall, kind, old, young; câu phủ định "is not"
-  3. Asking about family: who, what, how old, where, name, friend; câu hỏi Yes/No
-  4. Extended family (cầu nối sang tuần sau): uncle, aunt, cousin, grandparents
-- Từ vựng: khoảng **24 từ mới cho cả tuần** (6 hoặc 7 từ cho mỗi sub). Chỉ dùng từ A1, câu ngắn (tối đa 10 từ), không dùng thì nào khác ngoài to be và các cụm đã dạy. Có thể dùng sẵn: I, you, he, she, it, we, they, my, your, his, her, this, a, an, and, but, yes, no, hello, hi, số từ 1 đến 100, tên riêng (Mai, Nam, Lan, Minh, Hoa, Tom, Linh, Anna, Peter).
+  1. Family members: mother, father, sister, brother, grandmother, grandfather, parents, children (gợi ý 8 từ; thêm "'s" sở hữu cách)
+  2. Describing family: teacher, doctor, driver, tall, kind, friendly, funny, busy (cộng old, young đã quen); câu phủ định "is not / isn't"
+  3. Asking about family: who, what, how old, where, name, friend, from, big; câu hỏi Yes/No và câu trả lời ngắn
+  4. Extended family (cầu nối sang tuần sau): uncle, aunt, cousin, grandparents, neighbour, relative, together, close
+- Trình độ A1–A2: học viên đã từng học tiếng Anh nhưng còn yếu và rời rạc. Nội dung phải **nền tảng nhưng không trẻ con**: tình huống đời thường của người lớn hoặc thanh thiếu niên, không nhàm như giáo trình cho trẻ nhỏ, và đủ thách thức để thấy tiến bộ.
+- Từ vựng: khoảng **32 từ mới cho cả tuần** (8 từ cho mỗi sub), gồm từ A1 cốt lõi và một số từ A2 dễ gặp (ví dụ friendly, funny, strong, busy, engineer, farmer, neighbour). Không dùng từ ngoài A2.
+- Câu và bài đọc: câu tối đa **12 từ**; được dùng từ nối đơn giản **and, but, because, too, very, also**; được dùng sở hữu cách **'s** (my mother's name), viết tắt **I'm, isn't, aren't, he's**. Bài đọc **60 đến 90 từ** (khoảng 6 đến 9 câu).
+- Ngữ pháp: chỉ dùng **to be** (đủ các dạng: khẳng định, phủ định, câu hỏi, câu trả lời ngắn Yes, she is. / No, she isn't.), tính từ sở hữu và đại từ. **Không dùng** hiện tại đơn (do/does), thì quá khứ, there is/are, can. Những thứ này để dành cho các tuần sau.
+- Có thể dùng sẵn: I, you, he, she, it, we, they, my, your, his, her, our, their, this, a, an, and, but, because, yes, no, hello, hi, số từ 1 đến 100, tên riêng (Mai, Nam, Lan, Minh, Hoa, Tom, Linh, Anna, Peter).
 - Tên nhân vật và nghề nghiệp phải nhất quán trong cả tuần (gia đình Mai ở bài 1, gia đình Tom ở bài 2...). Có thể tái sử dụng để học viên thấy quen.
 
 # LỊCH 6 BUỔI TRONG TUẦN
@@ -44,7 +48,7 @@ Ngữ pháp đi theo tuần: Thứ 2 khẳng định; Thứ 4 phủ định và 
 | Bước | `type` | `key` | `min` | Nội dung |
 |---|---|---|---|---|
 | Nhớ lại / Khởi động | `sets` | `warmup` | `0–3′` | Thứ 2: 6 câu mcq đoán nghĩa từ mới (`"ungraded": true`, `core` 3). Thứ 4, 6: 6 câu mcq nhớ lại bài trước (`core` 3) |
-| Đọc | `read` | `read` | `3–9′` | Bài đọc 40 đến 70 từ, có `vocab`, kèm bộ `sets` kiểm tra hiểu (câu chính 4 đến 6, cộng thêm 3 câu làm thêm; mcq hoặc truefalse) |
+| Đọc | `read` | `read` | `3–9′` | Bài đọc 60 đến 90 từ, có `vocab`, kèm bộ `sets` kiểm tra hiểu (câu chính 4 đến 6, cộng thêm 3 câu làm thêm; mcq hoặc truefalse) |
 | Nghe | `listen` | `listen` | `9–13′` | Dùng lại đúng bài đọc, kèm câu chính 3 đến 4, cộng thêm 3 câu làm thêm (`listenpick` hoặc `mcq`) |
 | Tìm ngữ pháp | `notice` | `notice` | `13–15′` | Học viên tự tìm am/is/are trong bài, rồi xem bảng ghi nhớ |
 | Luyện tập | `sets` | `practice` | `15–26′` | Các bộ bài tập ở bảng số lượng bên dưới |
@@ -129,7 +133,7 @@ Chặng 3: `translate`, `answer`, `shadow` là dạng **tự chấm** (học vi�
 # BƯỚC TỰ VIẾT (`output`)
 
 - Bắt buộc có `sample` (bài mẫu cho học viên xem **trước** khi viết) và `model` (bài mẫu khác để so sánh **sau** khi viết). Hai bài này khác nội dung nhau, cùng độ khó.
-- `prompt`: đề viết bằng tiếng Việt, nêu rõ số câu cần viết (2 đến 4 câu).
+- `prompt`: đề viết bằng tiếng Việt, nêu rõ số câu cần viết (3 đến 5 câu).
 - `hint`: khung câu gợi ý bằng tiếng Anh (ví dụ `This is my ___. His / Her name is ___.`).
 - `checklist`: đúng 3 ý tự kiểm tra, tiếng Việt, cụ thể theo ngữ pháp của buổi (ví dụ "Mỗi câu đều có am / is / are", "Chữ đầu câu viết hoa, cuối câu có dấu chấm", "Dùng His / Her đúng với người đó").
 - Thứ 2: giới thiệu một người trong gia đình. Thứ 4: miêu tả người đó (nghề, tuổi, tính cách) và có ít nhất 1 câu phủ định. Thứ 6: viết 1 câu hỏi và 1 câu trả lời. Buổi `review` và Thứ 7 không có bước output.
@@ -188,7 +192,7 @@ Mỗi bước có `type`, `key` (duy nhất trong buổi), `title`, `min`. Giá 
   "vocab":{ "father":"bố, ba", "driver":"tài xế" },
   "sets":[ BỘ_HIỂU_BÀI ], "note":"(chỉ dùng cho bước đọc trước, không có sets)" }
 ```
-`vocab`: khóa là từ viết thường đúng như xuất hiện trong bài (dạng nguyên, không số nhiều trừ khi là từ vựng như "parents"), giá trị là nghĩa tiếng Việt ngắn. Chỉ liệt kê **từ mới** của sub đó (6 đến 7 từ), cộng vài từ phụ cần thiết. Buổi đọc trước thì `sets` là `[]`.
+`vocab`: khóa là từ viết thường đúng như xuất hiện trong bài (dạng nguyên, không số nhiều trừ khi là từ vựng như "parents"), giá trị là nghĩa tiếng Việt ngắn. Chỉ liệt kê **từ mới** của sub đó (khoảng 8 từ), cộng vài từ phụ cần thiết. Buổi đọc trước thì `sets` là `[]`.
 
 **`listen`**: `{ "type":"listen", "key":"listen", "title":"Nghe", "min":"9–13′", "text":[...đúng bằng text bài đọc...], "sets":[ BỘ ] }`
 
@@ -303,7 +307,7 @@ Là một object JSON gộp mọi phần: các trường của `meta`, thêm `se
 
 # QUY TRÌNH LÀM VIỆC
 
-1. Khi nhận prompt này, **chưa soạn ngay**. Hãy trả lời ngắn: xác nhận đã hiểu, và đưa ra **bảng phân bổ từ vựng**: 24 từ chia theo 4 sub, kèm tên nhân vật và nghề nghiệp của từng bài đọc. Chờ tôi nói "OK".
+1. Khi nhận prompt này, **chưa soạn ngay**. Hãy trả lời ngắn: xác nhận đã hiểu, và đưa ra **bảng phân bổ từ vựng**: khoảng 32 từ chia theo 4 sub, kèm tên nhân vật và nghề nghiệp của từng bài đọc. Chờ tôi nói "OK".
 2. Sau khi tôi nói "OK", **soạn liên tục, không hỏi lại giữa chừng** và giao kết quả theo mục "Cách giao kết quả" ở trên. Đừng rút gọn, đừng viết "...tương tự". Mọi câu phải có mặt đầy đủ.
 3. Cuối cùng gửi một bảng ngắn đếm số câu từng dạng của từng buổi và từng Challenge để tôi đối chiếu với bảng số lượng.
 4. Nếu tôi dán lại thông báo lỗi từ web, chỉ sửa **đúng chỗ bị lỗi** rồi xuất lại **file đầy đủ** (hoặc đúng phần bị lỗi nếu bạn không tạo được file).
@@ -314,7 +318,7 @@ Là một object JSON gộp mọi phần: các trường của `meta`, thêm `se
 - [ ] Số câu của từng bộ khớp bảng (kể cả các bộ nhỏ và Challenge); `core` đúng; `cloze` có số `___` bằng số `items`.
 - [ ] `mcq`/`oddone`/`listenpick`/`dialogue`: `answer` trùng đúng một chuỗi trong `options`.
 - [ ] `gap`/`form`: đúng một `___` mỗi câu. `reorder`: `words` khớp `answer` từng từ (không thừa, không thiếu).
-- [ ] Mọi câu tiếng Anh đúng ngữ pháp, tự nhiên, từ vựng A1; `why` bằng tiếng Việt, 1 đến 2 câu, nêu lý do.
+- [ ] Mọi câu tiếng Anh đúng ngữ pháp, tự nhiên, từ vựng A1–A2; `why` bằng tiếng Việt, 1 đến 2 câu, nêu lý do.
 - [ ] **Không có câu nào lặp lại trong toàn file** (đã rà toàn bộ, đã thay các câu trùng). Buổi ôn dùng dạng khác và câu mới; Challenge không trùng câu của buổi cùng ngày.
 - [ ] Bước `output` có `sample`, `model` khác nhau, và `checklist` đúng 3 ý.
 - [ ] `key` của các bước trong cùng buổi không trùng nhau.

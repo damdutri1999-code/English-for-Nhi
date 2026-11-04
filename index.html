@@ -979,7 +979,7 @@ function validateWeek(j){
     stats.sessions.push({ day:w, title:s.title || "", n, core, extra:n - core, min:Math.round(sec / 60), cn, cmin:Math.round(csec / 60) });
   });
   stats.vocab = vocab.size;
-  if (vocab.size && vocab.size < 18) W.push("Mới có " + vocab.size + " từ vựng trong các bài đọc (mục tiêu khoảng 24 từ mỗi tuần).");
+  if (vocab.size && vocab.size < 24) W.push("Mới có " + vocab.size + " từ vựng trong các bài đọc (mục tiêu khoảng 32 từ mỗi tuần).");
   return { E, W, stats };
 }
 function parseWeekText(txt){
