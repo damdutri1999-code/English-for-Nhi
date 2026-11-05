@@ -204,6 +204,8 @@ Mỗi bước có `type`, `key` (duy nhất trong buổi), `title`, `min`. Giá 
 ```
 `vocab`: khóa là từ viết thường đúng như xuất hiện trong bài (dạng nguyên, không số nhiều trừ khi là từ vựng như "parents"), giá trị là nghĩa tiếng Việt ngắn. Chỉ liệt kê **từ mới** của sub đó (khoảng 8 từ), cộng vài từ phụ cần thiết. 
 
+**Bài đọc luôn hiện bên cạnh câu hỏi** (web tự xếp bài đọc bên trái, câu hỏi bên phải; trên điện thoại có nút "Xem bài đọc"), nên câu hiểu bài cứ hỏi thẳng vào nội dung bài, học viên vừa nhìn bài vừa chọn.
+
 **Bài đọc phải được vận dụng, không đọc suông.** Đọc xong rồi bấm "xong" là vô nghĩa. Mỗi bước `read` phải làm đủ 3 việc, tùy theo nội dung của buổi và của tuần:
 1. `purpose`: một câu tiếng Việt nêu **mục tiêu đọc cụ thể** trước khi đọc, bắt học viên đọc để tìm hoặc so sánh một điều gì đó, ví dụ "Đọc để tìm: Mai có những ai trong gia đình?" hoặc "Đọc để so sánh: gia đình Linh khác gia đình bạn ở điểm nào?". Không viết kiểu "Hãy đọc bài".
 2. Bộ **hiểu bài** (không có `role`): câu hỏi tìm thông tin ngay trong bài.
@@ -384,6 +386,7 @@ Bạn phải **tự làm liên tục cả 13 file trong cùng một lần chạy
 - [ ] **Không có `title` kiểu "Mcq", "Gap", "Cloze"... trong bất kỳ bộ bài nào; `instruction` bằng tiếng Việt, riêng cho từng bộ.**
 - [ ] Mỗi bước `read` có `purpose` cụ thể và có bộ `role:"apply"` dùng bài đọc vào việc có ý nghĩa (không chép lại câu trong bài).
 - [ ] Thứ 2, 3 không có câu phủ định hay câu hỏi; Thứ 4, 5 không có câu hỏi Yes/No (chưa dạy thì chưa hỏi).
+- [ ] Câu hỏi hiểu bài (`q`) là câu hỏi thật, **không bao giờ giống hệt một đáp án** trong `options`. Với kiểu "chọn câu đúng theo bài", `q` là câu hỏi như "Which sentence is true about Tom?" và các `options` là các câu khẳng định khác nhau.
 - [ ] JSON hợp lệ: nháy kép thẳng, không dấu phẩy thừa, không chú thích, `true/false` không có nháy.
 - [ ] Số câu của từng bộ khớp bảng (kể cả các bộ nhỏ và Challenge); `core` đúng; `cloze` có số `___` bằng số `items`.
 - [ ] `listenpick`: `say` là một câu hoàn chỉnh 3 đến 8 từ (sẽ được chép chính tả), `q` hỏi đúng về nội dung câu đó.
