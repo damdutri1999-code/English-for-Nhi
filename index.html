@@ -19,7 +19,7 @@ else{if(L==="nhi")document.documentElement.setAttribute("data-learner","nhi");va
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Baloo 2 và Nunito đều có đủ dấu tiếng Việt -->
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --p50:#fff6f9; --p100:#ffe8f0; --p200:#ffd0e1; --p300:#ffb0cd; --p400:#ff8db7;
@@ -354,8 +354,8 @@ html[data-learner=tri]{
 html[data-learner=tri] body{background:none; background-image:none}
 html[data-learner=tri] body::before{content:""; position:fixed; inset:0; z-index:-2;
   background:
-    radial-gradient(circle at 87.5% 9.5%, #0a1c42 0 21px, transparent 22px),
-    radial-gradient(circle at 86% 11%, #fff6d0 0 26px, #ffe29a 27px 30px, rgba(255,226,154,.16) 31px 64px, rgba(255,226,154,0) 76px),
+    radial-gradient(circle at 90.5% 8.2%, #0a1c42 0 15px, transparent 16px),
+    radial-gradient(circle at 89% 9.4%, rgba(246,200,95,.5) 0 19px, rgba(246,200,95,.35) 20px 21px, rgba(246,200,95,.08) 22px 44px, rgba(246,200,95,0) 54px),
     radial-gradient(1.6px 1.6px at 9% 9%, #fff 98%, transparent), radial-gradient(1.2px 1.2px at 22% 19%, #ffe9b0 98%, transparent),
     radial-gradient(1.8px 1.8px at 37% 7%, #fff 98%, transparent), radial-gradient(1.2px 1.2px at 52% 15%, #fff 98%, transparent),
     radial-gradient(1.6px 1.6px at 66% 8%, #ffe9b0 98%, transparent), radial-gradient(1.2px 1.2px at 74% 24%, #fff 98%, transparent),
@@ -392,6 +392,33 @@ html[data-learner=tri] .toast{background:#0d2552; border:1px solid #f6b84e}
 html[data-learner=tri] .plan-phase>h3,html[data-learner=tri] h3.pgh,html[data-learner=tri] #app>div>div>h3.pgh{color:#fff}
 html[data-learner=tri] #app>div>h1,html[data-learner=tri] #app>div>.weeknav h1{color:#fff}
 html[data-learner=tri] .vq .vtag{background:#fff3da; color:#b8691a}
+/* ---- Trí: giao diện học thuật (serif, phẳng, góc vuông, không linh vật) ---- */
+html[data-learner=tri]{--r:8px; --lift:none}
+html[data-learner=tri] body{font-family:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; font-size:16px; letter-spacing:.003em}
+html[data-learner=tri] h1,html[data-learner=tri] h2,html[data-learner=tri] h3,html[data-learner=tri] .brand b,html[data-learner=tri] .stat b,html[data-learner=tri] .flash .w,html[data-learner=tri] .day .when,html[data-learner=tri] .gtable td:nth-child(2),html[data-learner=tri] .celebrate h1{font-family:"Source Serif 4",Georgia,"Times New Roman",serif; font-weight:600; letter-spacing:0}
+html[data-learner=tri] .card{border-width:1px; border-radius:8px; box-shadow:0 1px 0 rgba(13,37,82,.08)}
+html[data-learner=tri] .btn{border-radius:6px; box-shadow:none; background:#f6b84e; color:#0d2552; font-weight:700; letter-spacing:.02em; padding:12px 20px}
+html[data-learner=tri] .btn:active:not(:disabled){transform:translateY(1px); box-shadow:none}
+html[data-learner=tri] .btn.soft,html[data-learner=tri] .btn.line{border-radius:6px; box-shadow:none; border:1px solid var(--p300); background:var(--paper); color:var(--p700)}
+html[data-learner=tri] .card.today .btn{background:#0d2552; color:#fff; box-shadow:none; border-radius:6px}
+html[data-learner=tri] .card.today{border-radius:8px; background:linear-gradient(180deg,#f6c35f,#f1ac3d)}
+html[data-learner=tri] .pill{border-radius:4px; font-weight:600}
+html[data-learner=tri] .tabs a{border-radius:6px; font-weight:600; justify-content:center; padding:11px 4px}
+html[data-learner=tri] .tabs{border-radius:10px}
+html[data-learner=tri] .stepbtn{border-radius:8px; border-width:1px; font-weight:600}
+html[data-learner=tri] .opt,html[data-learner=tri] .mchoice,html[data-learner=tri] .chip,html[data-learner=tri] .tok{border-radius:6px; border-width:1px; font-weight:600}
+html[data-learner=tri] .model,html[data-learner=tri] .taskbox{border-radius:6px}
+html[data-learner=tri] .hello>span{display:none}
+html[data-learner=tri] .hello{margin-bottom:10px}
+html[data-learner=tri] .bubble{background:transparent; border:0; border-left:3px solid #f6b84e; border-radius:0; padding:4px 0 4px 14px; color:#fff; font-weight:500; font-size:1.02rem}
+html[data-learner=tri] .bubble:before,html[data-learner=tri] .bubble:after{display:none}
+html[data-learner=tri] .brand .logo svg,html[data-learner=tri] .brand svg{filter:none}
+html[data-learner=tri] .celebrate{padding-top:20px}
+html[data-learner=tri] .stat,html[data-learner=tri] .const{border-radius:8px; border-width:1px}
+html[data-learner=tri] .toast{border-radius:6px}
+html[data-learner=tri] .dbox{border-radius:6px}
+html[data-learner=tri] .uchip{border-radius:4px}
+
 
 /* ===== Tối ưu điện thoại ===== */
 html{-webkit-tap-highlight-color:transparent}
@@ -660,7 +687,7 @@ const LEARNERS = {
   nhi:{ id:"nhi", name:"Nhi", level:"A1–A2", key:"a1-english-progress-v1", ckey:"a1-content-v1", dkey:"a1-draft-v1", docId:"learner-nhi-7k3q9x2m", cp:"w", dir:"weeks",
         mascot:"bunny", theme:"light", title:"Học tiếng Anh", sub:"cùng Thỏ ngọc", pageTitle:"Học tiếng Anh cùng Thỏ ngọc", themeColor:"#ffd0e1", levels:["A2","A2-B1","B1"] },
   tri:{ id:"tri", name:"Trí", level:"B2–C1", key:"tri-english-progress-v1", ckey:"tri-content-v1", dkey:"tri-draft-v1", docId:"learner-tri-5m8w2c4h", cp:"t", dir:"weeks-tri",
-        mascot:"moon", theme:"sea", title:"English for Trí", sub:"cùng Trăng", pageTitle:"English for Trí · B2–C1", themeColor:"#07142e", levels:["B2-C1","C1","C1-C2","C2"] }
+        mascot:"moon", theme:"sea", title:"English for Trí", sub:"Academic English · C1–C2", pageTitle:"English for Trí · B2–C1", themeColor:"#07142e", levels:["B2-C1","C1","C1-C2","C2"] }
 };
 const pickedId = (() => { let L = null; try {
   const u = new URLSearchParams(location.search).get("l"); if (LEARNERS[u]){ L = u; sessionStorage.setItem("a1-learner", u); }
@@ -670,6 +697,7 @@ const pickedId = (() => { let L = null; try {
 const COVER = !pickedId;
 const LRN = LEARNERS[pickedId || "nhi"];
 const DAYMIN = DAYMIN_OF[LRN.id] || 30;
+const SCH = LRN.id === "tri"; /* giao diện học thuật: không linh vật, không emoji, giọng văn trung tính */
 CONFIG.docId = LRN.docId;
 const KEY = LRN.key;
 
@@ -799,8 +827,14 @@ function moonBody(mood){
    + '<path d="M44 228 q14 -10 28 0 t28 0 t28 0 t28 0" fill="none" stroke="#2f5fb5" stroke-width="4" stroke-linecap="round" opacity=".7"/>';
 }
 function bodyOf(kind, mood){ return kind === "hang" ? hangBody(mood) : kind === "moon" ? moonBody(mood) : rabbitBody(mood); }
+function emblemSVG(){
+  return '<svg class="mascot emblem" viewBox="0 0 100 100" role="img" aria-label="English for Trí"><path d="M62 14 A38 38 0 1 0 62 86 A30 30 0 1 1 62 14Z" fill="none" stroke="#f6b84e" stroke-width="3.5" stroke-linejoin="round"/>'
+   + '<path d="M70 38 l2.6 6.4 6.4 2.6 -6.4 2.6 -2.6 6.4 -2.6 -6.4 -6.4 -2.6 6.4 -2.6z" fill="#f6b84e"/>'
+   + '<path d="M20 78 q8 -6 16 0 t16 0 t16 0" fill="none" stroke="#7fb8ff" stroke-width="2.4" stroke-linecap="round"/></svg>';
+}
 function mascotSVG(mood, kind, crop){
   kind = kind || mascotKind(); mood = mood || "happy";
+  if (kind === "moon") return emblemSVG();
   const body = bodyOf(kind, mood);
   const spark = mood === "cheer" ? starP(22,40,1.3,"#ffd54d")+starP(182,30,1.6,"#ffd54d")+starP(176,104,.9,"#fff")+starP(24,104,.8,"#fff") : "";
   const zz = mood === "sleepy" ? '<text x="150" y="58" font-family="Baloo 2,sans-serif" font-weight="800" font-size="30" fill="#c92f72">z</text><text x="172" y="30" font-family="Baloo 2,sans-serif" font-weight="800" font-size="20" fill="#e27aa7">z</text>' : "";
@@ -833,12 +867,12 @@ function constellationEl(list){
   const other = LRN.id === "tri" ? "moon" : mascotKind() === "hang" ? "bunny" : "hang";
   const el = h("div",{class:"const", role:"img", "aria-label":"Chòm sao tuần này: "+nDone+" trên 6 sao đã sáng"});
   el.innerHTML = '<svg class="sky" viewBox="0 0 358 282" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
-    + dust + '<svg x="150" y="100" width="150" height="183" viewBox="0 0 200 244" opacity=".12">'+bodyOf(LRN.id === "tri" ? "moon" : "bunny","happy")+'</svg>'
+    + dust + (SCH ? "" : '<svg x="150" y="100" width="150" height="183" viewBox="0 0 200 244" opacity=".12">'+bodyOf("bunny","happy")+'</svg>')
     + (rest ? '<path d="'+rest+'" stroke="'+PCOL().dash+'" stroke-width="2.2" stroke-dasharray="1 7" stroke-linecap="round" fill="none"/>' : "")
     + (lit ? '<path d="'+lit+'" stroke="#ffe27a" stroke-width="7" fill="none" stroke-linecap="round" opacity=".45" filter="url(#cgl)"/><path d="'+lit+'" stroke="#ffe27a" stroke-width="3" fill="none" stroke-linecap="round"/>' : "")
     + stars + '<g font-family="Nunito,sans-serif" font-weight="800" font-size="12" text-anchor="middle">'+labels+'</g></svg>'
-    + '<div class="ct">Tuần '+weekNo()+' · '+((WEEKS[weekNo()]||WEEK1).title)+'</div><div class="cp">'+nDone+' / 6 sao</div>'
-    + '<div class="cb"><i style="width:'+Math.round(nDone/6*100)+'%"></i></div><div class="corner">'+mascotSVG(nDone >= 6 ? "cheer" : "happy", other)+'</div>';
+    + '<div class="ct">Tuần '+weekNo()+' · '+((WEEKS[weekNo()]||WEEK1).title)+'</div><div class="cp">'+nDone+' / 6'+(SCH ? " buổi" : " sao")+'</div>'
+    + '<div class="cb"><i style="width:'+Math.round(nDone/6*100)+'%"></i></div>'+(SCH ? "" : '<div class="corner">'+mascotSVG(nDone >= 6 ? "cheer" : "happy", other)+'</div>');
   return el;
 }
 function applyBrand(){
@@ -2346,7 +2380,7 @@ function reportEl(){
   else if (acc(worst) < 0.7) advice = "Tuần sau nên luyện thêm dạng \""+TYPE_LABEL[worst]+"\". Bạn làm tốt nhất ở dạng \""+TYPE_LABEL[best]+"\".";
   else { const nx = ROADMAP.find(x => x[0] === weekNo()+1); advice = "Bạn nắm khá chắc cả tuần." + (nx ? " Sẵn sàng sang tuần "+nx[0]+": "+nx[2]+"." : ""); }
   return h("div",null,
-    h("div",{class:"hello"}, mascot(doneN >= 4 ? "cheer" : "happy"), h("div",{class:"bubble"}, "Tuần "+weekNo()+" của "+learnerName()+": "+doneN+" / "+list.length+" buổi xong!")),
+    h("div",{class:"hello"}, mascot(doneN >= 4 ? "cheer" : "happy"), h("div",{class:"bubble"}, "Tuần "+weekNo()+" của "+learnerName()+": "+doneN+" / "+list.length+" buổi hoàn thành"+(SCH ? "." : "!"))),
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneN+"/"+list.length),h("span",null,"buổi xong")),
       h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút học")),
       h("div",{class:"stat"},h("b",null,tt ? Math.round(tr/tt*100)+"%" : "–"),h("span",null,"làm đúng"))),
@@ -2430,6 +2464,7 @@ function finish(id){
   save(); location.hash = "#/done/"+id;
 }
 function petals(){
+  if (SCH) return;
   if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   for (let i=0; i<16; i++){ const p = h("span",{class:"petal","aria-hidden":"true"},i % 2 ? "⭐" : "✨"); p.style.left = Math.random()*100+"vw"; p.style.animationDelay = (Math.random()*1.6)+"s"; document.body.append(p); setTimeout(() => p.remove(), 6500); }
 }
@@ -2438,12 +2473,12 @@ function doneView(id){
   const steps = (LESSONS[id] || {steps:[]}).steps, n = steps.filter(x => s.steps[x.key]).length;
   const fresh = (S.lastUnlocked || []).slice(); if (fresh.length){ S.lastUnlocked = []; save(); }
   setTimeout(petals, 200);
-  return h("div",{class:"celebrate"}, mascot("cheer"), h("h1",null,"Xong buổi học rồi, giỏi quá!"),
+  return h("div",{class:"celebrate"}, SCH ? null : mascot("cheer"), h("h1",null,SCH ? "Hoàn thành buổi học" : "Xong buổi học rồi, giỏi quá!"),
     h("p",{class:"muted"}, meta.day+": "+meta.title),
-    h("div",{class:"garden big",style:"max-width:160px; margin:12px auto"}, h("div",{class:"pot on",html:flowerSVG(true)+"Sao mới sáng"})),
+    SCH ? null : h("div",{class:"garden big",style:"max-width:160px; margin:12px auto"}, h("div",{class:"pot on",html:flowerSVG(true)+"Sao mới sáng"})),
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,Math.max(1,Math.round((s.seconds||0)/60))),h("span",null,"phút học")),
       h("div",{class:"stat"},h("b",null,n+"/"+steps.length),h("span",null,"bước xong")), h("div",{class:"stat"},h("b",null,streak()),h("span",null,"ngày liên tiếp"))),
-    fresh.length ? h("div",{class:"card tint"}, h("h3",null,"Sticker mới!"), h("div",{class:"stks"}, STICKERS.filter(x => fresh.includes(x.id)).map(x => h("div",{class:"stk"}, h("i",null,x.icon), h("b",null,x.name), h("small",null,x.how))))) : null,
+    fresh.length ? h("div",{class:"card tint"}, h("h3",null,SCH ? "Thành tích mới" : "Sticker mới!"), h("div",{class:"stks"}, STICKERS.filter(x => fresh.includes(x.id)).map(x => h("div",{class:"stk"}, h("i",null,x.icon), h("b",null,x.name), h("small",null,x.how))))) : null,
     h("div",{class:"row",style:"justify-content:center"}, h("a",{class:"btn",href:"#/home"},"Về trang chủ"), h("a",{class:"btn soft",href:"#/week"},"Xem lịch tuần"), CH[id] ? h("a",{class:"btn soft",href:"#/challenge/"+id},"🏆 Thử Challenge") : null));
 }
 function gardenEl(big){
@@ -2454,7 +2489,7 @@ function homeView(){
   const sk = streak(), due = dueWords().length, nm = learnerName();
   const note = S.teacherNote && !S.teacherNote.read ? S.teacherNote : null;
   const nextUndone = list.find(s => !isDone(s.id));
-  const say = sk > 1 ? "Giỏi quá, bạn đã học "+sk+" ngày liên tiếp!" : "Mỗi ngày "+DAYMIN+" phút thôi, mình học cùng "+nm+" nhé!";
+  const say = SCH ? (sk > 1 ? sk+" ngày học liên tiếp." : "Mỗi ngày "+DAYMIN+" phút, đều đặn.") : sk > 1 ? "Giỏi quá, bạn đã học "+sk+" ngày liên tiếp!" : "Mỗi ngày "+DAYMIN+" phút thôi, mình học cùng "+nm+" nhé!";
   const startCard = (s, label) => { const st = S.sessions[s.id];
     return h("div",{class:"card today"}, h("div",{class:"muted small"},label), h("h2",null,s.day+": "+s.title),
       h("div",{class:"chips",style:"margin:6px 0 14px"}, h("span",{class:"pill"},"⏱ "+DAYMIN+" phút"), h("span",{class:"pill"},KIND[s.kind]),
@@ -2462,7 +2497,7 @@ function homeView(){
       h("a",{class:"btn block",href:"#/lesson/"+s.id+"/0"}, st && !st.done ? "Học tiếp" : "Bắt đầu học")); };
   let main;
   if (ti.state === "day" && !isDone(ti.session.id)) main = startCard(ti.session, "Hôm nay");
-  else if (ti.state === "day") main = h("div",{class:"card tint"}, h("h2",null,"Hôm nay bạn đã học xong rồi"), h("p",{class:"muted"},"Giỏi lắm! Muốn học thêm thì cứ làm tiếp buổi sau."),
+  else if (ti.state === "day") main = h("div",{class:"card tint"}, h("h2",null,SCH ? "Đã hoàn thành buổi hôm nay" : "Hôm nay bạn đã học xong rồi"), h("p",{class:"muted"},SCH ? "Có thể làm thêm buổi kế tiếp nếu còn thời gian." : "Giỏi lắm! Muốn học thêm thì cứ làm tiếp buổi sau."),
       nextUndone ? h("a",{class:"btn soft",href:"#/lesson/"+nextUndone.id+"/0"},"Học thêm: "+nextUndone.day) : null);
   else if (ti.state === "rest") main = h("div",{class:"card tint"}, h("h2",null,"Hôm nay là Chủ nhật, ngày nghỉ"), h("p",{class:"muted"},"Nghỉ ngơi nhé. Nếu muốn, ôn 10 phút từ vựng cho vui."),
       h("a",{class:"btn soft",href:"#/vocab"},"Ôn từ vựng"));
@@ -2471,9 +2506,10 @@ function homeView(){
   else main = nextUndone ? startCard(nextUndone, "Chưa có bài cho tuần "+ti.week+", mình ôn lại tuần "+weekNo()+" nhé") : h("div",{class:"card tint"}, h("h2",null,"Tuần "+weekNo()+" đã xong hết rồi"));
   const missed = ti.state === "day" ? list.filter((s,i) => i < ti.wd && !isDone(s.id)) : (ti.state === "rest" || ti.state === "beyond") ? list.filter(s => !isDone(s.id)) : [];
   const sleepy = ti.state === "rest" || (ti.state === "day" && missed.length >= 2);
-  const say2 = ti.state === "rest" ? "Chủ nhật rồi, mình nghỉ ngơi cho khỏe nhé!" : sleepy ? "Mình hơi buồn ngủ, học bù một chút cho tỉnh nhé?" : say;
+  const say2 = SCH ? (ti.state === "rest" ? "Chủ nhật là ngày nghỉ." : sleepy ? "Còn "+missed.length+" buổi chưa hoàn thành trong tuần này." : say)
+    : ti.state === "rest" ? "Chủ nhật rồi, mình nghỉ ngơi cho khỏe nhé!" : sleepy ? "Mình hơi buồn ngủ, học bù một chút cho tỉnh nhé?" : say;
   return h("div",null,
-    h("div",{class:"hello"}, mascot(sleepy ? "sleepy" : sk > 1 ? "cheer" : "happy"), h("div",{class:"bubble"}, "Chào "+nm+"! "+say2)),
+    h("div",{class:"hello"}, mascot(sleepy ? "sleepy" : sk > 1 ? "cheer" : "happy"), h("div",{class:"bubble"}, SCH ? nm+". "+say2 : "Chào "+nm+"! "+say2)),
     constellationEl(list),
     note ? h("div",{class:"card sticky"}, h("div",{class:"small muted"},"💌 Lời nhắn cho "+nm), h("p",{style:"margin:6px 0 10px;font-weight:700"}, note.text),
       h("button",{class:"btn soft",type:"button",onClick:() => { S.teacherNote.read = true; save(); route(); }},"Đã đọc")) : null,
@@ -2968,7 +3004,7 @@ function demoState(){
 const TABS = [["home","🏠","Trang chủ"],["week","📅","Tuần học"],["vocab","📖","Từ vựng"],["practice","✏️","Bài tập"],["progress","⭐","Tiến độ"]];
 const TAB_OF = { plan:"week", challenge:"week", content:"week", lesson:"week", done:"week", placement:"week", mistakes:"practice", report:"progress" };
 const tabsEl = document.getElementById("tabs");
-tabsEl.replaceChildren(...TABS.map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, h("span",null,ic), t)));
+tabsEl.replaceChildren(...TABS.map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, SCH ? null : h("span",null,ic), t)));
 function route(){
   stopAudio(); activeLesson = null; review = null; pgReset();
   const parts = location.hash.replace(/^#\/?/,"").split("/"), page = parts[0] || "home";
@@ -3030,6 +3066,7 @@ function coverView(){
       card("tri","moon","C1–C2 · Nâng cao","Mỗi ngày 60 phút: viết luận, tranh biện, báo cáo số liệu, ngữ pháp C1–C2, ôn lặp lại.")),
     h("label",{class:"cvk"}, keep, " Nhớ lựa chọn trên máy này (lần sau vào thẳng)"));
 }
+if (SCH){ Object.values(STEP_DEF).forEach(d => d.icon = ""); Object.values(TYPES).forEach(d => { d.icon = ""; }); STICKERS.forEach(x => x.icon = "◆"); }
 async function boot(){
   if (COVER){ document.body.classList.add("cover"); document.title = "Học tiếng Anh · Chọn học viên"; app.replaceChildren(coverView()); return; }
   S = loadLocal(); ensureStart(); applyBrand(); loadContentLocal();
