@@ -506,6 +506,7 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 .ptile .pic{font-size:1.6rem; width:42px; height:42px; display:grid; place-items:center; background:var(--p100); border-radius:12px; margin-bottom:6px}
 .ptile b{font-size:.98rem}
 .ptile.hot{background:var(--p50); border-color:var(--p400)}
+.wadd{margin-top:8px; width:100%}
 </style>
 </head>
 <body>
@@ -1833,7 +1834,12 @@ function wordCard(host, anchor, word, vi){
   const close = h("button",{class:"wclose",type:"button","aria-label":"Đóng",onClick:() => card.remove()}, "✕");
   const head = h("div",{class:"whead"}, h("button",{class:"say",type:"button","aria-label":"Nghe từ này",onClick:() => say("")}, "🔊"),
     h("b",{class:"wword"}, word), h("span",{class:"wipa"}), close);
-  card.append(head, vi ? h("div",{class:"wvi"}, "🇻🇳 ", h("b",null,vi)) : null, body);
+  const key = word.toLowerCase().replace(/[^a-z'-]/g, ""); let meaning = vi || "";
+  const addBtn = h("button",{class:"btn sm wadd",type:"button"});
+  const drawAdd = () => { const has = !!S.vocab[key]; addBtn.textContent = has ? "✅ Đã có trong sổ từ vựng" : "➕ Thêm vào sổ từ vựng"; addBtn.classList.toggle("soft", has); addBtn.disabled = has; };
+  addBtn.addEventListener("click", () => { if (S.vocab[key]) return; S.vocab[key] = { m: meaning || "(từ bạn tự thêm)", box:0, due:addDays(1) }; save(); drawAdd(); toast("Đã thêm “"+word+"” vào sổ từ vựng"); });
+  drawAdd();
+  card.append(head, vi ? h("div",{class:"wvi"}, "🇻🇳 ", h("b",null,vi)) : null, body, addBtn);
   host.append(card);
   const hr = host.getBoundingClientRect(), ar = anchor.getBoundingClientRect();
   const wd = Math.min(hr.width, 360), left = Math.max(0, Math.min(ar.left - hr.left - 12, hr.width - wd));
@@ -1843,6 +1849,7 @@ function wordCard(host, anchor, word, vi){
     if (!card.isConnected) return;
     if (!d || d._nf){ body.replaceChildren(h("span",{class:"muted small"}, !d ? "Không kết nối được từ điển (mạng hoặc trang từ điển đang lỗi). " : "Từ điển chưa có từ này. "),
       !d ? h("button",{class:"linkbtn",type:"button",onClick:() => wordCard(host, anchor, word, vi)}, "Thử lại") : null); return; }
+    if (!meaning && d.mean && d.mean[0]) meaning = d.mean[0].def;
     if (d.ipa) head.querySelector(".wipa").textContent = d.ipa;
     head.querySelector(".say").onclick = () => say(d.aud);
     body.replaceChildren(
