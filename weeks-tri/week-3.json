@@ -1,0 +1,2964 @@
+{
+ "schema": "a1-week/1",
+ "week": 3,
+ "title": "Work and automation (ôn)",
+ "grammar": "Ôn đảo ngữ và câu chẻ; không dạy mới",
+ "subs": [
+  "Review: the changing market",
+  "Review: argument and evidence",
+  "Review: persuasion",
+  "Upgrade: formal register"
+ ],
+ "level": "C1",
+ "focus": "Tuần ôn: nâng cấp 14 từ trang trọng, ôn đảo ngữ và câu chẻ, sửa lỗi C1–C2 và nâng văn phong, rồi viết bài luận 250 từ và nói 2 phút.",
+ "vocabList": [
+  {
+   "en": "displace",
+   "vi": "thay thế, đẩy ra khỏi vị trí",
+   "pos": "verb",
+   "ipa": "/dɪsˈpleɪs/",
+   "ex": "Algorithms are increasingly displacing mid-level analysts in financial services.",
+   "exVi": "Thuật toán ngày càng thay thế các nhà phân tích cấp trung trong dịch vụ tài chính.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "obsolete",
+   "vi": "lỗi thời, không còn dùng được",
+   "pos": "adjective",
+   "ipa": "/ˈɒbsəliːt/",
+   "ex": "Within a decade, entire categories of clerical skill may become obsolete.",
+   "exVi": "Trong vòng một thập kỷ, cả nhóm kỹ năng văn phòng có thể trở nên lỗi thời.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "adept",
+   "vi": "thành thạo, khéo léo",
+   "pos": "adjective",
+   "ipa": "/əˈdept/",
+   "ex": "Employees who are adept at learning new tools adjust fastest to change.",
+   "exVi": "Nhân viên thành thạo việc học công cụ mới thích nghi nhanh nhất.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "upheaval",
+   "vi": "biến động lớn, xáo trộn",
+   "pos": "noun",
+   "ipa": "/ʌpˈhiːvl/",
+   "ex": "The upheaval in retail has been felt on every high street.",
+   "exVi": "Biến động trong ngành bán lẻ đã được cảm nhận ở mọi phố mua sắm.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "prevalent",
+   "vi": "phổ biến, thịnh hành",
+   "pos": "adjective",
+   "ipa": "/ˈprevələnt/",
+   "ex": "Short-term contracts are prevalent among workers under thirty.",
+   "exVi": "Hợp đồng ngắn hạn phổ biến ở lao động dưới ba mươi tuổi.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "mitigate",
+   "vi": "giảm nhẹ",
+   "pos": "verb",
+   "ipa": "/ˈmɪtɪɡeɪt/",
+   "ex": "Retraining grants can mitigate the hardship caused by redundancy.",
+   "exVi": "Trợ cấp đào tạo lại có thể giảm nhẹ khó khăn do bị cho thôi việc.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "workforce",
+   "vi": "lực lượng lao động",
+   "pos": "noun",
+   "ipa": "/ˈwɜːkfɔːs/",
+   "ex": "A skilled and adaptable workforce is a nation's most valuable asset.",
+   "exVi": "Một lực lượng lao động có kỹ năng và thích nghi tốt là tài sản quý nhất của quốc gia.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "precarious",
+   "vi": "bấp bênh, không ổn định",
+   "pos": "adjective",
+   "ipa": "/prɪˈkeəriəs/",
+   "ex": "Precarious employment leaves families unable to plan beyond the next month.",
+   "exVi": "Việc làm bấp bênh khiến các gia đình không thể lập kế hoạch quá tháng sau.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "disruption",
+   "vi": "sự gián đoạn, xáo trộn",
+   "pos": "noun",
+   "ipa": "/dɪsˈrʌpʃn/",
+   "ex": "The disruption caused by generative tools has outpaced regulation.",
+   "exVi": "Sự xáo trộn do các công cụ tạo sinh gây ra đã vượt tốc độ của quy định.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "resilience",
+   "vi": "khả năng phục hồi, sức bền",
+   "pos": "noun",
+   "ipa": "/rɪˈzɪliəns/",
+   "ex": "Economic resilience depends on workers' capacity to adapt.",
+   "exVi": "Khả năng phục hồi của nền kinh tế phụ thuộc vào năng lực thích nghi của người lao động.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "equitable",
+   "vi": "công bằng, hợp lý",
+   "pos": "adjective",
+   "ipa": "/ˈekwɪtəbl/",
+   "ex": "An equitable transition ensures that the burden of change is not borne by the few.",
+   "exVi": "Một quá trình chuyển đổi công bằng đảm bảo gánh nặng của thay đổi không đổ lên số ít.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "retrain",
+   "vi": "đào tạo lại",
+   "pos": "verb",
+   "ipa": "/ˌriːˈtreɪn/",
+   "ex": "Many mid-career workers must retrain at their own expense.",
+   "exVi": "Nhiều người làm giữa sự nghiệp phải tự bỏ tiền đào tạo lại.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "a seismic shift",
+   "vi": "một thay đổi mang tính chấn động",
+   "pos": "noun phrase",
+   "ipa": "/ə ˈsaɪzmɪk ʃɪft/",
+   "ex": "The move to remote work represents a seismic shift in how offices are used.",
+   "exVi": "Việc chuyển sang làm từ xa là một thay đổi chấn động trong cách văn phòng được sử dụng.",
+   "sub": 1,
+   "upgrade": true
+  },
+  {
+   "en": "hinge on",
+   "vi": "phụ thuộc vào (then chốt)",
+   "pos": "phrasal verb",
+   "ipa": "/hɪndʒ ɒn/",
+   "ex": "The success of any reform will hinge on how it is funded.",
+   "exVi": "Thành công của mọi cải cách sẽ phụ thuộc vào cách nó được tài trợ.",
+   "sub": 1,
+   "upgrade": true
+  }
+ ],
+ "sessions": {
+  "mon": {
+   "title": "Quiz hai tuần và bài đọc dài",
+   "kind": "review",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "quiz",
+     "title": "Quiz hai tuần",
+     "min": "0–12′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Quiz ôn hai tuần trước: chọn đáp án đúng.",
+       "core": 16,
+       "items": [
+        {
+         "q": "Which sentence uses inversion correctly?",
+         "options": [
+          "Rarely have employers faced such a skills gap.",
+          "Rarely employers have faced such a skills gap.",
+          "Rarely have faced employers such a skills gap."
+         ],
+         "answer": "Rarely have employers faced such a skills gap.",
+         "why": "Sau Rarely: trợ động từ + chủ ngữ + V3."
+        },
+        {
+         "q": "Hardly had the plant closed ___ rumours began to spread.",
+         "options": [
+          "when",
+          "than",
+          "while"
+         ],
+         "answer": "when",
+         "why": "Hardly + had + S + V3 + when."
+        },
+        {
+         "q": "Not only ___ automation raise output, but it also changes jobs.",
+         "options": [
+          "does",
+          "do",
+          "is"
+         ],
+         "answer": "does",
+         "why": "automation số ít nên dùng does."
+        },
+        {
+         "q": "Little ___ the founders imagine such rapid growth.",
+         "options": [
+          "did",
+          "do",
+          "were"
+         ],
+         "answer": "did",
+         "why": "Little did + S + V nguyên thể."
+        },
+        {
+         "q": "Which cleft sentence is correct?",
+         "options": [
+          "It is the evidence that persuades sceptics.",
+          "It evidence is that persuades sceptics.",
+          "Is the evidence that it persuades sceptics."
+         ],
+         "answer": "It is the evidence that persuades sceptics.",
+         "why": "It is + thành phần + that."
+        },
+        {
+         "q": "The reason why the claim failed ___ that it was vague.",
+         "options": [
+          "is",
+          "was because",
+          "is because"
+         ],
+         "answer": "is",
+         "why": "The reason why ... is that ..."
+        },
+        {
+         "q": "What distinguishes strong claims ___ that they can be tested.",
+         "options": [
+          "is",
+          "are",
+          "do"
+         ],
+         "answer": "is",
+         "why": "What-clause số ít."
+        },
+        {
+         "q": "\"A shortage of the abilities employers need\" is a",
+         "options": [
+          "skills gap",
+          "gig economy",
+          "safety net"
+         ],
+         "answer": "skills gap",
+         "why": "skills gap."
+        },
+        {
+         "q": "To boost productivity is to",
+         "options": [
+          "increase output per worker",
+          "lower prices",
+          "hire more staff"
+         ],
+         "answer": "increase output per worker",
+         "why": "boost productivity."
+        },
+        {
+         "q": "A double-edged sword is something with",
+         "options": [
+          "both good and bad effects",
+          "two names",
+          "a sharp end"
+         ],
+         "answer": "both good and bad effects",
+         "why": "Nghĩa bóng."
+        },
+        {
+         "q": "Which phrase cites a source?",
+         "options": [
+          "According to the WEF",
+          "In spite of the WEF",
+          "Because the WEF"
+         ],
+         "answer": "According to the WEF",
+         "why": "according to + nguồn."
+        },
+        {
+         "q": "A case in point is",
+         "options": [
+          "a typical example",
+          "an exception",
+          "a definition"
+         ],
+         "answer": "a typical example",
+         "why": "a case in point."
+        },
+        {
+         "q": "To sway opinion is to",
+         "options": [
+          "influence what people think",
+          "count votes",
+          "write a report"
+         ],
+         "answer": "influence what people think",
+         "why": "sway opinion."
+        },
+        {
+         "q": "Campaigners ___ stronger protection for workers.",
+         "options": [
+          "call for",
+          "call off",
+          "call up"
+         ],
+         "answer": "call for",
+         "why": "call for."
+        },
+        {
+         "q": "Which word means \"publicly support\"?",
+         "options": [
+          "advocate",
+          "dismiss",
+          "ignore"
+         ],
+         "answer": "advocate",
+         "why": "advocate."
+        },
+        {
+         "q": "To take a stand means",
+         "options": [
+          "to adopt a firm public position",
+          "to sit down",
+          "to retreat"
+         ],
+         "answer": "to adopt a firm public position",
+         "why": "take a stand."
+        },
+        {
+         "q": "Hardly had one cohort been retrained ___ skills became obsolete.",
+         "options": [
+          "when",
+          "than",
+          "if"
+         ],
+         "answer": "when",
+         "why": "Hardly ... when."
+        },
+        {
+         "q": "Which sentence is a specific, testable claim?",
+         "options": [
+          "Automation will cut clerical posts by a fifth by 2035.",
+          "Automation is interesting.",
+          "Technology changes."
+         ],
+         "answer": "Automation will cut clerical posts by a fifth by 2035.",
+         "why": "Claim cụ thể."
+        },
+        {
+         "q": "Seldom ___ managers regret automating heavy work.",
+         "options": [
+          "do",
+          "does",
+          "is"
+         ],
+         "answer": "do",
+         "why": "managers số nhiều."
+        },
+        {
+         "q": "Never ___ the case for a safety net been stronger.",
+         "options": [
+          "has",
+          "did",
+          "is"
+         ],
+         "answer": "has",
+         "why": "Never + has + S + V3."
+        },
+        {
+         "q": "Which is the best verb: \"Several analysts ___ that wages will rise.\"",
+         "options": [
+          "argue",
+          "debate",
+          "reply"
+         ],
+         "answer": "argue",
+         "why": "argue that."
+        },
+        {
+         "q": "A growing body of evidence ___ that gains are uneven.",
+         "options": [
+          "suggests",
+          "suggest",
+          "suggesting"
+         ],
+         "answer": "suggests",
+         "why": "evidence số ít."
+        },
+        {
+         "q": "What persuades audiences ___ a story attached to a fact.",
+         "options": [
+          "is",
+          "are",
+          "do"
+         ],
+         "answer": "is",
+         "why": "What-clause số ít. Ở câu này: \"What persuades audiences ___ a story attached\"."
+        },
+        {
+         "q": "Which phrase means \"gather backing\"?",
+         "options": [
+          "rally support",
+          "sway support",
+          "call support"
+         ],
+         "answer": "rally support",
+         "why": "rally support."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "read",
+     "title": "Đọc",
+     "min": "12–28′",
+     "heading": "Intelligent machines and the future of work",
+     "purpose": "Đọc để tìm: hai phía của cuộc tranh luận là gì, và tác giả cho rằng điều gì sẽ quyết định kết quả?",
+     "text": [
+      "Few transformations in modern economic history have been as widely anticipated, or as poorly understood, as the rise of intelligent machines. The World Economic Forum projects that roughly 170 million new roles will be created by 2030 while 92 million are displaced, a net gain that has encouraged optimists to speak of renewal rather than loss. Yet to describe a shift of this scale only in terms of totals is to obscure its human texture. What is unfolding is a seismic shift in how work is organised, and the tremors are felt first by those whose tasks are most easily codified.",
+      "The optimistic case deserves a fair hearing. Historically, technological upheaval has destroyed particular jobs while expanding overall prosperity, and there is little reason to think that this pattern has been abolished. Workers who are adept at learning, communicating and solving unfamiliar problems tend to move between roles with remarkable ease, and employers increasingly value such adaptability above narrow credentials. It is also true that many of the tasks now automated were never satisfying: few people mourn the loss of hours spent copying figures between spreadsheets.",
+      "The pessimistic case, however, rests on a different observation. Insecure forms of employment have become prevalent in sectors where algorithms allocate work, and for those who depend on them, income can be precarious from one week to the next. The disruption is therefore uneven in both timing and severity: a graphic designer may retrain within a year, whereas a fifty-five-year-old machine operator, with a mortgage and few savings, faces a far steeper climb. Skills that were valuable in 2015 can become obsolete within a single product cycle, and no individual, however diligent, can reasonably be expected to anticipate every change.",
+      "What, then, determines whether societies emerge stronger? Much will hinge on policy rather than technology. Countries that invest in education, portable benefits and income support can mitigate the worst effects and build resilience into their workforce, while those that leave adjustment to the market risk deepening resentment. An equitable transition is not merely a moral aspiration; it is a condition for political stability, because people who feel abandoned rarely support the innovations that disrupted them. The task, in short, is not to resist change but to ensure that the costs of change are shared as widely as its rewards, and that every worker willing to retrain is given a genuine route to do so."
+     ],
+     "vocab": {
+      "displace": "thay thế, đẩy ra khỏi vị trí",
+      "obsolete": "lỗi thời, không còn dùng được",
+      "adept": "thành thạo, khéo léo",
+      "upheaval": "biến động lớn, xáo trộn",
+      "prevalent": "phổ biến, thịnh hành",
+      "mitigate": "giảm nhẹ",
+      "workforce": "lực lượng lao động",
+      "precarious": "bấp bênh, không ổn định",
+      "disruption": "sự gián đoạn, xáo trộn",
+      "resilience": "khả năng phục hồi, sức bền",
+      "equitable": "công bằng, hợp lý",
+      "retrain": "đào tạo lại",
+      "a seismic shift": "một thay đổi mang tính chấn động",
+      "hinge on": "phụ thuộc vào (then chốt)"
+     },
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Đọc bài rồi chọn đáp án đúng nhất.",
+       "core": 5,
+       "items": [
+        {
+         "q": "What is the main idea of the first paragraph?",
+         "options": [
+          "Totals hide the human consequences of a seismic shift.",
+          "Machines will replace all jobs.",
+          "Optimists are always wrong."
+         ],
+         "answer": "Totals hide the human consequences of a seismic shift.",
+         "why": "Câu 3 đoạn 1."
+        },
+        {
+         "q": "Which statement best reflects the writer's view of the optimistic case?",
+         "options": [
+          "It deserves a fair hearing.",
+          "It is entirely wrong.",
+          "It is irrelevant."
+         ],
+         "answer": "It deserves a fair hearing.",
+         "why": "Câu đầu đoạn 2."
+        },
+        {
+         "q": "According to paragraph 2, which workers move between roles most easily?",
+         "options": [
+          "those adept at learning and solving unfamiliar problems",
+          "those with the longest service",
+          "those with narrow credentials"
+         ],
+         "answer": "those adept at learning and solving unfamiliar problems",
+         "why": "Đoạn 2."
+        },
+        {
+         "q": "Why does the writer say disruption is \"uneven in both timing and severity\"?",
+         "options": [
+          "Different workers face very different costs of adjustment.",
+          "All workers are equally affected.",
+          "Only designers are affected."
+         ],
+         "answer": "Different workers face very different costs of adjustment.",
+         "why": "Đoạn 3."
+        },
+        {
+         "q": "What does \"prevalent\" mean in paragraph 3?",
+         "options": [
+          "widespread",
+          "rare",
+          "new"
+         ],
+         "answer": "widespread",
+         "why": "prevalent = phổ biến."
+        },
+        {
+         "q": "According to paragraph 4, what will much of the outcome hinge on?",
+         "options": [
+          "policy rather than technology",
+          "technology rather than policy",
+          "luck"
+         ],
+         "answer": "policy rather than technology",
+         "why": "Much will hinge on policy."
+        },
+        {
+         "q": "Why is an equitable transition more than a moral aspiration?",
+         "options": [
+          "It is a condition for political stability.",
+          "It is cheaper.",
+          "It is legally required."
+         ],
+         "answer": "It is a condition for political stability.",
+         "why": "Câu cuối đoạn 4."
+        },
+        {
+         "q": "The writer's overall stance is best described as",
+         "options": [
+          "balanced, with a call for fair policy",
+          "strongly pessimistic",
+          "dismissive of both sides"
+         ],
+         "answer": "balanced, with a call for fair policy",
+         "why": "Cân bằng và kêu gọi chính sách công bằng."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "instruction": "Dùng cụm của bài để trả lời (tự đối chiếu với mẫu).",
+       "core": 4,
+       "items": [
+        {
+         "prompt": "Summarise the optimistic case in one sentence, using adept.",
+         "answer": "Optimists note that workers who are adept at learning tend to move between roles with ease."
+        },
+        {
+         "prompt": "Use precarious to describe income in the algorithmic economy.",
+         "answer": "Income can be precarious for those who depend on algorithmic work allocation."
+        },
+        {
+         "prompt": "Use hinge on to say what determines whether societies emerge stronger.",
+         "answer": "Much will hinge on whether policy supports those who are displaced."
+        },
+        {
+         "prompt": "Use a seismic shift in a sentence about the labour market.",
+         "answer": "The rise of intelligent machines represents a seismic shift in how work is organised."
+        },
+        {
+         "prompt": "Use mitigate in a sentence about policy.",
+         "answer": "Investment in education and income support can mitigate the worst effects."
+        },
+        {
+         "prompt": "Use equitable and retrain in one sentence.",
+         "answer": "An equitable transition gives every worker willing to retrain a genuine route to do so."
+        },
+        {
+         "prompt": "Use obsolete in a sentence about skills.",
+         "answer": "Skills can become obsolete within a single product cycle."
+        }
+       ],
+       "role": "apply"
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "dictation",
+     "title": "Chép chính tả",
+     "min": "28–40′",
+     "sets": [
+      {
+       "type": "dictation",
+       "instruction": "Nghe và chép lại đúng từng từ.",
+       "core": 4,
+       "items": [
+        {
+         "say": "The optimistic case deserves a fair hearing.",
+         "why": "Câu đầu đoạn 2. Ở câu này: \"The optimistic case deserves a fair hearing.\"."
+        },
+        {
+         "say": "Insecure forms of employment have become prevalent in sectors where algorithms allocate work.",
+         "why": "prevalent."
+        },
+        {
+         "say": "Skills that were valuable in 2015 can become obsolete within a single product cycle.",
+         "why": "obsolete."
+        },
+        {
+         "say": "Much will hinge on policy rather than technology.",
+         "why": "hinge on."
+        },
+        {
+         "say": "An equitable transition is not merely a moral aspiration; it is a condition for political stability.",
+         "why": "equitable; chia câu bằng dấu chấm phẩy."
+        },
+        {
+         "say": "The disruption is therefore uneven in both timing and severity.",
+         "why": "disruption."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tóm tắt",
+     "min": "40–60′",
+     "prompt": "Summarise the passage in 70 to 90 words, in your own words. Include the optimistic case, the pessimistic case, and what the writer says will decide the outcome. Use at least two of the upgrade words (displace, adept, prevalent, precarious, mitigate, resilience, equitable, hinge on).",
+     "hint": "One sentence each for the optimistic case, the pessimistic case and the conclusion.",
+     "sample": "The passage argues that intelligent machines are bringing a seismic shift in how work is organised, and it weighs two views of what follows.",
+     "model": "The passage argues that intelligent machines are bringing a seismic shift in how work is organised. Optimists point out that past upheavals created more prosperity, and that adept workers adapt easily. Pessimists reply that precarious work is now prevalent and that the disruption is uneven, hitting older workers hardest. The writer concludes that the outcome will hinge on policy: countries that mitigate the damage through education and income support will build a more resilient workforce and a more equitable society.",
+     "minWords": 65,
+     "useWords": [
+      "adept",
+      "precarious",
+      "hinge on",
+      "equitable"
+     ],
+     "outline": [
+      "Câu mở nêu chủ đề",
+      "Quan điểm lạc quan",
+      "Quan điểm bi quan",
+      "Kết luận của tác giả"
+     ],
+     "checklist": [
+      "Diễn đạt bằng từ của mình, không chép nguyên câu",
+      "Nêu đủ hai phía và kết luận",
+      "Dùng ít nhất hai từ nâng cấp",
+      "Số từ 70 đến 90"
+     ]
+    }
+   ]
+  },
+  "tue": {
+   "title": "14 cụm nâng cấp",
+   "kind": "new",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Khởi động",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Đoán nghĩa từ được hỏi từ ngữ cảnh.",
+       "core": 5,
+       "items": [
+        {
+         "q": "\"The company's skills may become obsolete within five years.\" Obsolete means",
+         "options": [
+          "no longer used or useful",
+          "very valuable",
+          "hard to learn"
+         ],
+         "answer": "no longer used or useful",
+         "why": "obsolete: lỗi thời."
+        },
+        {
+         "q": "\"She is adept at negotiating under pressure.\" Adept means",
+         "options": [
+          "highly skilled",
+          "unwilling",
+          "nervous"
+         ],
+         "answer": "highly skilled",
+         "why": "adept: thành thạo."
+        },
+        {
+         "q": "\"The upheaval in retail changed every high street.\" Upheaval means",
+         "options": [
+          "a major disturbance",
+          "a small adjustment",
+          "a holiday"
+         ],
+         "answer": "a major disturbance",
+         "why": "upheaval: biến động lớn."
+        },
+        {
+         "q": "\"Short-term contracts are prevalent among young workers.\" Prevalent means",
+         "options": [
+          "widespread",
+          "rare",
+          "illegal"
+         ],
+         "answer": "widespread",
+         "why": "prevalent: phổ biến."
+        },
+        {
+         "q": "\"Policy can mitigate the impact of job losses.\" Mitigate means",
+         "options": [
+          "make less severe",
+          "make worse",
+          "measure"
+         ],
+         "answer": "make less severe",
+         "why": "mitigate: giảm nhẹ."
+        },
+        {
+         "q": "\"Precarious work offers little security.\" Precarious means",
+         "options": [
+          "insecure",
+          "well paid",
+          "creative"
+         ],
+         "answer": "insecure",
+         "why": "precarious: bấp bênh."
+        },
+        {
+         "q": "\"An equitable system treats people fairly.\" Equitable means",
+         "options": [
+          "fair and just",
+          "expensive",
+          "complex"
+         ],
+         "answer": "fair and just",
+         "why": "equitable: công bằng."
+        }
+       ],
+       "ungraded": true
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "upgrade",
+     "title": "Từ nâng cấp",
+     "min": "5–38′",
+     "sets": [
+      {
+       "type": "match",
+       "instruction": "Nối từ hoặc cụm với định nghĩa.",
+       "core": 8,
+       "items": [
+        {
+         "left": "displace",
+         "right": "replace someone or something in a position"
+        },
+        {
+         "left": "obsolete",
+         "right": "no longer in use because something newer exists"
+        },
+        {
+         "left": "adept",
+         "right": "very skilled at something"
+        },
+        {
+         "left": "upheaval",
+         "right": "a sudden, major disruption or change"
+        },
+        {
+         "left": "prevalent",
+         "right": "existing widely at a particular time"
+        },
+        {
+         "left": "mitigate",
+         "right": "make something less severe"
+        },
+        {
+         "left": "workforce",
+         "right": "all the people employed in a firm or country"
+        },
+        {
+         "left": "precarious",
+         "right": "dependent on chance; not secure"
+        },
+        {
+         "left": "disruption",
+         "right": "disturbance that interrupts a normal process"
+        },
+        {
+         "left": "resilience",
+         "right": "the ability to recover quickly from difficulty"
+        },
+        {
+         "left": "equitable",
+         "right": "fair and impartial"
+        },
+        {
+         "left": "retrain",
+         "right": "teach or learn new skills for a different job"
+        },
+        {
+         "left": "a seismic shift",
+         "right": "a change of enormous scale and impact"
+        },
+        {
+         "left": "hinge on",
+         "right": "depend entirely on"
+        }
+       ]
+      },
+      {
+       "type": "mcq",
+       "instruction": "Chọn từ nâng cấp phù hợp nhất.",
+       "core": 8,
+       "items": [
+        {
+         "q": "Which upgrade replaces \"depend on\" in a formal essay?",
+         "options": [
+          "hinge on",
+          "lean in",
+          "stick to"
+         ],
+         "answer": "hinge on",
+         "why": "hinge on = phụ thuộc vào."
+        },
+        {
+         "q": "Which word replaces \"common\"?",
+         "options": [
+          "prevalent",
+          "precarious",
+          "adept"
+         ],
+         "answer": "prevalent",
+         "why": "prevalent = phổ biến. Ở câu này: \"Which word replaces \"common\"?\"."
+        },
+        {
+         "q": "Which replaces \"fair\" in \"a fair transition\"?",
+         "options": [
+          "equitable",
+          "resilient",
+          "obsolete"
+         ],
+         "answer": "equitable",
+         "why": "equitable = công bằng."
+        },
+        {
+         "q": "Which replaces \"a big change\"?",
+         "options": [
+          "a seismic shift",
+          "an upheaval list",
+          "a retrain"
+         ],
+         "answer": "a seismic shift",
+         "why": "a seismic shift."
+        },
+        {
+         "q": "Which replaces \"insecure\" in \"insecure employment\"?",
+         "options": [
+          "precarious",
+          "prevalent",
+          "adept"
+         ],
+         "answer": "precarious",
+         "why": "precarious = bấp bênh."
+        },
+        {
+         "q": "Which replaces \"reduce the bad effects of\"?",
+         "options": [
+          "mitigate",
+          "displace",
+          "retrain"
+         ],
+         "answer": "mitigate",
+         "why": "mitigate."
+        },
+        {
+         "q": "Which replaces \"out of date\"?",
+         "options": [
+          "obsolete",
+          "equitable",
+          "adept"
+         ],
+         "answer": "obsolete",
+         "why": "obsolete. Ở câu này: \"Which replaces \"out of date\"?\"."
+        },
+        {
+         "q": "Which replaces \"people who work\" in a formal context?",
+         "options": [
+          "workforce",
+          "upheaval",
+          "resilience"
+         ],
+         "answer": "workforce",
+         "why": "workforce."
+        },
+        {
+         "q": "Which replaces \"good at\"?",
+         "options": [
+          "adept",
+          "precarious",
+          "obsolete"
+         ],
+         "answer": "adept",
+         "why": "adept at."
+        },
+        {
+         "q": "Which replaces \"learn new skills\"?",
+         "options": [
+          "retrain",
+          "displace",
+          "mitigate"
+         ],
+         "answer": "retrain",
+         "why": "retrain."
+        },
+        {
+         "q": "Which collocation is correct?",
+         "options": [
+          "a seismic shift in the labour market",
+          "a seismic shift of the labour market",
+          "a seismic shift to labour market"
+         ],
+         "answer": "a seismic shift in the labour market",
+         "why": "shift in + danh từ."
+        },
+        {
+         "q": "Which noun matches \"the ability to recover\"?",
+         "options": [
+          "resilience",
+          "disruption",
+          "upheaval"
+         ],
+         "answer": "resilience",
+         "why": "resilience."
+        },
+        {
+         "q": "Which verb pattern is correct?",
+         "options": [
+          "The outcome will hinge on policy.",
+          "The outcome will hinge policy.",
+          "The outcome will hinge by policy."
+         ],
+         "answer": "The outcome will hinge on policy.",
+         "why": "hinge on + danh từ."
+        },
+        {
+         "q": "Which noun matches \"an interruption of normal processes\"?",
+         "options": [
+          "disruption",
+          "resilience",
+          "workforce"
+         ],
+         "answer": "disruption",
+         "why": "disruption. Ở câu này: \"Which noun matches \"an interruption of normal\"."
+        }
+       ]
+      },
+      {
+       "type": "form",
+       "instruction": "Điền dạng đúng của từ trong ngoặc.",
+       "core": 6,
+       "items": [
+        {
+         "text": "The ___ (DISPLACE) of clerical staff has accelerated.",
+         "answer": "displacement",
+         "why": "Danh từ displacement."
+        },
+        {
+         "text": "Rapid ___ (DISRUPT) has outpaced regulation.",
+         "answer": "disruption",
+         "why": "Danh từ disruption."
+        },
+        {
+         "text": "The ___ (RESILIENT) of local economies varies widely.",
+         "answer": "resilience",
+         "why": "Danh từ resilience."
+        },
+        {
+         "text": "A more ___ (EQUITY) distribution of costs is needed.",
+         "answer": "equitable",
+         "why": "Tính từ equitable."
+        },
+        {
+         "text": "Economists worry about the ___ (PRECARIOUS) of gig work.",
+         "answer": "precariousness",
+         "why": "Danh từ precariousness."
+        },
+        {
+         "text": "The ___ (PREVAIL) of short-term contracts is rising.",
+         "answer": "prevalence",
+         "why": "Danh từ prevalence."
+        },
+        {
+         "text": "Such skills risk ___ (OBSOLETE) within a decade.",
+         "answer": "obsolescence",
+         "why": "Danh từ obsolescence."
+        },
+        {
+         "text": "Her ___ (ADEPT) at learning impressed employers.",
+         "answer": "adeptness",
+         "why": "Danh từ adeptness."
+        },
+        {
+         "text": "Early support is an effective ___ (MITIGATE) strategy.",
+         "answer": "mitigation",
+         "why": "Danh từ mitigation."
+        }
+       ]
+      },
+      {
+       "type": "gap",
+       "instruction": "Điền một từ vào chỗ trống.",
+       "core": 8,
+       "items": [
+        {
+         "text": "Many analysts believe the outcome will ___ on policy.",
+         "answer": "hinge",
+         "why": "hinge on. Ở câu này: \"Many analysts believe the outcome will ___\"."
+        },
+        {
+         "text": "Short-term contracts have become ___ in the sector.",
+         "answer": "prevalent",
+         "why": "prevalent. Ở câu này: \"Short-term contracts have become ___ in the\"."
+        },
+        {
+         "text": "The reform is intended to ___ the impact of job losses.",
+         "answer": "mitigate",
+         "why": "mitigate the impact."
+        },
+        {
+         "text": "Algorithms are beginning to ___ mid-level analysts.",
+         "answer": "displace",
+         "why": "displace."
+        },
+        {
+         "text": "Skills that are ___ today may be valuable again tomorrow.",
+         "answer": "obsolete",
+         "why": "obsolete. Ở câu này: \"Skills that are ___ today may be\"."
+        },
+        {
+         "text": "The ___ of an economy depends on its workers' ability to adapt.",
+         "answer": "resilience",
+         "why": "resilience. Ở câu này: \"The ___ of an economy depends on\"."
+        },
+        {
+         "text": "An ___ transition shares costs fairly.",
+         "answer": "equitable",
+         "why": "equitable."
+        },
+        {
+         "text": "The move to remote work represents a seismic ___.",
+         "answer": "shift",
+         "why": "a seismic shift. Ở câu này: \"The move to remote work represents a\"."
+        },
+        {
+         "text": "She is ___ at picking up new software.",
+         "answer": "adept",
+         "why": "adept at. Ở câu này: \"She is ___ at picking up new\"."
+        },
+        {
+         "text": "The factory closure caused serious ___ in the town.",
+         "answer": "upheaval",
+         "why": "upheaval."
+        },
+        {
+         "text": "Workers in ___ employment cannot plan ahead.",
+         "answer": "precarious",
+         "why": "precarious employment."
+        },
+        {
+         "text": "Older staff may need to ___ at their own expense.",
+         "answer": "retrain",
+         "why": "retrain. Ở câu này: \"Older staff may need to ___ at\"."
+        },
+        {
+         "text": "The firm's ___ fell by a fifth after the merger.",
+         "answer": "workforce",
+         "why": "workforce. Ở câu này: \"The firm's ___ fell by a fifth\"."
+        },
+        {
+         "text": "The ___ caused by new platforms has outpaced the law.",
+         "answer": "disruption",
+         "why": "disruption. Ở câu này: \"The ___ caused by new platforms has\"."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "instruction": "Viết lại câu bằng từ nâng cấp.",
+       "core": 6,
+       "items": [
+        {
+         "prompt": "The success of the reform depends on how it is funded.",
+         "instruction": "Viết lại với hinge.",
+         "answer": "The success of the reform will hinge on how it is funded.",
+         "why": "hinge on. Ở câu này: \"The success of the reform depends on\".",
+         "keyword": "hinge"
+        },
+        {
+         "prompt": "Insecure work is common among young graduates.",
+         "instruction": "Viết lại với precarious và prevalent.",
+         "answer": "Precarious work is prevalent among young graduates.",
+         "why": "precarious + prevalent.",
+         "keyword": "prevalent"
+        },
+        {
+         "prompt": "Support schemes can reduce the harm caused by redundancy.",
+         "instruction": "Viết lại với mitigate.",
+         "answer": "Support schemes can mitigate the harm caused by redundancy.",
+         "why": "mitigate. Ở câu này: \"Support schemes can reduce the harm caused\".",
+         "keyword": "mitigate"
+        },
+        {
+         "prompt": "Many of these skills are now out of date.",
+         "instruction": "Viết lại với obsolete.",
+         "answer": "Many of these skills are now obsolete.",
+         "why": "obsolete. Ở câu này: \"Many of these skills are now out\".",
+         "keyword": "obsolete"
+        },
+        {
+         "prompt": "Machines are replacing workers in routine roles. Use displace.",
+         "instruction": "Viết lại với displace.",
+         "answer": "Machines are displacing workers in routine roles.",
+         "why": "displace. Ở câu này: \"Machines are replacing workers in routine roles.\".",
+         "keyword": "displacing"
+        },
+        {
+         "prompt": "This is a very big change in how people work.",
+         "instruction": "Viết lại với a seismic shift.",
+         "answer": "This is a seismic shift in how people work.",
+         "why": "a seismic shift. Ở câu này: \"This is a very big change in\".",
+         "keyword": "seismic"
+        },
+        {
+         "prompt": "A fair transition is needed. Use equitable.",
+         "instruction": "Viết lại với equitable.",
+         "answer": "An equitable transition is needed.",
+         "why": "equitable + a/an.",
+         "keyword": "equitable"
+        },
+        {
+         "prompt": "He is very good at adapting to new tools.",
+         "instruction": "Viết lại với adept.",
+         "answer": "He is adept at adapting to new tools.",
+         "why": "adept at. Ở câu này: \"He is very good at adapting to\".",
+         "keyword": "adept"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Viết lại",
+     "min": "38–60′",
+     "prompt": "Rewrite this plain paragraph in a more formal, precise style (75 to 100 words), using at least six of the upgrade words (displace, obsolete, adept, upheaval, prevalent, mitigate, workforce, precarious, disruption, resilience, equitable, retrain, a seismic shift, hinge on): \"A lot of jobs are changing because of machines. Some workers are good at new things, but many are not. It is bad when work is not safe. The government should help people learn new skills and make things fair. How well this works depends on money.\"",
+     "hint": "Replace each plain phrase with a precise upgrade word; keep the argument.",
+     "sample": "Machines are bringing a seismic shift in the labour market, and the disruption is already visible in many sectors.",
+     "model": "Machines are bringing a seismic shift to the labour market, and the disruption is already visible in many sectors. Workers who are adept at new tools adapt quickly, but many others risk being displaced and find their skills obsolete. Precarious employment is increasingly prevalent, which makes the situation harder to bear. Governments should therefore help the workforce to retrain and ensure that the burden of change is shared in an equitable way. How well such policies mitigate the upheaval will hinge on how generously they are funded.",
+     "minWords": 75,
+     "useWords": [
+      "a seismic shift",
+      "adept",
+      "precarious",
+      "equitable",
+      "hinge on",
+      "mitigate"
+     ],
+     "outline": [
+      "Mở bài với thay đổi lớn",
+      "Ai thích nghi và ai không",
+      "Vai trò của chính phủ",
+      "Điều kiện thành công"
+     ],
+     "checklist": [
+      "Dùng ít nhất sáu từ nâng cấp đúng cách",
+      "Giữ nguyên lập luận của đoạn gốc",
+      "Giọng văn trang trọng và chính xác",
+      "Số từ 75 đến 100"
+     ]
+    }
+   ]
+  },
+  "wed": {
+   "title": "Sửa lỗi và nâng văn phong",
+   "kind": "review",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Khởi động",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "fix",
+       "instruction": "Tìm lỗi sai và viết lại câu đúng.",
+       "core": 5,
+       "items": [
+        {
+         "wrong": "Rarely governments have invested enough in reskilling.",
+         "answer": "Rarely have governments invested enough in reskilling.",
+         "why": "Sau Rarely phải đảo trợ động từ."
+        },
+        {
+         "wrong": "It is the lack of support what causes hardship.",
+         "answer": "It is the lack of support that causes hardship.",
+         "why": "Câu chẻ dùng that."
+        },
+        {
+         "wrong": "What the study found were a clear skills gap.",
+         "answer": "What the study found was a clear skills gap.",
+         "why": "Chủ ngữ What-clause số ít."
+        },
+        {
+         "wrong": "Not only automation cuts costs, but it also creates risks.",
+         "answer": "Not only does automation cut costs, but it also creates risks.",
+         "why": "Not only + does + S + V."
+        },
+        {
+         "wrong": "The reason why it failed is because it was untested.",
+         "answer": "The reason why it failed is that it was untested.",
+         "why": "The reason why ... is that."
+        },
+        {
+         "wrong": "Hardly the plant had closed than staff were told.",
+         "answer": "Hardly had the plant closed when staff were told.",
+         "why": "Hardly + had + S + V3 + when. Ở câu này: \"Hardly the plant had closed than staff\"."
+        },
+        {
+         "wrong": "Little the board realised how serious it was.",
+         "answer": "Little did the board realise how serious it was.",
+         "why": "Little did + S + V."
+        }
+       ],
+       "ungraded": true
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "practice",
+     "title": "Luyện tập",
+     "min": "5–48′",
+     "sets": [
+      {
+       "type": "fix",
+       "instruction": "Tìm lỗi sai (ngữ pháp hoặc register) và viết lại câu đúng.",
+       "core": 8,
+       "items": [
+        {
+         "wrong": "The disruption have been felt in every sector.",
+         "answer": "The disruption has been felt in every sector.",
+         "why": "disruption số ít."
+        },
+        {
+         "wrong": "Workers who are adept in learning tools adjust quickly.",
+         "answer": "Workers who are adept at learning tools adjust quickly.",
+         "why": "adept at. Ở câu này: \"Workers who are adept in learning tools\"."
+        },
+        {
+         "wrong": "The outcome will hinge to how reform is funded.",
+         "answer": "The outcome will hinge on how reform is funded.",
+         "why": "hinge on. Ở câu này: \"The outcome will hinge to how reform\"."
+        },
+        {
+         "wrong": "A growing number of firm are reducing their workforce.",
+         "answer": "A growing number of firms are reducing their workforce.",
+         "why": "firms số nhiều sau a growing number of."
+        },
+        {
+         "wrong": "Precarious work is more prevalent than it use to be.",
+         "answer": "Precarious work is more prevalent than it used to be.",
+         "why": "used to."
+        },
+        {
+         "wrong": "Not until retraining is funded will workers can adapt.",
+         "answer": "Not until retraining is funded will workers be able to adapt.",
+         "why": "can không đi với will."
+        },
+        {
+         "wrong": "The upheaval were a seismic shift for the town.",
+         "answer": "The upheaval was a seismic shift for the town.",
+         "why": "upheaval số ít nên dùng was."
+        },
+        {
+         "wrong": "It is only when workers feel secure they innovate.",
+         "answer": "It is only when workers feel secure that they innovate.",
+         "why": "Thiếu that."
+        },
+        {
+         "wrong": "A equitable transition protects the vulnerable.",
+         "answer": "An equitable transition protects the vulnerable.",
+         "why": "an trước nguyên âm."
+        },
+        {
+         "wrong": "They must retrain, otherwise their skills will became obsolete.",
+         "answer": "They must retrain; otherwise, their skills will become obsolete.",
+         "why": "will + V nguyên thể; dùng dấu chấm phẩy trước otherwise."
+        },
+        {
+         "wrong": "What worries economists are the precarious conditions.",
+         "answer": "What worries economists is the precarious nature of the conditions.",
+         "why": "What-clause số ít. Ở câu này: \"What worries economists are the precarious conditions.\"."
+        },
+        {
+         "wrong": "Resilience of workers depend on training.",
+         "answer": "The resilience of workers depends on training.",
+         "why": "Thiếu mạo từ; chia động từ."
+        },
+        {
+         "wrong": "Seldom machines displace creative roles.",
+         "answer": "Seldom do machines displace creative roles.",
+         "why": "Seldom + do + S + V."
+        },
+        {
+         "wrong": "Having rose steadily, the figure levelled off.",
+         "answer": "Having risen steadily, the figure levelled off.",
+         "why": "Having + V3."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "instruction": "Viết lại câu theo yêu cầu, nâng văn phong.",
+       "core": 8,
+       "items": [
+        {
+         "prompt": "Many people wrongly believe that robots will take all the jobs.",
+         "instruction": "Nâng văn phong: bắt đầu bằng It is a common misconception.",
+         "answer": "It is a common misconception that robots will take all the jobs.",
+         "why": "Nâng văn phong bằng câu chẻ giả định.",
+         "keyword": "misconception"
+        },
+        {
+         "prompt": "Machines rarely displace creative roles.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely do machines displace creative roles.",
+         "why": "Rarely + do + S + V.",
+         "keyword": "do"
+        },
+        {
+         "prompt": "Workers are being displaced quickly, and they are also becoming anxious.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only are workers being displaced quickly, but they are also becoming anxious.",
+         "why": "Not only + are + S.",
+         "keyword": "not only"
+        },
+        {
+         "prompt": "The success of the policy depends on funding.",
+         "instruction": "Viết lại bắt đầu bằng It is.",
+         "answer": "It is funding that the success of the policy will hinge on.",
+         "why": "Câu chẻ với hinge on.",
+         "keyword": "hinge",
+         "alt": [
+          "It is on funding that the success of the policy will hinge."
+         ]
+        },
+        {
+         "prompt": "Precarious work is common, which worries economists.",
+         "instruction": "Viết lại bắt đầu bằng What.",
+         "answer": "What worries economists is that precarious work is common.",
+         "why": "Pseudo-cleft.",
+         "keyword": "what"
+        },
+        {
+         "prompt": "The workforce had hardly adjusted when another wave of disruption arrived.",
+         "instruction": "Viết lại bắt đầu bằng Hardly.",
+         "answer": "Hardly had the workforce adjusted when another wave of disruption arrived.",
+         "why": "Hardly + had + S + V3 + when. Ở câu này: \"The workforce had hardly adjusted when another\".",
+         "keyword": "had"
+        },
+        {
+         "prompt": "If policymakers were to ignore retraining, the upheaval would deepen.",
+         "instruction": "Viết lại bắt đầu bằng Were.",
+         "answer": "Were policymakers to ignore retraining, the upheaval would deepen.",
+         "why": "Were + S + to V.",
+         "keyword": "were"
+        },
+        {
+         "prompt": "Nobody realised that the change was a seismic shift.",
+         "instruction": "Viết lại bắt đầu bằng Little.",
+         "answer": "Little did anyone realise that the change was a seismic shift.",
+         "why": "Little did + S + V. Ở câu này: \"Nobody realised that the change was a\".",
+         "keyword": "did"
+        },
+        {
+         "prompt": "A fair transition matters because it keeps public trust.",
+         "instruction": "Viết lại bắt đầu bằng The reason why.",
+         "answer": "The reason why an equitable transition matters is that it keeps public trust.",
+         "why": "The reason why ... is that . Ở câu này: \"A fair transition matters because it keeps\".",
+         "keyword": "reason"
+        },
+        {
+         "prompt": "Workers will not adapt until retraining is affordable.",
+         "instruction": "Viết lại bắt đầu bằng Not until.",
+         "answer": "Not until retraining is affordable will workers adapt.",
+         "why": "Not until + mệnh đề + will + S.",
+         "keyword": "will"
+        },
+        {
+         "prompt": "Policy matters more than technology in this debate.",
+         "instruction": "Viết lại bằng câu chẻ bắt đầu bằng It is.",
+         "answer": "It is policy, not technology, that matters most in this debate.",
+         "why": "It is ... not ... that ...",
+         "keyword": "that"
+        },
+        {
+         "prompt": "Few workers have ever faced such precarious conditions.",
+         "instruction": "Viết lại bắt đầu bằng Never before.",
+         "answer": "Never before have workers faced such precarious conditions.",
+         "why": "Never before + have + S + V3.",
+         "keyword": "never"
+        },
+        {
+         "prompt": "It was an enormous change, and it displaced thousands.",
+         "instruction": "Viết lại với a seismic shift.",
+         "answer": "It was a seismic shift that displaced thousands.",
+         "why": "a seismic shift. Ở câu này: \"It was an enormous change, and it\".",
+         "keyword": "seismic"
+        },
+        {
+         "prompt": "Support can reduce hardship, and it also builds resilience.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only can support mitigate hardship, but it also builds resilience.",
+         "why": "Not only + can + S.",
+         "keyword": "mitigate"
+        }
+       ]
+      },
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng nhất.",
+       "core": 8,
+       "items": [
+        {
+         "q": "Which sentence is the most formal?",
+         "options": [
+          "It is the speed of change that makes retraining so urgent.",
+          "The thing is that change is super fast so people gotta retrain.",
+          "Change is fast, so retraining is a big deal."
+         ],
+         "answer": "It is the speed of change that makes retraining so urgent.",
+         "why": "Câu chẻ, văn phong học thuật."
+        },
+        {
+         "q": "Which sentence correctly combines inversion and an upgrade word?",
+         "options": [
+          "Rarely has the workforce faced such upheaval.",
+          "Rarely the workforce has faced such upheaval.",
+          "Rarely has faced the workforce such upheaval."
+         ],
+         "answer": "Rarely has the workforce faced such upheaval.",
+         "why": "Rarely + has + S + V3."
+        },
+        {
+         "q": "Choose the best rewrite of \"lots of jobs are going\":",
+         "options": [
+          "Many roles are being displaced",
+          "Loads of jobs go away",
+          "Jobs are leaving"
+         ],
+         "answer": "Many roles are being displaced",
+         "why": "Register học thuật."
+        },
+        {
+         "q": "Which sentence uses hinge on correctly?",
+         "options": [
+          "Success will hinge on how the transition is funded.",
+          "Success will hinge how the transition is funded.",
+          "Success will hinge by funding."
+         ],
+         "answer": "Success will hinge on how the transition is funded.",
+         "why": "hinge on + danh từ hoặc mệnh đề."
+        },
+        {
+         "q": "Which sentence uses a pseudo-cleft correctly?",
+         "options": [
+          "What concerns employers is the shortage of adept staff.",
+          "What concerns employers are shortage of adept staff.",
+          "What concerns is the shortage of adept staff employers."
+         ],
+         "answer": "What concerns employers is the shortage of adept staff.",
+         "why": "What-clause số ít. Ở câu này: \"Which sentence uses a pseudo-cleft correctly?\"."
+        },
+        {
+         "q": "Not until the budget is approved ___ retraining begin.",
+         "options": [
+          "will",
+          "does",
+          "is"
+         ],
+         "answer": "will",
+         "why": "Not until ... will + S + V."
+        },
+        {
+         "q": "Which is a nominalised version of \"Workers were displaced rapidly\"?",
+         "options": [
+          "the rapid displacement of workers",
+          "the workers rapidly displace",
+          "displacing workers rapid"
+         ],
+         "answer": "the rapid displacement of workers",
+         "why": "Danh hóa."
+        },
+        {
+         "q": "Which word best fits: \"The disruption was ___ across sectors.\"",
+         "options": [
+          "uneven",
+          "unevenly",
+          "unevenness"
+         ],
+         "answer": "uneven",
+         "why": "Tính từ sau was."
+        },
+        {
+         "q": "Which phrase is the best formal substitute for \"get better at\"?",
+         "options": [
+          "become more adept at",
+          "get more good at",
+          "turn better at"
+         ],
+         "answer": "become more adept at",
+         "why": "adept at. Ở câu này: \"Which phrase is the best formal substitute\"."
+        },
+        {
+         "q": "Which is the most appropriate register for an essay?",
+         "options": [
+          "Precarious work is increasingly prevalent.",
+          "Rubbish jobs are all over the place.",
+          "Jobs are kinda unsafe."
+         ],
+         "answer": "Precarious work is increasingly prevalent.",
+         "why": "Học thuật."
+        },
+        {
+         "q": "Were governments ___ intervene, the upheaval might ease.",
+         "options": [
+          "to",
+          "for",
+          "at"
+         ],
+         "answer": "to",
+         "why": "Were + S + to V. Ở câu này: \"Were governments ___ intervene, the upheaval might\"."
+        },
+        {
+         "q": "Which sentence is correct?",
+         "options": [
+          "Hardly had they retrained when the skills became obsolete.",
+          "Hardly they had retrained when the skills became obsolete.",
+          "Hardly had they retrained than the skills became obsolete."
+         ],
+         "answer": "Hardly had they retrained when the skills became obsolete.",
+         "why": "Hardly ... when. Ở câu này: \"Which sentence is correct?\"."
+        },
+        {
+         "q": "It is the ___ of retraining that deters many older workers.",
+         "options": [
+          "cost",
+          "costing",
+          "costly"
+         ],
+         "answer": "cost",
+         "why": "Danh từ sau the."
+        },
+        {
+         "q": "Which noun phrase best means \"the ability to recover from shocks\"?",
+         "options": [
+          "economic resilience",
+          "economic upheaval",
+          "economic disruption"
+         ],
+         "answer": "economic resilience",
+         "why": "resilience. Ở câu này: \"Which noun phrase best means \"the ability\"."
+        }
+       ]
+      },
+      {
+       "type": "gap",
+       "instruction": "Điền một từ vào chỗ trống.",
+       "core": 8,
+       "items": [
+        {
+         "text": "It is policy, not technology, ___ will decide the outcome.",
+         "answer": "that",
+         "why": "It is ... that."
+        },
+        {
+         "text": "What ___ the town is the loss of a major employer.",
+         "answer": "worries",
+         "why": "What worries ... is ..."
+        },
+        {
+         "text": "Rarely ___ a transition been so rapid.",
+         "answer": "has",
+         "why": "Rarely + has."
+        },
+        {
+         "text": "Not only ___ the upheaval displace workers, but it also unsettles communities.",
+         "answer": "does",
+         "why": "Not only + does."
+        },
+        {
+         "text": "Little ___ they realise how obsolete their skills had become.",
+         "answer": "did",
+         "why": "Little did."
+        },
+        {
+         "text": "Hardly had the plant closed ___ the rumours began.",
+         "answer": "when",
+         "why": "Hardly ... when. Ở câu này: \"Hardly had the plant closed ___ the\"."
+        },
+        {
+         "text": "The reason why firms hesitate is ___ retraining is costly.",
+         "answer": "that",
+         "why": "The reason why ... is that. Ở câu này: \"The reason why firms hesitate is ___\"."
+        },
+        {
+         "text": "It is only when workers feel secure ___ they take risks.",
+         "answer": "that",
+         "why": "It is only when ... that."
+        },
+        {
+         "text": "Were governments ___ act, the disruption would ease.",
+         "answer": "to",
+         "why": "Were + S + to V. Ở câu này: \"Were governments ___ act, the disruption would\"."
+        },
+        {
+         "text": "The outcome will ___ on policy.",
+         "answer": "hinge",
+         "why": "hinge on. Ở câu này: \"The outcome will ___ on policy.\"."
+        },
+        {
+         "text": "Not until retraining is affordable ___ workers adapt.",
+         "answer": "will",
+         "why": "Not until ... will."
+        },
+        {
+         "text": "Precarious work has become ___ in the gig economy.",
+         "answer": "prevalent",
+         "why": "prevalent. Ở câu này: \"Precarious work has become ___ in the\"."
+        },
+        {
+         "text": "Seldom ___ firms invest in workers who are about to leave.",
+         "answer": "do",
+         "why": "Seldom + do."
+        },
+        {
+         "text": "What persuades readers ___ precision rather than volume.",
+         "answer": "is",
+         "why": "What ... is ..."
+        }
+       ]
+      },
+      {
+       "type": "cloze",
+       "instruction": "Gõ từ còn thiếu vào từng chỗ trống.",
+       "core": 6,
+       "items": [
+        {
+         "answer": "it",
+         "why": "It is ... that."
+        },
+        {
+         "answer": "that",
+         "why": "It is ... that."
+        },
+        {
+         "answer": "worries",
+         "why": "What worries economists is ..."
+        },
+        {
+         "answer": "prevalent",
+         "why": "prevalent."
+        },
+        {
+         "answer": "has",
+         "why": "Rarely + has + S + V3."
+        },
+        {
+         "answer": "only",
+         "why": "not only ... but also."
+        },
+        {
+         "answer": "did",
+         "why": "Little did + S + V."
+        },
+        {
+         "answer": "when",
+         "why": "Hardly ... when."
+        },
+        {
+         "answer": "why",
+         "why": "The reason why ..."
+        },
+        {
+         "answer": "when",
+         "why": "It is only when ... that."
+        },
+        {
+         "answer": "Were",
+         "why": "Were + S + to V."
+        },
+        {
+         "answer": "will",
+         "why": "Not until ... will."
+        }
+       ],
+       "passage": "Few debates are as heated as the one about automation. ___ is policy, not technology, ___ will decide the outcome. What ___ economists is that precarious work has become ___. Rarely ___ a workforce faced such upheaval, and not ___ does the disruption displace workers, but it also leaves their skills obsolete. Little ___ policymakers realise how fast the shift would come. Hardly had one cohort been retrained ___ new tools arrived. The reason ___ firms hesitate is that retraining is costly. It is only ___ support is guaranteed that workers take risks. ___ governments to invest, resilience would grow. Not until funding is secured ___ the transition become equitable.",
+       "mode": "type"
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết",
+     "min": "48–60′",
+     "prompt": "Write one paragraph (100 to 130 words) answering: \"What will determine whether automation benefits or harms workers?\" Use at least one inversion, one cleft sentence, and three upgrade words.",
+     "hint": "Position, two factors, one inversion, one cleft, a formal conclusion.",
+     "sample": "The effects of automation will hinge less on the technology itself than on the policies that surround it.",
+     "model": "The effects of automation will hinge less on the technology itself than on the policies that surround it. It is the speed of retraining, not the speed of the machines, that determines whether the upheaval remains temporary. Rarely have workers been asked to adapt so often, and rarely have they been given so little support. Where governments invest in retraining and income protection, the workforce shows greater resilience; where they do not, precarious work becomes prevalent. An equitable transition is therefore not an act of charity but a condition for stability, because societies that displace workers without helping them rebuild erode their own trust.",
+     "minWords": 100,
+     "useWords": [
+      "hinge on",
+      "It is ... that",
+      "Rarely",
+      "resilience",
+      "equitable"
+     ],
+     "outline": [
+      "Luận điểm",
+      "Yếu tố 1",
+      "Yếu tố 2",
+      "Kết luận"
+     ],
+     "checklist": [
+      "Có luận điểm rõ ở câu đầu",
+      "Dùng một đảo ngữ và một câu chẻ đúng",
+      "Dùng ít nhất ba từ nâng cấp",
+      "Văn phong trang trọng, chính xác",
+      "Số từ 100 đến 130"
+     ]
+    }
+   ]
+  },
+  "thu": {
+   "title": "Ôn sâu bằng dạng bài khác",
+   "kind": "review",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Khởi động",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "form",
+       "instruction": "Điền dạng đúng của từ trong ngoặc.",
+       "core": 4,
+       "items": [
+        {
+         "text": "The ___ (DISPLACE) of workers has accelerated.",
+         "answer": "displacement",
+         "why": "Danh từ displacement. Ở câu này: \"The ___ (DISPLACE) of workers has accelerated.\"."
+        },
+        {
+         "text": "A ___ (RESILIENT) workforce adapts quickly.",
+         "answer": "resilient",
+         "why": "Tính từ resilient."
+        },
+        {
+         "text": "The ___ (PREVAIL) of precarious work is rising.",
+         "answer": "prevalence",
+         "why": "Danh từ prevalence. Ở câu này: \"The ___ (PREVAIL) of precarious work is\"."
+        },
+        {
+         "text": "Economists urged ___ (EQUITY) treatment of all workers.",
+         "answer": "equitable",
+         "why": "Tính từ equitable. Ở câu này: \"Economists urged ___ (EQUITY) treatment of all\"."
+        },
+        {
+         "text": "Skills are at risk of ___ (OBSOLETE).",
+         "answer": "obsolescence",
+         "why": "Danh từ obsolescence. Ở câu này: \"Skills are at risk of ___ (OBSOLETE).\"."
+        },
+        {
+         "text": "The ___ (DISRUPT) was felt across the sector.",
+         "answer": "disruption",
+         "why": "Danh từ disruption. Ở câu này: \"The ___ (DISRUPT) was felt across the\"."
+        },
+        {
+         "text": "The scheme ___ (MITIGATION) some of the hardship.",
+         "answer": "mitigates",
+         "why": "Động từ mitigates."
+        }
+       ],
+       "ungraded": true
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "review",
+     "title": "Ôn tập",
+     "min": "5–46′",
+     "sets": [
+      {
+       "type": "oddone",
+       "instruction": "Chọn từ khác nghĩa hoặc khác sắc thái với ba từ còn lại.",
+       "core": 6,
+       "items": [
+        {
+         "options": [
+          "displace",
+          "replace",
+          "supplant",
+          "hire"
+         ],
+         "answer": "hire",
+         "why": "hire là thuê; ba từ kia là thay thế."
+        },
+        {
+         "options": [
+          "obsolete",
+          "outdated",
+          "antiquated",
+          "cutting-edge"
+         ],
+         "answer": "cutting-edge",
+         "why": "cutting-edge là tiên tiến."
+        },
+        {
+         "options": [
+          "adept",
+          "skilful",
+          "proficient",
+          "inept"
+         ],
+         "answer": "inept",
+         "why": "inept là vụng về."
+        },
+        {
+         "options": [
+          "upheaval",
+          "turmoil",
+          "disruption",
+          "stability"
+         ],
+         "answer": "stability",
+         "why": "stability là ổn định."
+        },
+        {
+         "options": [
+          "prevalent",
+          "widespread",
+          "common",
+          "rare"
+         ],
+         "answer": "rare",
+         "why": "rare là hiếm."
+        },
+        {
+         "options": [
+          "mitigate",
+          "alleviate",
+          "ease",
+          "aggravate"
+         ],
+         "answer": "aggravate",
+         "why": "aggravate là làm trầm trọng."
+        },
+        {
+         "options": [
+          "precarious",
+          "insecure",
+          "unstable",
+          "secure"
+         ],
+         "answer": "secure",
+         "why": "secure là an toàn."
+        },
+        {
+         "options": [
+          "resilience",
+          "robustness",
+          "toughness",
+          "fragility"
+         ],
+         "answer": "fragility",
+         "why": "fragility là sự mong manh."
+        },
+        {
+         "options": [
+          "equitable",
+          "fair",
+          "impartial",
+          "biased"
+         ],
+         "answer": "biased",
+         "why": "biased là thiên vị."
+        },
+        {
+         "options": [
+          "retrain",
+          "reskill",
+          "upskill",
+          "dismiss"
+         ],
+         "answer": "dismiss",
+         "why": "dismiss là sa thải."
+        },
+        {
+         "options": [
+          "a seismic shift",
+          "a sea change",
+          "a transformation",
+          "a minor tweak"
+         ],
+         "answer": "a minor tweak",
+         "why": "minor tweak là chỉnh sửa nhỏ."
+        },
+        {
+         "options": [
+          "hinge on",
+          "depend on",
+          "rest on",
+          "ignore"
+         ],
+         "answer": "ignore",
+         "why": "ignore là bỏ qua."
+        },
+        {
+         "options": [
+          "disruption",
+          "interruption",
+          "disturbance",
+          "continuity"
+         ],
+         "answer": "continuity",
+         "why": "continuity là liên tục."
+        }
+       ]
+      },
+      {
+       "type": "listenpick",
+       "instruction": "Nghe và chọn đáp án đúng.",
+       "core": 6,
+       "items": [
+        {
+         "say": "The upheaval in retail has been felt on every high street.",
+         "q": "Điều gì đã được cảm nhận ở mọi phố mua sắm?",
+         "options": [
+          "Biến động trong ngành bán lẻ",
+          "Giá nhà tăng",
+          "Mùa lễ hội"
+         ],
+         "answer": "Biến động trong ngành bán lẻ",
+         "why": "upheaval. Ở câu này: \"Điều gì đã được cảm nhận ở\"."
+        },
+        {
+         "say": "Short-term contracts are prevalent among workers under thirty.",
+         "q": "Hợp đồng ngắn hạn phổ biến ở nhóm nào?",
+         "options": [
+          "Lao động dưới ba mươi tuổi",
+          "Người nghỉ hưu",
+          "Quản lý cấp cao"
+         ],
+         "answer": "Lao động dưới ba mươi tuổi",
+         "why": "prevalent. Ở câu này: \"Hợp đồng ngắn hạn phổ biến ở\"."
+        },
+        {
+         "say": "The success of any reform will hinge on how it is funded.",
+         "q": "Thành công của cải cách phụ thuộc vào gì?",
+         "options": [
+          "Cách nó được tài trợ",
+          "Thời gian ban hành",
+          "Số người ủng hộ"
+         ],
+         "answer": "Cách nó được tài trợ",
+         "why": "hinge on. Ở câu này: \"Thành công của cải cách phụ thuộc\"."
+        },
+        {
+         "say": "Retraining grants can mitigate the hardship caused by redundancy.",
+         "q": "Trợ cấp đào tạo lại có tác dụng gì?",
+         "options": [
+          "Giảm nhẹ khó khăn do mất việc",
+          "Tăng lương",
+          "Giảm thuế"
+         ],
+         "answer": "Giảm nhẹ khó khăn do mất việc",
+         "why": "mitigate. Ở câu này: \"Trợ cấp đào tạo lại có tác\"."
+        },
+        {
+         "say": "An equitable transition ensures that the burden of change is not borne by the few.",
+         "q": "Chuyển đổi công bằng đảm bảo điều gì?",
+         "options": [
+          "Gánh nặng không đổ lên số ít",
+          "Chi phí giảm",
+          "Công việc tăng"
+         ],
+         "answer": "Gánh nặng không đổ lên số ít",
+         "why": "equitable. Ở câu này: \"Chuyển đổi công bằng đảm bảo điều\"."
+        },
+        {
+         "say": "Economic resilience depends on workers' capacity to adapt.",
+         "q": "Khả năng phục hồi của nền kinh tế phụ thuộc vào gì?",
+         "options": [
+          "Năng lực thích nghi của người lao động",
+          "Số nhà máy",
+          "Giá năng lượng"
+         ],
+         "answer": "Năng lực thích nghi của người lao động",
+         "why": "resilience. Ở câu này: \"Khả năng phục hồi của nền kinh\"."
+        },
+        {
+         "say": "The move to remote work represents a seismic shift in how offices are used.",
+         "q": "Làm việc từ xa là gì?",
+         "options": [
+          "Một thay đổi chấn động",
+          "Một thay đổi nhỏ",
+          "Một xu hướng tạm thời"
+         ],
+         "answer": "Một thay đổi chấn động",
+         "why": "a seismic shift. Ở câu này: \"Làm việc từ xa là gì?\"."
+        },
+        {
+         "say": "Within a decade, entire categories of clerical skill may become obsolete.",
+         "q": "Điều gì có thể xảy ra trong một thập kỷ?",
+         "options": [
+          "Nhiều nhóm kỹ năng văn phòng lỗi thời",
+          "Lương tăng",
+          "Việc làm tăng"
+         ],
+         "answer": "Nhiều nhóm kỹ năng văn phòng lỗi thời",
+         "why": "obsolete. Ở câu này: \"Điều gì có thể xảy ra trong\"."
+        }
+       ]
+      },
+      {
+       "type": "reorder",
+       "instruction": "Sắp xếp các từ thành câu đúng.",
+       "core": 6,
+       "items": [
+        {
+         "words": [
+          "Rarely",
+          "has",
+          "the",
+          "workforce",
+          "faced",
+          "such",
+          "precarious",
+          "conditions"
+         ],
+         "answer": "Rarely has the workforce faced such precarious conditions",
+         "why": "Rarely + has + S + V3."
+        },
+        {
+         "words": [
+          "It",
+          "is",
+          "policy",
+          "that",
+          "will",
+          "determine",
+          "whether",
+          "the",
+          "transition",
+          "is",
+          "equitable"
+         ],
+         "answer": "It is policy that will determine whether the transition is equitable",
+         "why": "It is ... that."
+        },
+        {
+         "words": [
+          "The",
+          "outcome",
+          "will",
+          "hinge",
+          "on",
+          "how",
+          "the",
+          "upheaval",
+          "is",
+          "managed"
+         ],
+         "answer": "The outcome will hinge on how the upheaval is managed",
+         "why": "hinge on."
+        },
+        {
+         "words": [
+          "What",
+          "worries",
+          "economists",
+          "is",
+          "that",
+          "precarious",
+          "work",
+          "is",
+          "prevalent"
+         ],
+         "answer": "What worries economists is that precarious work is prevalent",
+         "why": "Pseudo-cleft."
+        },
+        {
+         "words": [
+          "Not",
+          "only",
+          "does",
+          "automation",
+          "displace",
+          "workers",
+          "but",
+          "it",
+          "also",
+          "erodes",
+          "skills"
+         ],
+         "answer": "Not only does automation displace workers but it also erodes skills",
+         "why": "Not only + does + S + V."
+        },
+        {
+         "words": [
+          "Were",
+          "governments",
+          "to",
+          "act",
+          "the",
+          "disruption",
+          "would",
+          "ease"
+         ],
+         "answer": "Were governments to act the disruption would ease",
+         "why": "Were + S + to V."
+        },
+        {
+         "words": [
+          "Hardly",
+          "had",
+          "workers",
+          "retrained",
+          "when",
+          "their",
+          "skills",
+          "became",
+          "obsolete"
+         ],
+         "answer": "Hardly had workers retrained when their skills became obsolete",
+         "why": "Hardly ... when."
+        },
+        {
+         "words": [
+          "Little",
+          "did",
+          "firms",
+          "realise",
+          "how",
+          "fast",
+          "the",
+          "shift",
+          "would",
+          "come"
+         ],
+         "answer": "Little did firms realise how fast the shift would come",
+         "why": "Little did + S + V."
+        },
+        {
+         "words": [
+          "The",
+          "reason",
+          "why",
+          "firms",
+          "hesitate",
+          "is",
+          "that",
+          "retraining",
+          "is",
+          "costly"
+         ],
+         "answer": "The reason why firms hesitate is that retraining is costly",
+         "why": "The reason why ... is that."
+        },
+        {
+         "words": [
+          "Not",
+          "until",
+          "funding",
+          "is",
+          "secured",
+          "will",
+          "the",
+          "transition",
+          "become",
+          "equitable"
+         ],
+         "answer": "Not until funding is secured will the transition become equitable",
+         "why": "Not until ... will."
+        }
+       ]
+      },
+      {
+       "type": "dialogue",
+       "instruction": "Chọn câu phù hợp nhất để hoàn thành hội thoại.",
+       "core": 6,
+       "items": [
+        {
+         "lines": [
+          "A: Automation will create more jobs than it destroys.",
+          "B: Overall, perhaps.",
+          "A: Then why the anxiety?"
+         ],
+         "options": [
+          "B: Because precarious work is becoming prevalent and the disruption is uneven.",
+          "B: Because machines are loud.",
+          "B: Because jobs are boring."
+         ],
+         "answer": "B: Because precarious work is becoming prevalent and the disruption is uneven.",
+         "why": "Phản biện bằng bằng chứng."
+        },
+        {
+         "lines": [
+          "A: Retraining is the whole answer.",
+          "B: It is part of it."
+         ],
+         "options": [
+          "A: What else is needed?",
+          "A: Nothing else.",
+          "A: Machines."
+         ],
+         "answer": "A: What else is needed?",
+         "why": "Câu hỏi tiếp theo hợp lý."
+        },
+        {
+         "lines": [
+          "A: Why bother with an equitable transition?",
+          "B: It is a condition for political stability."
+         ],
+         "options": [
+          "A: Because people who feel abandoned resist innovation?",
+          "A: Because stability is a bird?",
+          "A: Because stairs are steep?"
+         ],
+         "answer": "A: Because people who feel abandoned resist innovation?",
+         "why": "Hỏi lại để làm rõ."
+        },
+        {
+         "lines": [
+          "A: Older workers cannot adapt.",
+          "B: I would challenge that."
+         ],
+         "options": [
+          "A: On what grounds?",
+          "A: On what shelf?",
+          "A: On whose table?"
+         ],
+         "answer": "A: On what grounds?",
+         "why": "Hỏi cơ sở của phản bác."
+        },
+        {
+         "lines": [
+          "A: Isn't the upheaval temporary?",
+          "B: For some, yes."
+         ],
+         "options": [
+          "A: And for the others?",
+          "A: And for the sea?",
+          "A: And for the sky?"
+         ],
+         "answer": "A: And for the others?",
+         "why": "Câu hỏi tiếp theo hợp lý."
+        },
+        {
+         "lines": [
+          "A: Firms will retrain staff anyway.",
+          "B: Rarely do they, unless it saves money."
+         ],
+         "options": [
+          "A: Then should governments step in?",
+          "A: Then should we paint?",
+          "A: Then should we sing?"
+         ],
+         "answer": "A: Then should governments step in?",
+         "why": "Dẫn đến đề xuất chính sách."
+        }
+       ]
+      },
+      {
+       "type": "translate",
+       "instruction": "Dịch sang tiếng Anh rồi tự đối chiếu với mẫu.",
+       "core": 4,
+       "items": [
+        {
+         "prompt": "Sự gián đoạn do công nghệ gây ra không đồng đều giữa các ngành.",
+         "answer": "The disruption caused by technology is uneven across sectors.",
+         "why": "disruption; uneven."
+        },
+        {
+         "prompt": "Thành công của cải cách sẽ phụ thuộc vào cách nó được tài trợ.",
+         "answer": "The success of the reform will hinge on how it is funded.",
+         "why": "hinge on. Ở câu này: \"Thành công của cải cách sẽ phụ\"."
+        },
+        {
+         "prompt": "Việc làm bấp bênh đang trở nên phổ biến trong ngành giao hàng.",
+         "answer": "Precarious work is becoming prevalent in the delivery sector.",
+         "why": "precarious; prevalent."
+        },
+        {
+         "prompt": "Một quá trình chuyển đổi công bằng là điều kiện cho sự ổn định chính trị.",
+         "answer": "An equitable transition is a condition for political stability.",
+         "why": "equitable. Ở câu này: \"Một quá trình chuyển đổi công bằng\"."
+        },
+        {
+         "prompt": "Hiếm khi người lao động phải thích nghi nhiều lần như vậy.",
+         "answer": "Rarely have workers been asked to adapt so often.",
+         "why": "Rarely + have + S + V3."
+        },
+        {
+         "prompt": "Chính chính sách, chứ không phải công nghệ, sẽ quyết định kết quả.",
+         "answer": "It is policy, not technology, that will decide the outcome.",
+         "why": "It is ... that. Ở câu này: \"Chính chính sách, chứ không phải công\"."
+        },
+        {
+         "prompt": "Nhiều kỹ năng có thể trở nên lỗi thời chỉ trong một chu kỳ sản phẩm.",
+         "answer": "Many skills can become obsolete within a single product cycle.",
+         "why": "obsolete. Ở câu này: \"Nhiều kỹ năng có thể trở nên\"."
+        },
+        {
+         "prompt": "Hỗ trợ đào tạo lại giúp giảm nhẹ tác động và tăng khả năng phục hồi.",
+         "answer": "Retraining support mitigates the impact and builds resilience.",
+         "why": "mitigate; resilience."
+        }
+       ]
+      },
+      {
+       "type": "form",
+       "instruction": "Điền dạng đúng của từ trong ngoặc.",
+       "core": 5,
+       "items": [
+        {
+         "text": "The ___ (DISPLACE) of mid-level staff has been rapid.",
+         "answer": "displacement",
+         "why": "Danh từ displacement. Ở câu này: \"The ___ (DISPLACE) of mid-level staff has\"."
+        },
+        {
+         "text": "Policymakers sought a more ___ (EQUITY) settlement.",
+         "answer": "equitable",
+         "why": "Tính từ equitable. Ở câu này: \"Policymakers sought a more ___ (EQUITY) settlement.\"."
+        },
+        {
+         "text": "The ___ (PRECARIOUS) of gig work is well documented.",
+         "answer": "precariousness",
+         "why": "Danh từ precariousness. Ở câu này: \"The ___ (PRECARIOUS) of gig work is\"."
+        },
+        {
+         "text": "The sector shows remarkable ___ (RESILIENT).",
+         "answer": "resilience",
+         "why": "Danh từ resilience. Ở câu này: \"The sector shows remarkable ___ (RESILIENT).\"."
+        },
+        {
+         "text": "The ___ (PREVAIL) of insecure contracts worries unions.",
+         "answer": "prevalence",
+         "why": "Danh từ prevalence. Ở câu này: \"The ___ (PREVAIL) of insecure contracts worries\"."
+        },
+        {
+         "text": "The ___ (OBSOLETE) of routine skills is accelerating.",
+         "answer": "obsolescence",
+         "why": "Danh từ obsolescence. Ở câu này: \"The ___ (OBSOLETE) of routine skills is\"."
+        },
+        {
+         "text": "Early help is an effective ___ (MITIGATE) measure.",
+         "answer": "mitigation",
+         "why": "Danh từ mitigation. Ở câu này: \"Early help is an effective ___ (MITIGATE)\"."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Nói phản biện",
+     "min": "46–60′",
+     "mode": "speak",
+     "seconds": 60,
+     "prompt": "Speak for 60 seconds. Someone says: \"Workers who lose their jobs to machines should simply retrain; there is no need for government help.\" Respond: acknowledge the point, rebut it with reasons, and conclude. Use at least two upgrade words and one cleft or inversion.",
+     "hint": "Acknowledge, rebut, reasons, conclusion.",
+     "sample": "There is some truth in that view, but it overlooks how costly and uncertain retraining can be.",
+     "model": "There is some truth in that view, but it overlooks how costly and uncertain retraining can be. Many older workers cannot afford to stop earning while they retrain, and rarely do employers offer the time. What this means is that the burden of change falls on those least able to bear it. It is for that reason that governments should help: an equitable transition mitigates hardship and builds the resilience of the whole workforce. So, rather than leaving workers to cope alone, we should share the cost.",
+     "useWords": [
+      "mitigate",
+      "equitable",
+      "resilience",
+      "Rarely",
+      "What ... is"
+     ],
+     "outline": [
+      "Thừa nhận một phần",
+      "Phản bác: chi phí và rủi ro của đào tạo lại",
+      "Hệ quả",
+      "Kết luận"
+     ],
+     "checklist": [
+      "Thừa nhận ý của đối phương",
+      "Có lý do cụ thể",
+      "Dùng ít nhất hai từ nâng cấp",
+      "Dùng một câu chẻ hoặc đảo ngữ",
+      "Nói liền mạch trong 60 giây"
+     ]
+    }
+   ]
+  },
+  "fri": {
+   "title": "Chép chính tả, viết lại đoạn",
+   "kind": "review",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "practice",
+     "title": "Luyện tập",
+     "min": "0–48′",
+     "sets": [
+      {
+       "type": "dictation",
+       "instruction": "Nghe câu dài và chép lại đúng từng từ.",
+       "core": 6,
+       "items": [
+        {
+         "say": "Few transformations in modern economic history have been as widely anticipated, or as poorly understood, as the rise of intelligent machines.",
+         "why": "Câu mở bài đọc dài."
+        },
+        {
+         "say": "Workers who are adept at learning, communicating and solving unfamiliar problems tend to move between roles with remarkable ease.",
+         "why": "adept at. Ở câu này: \"Workers who are adept at learning, communicating\"."
+        },
+        {
+         "say": "The disruption is uneven in both timing and severity, and a fifty-five-year-old machine operator faces a far steeper climb.",
+         "why": "disruption. Ở câu này: \"The disruption is uneven in both timing\"."
+        },
+        {
+         "say": "Countries that invest in education and income support can mitigate the worst effects and build resilience into their workforce.",
+         "why": "mitigate; resilience. Ở câu này: \"Countries that invest in education and income\"."
+        },
+        {
+         "say": "An equitable transition is not merely a moral aspiration; it is a condition for political stability.",
+         "why": "equitable. Ở câu này: \"An equitable transition is not merely a\"."
+        },
+        {
+         "say": "Much will hinge on policy rather than technology, because people who feel abandoned rarely support the innovations that disrupted them.",
+         "why": "hinge on. Ở câu này: \"Much will hinge on policy rather than\"."
+        },
+        {
+         "say": "It is the speed of retraining, not the speed of the machines, that determines whether the upheaval remains temporary.",
+         "why": "Câu chẻ."
+        },
+        {
+         "say": "Rarely have workers been asked to adapt so often, and rarely have they been given so little support.",
+         "why": "Đảo ngữ."
+        }
+       ]
+      },
+      {
+       "type": "cloze",
+       "instruction": "Gõ từ còn thiếu vào từng chỗ trống.",
+       "core": 8,
+       "items": [
+        {
+         "answer": "shift",
+         "why": "a seismic shift."
+        },
+        {
+         "answer": "adept",
+         "why": "adept at."
+        },
+        {
+         "answer": "prevalent",
+         "why": "prevalent."
+        },
+        {
+         "answer": "disruption",
+         "why": "disruption."
+        },
+        {
+         "answer": "obsolete",
+         "why": "obsolete."
+        },
+        {
+         "answer": "hinge",
+         "why": "hinge on."
+        },
+        {
+         "answer": "mitigate",
+         "why": "mitigate."
+        },
+        {
+         "answer": "resilience",
+         "why": "resilience."
+        },
+        {
+         "answer": "equitable",
+         "why": "equitable."
+        },
+        {
+         "answer": "retrain",
+         "why": "retrain."
+        },
+        {
+         "answer": "has",
+         "why": "Rarely + has + S + V3."
+        },
+        {
+         "answer": "cost",
+         "why": "It is the cost of retraining that ...: danh từ cost."
+        },
+        {
+         "answer": "will",
+         "why": "Not until ... will."
+        }
+       ],
+       "passage": "The rise of intelligent machines represents a seismic ___ in how work is organised. Optimists note that workers who are ___ at learning move between roles with ease. Pessimists reply that precarious work has become ___ and that the ___ is uneven in timing and severity. Skills that were valuable a decade ago can become ___ within a single product cycle. Much will ___ on policy rather than technology. Countries that invest in education can ___ the worst effects and build ___ into their workforce. An ___ transition is a condition for political stability. Every worker willing to ___ should be given a genuine route to do so. Rarely ___ a transition been so rapid, and it is the ___ of retraining that deters many. Not until funding is secured ___ the upheaval ease.",
+       "mode": "type"
+      },
+      {
+       "type": "transform",
+       "instruction": "Viết lại câu theo yêu cầu.",
+       "core": 6,
+       "items": [
+        {
+         "prompt": "Workers were displaced rapidly, and the effects were widely felt.",
+         "instruction": "Viết lại bằng danh hóa: The rapid ...",
+         "answer": "The rapid displacement of workers had widely felt effects.",
+         "why": "Danh hóa: displaced rapidly → the rapid displacement.",
+         "keyword": "displacement",
+         "alt": [
+          "The rapid displacement of workers had effects that were widely felt."
+         ]
+        },
+        {
+         "prompt": "Technology and policy both matter, but policy matters more.",
+         "instruction": "Viết lại bằng câu chẻ bắt đầu bằng It is.",
+         "answer": "It is policy, more than technology, that matters.",
+         "why": "It is ... that. Ở câu này: \"Technology and policy both matter, but policy\".",
+         "keyword": "that"
+        },
+        {
+         "prompt": "The upheaval was so great that few firms coped. Use So great was.",
+         "instruction": "Viết lại bắt đầu bằng So great.",
+         "answer": "So great was the upheaval that few firms coped.",
+         "why": "So + adj + was + S + that ...",
+         "keyword": "so great"
+        },
+        {
+         "prompt": "Policymakers did not intervene until the damage was done.",
+         "instruction": "Viết lại bắt đầu bằng Not until.",
+         "answer": "Not until the damage was done did policymakers intervene.",
+         "why": "Not until ... did + S + V.",
+         "keyword": "did"
+        },
+        {
+         "prompt": "If more firms offered retraining, resilience would improve.",
+         "instruction": "Viết lại bắt đầu bằng Were.",
+         "answer": "Were more firms to offer retraining, resilience would improve.",
+         "why": "Were + S + to V. Ở câu này: \"If more firms offered retraining, resilience would\".",
+         "keyword": "were"
+        },
+        {
+         "prompt": "Precarious work worries economists most.",
+         "instruction": "Viết lại bằng câu chẻ bắt đầu bằng It is.",
+         "answer": "It is precarious work that worries economists most.",
+         "why": "It is ... that. Ở câu này: \"Precarious work worries economists most.\".",
+         "keyword": "that"
+        },
+        {
+         "prompt": "The outcome depends on policy.",
+         "instruction": "Viết lại bằng câu chẻ bắt đầu bằng What.",
+         "answer": "What the outcome hinges on is policy.",
+         "why": "Pseudo-cleft với hinge on.",
+         "keyword": "hinges"
+        },
+        {
+         "prompt": "The workforce had barely recovered when the next wave hit.",
+         "instruction": "Viết lại bắt đầu bằng Barely.",
+         "answer": "Barely had the workforce recovered when the next wave hit.",
+         "why": "Barely + had + S + V3 + when.",
+         "keyword": "had"
+        },
+        {
+         "prompt": "A large number of workers lost their jobs, and little support was available.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only did a large number of workers lose their jobs, but little support was available.",
+         "why": "Not only + did + S + V.",
+         "keyword": "did"
+        },
+        {
+         "prompt": "She is highly skilled in managing change.",
+         "instruction": "Viết lại với adept.",
+         "answer": "She is adept at managing change.",
+         "why": "adept at + V-ing.",
+         "keyword": "adept"
+        }
+       ]
+      },
+      {
+       "type": "fix",
+       "instruction": "Tìm lỗi sai và viết lại câu đúng.",
+       "core": 6,
+       "items": [
+        {
+         "wrong": "The disruption of retail are well documented.",
+         "answer": "The disruption of retail is well documented.",
+         "why": "disruption số ít. Ở câu này: \"The disruption of retail are well documented.\"."
+        },
+        {
+         "wrong": "What the figures reveal are a seismic shift.",
+         "answer": "What the figures reveal is a seismic shift.",
+         "why": "What-clause số ít. Ở câu này: \"What the figures reveal are a seismic\"."
+        },
+        {
+         "wrong": "Precarious jobs is prevalent among graduates.",
+         "answer": "Precarious jobs are prevalent among graduates.",
+         "why": "jobs số nhiều nên dùng are."
+        },
+        {
+         "wrong": "It is the cost what deters older workers.",
+         "answer": "It is the cost that deters older workers.",
+         "why": "Câu chẻ dùng that. Ở câu này: \"It is the cost what deters older\"."
+        },
+        {
+         "wrong": "Skills are becoming obsolete rapid.",
+         "answer": "Skills are becoming obsolete rapidly.",
+         "why": "Trạng từ rapidly."
+        },
+        {
+         "wrong": "Not only firms displace workers, but they also lose expertise.",
+         "answer": "Not only do firms displace workers, but they also lose expertise.",
+         "why": "Not only + do + S."
+        },
+        {
+         "wrong": "Little policymakers realised how fast the shift would come.",
+         "answer": "Little did policymakers realise how fast the shift would come.",
+         "why": "Little did + S + V. Ở câu này: \"Little policymakers realised how fast the shift\"."
+        },
+        {
+         "wrong": "Were firms invest in retraining, resilience would grow.",
+         "answer": "Were firms to invest in retraining, resilience would grow.",
+         "why": "Were + S + to V. Ở câu này: \"Were firms invest in retraining, resilience would\"."
+        },
+        {
+         "wrong": "The outcome will hinge about policy.",
+         "answer": "The outcome will hinge on policy.",
+         "why": "hinge on. Ở câu này: \"The outcome will hinge about policy.\"."
+        },
+        {
+         "wrong": "An upheaval of this scale have rarely been seen.",
+         "answer": "An upheaval of this scale has rarely been seen.",
+         "why": "upheaval số ít."
+        }
+       ]
+      },
+      {
+       "type": "translate",
+       "instruction": "Dịch sang tiếng Anh rồi tự đối chiếu với mẫu.",
+       "core": 4,
+       "items": [
+        {
+         "prompt": "Điều khiến các nhà kinh tế lo ngại là việc làm bấp bênh đang trở nên phổ biến.",
+         "answer": "What worries economists is that precarious work is becoming prevalent.",
+         "why": "What + V + is that ..."
+        },
+        {
+         "prompt": "Hiếm khi một cuộc chuyển đổi lại diễn ra nhanh như vậy.",
+         "answer": "Rarely has a transition been so rapid.",
+         "why": "Rarely + has + S + V3. Ở câu này: \"Hiếm khi một cuộc chuyển đổi lại\"."
+        },
+        {
+         "prompt": "Chính khả năng phục hồi của lực lượng lao động mới quyết định kết quả.",
+         "answer": "It is the resilience of the workforce that will determine the outcome.",
+         "why": "It is ... that. Ở câu này: \"Chính khả năng phục hồi của lực\"."
+        },
+        {
+         "prompt": "Nếu các chính phủ không can thiệp, khoảng cách bất bình đẳng sẽ rộng thêm.",
+         "answer": "Were governments not to intervene, the inequality gap would widen.",
+         "why": "Were + S + not to V."
+        },
+        {
+         "prompt": "Những kỹ năng đó có thể trở nên lỗi thời trong chưa đầy một thập kỷ.",
+         "answer": "Those skills could become obsolete in less than a decade.",
+         "why": "obsolete. Ở câu này: \"Những kỹ năng đó có thể trở\"."
+        },
+        {
+         "prompt": "Chỉ khi người lao động cảm thấy an toàn thì họ mới dám mạo hiểm.",
+         "answer": "It is only when workers feel secure that they take risks.",
+         "why": "It is only when ... that ..."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Nói",
+     "min": "48–60′",
+     "mode": "speak",
+     "seconds": 90,
+     "prompt": "Speak for 90 seconds: \"Should governments slow the pace of automation?\" State your position, give two reasons, address one objection, and conclude. Use at least three upgrade words and two C1 structures (inversion or cleft).",
+     "hint": "Position, reason 1, reason 2, objection and rebuttal, conclusion.",
+     "sample": "Let me be clear: I do not believe governments should slow automation, but they must manage its consequences.",
+     "model": "Let me be clear: I do not believe governments should slow automation, but they must manage its consequences. First, slowing technology would sacrifice real gains in productivity and safety. What it would not do is protect workers, because those who are adept at new tools would simply move abroad. Second, the real problem is the upheaval that follows. Rarely do displaced workers find new roles quickly, and precarious work is becoming prevalent. Some argue that a slower pace would give people time to adapt; to some extent that is true, but it is the quality of retraining, not the speed of the machines, that decides the outcome. So, the answer is to invest in an equitable transition that mitigates hardship and builds resilience.",
+     "useWords": [
+      "adept",
+      "prevalent",
+      "equitable",
+      "mitigate",
+      "Rarely",
+      "It is ... that"
+     ],
+     "outline": [
+      "Quan điểm",
+      "Lý do 1",
+      "Lý do 2",
+      "Phản bác một ý kiến đối lập",
+      "Kết luận"
+     ],
+     "checklist": [
+      "Nêu rõ quan điểm ở câu đầu",
+      "Có hai lý do khác nhau",
+      "Xử lý một phản đối",
+      "Dùng ít nhất ba từ nâng cấp",
+      "Dùng hai cấu trúc C1"
+     ]
+    }
+   ]
+  },
+  "sat": {
+   "title": "Bài luận có giờ và bài nói 2 phút",
+   "kind": "week",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "quiz",
+     "title": "Quiz nhanh",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Quiz nhanh: chọn đáp án đúng.",
+       "core": 10,
+       "items": [
+        {
+         "q": "Which word means \"fair and impartial\"?",
+         "options": [
+          "equitable",
+          "precarious",
+          "obsolete"
+         ],
+         "answer": "equitable",
+         "why": "equitable. Ở câu này: \"Which word means \"fair and impartial\"?\"."
+        },
+        {
+         "q": "Which phrase means \"depend entirely on\"?",
+         "options": [
+          "hinge on",
+          "rest at",
+          "hang by"
+         ],
+         "answer": "hinge on",
+         "why": "hinge on. Ở câu này: \"Which phrase means \"depend entirely on\"?\"."
+        },
+        {
+         "q": "Short-term contracts are ___ among young workers.",
+         "options": [
+          "prevalent",
+          "adept",
+          "obsolete"
+         ],
+         "answer": "prevalent",
+         "why": "prevalent. Ở câu này: \"Short-term contracts are ___ among young workers.\"."
+        },
+        {
+         "q": "Retraining grants can ___ the hardship of redundancy.",
+         "options": [
+          "mitigate",
+          "displace",
+          "hinge"
+         ],
+         "answer": "mitigate",
+         "why": "mitigate. Ở câu này: \"Retraining grants can ___ the hardship of\"."
+        },
+        {
+         "q": "Which noun matches \"the ability to recover quickly\"?",
+         "options": [
+          "resilience",
+          "upheaval",
+          "disruption"
+         ],
+         "answer": "resilience",
+         "why": "resilience. Ở câu này: \"Which noun matches \"the ability to recover\"."
+        },
+        {
+         "q": "Rarely ___ a workforce faced such upheaval.",
+         "options": [
+          "has",
+          "does",
+          "is"
+         ],
+         "answer": "has",
+         "why": "Rarely + has. Ở câu này: \"Rarely ___ a workforce faced such upheaval.\"."
+        },
+        {
+         "q": "It is policy ___ will decide the outcome.",
+         "options": [
+          "that",
+          "what",
+          "which"
+         ],
+         "answer": "that",
+         "why": "It is ... that. Ở câu này: \"It is policy ___ will decide the\"."
+        },
+        {
+         "q": "Not only ___ automation displace workers, but it also erodes skills.",
+         "options": [
+          "does",
+          "do",
+          "has"
+         ],
+         "answer": "does",
+         "why": "Not only + does. Ở câu này: \"Not only ___ automation displace workers, but\"."
+        },
+        {
+         "q": "Were governments ___ act, the disruption would ease.",
+         "options": [
+          "to",
+          "for",
+          "at"
+         ],
+         "answer": "to",
+         "why": "Were + S + to V. Ở câu này: \"Were governments ___ act, the disruption would\"."
+        },
+        {
+         "q": "Which phrase means \"a change of enormous scale\"?",
+         "options": [
+          "a seismic shift",
+          "a minor tweak",
+          "a routine task"
+         ],
+         "answer": "a seismic shift",
+         "why": "a seismic shift. Ở câu này: \"Which phrase means \"a change of enormous\"."
+        },
+        {
+         "q": "Which sentence is the most formal?",
+         "options": [
+          "Precarious work is increasingly prevalent.",
+          "Rubbish jobs are everywhere.",
+          "Jobs are kind of unsafe."
+         ],
+         "answer": "Precarious work is increasingly prevalent.",
+         "why": "Register học thuật. Ở câu này: \"Which sentence is the most formal?\"."
+        },
+        {
+         "q": "Which word is closest in meaning to \"outdated\"?",
+         "options": [
+          "obsolete",
+          "adept",
+          "equitable"
+         ],
+         "answer": "obsolete",
+         "why": "obsolete. Ở câu này: \"Which word is closest in meaning to\"."
+        },
+        {
+         "q": "Which phrase is the best synonym for \"major disturbance\"?",
+         "options": [
+          "upheaval",
+          "resilience",
+          "workforce"
+         ],
+         "answer": "upheaval",
+         "why": "upheaval. Ở câu này: \"Which phrase is the best synonym for\"."
+        },
+        {
+         "q": "The reason why firms hesitate ___ that retraining is costly.",
+         "options": [
+          "is",
+          "was because",
+          "are"
+         ],
+         "answer": "is",
+         "why": "The reason why ... is that. Ở câu này: \"The reason why firms hesitate ___ that\"."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "essay",
+     "title": "Bài luận có giờ",
+     "min": "5–47′",
+     "prompt": "Timed essay (40 minutes): \"Governments should slow down the pace of automation to protect workers.\" To what extent do you agree? Write about 250 words (at least 230). Include a clear thesis, two developed reasons with evidence, a counter-argument with rebuttal, and a conclusion. Use at least four upgrade words and at least two C1 structures (inversion or cleft).",
+     "hint": "Plan for 5 minutes, write for 30, check for 5.",
+     "sample": "I only partly agree with this statement: governments should manage the consequences of automation rather than slow the technology itself.",
+     "model": "I only partly agree that governments should slow down the pace of automation. While the disruption it causes is real, it is the support offered to workers, not the speed of the technology, that will decide whether the transition is fair.\n\nThe case for slowing automation rests on the uneven nature of displacement. According to McKinsey, the lowest-paid workers are up to fourteen times more likely than the best paid to need to change occupation, and few of them have the savings to retrain. Rarely do such workers find new roles quickly, and precarious work is already prevalent in sectors where algorithms allocate tasks. A slower pace, it is argued, would give them time to adapt.\n\nYet slowing the technology would carry costs of its own. Automation raises productivity, removes dangerous tasks and lowers prices, and countries that restrict it risk losing investment to competitors. What a slower pace would not do is address the underlying problem, which is that retraining is expensive, slow and poorly funded. Were governments to invest seriously in lifelong learning and income support, the workforce would show far greater resilience at any speed.\n\nIn conclusion, the pace of change matters less than who bears its cost. An equitable transition will hinge on funding retraining, protecting people between jobs and telling workers honestly which skills are becoming obsolete. Governments that do so can mitigate the upheaval without sacrificing the benefits of innovation.",
+     "minWords": 230,
+     "useWords": [
+      "hinge on",
+      "prevalent",
+      "resilience",
+      "equitable",
+      "mitigate",
+      "Rarely",
+      "It is ... that",
+      "Were ... to"
+     ],
+     "outline": [
+      "Luận điểm: đồng ý một phần",
+      "Lý do 1 kèm bằng chứng",
+      "Lý do 2 hoặc phản biện",
+      "Kết luận"
+     ],
+     "checklist": [
+      "Có luận điểm rõ và dẫn dắt hợp lý",
+      "Có bằng chứng được dẫn nguồn",
+      "Có phản biện ý kiến đối lập",
+      "Dùng ít nhất bốn từ nâng cấp",
+      "Dùng ít nhất hai cấu trúc C1",
+      "Số từ từ 230 đến 270"
+     ]
+    },
+    {
+     "type": "output",
+     "key": "speak",
+     "title": "Nói 2 phút",
+     "min": "47–56′",
+     "mode": "speak",
+     "seconds": 120,
+     "prompt": "Speak for 2 minutes: persuade a mixed audience that a country should invest more in retraining its workforce. Open with a hook, give two reasons, use one piece of evidence, address one objection and end with a call to action. Use at least three upgrade words.",
+     "hint": "Hook, reason 1, reason 2, evidence, objection, call to action.",
+     "sample": "Let me begin with a simple question: what happens to a country when half of its workers' skills become obsolete?",
+     "model": "Let me begin with a simple question: what happens to a country when half of its workers' skills become obsolete? According to the World Economic Forum, nearly forty per cent of skills will change by 2030. That is a seismic shift, and it will not wait for us. First and foremost, retraining protects the people most exposed to displacement. Rarely do older workers have the savings to learn a new trade alone. Second, retraining protects the economy itself: a resilient workforce is the best defence against disruption. Some will say it is too expensive. Consider this: it is the cost of doing nothing, in unemployment and lost trust, that is far greater. An equitable transition will hinge on our willingness to invest now. So I call on this audience to support retraining, and to take a stand before the upheaval arrives.",
+     "useWords": [
+      "resilience",
+      "equitable",
+      "hinge on",
+      "Rarely",
+      "It is ... that",
+      "a seismic shift"
+     ],
+     "outline": [
+      "Câu mở hấp dẫn",
+      "Lý do 1",
+      "Lý do 2",
+      "Bằng chứng",
+      "Phản đối và đáp lại",
+      "Lời kêu gọi"
+     ],
+     "checklist": [
+      "Có câu mở thu hút",
+      "Có hai lý do và một bằng chứng",
+      "Xử lý một phản đối",
+      "Có lời kêu gọi hành động",
+      "Nói liền mạch trong 2 phút"
+     ]
+    },
+    {
+     "type": "report",
+     "key": "report",
+     "title": "Báo cáo tuần",
+     "min": "56–60′"
+    }
+   ]
+  }
+ },
+ "challenges": {}
+}
