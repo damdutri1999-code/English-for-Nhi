@@ -1,0 +1,4880 @@
+{
+ "schema": "a1-week/1",
+ "week": 1,
+ "title": "Work and automation",
+ "grammar": "Đảo ngữ sau trạng từ phủ định (Not only, Rarely, Never, Seldom, Hardly...)",
+ "subs": [
+  "The changing job market",
+  "The case for automation",
+  "The risks",
+  "The way forward"
+ ],
+ "level": "B2-C1",
+ "focus": "Tuần 1 đọc và viết về việc làm và tự động hóa: dùng 28 cụm từ học thuật, luyện đảo ngữ sau trạng từ phủ định, viết đoạn nghị luận có phản biện và nói có lập luận.",
+ "vocabList": [
+  {
+   "en": "job displacement",
+   "vi": "tình trạng mất việc do bị thay thế",
+   "pos": "noun phrase",
+   "ipa": "/dʒɒb dɪsˈpleɪsmənt/",
+   "ex": "Rapid job displacement has left many mid-career workers struggling to adapt.",
+   "sub": 1
+  },
+  {
+   "en": "labour market",
+   "vi": "thị trường lao động",
+   "pos": "noun phrase",
+   "ipa": "/ˈleɪbə ˈmɑːkɪt/",
+   "ex": "The labour market now rewards flexibility above loyalty.",
+   "sub": 1
+  },
+  {
+   "en": "skills gap",
+   "vi": "khoảng cách kỹ năng",
+   "pos": "noun phrase",
+   "ipa": "/skɪlz ɡæp/",
+   "ex": "A widening skills gap leaves vacancies unfilled in every sector.",
+   "sub": 1
+  },
+  {
+   "en": "redundancy",
+   "vi": "tình trạng bị sa thải do dư thừa",
+   "pos": "noun",
+   "ipa": "/rɪˈdʌndənsi/",
+   "ex": "Redundancy rarely comes with a plan for retraining.",
+   "sub": 1
+  },
+  {
+   "en": "gig economy",
+   "vi": "nền kinh tế làm việc tự do ngắn hạn",
+   "pos": "noun phrase",
+   "ipa": "/ɡɪɡ ɪˈkɒnəmi/",
+   "ex": "The gig economy offers flexibility but little protection.",
+   "sub": 1
+  },
+  {
+   "en": "workforce",
+   "vi": "lực lượng lao động",
+   "pos": "noun",
+   "ipa": "/ˈwɜːkfɔːs/",
+   "ex": "An ageing workforce must be retrained, not replaced.",
+   "sub": 1
+  },
+  {
+   "en": "be made redundant",
+   "vi": "bị cho thôi việc",
+   "pos": "phrase",
+   "ipa": "/biː meɪd rɪˈdʌndənt/",
+   "ex": "Thousands are likely to be made redundant once the factory is automated.",
+   "sub": 1
+  },
+  {
+   "en": "boost productivity",
+   "vi": "tăng năng suất",
+   "pos": "verb phrase",
+   "ipa": "/buːst ˌprɒdʌkˈtɪvəti/",
+   "ex": "Robots can boost productivity without raising wages.",
+   "sub": 2
+  },
+  {
+   "en": "cut costs",
+   "vi": "cắt giảm chi phí",
+   "pos": "verb phrase",
+   "ipa": "/kʌt kɒsts/",
+   "ex": "Firms automate mainly to cut costs.",
+   "sub": 2
+  },
+  {
+   "en": "streamline operations",
+   "vi": "tinh gọn hoạt động",
+   "pos": "verb phrase",
+   "ipa": "/ˈstriːmlaɪn ˌɒpəˈreɪʃnz/",
+   "ex": "Software helps companies streamline operations across borders.",
+   "sub": 2
+  },
+  {
+   "en": "a double-edged sword",
+   "vi": "con dao hai lưỡi",
+   "pos": "idiom",
+   "ipa": "/ə ˌdʌbl ˈedʒd sɔːd/",
+   "ex": "Automation is a double-edged sword for low-skilled workers.",
+   "sub": 2
+  },
+  {
+   "en": "reap the benefits",
+   "vi": "gặt hái lợi ích",
+   "pos": "idiom",
+   "ipa": "/riːp ðə ˈbenɪfɪts/",
+   "ex": "Early adopters reap the benefits of new technology.",
+   "sub": 2
+  },
+  {
+   "en": "cutting-edge",
+   "vi": "tiên tiến nhất",
+   "pos": "adjective",
+   "ipa": "/ˌkʌtɪŋ ˈedʒ/",
+   "ex": "Cutting-edge machinery now performs tasks once done by hand.",
+   "sub": 2
+  },
+  {
+   "en": "labour-saving",
+   "vi": "tiết kiệm sức lao động",
+   "pos": "adjective",
+   "ipa": "/ˈleɪbə ˌseɪvɪŋ/",
+   "ex": "Labour-saving devices free staff for more creative work.",
+   "sub": 2
+  },
+  {
+   "en": "widen the inequality gap",
+   "vi": "nới rộng khoảng cách bất bình đẳng",
+   "pos": "verb phrase",
+   "ipa": "/ˈwaɪdn ði ˌɪnɪˈkwɒləti ɡæp/",
+   "ex": "Unchecked automation could widen the inequality gap.",
+   "sub": 3
+  },
+  {
+   "en": "job security",
+   "vi": "sự ổn định việc làm",
+   "pos": "noun phrase",
+   "ipa": "/dʒɒb sɪˈkjʊərəti/",
+   "ex": "Job security can no longer be taken for granted.",
+   "sub": 3
+  },
+  {
+   "en": "erode skills",
+   "vi": "làm mai một kỹ năng",
+   "pos": "verb phrase",
+   "ipa": "/ɪˈrəʊd skɪlz/",
+   "ex": "Overreliance on software may erode skills that took years to build.",
+   "sub": 3
+  },
+  {
+   "en": "put people out of work",
+   "vi": "khiến người ta mất việc",
+   "pos": "verb phrase",
+   "ipa": "/pʊt ˈpiːpl aʊt əv wɜːk/",
+   "ex": "New machines can put people out of work overnight.",
+   "sub": 3
+  },
+  {
+   "en": "a growing sense of insecurity",
+   "vi": "cảm giác bất an ngày một tăng",
+   "pos": "noun phrase",
+   "ipa": "/ə ˈɡrəʊɪŋ sens əv ˌɪnsɪˈkjʊərəti/",
+   "ex": "A growing sense of insecurity is spreading through white-collar jobs.",
+   "sub": 3
+  },
+  {
+   "en": "overreliance on",
+   "vi": "sự phụ thuộc quá mức vào",
+   "pos": "noun phrase",
+   "ipa": "/ˌəʊvəriˈlaɪəns ɒn/",
+   "ex": "Overreliance on algorithms weakens human judgement.",
+   "sub": 3
+  },
+  {
+   "en": "fall short of",
+   "vi": "không đạt được",
+   "pos": "phrasal verb",
+   "ipa": "/fɔːl ʃɔːt əv/",
+   "ex": "Government support often falls short of what retrained workers need.",
+   "sub": 3
+  },
+  {
+   "en": "reskill",
+   "vi": "đào tạo lại kỹ năng",
+   "pos": "verb",
+   "ipa": "/ˌriːˈskɪl/",
+   "ex": "Workers must reskill every few years to stay employable.",
+   "sub": 4
+  },
+  {
+   "en": "lifelong learning",
+   "vi": "học tập suốt đời",
+   "pos": "noun phrase",
+   "ipa": "/ˌlaɪflɒŋ ˈlɜːnɪŋ/",
+   "ex": "Lifelong learning is now a survival skill.",
+   "sub": 4
+  },
+  {
+   "en": "adapt to",
+   "vi": "thích nghi với",
+   "pos": "phrasal verb",
+   "ipa": "/əˈdæpt tuː/",
+   "ex": "Societies must adapt to change faster than before.",
+   "sub": 4
+  },
+  {
+   "en": "strike a balance",
+   "vi": "tìm được sự cân bằng",
+   "pos": "idiom",
+   "ipa": "/straɪk ə ˈbæləns/",
+   "ex": "Policy should strike a balance between innovation and fairness.",
+   "sub": 4
+  },
+  {
+   "en": "safety net",
+   "vi": "mạng lưới an sinh",
+   "pos": "noun phrase",
+   "ipa": "/ˈseɪfti net/",
+   "ex": "A strong safety net makes change less frightening.",
+   "sub": 4
+  },
+  {
+   "en": "a pressing issue",
+   "vi": "một vấn đề cấp bách",
+   "pos": "noun phrase",
+   "ipa": "/ə ˈpresɪŋ ˈɪʃuː/",
+   "ex": "Retraining is a pressing issue for every government.",
+   "sub": 4
+  },
+  {
+   "en": "mitigate the impact",
+   "vi": "giảm nhẹ tác động",
+   "pos": "verb phrase",
+   "ipa": "/ˈmɪtɪɡeɪt ði ˈɪmpækt/",
+   "ex": "Early support can mitigate the impact on displaced workers.",
+   "sub": 4
+  }
+ ],
+ "sessions": {
+  "mon": {
+   "title": "Sub 1: The changing job market",
+   "kind": "new",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Khởi động",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Đoán nghĩa của cụm được hỏi từ ngữ cảnh.",
+       "core": 4,
+       "items": [
+        {
+         "q": "\"Over 400 employees now face redundancy.\" In this sentence, redundancy means",
+         "options": [
+          "losing a job because the post is no longer needed",
+          "a promotion to a higher grade",
+          "a transfer to an overseas office"
+         ],
+         "answer": "losing a job because the post is no longer needed",
+         "why": "redundancy là tình trạng bị cho thôi việc vì vị trí không còn cần thiết."
+        },
+        {
+         "q": "\"A persistent skills gap means employers cannot find people with the right abilities.\" A skills gap is",
+         "options": [
+          "a shortage of the abilities employers need",
+          "a long break between two jobs",
+          "a difference in pay between men and women"
+         ],
+         "answer": "a shortage of the abilities employers need",
+         "why": "skills gap là khoảng cách giữa kỹ năng cần có và kỹ năng hiện có."
+        },
+        {
+         "q": "\"The gig economy relies on short, task-based contracts.\" The gig economy is",
+         "options": [
+          "work organised in short-term, task-based jobs",
+          "work in large government offices",
+          "unpaid voluntary work"
+         ],
+         "answer": "work organised in short-term, task-based jobs",
+         "why": "gig = công việc ngắn hạn theo từng tác vụ."
+        },
+        {
+         "q": "\"If the plant automates, 200 staff may be made redundant.\" To be made redundant is to",
+         "options": [
+          "lose one's job because the employer no longer needs it",
+          "be asked to work extra hours",
+          "be moved to a new team"
+         ],
+         "answer": "lose one's job because the employer no longer needs it",
+         "why": "be made redundant: bị cho thôi việc, không phải do lỗi của nhân viên."
+        },
+        {
+         "q": "\"The labour market is tight, with few people looking for work.\" The labour market is",
+         "options": [
+          "the supply of workers and the demand for jobs",
+          "a place where goods are sold",
+          "a trade union"
+         ],
+         "answer": "the supply of workers and the demand for jobs",
+         "why": "labour market là thị trường lao động: cung và cầu việc làm."
+        },
+        {
+         "q": "\"Job displacement is most visible in routine, repetitive roles.\" Job displacement means",
+         "options": [
+          "workers losing roles because technology replaces them",
+          "workers choosing to change careers",
+          "workers moving to another city"
+         ],
+         "answer": "workers losing roles because technology replaces them",
+         "why": "displacement: bị thay thế, bị đẩy khỏi vị trí."
+        },
+        {
+         "q": "\"The company's workforce has grown to 5,000.\" The workforce is",
+         "options": [
+          "all the people employed by the company",
+          "the machinery it owns",
+          "its customers"
+         ],
+         "answer": "all the people employed by the company",
+         "why": "workforce: toàn bộ lực lượng lao động."
+        }
+       ],
+       "ungraded": true
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "read",
+     "title": "Đọc",
+     "min": "5–17′",
+     "heading": "Is automation a threat or an opportunity?",
+     "purpose": "Đọc để tìm: tác giả mô tả thị trường lao động thay đổi thế nào, và dùng bằng chứng gì?",
+     "text": [
+      "Few developments have unsettled the modern workplace as profoundly as automation. According to the World Economic Forum, roughly 22 per cent of today's jobs will be disrupted by 2030, with some 170 million new roles created and 92 million displaced. These headline figures conceal a harder truth: job displacement does not affect everyone equally. Behind each percentage lies a person deciding whether to retrain, relocate or wait.",
+      "Consider the labour market itself. Rarely have employers complained so loudly of a skills gap while, at the same time, thousands of experienced staff face redundancy. Both problems coexist because the tasks that disappear are not usually the tasks that new vacancies require. A clerk whose work has been automated cannot become a data analyst overnight. The World Economic Forum even names the skills gap as the most significant obstacle to business transformation, a finding that employers would do well to take seriously.",
+      "The rise of the gig economy has complicated matters further. Younger workers are often drawn to such arrangements, whereas older colleagues tend to value stability. Not only does the model offer flexibility to those who want it, but it also leaves many people without sick pay, pensions or any formal protection. Once a firm restructures, a casual workforce can shrink within days, and even a long-serving employee may be made redundant. Never before has the pace of change been so fast, nor has so much depended on how societies respond."
+     ],
+     "vocab": {
+      "job displacement": "tình trạng mất việc do bị thay thế",
+      "labour market": "thị trường lao động",
+      "skills gap": "khoảng cách kỹ năng",
+      "redundancy": "tình trạng bị sa thải do dư thừa",
+      "gig economy": "nền kinh tế làm việc tự do ngắn hạn",
+      "workforce": "lực lượng lao động",
+      "be made redundant": "bị cho thôi việc"
+     },
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Đọc bài rồi chọn đáp án đúng nhất.",
+       "core": 5,
+       "items": [
+        {
+         "q": "What is the main point of the first paragraph?",
+         "options": [
+          "The overall figures hide unequal effects on individual workers.",
+          "Automation will certainly create more jobs than it destroys.",
+          "Most workers are happy with new technology."
+         ],
+         "answer": "The overall figures hide unequal effects on individual workers.",
+         "why": "Câu cuối đoạn 1: số liệu tổng thể che giấu sự không đồng đều."
+        },
+        {
+         "q": "According to the text, by 2030 the World Economic Forum expects",
+         "options": [
+          "about 170 million new roles and 92 million displaced ones",
+          "92 million new roles and 170 million displaced ones",
+          "no net change in employment"
+         ],
+         "answer": "about 170 million new roles and 92 million displaced ones",
+         "why": "Đoạn 1: 170 triệu việc làm mới, 92 triệu bị thay thế."
+        },
+        {
+         "q": "Why can a skills gap and redundancy exist at the same time?",
+         "options": [
+          "The tasks that vanish are not the ones new jobs require.",
+          "Employers refuse to train anyone.",
+          "Workers do not want to move."
+         ],
+         "answer": "The tasks that vanish are not the ones new jobs require.",
+         "why": "Đoạn 2 giải thích: công việc mất đi khác công việc mới cần."
+        },
+        {
+         "q": "The phrase \"conceal a harder truth\" suggests that the figures",
+         "options": [
+          "hide a less comfortable reality",
+          "are deliberately false",
+          "are too small to matter"
+         ],
+         "answer": "hide a less comfortable reality",
+         "why": "conceal = che giấu; harder truth = sự thật khó chịu hơn."
+        },
+        {
+         "q": "What does \"such arrangements\" refer to in paragraph 3?",
+         "options": [
+          "the gig economy",
+          "permanent contracts",
+          "pension schemes"
+         ],
+         "answer": "the gig economy",
+         "why": "Câu trước đó nói về gig economy."
+        },
+        {
+         "q": "The writer's attitude towards automation is best described as",
+         "options": [
+          "measured and analytical",
+          "enthusiastic and uncritical",
+          "dismissive and humorous"
+         ],
+         "answer": "measured and analytical",
+         "why": "Giọng điệu cân nhắc, phân tích hai mặt."
+        },
+        {
+         "q": "Which statement would the writer most likely agree with?",
+         "options": [
+          "The effects of technology depend largely on how societies respond.",
+          "Workers should avoid all short-term contracts.",
+          "Employers alone are responsible for retraining."
+         ],
+         "answer": "The effects of technology depend largely on how societies respond.",
+         "why": "Câu cuối bài nhấn mạnh phản ứng của xã hội."
+        },
+        {
+         "q": "What does the World Economic Forum name as the most significant obstacle to business transformation?",
+         "options": [
+          "the skills gap",
+          "high energy costs",
+          "falling consumer demand"
+         ],
+         "answer": "the skills gap",
+         "why": "Đoạn 2: obstacle = skills gap."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "instruction": "Dùng cấu trúc và cụm của bài để trả lời (tự đối chiếu với mẫu).",
+       "core": 4,
+       "items": [
+        {
+         "prompt": "In one sentence, explain why a skills gap and redundancy can exist at the same time.",
+         "answer": "The tasks that disappear are not the ones that new vacancies require, so employers cannot fill posts while experienced staff lose theirs."
+        },
+        {
+         "prompt": "Rewrite with Rarely: \"Employers have seldom complained so loudly of a skills gap.\"",
+         "answer": "Rarely have employers complained so loudly of a skills gap."
+        },
+        {
+         "prompt": "Describe the gig economy using Not only ... but also.",
+         "answer": "Not only does the gig economy offer flexibility, but it also leaves workers without formal protection."
+        },
+        {
+         "prompt": "Use Never before to comment on the speed of change in your own field.",
+         "answer": "Never before has the pace of change in teaching been so fast."
+        },
+        {
+         "prompt": "Why can a clerk not become a data analyst overnight?",
+         "answer": "Because the skills differ so much that retraining takes time and money."
+        },
+        {
+         "prompt": "What do you think the writer means by \"a harder truth\"?",
+         "answer": "That the average figures hide the fact that some people lose far more than others."
+        },
+        {
+         "prompt": "Give one reason younger workers might prefer the gig economy.",
+         "answer": "They often value flexibility and have fewer financial commitments than older workers."
+        }
+       ],
+       "role": "apply"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "key": "listen",
+     "title": "Nghe",
+     "min": "17–24′",
+     "text": [
+      "Few developments have unsettled the modern workplace as profoundly as automation. According to the World Economic Forum, roughly 22 per cent of today's jobs will be disrupted by 2030, with some 170 million new roles created and 92 million displaced. These headline figures conceal a harder truth: job displacement does not affect everyone equally. Behind each percentage lies a person deciding whether to retrain, relocate or wait.",
+      "Consider the labour market itself. Rarely have employers complained so loudly of a skills gap while, at the same time, thousands of experienced staff face redundancy. Both problems coexist because the tasks that disappear are not usually the tasks that new vacancies require. A clerk whose work has been automated cannot become a data analyst overnight. The World Economic Forum even names the skills gap as the most significant obstacle to business transformation, a finding that employers would do well to take seriously.",
+      "The rise of the gig economy has complicated matters further. Younger workers are often drawn to such arrangements, whereas older colleagues tend to value stability. Not only does the model offer flexibility to those who want it, but it also leaves many people without sick pay, pensions or any formal protection. Once a firm restructures, a casual workforce can shrink within days, and even a long-serving employee may be made redundant. Never before has the pace of change been so fast, nor has so much depended on how societies respond."
+     ],
+     "sets": [
+      {
+       "type": "listenpick",
+       "instruction": "Nghe rồi chọn đáp án đúng, sau đó chép lại câu.",
+       "core": 4,
+       "items": [
+        {
+         "say": "Rarely have employers complained so loudly of a skills gap.",
+         "q": "Điều gì được nói là hiếm khi xảy ra?",
+         "options": [
+          "Employers complaining so loudly about a skills gap",
+          "Workers refusing every training course",
+          "Firms hiring too many graduates"
+         ],
+         "answer": "Employers complaining so loudly about a skills gap",
+         "why": "Rarely + have + chủ ngữ: hiếm khi nhà tuyển dụng than phiền lớn tiếng như vậy."
+        },
+        {
+         "say": "Not only does the model offer flexibility, but it also leaves many people without protection.",
+         "q": "Mô hình gig có đặc điểm gì?",
+         "options": [
+          "Linh hoạt nhưng thiếu bảo vệ",
+          "Lương cao nhưng nhiều giờ làm",
+          "An toàn nhưng cứng nhắc"
+         ],
+         "answer": "Linh hoạt nhưng thiếu bảo vệ",
+         "why": "Hai vế của Not only ... but also."
+        },
+        {
+         "say": "Job displacement does not affect everyone equally.",
+         "q": "Tác giả nhận định gì về job displacement?",
+         "options": [
+          "Nó không ảnh hưởng mọi người như nhau",
+          "Nó chỉ ảnh hưởng người trẻ",
+          "Nó đã chấm dứt"
+         ],
+         "answer": "Nó không ảnh hưởng mọi người như nhau",
+         "why": "does not affect everyone equally."
+        },
+        {
+         "say": "Never before has the pace of change been so fast.",
+         "q": "Nhịp thay đổi hiện nay so với trước kia?",
+         "options": [
+          "Nhanh chưa từng có",
+          "Chậm hơn trước",
+          "Không đổi"
+         ],
+         "answer": "Nhanh chưa từng có",
+         "why": "Never before + has + chủ ngữ."
+        },
+        {
+         "say": "A casual workforce can shrink within days.",
+         "q": "Lực lượng lao động tạm thời có thể thế nào?",
+         "options": [
+          "Thu hẹp rất nhanh",
+          "Tăng gấp đôi",
+          "Giữ nguyên mãi"
+         ],
+         "answer": "Thu hẹp rất nhanh",
+         "why": "shrink within days: co lại trong vài ngày."
+        },
+        {
+         "say": "Thousands of experienced staff now face redundancy.",
+         "q": "Điều gì xảy ra với nhân viên giàu kinh nghiệm?",
+         "options": [
+          "Họ có nguy cơ mất việc",
+          "Họ được thăng chức",
+          "Họ nghỉ hưu sớm"
+         ],
+         "answer": "Họ có nguy cơ mất việc",
+         "why": "face redundancy: đối mặt nguy cơ bị cho thôi việc."
+        },
+        {
+         "say": "A clerk whose work has been automated cannot become an analyst overnight.",
+         "q": "Vì sao nhân viên văn phòng khó đổi nghề ngay?",
+         "options": [
+          "Kỹ năng khác nhau và cần thời gian",
+          "Họ không muốn đổi",
+          "Công ty cấm"
+         ],
+         "answer": "Kỹ năng khác nhau và cần thời gian",
+         "why": "overnight: chỉ trong một đêm, tức là không thể nhanh như vậy."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "notice",
+     "key": "notice",
+     "title": "Tìm ngữ pháp",
+     "min": "24–30′",
+     "text": [
+      "Few developments have unsettled the modern workplace as profoundly as automation. According to the World Economic Forum, roughly 22 per cent of today's jobs will be disrupted by 2030, with some 170 million new roles created and 92 million displaced. These headline figures conceal a harder truth: job displacement does not affect everyone equally. Behind each percentage lies a person deciding whether to retrain, relocate or wait.",
+      "Consider the labour market itself. Rarely have employers complained so loudly of a skills gap while, at the same time, thousands of experienced staff face redundancy. Both problems coexist because the tasks that disappear are not usually the tasks that new vacancies require. A clerk whose work has been automated cannot become a data analyst overnight. The World Economic Forum even names the skills gap as the most significant obstacle to business transformation, a finding that employers would do well to take seriously.",
+      "The rise of the gig economy has complicated matters further. Younger workers are often drawn to such arrangements, whereas older colleagues tend to value stability. Not only does the model offer flexibility to those who want it, but it also leaves many people without sick pay, pensions or any formal protection. Once a firm restructures, a casual workforce can shrink within days, and even a long-serving employee may be made redundant. Never before has the pace of change been so fast, nor has so much depended on how societies respond."
+     ],
+     "target": [
+      "rarely",
+      "not only",
+      "never before"
+     ],
+     "find": "các trạng từ phủ định mở đầu câu rồi đảo trợ động từ",
+     "box": {
+      "title": "Ghi nhớ: đảo ngữ sau trạng từ phủ định",
+      "intro": "Khi một trạng từ phủ định hoặc hạn chế đứng đầu câu để nhấn mạnh, trợ động từ đứng trước chủ ngữ (như trong câu hỏi).",
+      "rows": [
+       {
+        "subject": "Rarely / Seldom / Never (before) + trợ động từ + S + V",
+        "form": "Rarely have employers complained so loudly.",
+        "example": "Never before has the pace of change been so fast."
+       },
+       {
+        "subject": "Not only + trợ động từ + S + V, but ... also ...",
+        "form": "Not only does the model offer flexibility, but it also lacks protection.",
+        "example": "Vế sau but không đảo: it also lacks protection."
+       },
+       {
+        "subject": "Hardly / Barely + had + S + V3 + when ...",
+        "form": "Hardly had the factory announced the robots when rumours spread.",
+        "example": "Dùng with had và when (không dùng than)."
+       },
+       {
+        "subject": "Little did + S + V",
+        "form": "Little did the board realise how serious the problem was.",
+        "example": "Little mang nghĩa phủ định: hầu như không biết."
+       }
+      ],
+      "note": "Lỗi hay gặp: quên đảo (Rarely employers have...), đảo cả mệnh đề sau but, hoặc dùng than sau Hardly. Cấu trúc này trang trọng, chỉ dùng khi cần nhấn mạnh."
+     }
+    },
+    {
+     "type": "sets",
+     "key": "practice",
+     "title": "Luyện tập",
+     "min": "30–48′",
+     "sets": [
+      {
+       "type": "form",
+       "instruction": "Điền dạng đúng của từ trong ngoặc.",
+       "core": 8,
+       "items": [
+        {
+         "text": "The government has promised support for anyone facing ___ (REDUNDANT) after the closure.",
+         "answer": "redundancy",
+         "why": "Sau facing cần danh từ: redundancy."
+        },
+        {
+         "text": "A growing ___ (DISPLACE) of clerical staff is evident in the banking sector.",
+         "answer": "displacement",
+         "why": "Cần danh từ: displacement."
+        },
+        {
+         "text": "The training offered was clearly ___ (ADEQUATE) for the new roles.",
+         "answer": "inadequate",
+         "why": "Tiền tố in-: inadequate (không đủ)."
+        },
+        {
+         "text": "Gig workers often lack job ___ (SECURE).",
+         "answer": "security",
+         "why": "Danh từ của secure: security. Cụm job security."
+        },
+        {
+         "text": "Rapid ___ (TECHNOLOGY) change is reshaping the labour market.",
+         "answer": "technological",
+         "why": "Cần tính từ bổ nghĩa cho change."
+        },
+        {
+         "text": "Roles that are easily ___ (AUTOMATE) are the most at risk.",
+         "answer": "automated",
+         "why": "Rút gọn bị động: easily automated."
+        },
+        {
+         "text": "Many tasks will ___ (INEVITABLE) be taken over by machines.",
+         "answer": "inevitably",
+         "why": "Cần trạng từ bổ nghĩa cho động từ."
+        },
+        {
+         "text": "Economists disagree about the ___ (SIGNIFY) of the latest figures.",
+         "answer": "significance",
+         "why": "Danh từ của significant: significance."
+        },
+        {
+         "text": "The report points to a lack of ___ (FLEXIBLE) in the labour market.",
+         "answer": "flexibility",
+         "why": "Sau of cần danh từ: flexibility."
+        },
+        {
+         "text": "The ___ (VULNERABLE) of older staff to displacement is well documented.",
+         "answer": "vulnerability",
+         "why": "Sau The cần danh từ: vulnerability."
+        },
+        {
+         "text": "Platforms have ___ (DRAMATIC) changed how people find work.",
+         "answer": "dramatically",
+         "why": "Trạng từ đứng giữa have và V3."
+        },
+        {
+         "text": "The ___ (EMPLOY) rate fell sharply in the second quarter.",
+         "answer": "employment",
+         "why": "Employment rate: tỉ lệ có việc làm."
+        },
+        {
+         "text": "Contracts in the gig economy are often ___ (STABLE).",
+         "answer": "unstable",
+         "why": "Tiền tố un-: unstable (bấp bênh)."
+        },
+        {
+         "text": "Rising ___ (PRODUCE) has not always led to higher wages.",
+         "answer": "productivity",
+         "why": "Danh từ: productivity (năng suất)."
+        }
+       ]
+      },
+      {
+       "type": "cloze",
+       "instruction": "Gõ từ còn thiếu vào từng chỗ trống.",
+       "core": 8,
+       "items": [
+        {
+         "answer": "rarely",
+         "why": "Rarely mở đầu câu nên trợ động từ have đứng trước chủ ngữ."
+        },
+        {
+         "answer": "gap",
+         "why": "skills gap: khoảng cách kỹ năng."
+        },
+        {
+         "answer": "never",
+         "why": "Never before had + S + V3: chưa bao giờ trước đây."
+        },
+        {
+         "answer": "market",
+         "why": "labour market."
+        },
+        {
+         "answer": "not",
+         "why": "Not only are ... but ... also."
+        },
+        {
+         "answer": "displacement",
+         "why": "job displacement."
+        },
+        {
+         "answer": "had",
+         "why": "Hardly had + S + V3 + when ..."
+        },
+        {
+         "answer": "when",
+         "why": "Hardly ... when."
+        },
+        {
+         "answer": "redundant",
+         "why": "be made redundant."
+        },
+        {
+         "answer": "economy",
+         "why": "gig economy."
+        },
+        {
+         "answer": "does",
+         "why": "Seldom + does + S + V: trợ động từ do/does/did."
+        },
+        {
+         "answer": "did",
+         "why": "Little did + S + V (quá khứ)."
+        },
+        {
+         "answer": "workforce",
+         "why": "the entire workforce."
+        },
+        {
+         "answer": "did",
+         "why": "Not until ... did + S + V."
+        }
+       ],
+       "passage": "___ have employers faced such a persistent skills ___. A decade ago, ___ before had so many graduates competed for so few roles in the labour ___. Today, ___ only are routine tasks being automated, but whole occupations also face job ___. Hardly ___ the factory announced its new robots ___ rumours of redundancy began to spread, and staff feared they might be made ___. Some drifted into the gig ___, where seldom ___ a worker enjoy sick pay. Little ___ the managers realise that the entire ___ was losing confidence. Not until the following spring ___ the company introduce a retraining scheme.",
+       "mode": "type"
+      },
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng nhất.",
+       "core": 8,
+       "items": [
+        {
+         "q": "Which sentence is grammatically correct?",
+         "options": [
+          "Rarely have employers faced such a skills gap.",
+          "Rarely employers have faced such a skills gap.",
+          "Rarely employers faced have such a skills gap."
+         ],
+         "answer": "Rarely have employers faced such a skills gap.",
+         "why": "Sau Rarely: trợ động từ + chủ ngữ + V3."
+        },
+        {
+         "q": "Job displacement is best defined as",
+         "options": [
+          "the loss of roles because technology replaces workers",
+          "a move to a different office",
+          "a temporary cut in working hours"
+         ],
+         "answer": "the loss of roles because technology replaces workers",
+         "why": "displacement = bị thay thế, bị đẩy ra khỏi vị trí."
+        },
+        {
+         "q": "Thousands of employees face ___ after the merger.",
+         "options": [
+          "redundancy",
+          "redundant",
+          "redundantly"
+         ],
+         "answer": "redundancy",
+         "why": "Sau face cần danh từ."
+        },
+        {
+         "q": "Which collocation is correct?",
+         "options": [
+          "a skills gap",
+          "a skill hole",
+          "an ability gap"
+         ],
+         "answer": "a skills gap",
+         "why": "skills gap là cụm cố định."
+        },
+        {
+         "q": "Not only ___ the gig economy offer flexibility, but it also lacks protection.",
+         "options": [
+          "does",
+          "do",
+          "is"
+         ],
+         "answer": "does",
+         "why": "Chủ ngữ số ít, động từ offer nên dùng does."
+        },
+        {
+         "q": "Seldom ___ the workforce been so diverse.",
+         "options": [
+          "has",
+          "have",
+          "is"
+         ],
+         "answer": "has",
+         "why": "the workforce số ít, V3 been nên dùng has."
+        },
+        {
+         "q": "Never before has the pace of change been so fast. \"Never before\" means",
+         "options": [
+          "at no earlier time",
+          "sometimes",
+          "from now on"
+         ],
+         "answer": "at no earlier time",
+         "why": "Never before = chưa từng trước đây."
+        },
+        {
+         "q": "To be made redundant is closest in meaning to",
+         "options": [
+          "lose one's job because the post is no longer needed",
+          "be promoted",
+          "resign voluntarily"
+         ],
+         "answer": "lose one's job because the post is no longer needed",
+         "why": "Không phải tự nguyện nghỉ việc."
+        },
+        {
+         "q": "Automation is widely expected to ___ job displacement in routine occupations.",
+         "options": [
+          "trigger",
+          "smile",
+          "dissolve"
+         ],
+         "answer": "trigger",
+         "why": "trigger job displacement: gây ra, kích hoạt."
+        },
+        {
+         "q": "Which sentence uses inversion correctly?",
+         "options": [
+          "Hardly had the plant closed when rumours spread.",
+          "Hardly the plant had closed when rumours spread.",
+          "Hardly had the plant closed than rumours spread."
+         ],
+         "answer": "Hardly had the plant closed when rumours spread.",
+         "why": "Hardly + had + S + V3 + when."
+        },
+        {
+         "q": "The gig economy is characterised by",
+         "options": [
+          "short-term, task-based work",
+          "lifelong contracts with one employer",
+          "guaranteed pensions"
+         ],
+         "answer": "short-term, task-based work",
+         "why": "Đặc trưng của gig economy."
+        },
+        {
+         "q": "Choose the correct continuation: Little did the board realise ...",
+         "options": [
+          "that the workforce was losing confidence.",
+          "that was the workforce losing confidence.",
+          "the workforce that did losing confidence."
+         ],
+         "answer": "that the workforce was losing confidence.",
+         "why": "Sau Little did + S + V nguyên thể; mệnh đề that thì không đảo."
+        },
+        {
+         "q": "A workforce is",
+         "options": [
+          "all the people employed by a firm or in an area",
+          "a machine used in factories",
+          "a union leader"
+         ],
+         "answer": "all the people employed by a firm or in an area",
+         "why": "workforce: lực lượng lao động."
+        },
+        {
+         "q": "Which word best completes: A persistent skills ___ leaves vacancies unfilled.",
+         "options": [
+          "gap",
+          "hole",
+          "fall"
+         ],
+         "answer": "gap",
+         "why": "skills gap."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "instruction": "Viết lại câu theo yêu cầu, dùng từ gợi ý.",
+       "core": 6,
+       "items": [
+        {
+         "prompt": "Employers have rarely faced such a persistent skills gap.",
+         "instruction": "Viết lại, bắt đầu bằng Rarely, dùng từ gợi ý.",
+         "answer": "Rarely have employers faced such a persistent skills gap.",
+         "why": "Rarely đứng đầu thì đảo have trước employers.",
+         "keyword": "have"
+        },
+        {
+         "prompt": "Automation cuts jobs, and it also creates a skills gap.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only does automation cut jobs, but it also creates a skills gap.",
+         "why": "Đảo does automation sau Not only; vế sau không đảo.",
+         "keyword": "does"
+        },
+        {
+         "prompt": "The factory had hardly announced the robots when staff feared redundancy.",
+         "instruction": "Viết lại bắt đầu bằng Hardly.",
+         "answer": "Hardly had the factory announced the robots when staff feared redundancy.",
+         "why": "Hardly + had + S + V3 + when. Ở câu này: \"Hardly had the factory announced the robots when staff\".",
+         "keyword": "had"
+        },
+        {
+         "prompt": "The labour market has never before been so unpredictable.",
+         "instruction": "Viết lại bắt đầu bằng Never before.",
+         "answer": "Never before has the labour market been so unpredictable.",
+         "why": "Never before + has + S + V3.",
+         "keyword": "has"
+        },
+        {
+         "prompt": "Workers are seldom told in advance that they will be made redundant.",
+         "instruction": "Viết lại bắt đầu bằng Seldom.",
+         "answer": "Seldom are workers told in advance that they will be made redundant.",
+         "why": "Bị động: đảo are lên trước workers.",
+         "keyword": "are"
+        },
+        {
+         "prompt": "Gig workers rarely enjoy sick pay.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely do gig workers enjoy sick pay.",
+         "why": "Thì hiện tại đơn: mượn do để đảo.",
+         "keyword": "do"
+        },
+        {
+         "prompt": "The gig economy gives flexibility, and it also removes protection.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only does the gig economy give flexibility, but it also removes protection.",
+         "why": "Đảo does sau Not only.",
+         "keyword": "does"
+        },
+        {
+         "prompt": "The company did not realise at all that job displacement was imminent.",
+         "instruction": "Viết lại bắt đầu bằng Little.",
+         "answer": "Little did the company realise that job displacement was imminent.",
+         "why": "Little did + S + V nguyên thể.",
+         "keyword": "did"
+        },
+        {
+         "prompt": "Employers have never reported a skills gap so serious.",
+         "instruction": "Viết lại bắt đầu bằng Never.",
+         "answer": "Never have employers reported a skills gap so serious.",
+         "why": "Never + have + S + V3.",
+         "keyword": "have"
+        },
+        {
+         "prompt": "The workforce had barely adapted when another wave of automation arrived.",
+         "instruction": "Viết lại bắt đầu bằng Barely.",
+         "answer": "Barely had the workforce adapted when another wave of automation arrived.",
+         "why": "Barely tương tự Hardly: Barely + had + S + V3 + when.",
+         "keyword": "had"
+        },
+        {
+         "prompt": "Managers seldom consider redundancy until profits fall.",
+         "instruction": "Viết lại bắt đầu bằng Seldom.",
+         "answer": "Seldom do managers consider redundancy until profits fall.",
+         "why": "Hiện tại đơn dùng do để đảo.",
+         "keyword": "do"
+        },
+        {
+         "prompt": "She rarely sees a vacancy that matches her skills.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely does she see a vacancy that matches her skills.",
+         "why": "Chủ ngữ she dùng does.",
+         "keyword": "does"
+        }
+       ]
+      },
+      {
+       "type": "match",
+       "instruction": "Nối cụm hoặc từ với định nghĩa.",
+       "core": 6,
+       "items": [
+        {
+         "left": "job displacement",
+         "right": "the loss of jobs because technology replaces workers"
+        },
+        {
+         "left": "labour market",
+         "right": "the supply of workers and the demand for jobs"
+        },
+        {
+         "left": "skills gap",
+         "right": "the difference between the skills employers need and those workers have"
+        },
+        {
+         "left": "redundancy",
+         "right": "dismissal because a post is no longer needed"
+        },
+        {
+         "left": "gig economy",
+         "right": "work arranged in short-term, task-based jobs"
+        },
+        {
+         "left": "workforce",
+         "right": "all the people employed by a firm or in a country"
+        },
+        {
+         "left": "casual",
+         "right": "hired for short periods without a fixed contract"
+        },
+        {
+         "left": "vacancy",
+         "right": "a job that is available to be filled"
+        },
+        {
+         "left": "retrain",
+         "right": "learn new skills for a different type of work"
+        },
+        {
+         "left": "obsolete",
+         "right": "no longer used because something better exists"
+        },
+        {
+         "left": "unemployment",
+         "right": "the state of having no paid job"
+        },
+        {
+         "left": "turnover",
+         "right": "the rate at which staff leave and are replaced"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết",
+     "min": "48–60′",
+     "prompt": "Write one paragraph (70 to 100 words) stating your position on whether automation helps or harms workers. Open with a clear thesis and use at least one inversion structure.",
+     "hint": "Open with a thesis; give one reason and one piece of evidence.",
+     "sample": "Rarely has a technology divided workers so sharply. In my view, automation is neither a blessing nor a curse; its effects depend on who bears the cost of change.",
+     "model": "Never before has the labour market changed so rapidly, yet the answer is not to resist change but to prepare for it. Not only does automation cut costs, but it also frees people from dull, repetitive work. Rarely, however, do those who lose their jobs have the time or money to retrain. For that reason, I would argue that the benefits of automation are real only when employers and governments share the cost of job displacement.",
+     "minWords": 60,
+     "useWords": [
+      "Rarely",
+      "Not only",
+      "Never before"
+     ],
+     "outline": [
+      "Câu chủ đề nêu luận điểm",
+      "Một lý do",
+      "Một bằng chứng hoặc ví dụ",
+      "Câu kết nối với tuần sau"
+     ],
+     "checklist": [
+      "Có luận điểm rõ ở câu đầu",
+      "Dùng ít nhất một cấu trúc đảo ngữ đúng",
+      "Có lý do hoặc ví dụ cụ thể",
+      "Giọng văn trang trọng, không dùng từ lóng"
+     ]
+    }
+   ]
+  },
+  "tue": {
+   "title": "Ôn Sub 1, đọc trước Sub 2",
+   "kind": "review",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Khởi động",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "gap",
+       "instruction": "Điền từ còn thiếu để ôn lại tuần qua.",
+       "core": 4,
+       "items": [
+        {
+         "text": "Rarely ___ employers faced such a persistent skills gap.",
+         "answer": "have",
+         "why": "Rarely đứng đầu câu: trợ động từ have đứng trước employers."
+        },
+        {
+         "text": "Thousands of experienced staff now face ___ after the merger.",
+         "answer": "redundancy",
+         "why": "face + danh từ: redundancy."
+        },
+        {
+         "text": "Short, task-based jobs are the core of the gig ___.",
+         "answer": "economy",
+         "why": "gig economy. Ở câu này: \"economy\"."
+        },
+        {
+         "text": "Not only does automation cut jobs, ___ it also creates a skills gap.",
+         "answer": "but",
+         "why": "Not only ... but also."
+        },
+        {
+         "text": "Workers who lose their jobs may have to be made ___.",
+         "answer": "redundant",
+         "why": "be made redundant. Ở câu này: \"redundant\"."
+        },
+        {
+         "text": "The ___ market rewards people who can learn new skills quickly.",
+         "answer": "labour",
+         "why": "labour market. Ở câu này: \"labour\"."
+        },
+        {
+         "text": "Hardly had the plant closed ___ rumours began to spread.",
+         "answer": "when",
+         "why": "Hardly + had + S + V3 + when. Ở câu này: \"when\"."
+        }
+       ],
+       "ungraded": true
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "review",
+     "title": "Ôn tập",
+     "min": "5–36′",
+     "sets": [
+      {
+       "type": "fix",
+       "instruction": "Tìm lỗi sai và viết lại câu đúng.",
+       "core": 8,
+       "items": [
+        {
+         "wrong": "Rarely employers have faced such a skills gap.",
+         "answer": "Rarely have employers faced such a skills gap.",
+         "why": "Sau Rarely phải đảo trợ động từ lên trước chủ ngữ."
+        },
+        {
+         "wrong": "Not only automation cuts costs, but it also creates risks.",
+         "answer": "Not only does automation cut costs, but it also creates risks.",
+         "why": "Sau Not only cần mượn does và động từ về nguyên thể."
+        },
+        {
+         "wrong": "Hardly the factory had closed than staff were told.",
+         "answer": "Hardly had the factory closed when staff were told.",
+         "why": "Hardly + had + S + V3 + when (không dùng than)."
+        },
+        {
+         "wrong": "Never before the labour market has changed so fast.",
+         "answer": "Never before has the labour market changed so fast.",
+         "why": "Never before đảo has lên trước chủ ngữ."
+        },
+        {
+         "wrong": "Many workers fear to be made redundancy.",
+         "answer": "Many workers fear being made redundant.",
+         "why": "be made redundant (tính từ), và fear + V-ing."
+        },
+        {
+         "wrong": "There is a growing skill gap in the workforce.",
+         "answer": "There is a growing skills gap in the workforce.",
+         "why": "Cụm cố định là skills gap."
+        },
+        {
+         "wrong": "Little the board realised how serious the problem was.",
+         "answer": "Little did the board realise how serious the problem was.",
+         "why": "Little đầu câu cần did + S + V nguyên thể."
+        },
+        {
+         "wrong": "The gig economy offer flexibility but little protection.",
+         "answer": "The gig economy offers flexibility but little protection.",
+         "why": "gig economy số ít nên động từ thêm s."
+        },
+        {
+         "wrong": "Seldom the workers have been told in advance.",
+         "answer": "Seldom have the workers been told in advance.",
+         "why": "Seldom đảo have trước the workers."
+        },
+        {
+         "wrong": "Job displacement affect not everyone equally.",
+         "answer": "Job displacement does not affect everyone equally.",
+         "why": "Phủ định hiện tại đơn cần does not + V."
+        }
+       ]
+      },
+      {
+       "type": "gap",
+       "instruction": "Điền một từ vào chỗ trống.",
+       "core": 8,
+       "items": [
+        {
+         "text": "Machines are replacing roles faster than workers can ___.",
+         "answer": "retrain",
+         "why": "retrain: học lại kỹ năng cho nghề mới."
+        },
+        {
+         "text": "Never ___ the pace of change been so fast.",
+         "answer": "has",
+         "why": "Never + has + S + V3."
+        },
+        {
+         "text": "The government promised support for anyone made ___ by the closure.",
+         "answer": "redundant",
+         "why": "be made redundant. Ở câu này: \"redundant\"."
+        },
+        {
+         "text": "A shortage of qualified engineers is a classic example of a skills ___.",
+         "answer": "gap",
+         "why": "skills gap. Ở câu này: \"gap\"."
+        },
+        {
+         "text": "Seldom ___ a gig worker receive sick pay.",
+         "answer": "does",
+         "why": "Seldom + does + S + V."
+        },
+        {
+         "text": "The firm's ___ fell from 5,000 to 3,200 in two years.",
+         "answer": "workforce",
+         "why": "workforce: lực lượng lao động. Ở câu này: \"workforce\"."
+        },
+        {
+         "text": "Not until profits fell ___ managers consider redundancies.",
+         "answer": "did",
+         "why": "Not until + mệnh đề + did + S + V."
+        },
+        {
+         "text": "A casual ___ can shrink within days of a restructure.",
+         "answer": "workforce",
+         "why": "casual workforce."
+        },
+        {
+         "text": "The report links rising ___ displacement to cheaper software.",
+         "answer": "job",
+         "why": "job displacement. Ở câu này: \"job\"."
+        },
+        {
+         "text": "Hardly ___ the first cohort been retrained when the skills became obsolete.",
+         "answer": "had",
+         "why": "Hardly + had + S + V3."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "instruction": "Viết lại câu theo yêu cầu.",
+       "core": 6,
+       "items": [
+        {
+         "prompt": "Employers rarely admit that they have a skills gap.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely do employers admit that they have a skills gap.",
+         "why": "Hiện tại đơn dùng do để đảo. Ở câu này: \"Rarely do employers admit that they have a skills\".",
+         "keyword": "do"
+        },
+        {
+         "prompt": "Automation boosts efficiency, and it also widens the gap between winners and losers.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only does automation boost efficiency, but it also widens the gap between winners and losers.",
+         "why": "Đảo does sau Not only. Ở câu này: \"Not only does automation boost efficiency, but it also\".",
+         "keyword": "does"
+        },
+        {
+         "prompt": "The workforce had hardly recovered when the next round of cuts was announced.",
+         "instruction": "Viết lại bắt đầu bằng Hardly.",
+         "answer": "Hardly had the workforce recovered when the next round of cuts was announced.",
+         "why": "Hardly + had + S + V3 + when. Ở câu này: \"Hardly had the workforce recovered when the next round\".",
+         "keyword": "had"
+        },
+        {
+         "prompt": "The labour market has seldom been so unstable.",
+         "instruction": "Viết lại bắt đầu bằng Seldom.",
+         "answer": "Seldom has the labour market been so unstable.",
+         "why": "Seldom + has + S + V3.",
+         "keyword": "has"
+        },
+        {
+         "prompt": "Nobody realised that thousands would be made redundant.",
+         "instruction": "Viết lại bắt đầu bằng Little.",
+         "answer": "Little did anyone realise that thousands would be made redundant.",
+         "why": "Little did + S + V nguyên thể. Ở câu này: \"Little did anyone realise that thousands would be made\".",
+         "keyword": "did"
+        },
+        {
+         "prompt": "The company had never faced such a serious skills gap.",
+         "instruction": "Viết lại bắt đầu bằng Never.",
+         "answer": "Never had the company faced such a serious skills gap.",
+         "why": "Never + had + S + V3.",
+         "keyword": "had"
+        },
+        {
+         "prompt": "Short-term contracts are rarely offered to long-serving staff.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely are short-term contracts offered to long-serving staff.",
+         "why": "Bị động: đảo are trước contracts.",
+         "keyword": "are"
+        },
+        {
+         "prompt": "Graduates seldom find that the vacancies match their qualifications.",
+         "instruction": "Viết lại bắt đầu bằng Seldom.",
+         "answer": "Seldom do graduates find that the vacancies match their qualifications.",
+         "why": "Seldom + do + S + V.",
+         "keyword": "do"
+        }
+       ]
+      },
+      {
+       "type": "reorder",
+       "instruction": "Sắp xếp các từ thành câu đúng.",
+       "core": 6,
+       "items": [
+        {
+         "words": [
+          "Rarely",
+          "have",
+          "employers",
+          "faced",
+          "such",
+          "a",
+          "shortage",
+          "of",
+          "skills"
+         ],
+         "answer": "Rarely have employers faced such a shortage of skills",
+         "why": "Rarely đảo have trước employers."
+        },
+        {
+         "words": [
+          "Not",
+          "only",
+          "does",
+          "the",
+          "gig",
+          "economy",
+          "offer",
+          "flexibility",
+          "but",
+          "it",
+          "also",
+          "lacks",
+          "protection"
+         ],
+         "answer": "Not only does the gig economy offer flexibility but it also lacks protection",
+         "why": "Not only + does + S + V; vế sau không đảo."
+        },
+        {
+         "words": [
+          "Hardly",
+          "had",
+          "the",
+          "plant",
+          "closed",
+          "when",
+          "rumours",
+          "began"
+         ],
+         "answer": "Hardly had the plant closed when rumours began",
+         "why": "Hardly + had + S + V3 + when. Ở câu này: \"Hardly had the plant closed when rumours began\"."
+        },
+        {
+         "words": [
+          "Never",
+          "before",
+          "has",
+          "the",
+          "labour",
+          "market",
+          "changed",
+          "so",
+          "fast"
+         ],
+         "answer": "Never before has the labour market changed so fast",
+         "why": "Never before + has + S + V3. Ở câu này: \"Never before has the labour market changed so fast\"."
+        },
+        {
+         "words": [
+          "Little",
+          "did",
+          "the",
+          "board",
+          "realise",
+          "how",
+          "serious",
+          "it",
+          "was"
+         ],
+         "answer": "Little did the board realise how serious it was",
+         "why": "Little did + S + V."
+        },
+        {
+         "words": [
+          "Seldom",
+          "are",
+          "workers",
+          "told",
+          "in",
+          "advance",
+          "about",
+          "redundancy"
+         ],
+         "answer": "Seldom are workers told in advance about redundancy",
+         "why": "Bị động: are workers told."
+        },
+        {
+         "words": [
+          "Rarely",
+          "does",
+          "a",
+          "cashier",
+          "have",
+          "the",
+          "savings",
+          "to",
+          "retrain"
+         ],
+         "answer": "Rarely does a cashier have the savings to retrain",
+         "why": "Rarely + does + S + V."
+        },
+        {
+         "words": [
+          "Not",
+          "until",
+          "the",
+          "spring",
+          "did",
+          "the",
+          "firm",
+          "offer",
+          "retraining"
+         ],
+         "answer": "Not until the spring did the firm offer retraining",
+         "why": "Not until + cụm thời gian + did + S + V."
+        },
+        {
+         "words": [
+          "Seldom",
+          "has",
+          "the",
+          "workforce",
+          "been",
+          "so",
+          "diverse"
+         ],
+         "answer": "Seldom has the workforce been so diverse",
+         "why": "Seldom + has + S + V3. Ở câu này: \"Seldom has the workforce been so diverse\"."
+        },
+        {
+         "words": [
+          "Never",
+          "have",
+          "so",
+          "many",
+          "people",
+          "depended",
+          "on",
+          "gig",
+          "work"
+         ],
+         "answer": "Never have so many people depended on gig work",
+         "why": "Never + have + S + V3. Ở câu này: \"Never have so many people depended on gig work\"."
+        }
+       ]
+      },
+      {
+       "type": "listenpick",
+       "instruction": "Nghe và chọn đáp án đúng.",
+       "core": 6,
+       "items": [
+        {
+         "say": "Seldom does a gig worker receive sick pay.",
+         "q": "Điều gì hiếm khi xảy ra với lao động gig?",
+         "options": [
+          "Được trả lương khi nghỉ ốm",
+          "Phải làm ca đêm",
+          "Được thăng chức"
+         ],
+         "answer": "Được trả lương khi nghỉ ốm",
+         "why": "sick pay: lương khi nghỉ ốm."
+        },
+        {
+         "say": "Not only does the model offer flexibility, but it also lacks protection.",
+         "q": "Mô hình này có hai đặc điểm nào?",
+         "options": [
+          "Linh hoạt nhưng thiếu bảo vệ",
+          "Rẻ nhưng chậm",
+          "An toàn nhưng cứng nhắc"
+         ],
+         "answer": "Linh hoạt nhưng thiếu bảo vệ",
+         "why": "Hai vế Not only ... but also."
+        },
+        {
+         "say": "Hardly had the plant closed when rumours began to spread.",
+         "q": "Điều gì xảy ra ngay sau khi nhà máy đóng cửa?",
+         "options": [
+          "Tin đồn lan ra",
+          "Công nhân biểu tình",
+          "Giá cổ phiếu tăng"
+         ],
+         "answer": "Tin đồn lan ra",
+         "why": "Hardly ... when: vừa mới ... thì."
+        },
+        {
+         "say": "Little did the board realise how serious the problem was.",
+         "q": "Hội đồng quản trị đã nhận ra điều gì?",
+         "options": [
+          "Họ không nhận ra mức độ nghiêm trọng",
+          "Họ lường trước mọi thứ",
+          "Họ đã giải quyết xong"
+         ],
+         "answer": "Họ không nhận ra mức độ nghiêm trọng",
+         "why": "Little did = hầu như không biết."
+        },
+        {
+         "say": "A casual workforce can shrink within days.",
+         "q": "Lực lượng lao động tạm thời có thể làm gì?",
+         "options": [
+          "Thu hẹp rất nhanh",
+          "Tăng gấp đôi",
+          "Giữ nguyên"
+         ],
+         "answer": "Thu hẹp rất nhanh",
+         "why": "shrink: co lại."
+        },
+        {
+         "say": "The skills gap is the most significant obstacle to transformation.",
+         "q": "Rào cản lớn nhất là gì?",
+         "options": [
+          "Khoảng cách kỹ năng",
+          "Chi phí năng lượng",
+          "Thiếu vốn"
+         ],
+         "answer": "Khoảng cách kỹ năng",
+         "why": "most significant obstacle."
+        },
+        {
+         "say": "Never before has the pace of change been so fast.",
+         "q": "Nhịp thay đổi hiện nay ra sao?",
+         "options": [
+          "Nhanh chưa từng có",
+          "Chậm dần",
+          "Không đổi"
+         ],
+         "answer": "Nhanh chưa từng có",
+         "why": "Never before."
+        },
+        {
+         "say": "Rarely do displaced workers move smoothly into new roles.",
+         "q": "Người bị thay thế thường gặp điều gì?",
+         "options": [
+          "Khó chuyển sang việc mới",
+          "Chuyển rất dễ",
+          "Luôn được thăng chức"
+         ],
+         "answer": "Khó chuyển sang việc mới",
+         "why": "Rarely = hiếm khi."
+        }
+       ]
+      },
+      {
+       "type": "form",
+       "instruction": "Điền dạng đúng của từ trong ngoặc.",
+       "core": 5,
+       "items": [
+        {
+         "text": "The government announced a package to support the ___ (EMPLOY) of older workers.",
+         "answer": "employment",
+         "why": "Danh từ: employment (việc làm)."
+        },
+        {
+         "text": "Many roles have been rendered ___ (OBSOLETE) by new software.",
+         "answer": "obsolete",
+         "why": "render + tính từ: rendered obsolete."
+        },
+        {
+         "text": "A sudden ___ (REDUNDANT) notice left the whole team shaken.",
+         "answer": "redundancy",
+         "why": "Danh từ bổ nghĩa cho notice."
+        },
+        {
+         "text": "There is a clear ___ (MISMATCH) between degrees and vacancies.",
+         "answer": "mismatch",
+         "why": "Giữ nguyên danh từ mismatch."
+        },
+        {
+         "text": "Technological ___ (DISRUPT) has reshaped the labour market.",
+         "answer": "disruption",
+         "why": "Danh từ disruption."
+        },
+        {
+         "text": "The ___ (VULNERABLE) of casual workers is well documented.",
+         "answer": "vulnerability",
+         "why": "Danh từ vulnerability."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "preview",
+     "title": "Đọc trước Sub 2",
+     "min": "36–46′",
+     "heading": "The case for automation (preview)",
+     "purpose": "Đọc lướt để làm quen với bài Thứ 4: tác giả bênh vực tự động hóa bằng lý lẽ gì?",
+     "text": [
+      "Supporters of automation make a case that is difficult to dismiss. Machines do not tire or make arithmetic errors, so firms that adopt them can lower prices and raise output. Yet enthusiasm should be tempered, because the same efficiency may hollow out whole occupations."
+     ],
+     "vocab": {
+      "boost productivity": "tăng năng suất",
+      "cut costs": "cắt giảm chi phí",
+      "streamline operations": "tinh gọn hoạt động",
+      "a double-edged sword": "con dao hai lưỡi",
+      "reap the benefits": "gặt hái lợi ích",
+      "cutting-edge": "tiên tiến nhất",
+      "labour-saving": "tiết kiệm sức lao động"
+     },
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Đọc lướt rồi chọn đáp án đúng.",
+       "core": 2,
+       "items": [
+        {
+         "q": "According to the passage, why can firms adopt machines to lower prices?",
+         "options": [
+          "Machines do not tire or make arithmetic errors.",
+          "Machines are cheaper than electricity.",
+          "Machines never need maintenance."
+         ],
+         "answer": "Machines do not tire or make arithmetic errors.",
+         "why": "Câu 2 nêu lý do của người ủng hộ."
+        },
+        {
+         "q": "The word \"tempered\" in the last sentence is closest in meaning to",
+         "options": [
+          "moderated",
+          "increased",
+          "ignored"
+         ],
+         "answer": "moderated",
+         "why": "enthusiasm should be tempered = nên được điều chỉnh, bớt nhiệt tình."
+        },
+        {
+         "q": "What risk does the final sentence mention?",
+         "options": [
+          "Automation may hollow out whole occupations.",
+          "Machines will refuse to work.",
+          "Prices will rise sharply."
+         ],
+         "answer": "Automation may hollow out whole occupations.",
+         "why": "Câu cuối: hollow out whole occupations."
+        }
+       ],
+       "role": "apply"
+      }
+     ],
+     "note": "Bài đọc trước ngắn; Thứ 4 sẽ đọc bản đầy đủ."
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết",
+     "min": "46–60′",
+     "prompt": "Rewrite this weak paragraph in 55 to 75 words, using a formal tone and at least one inversion: \"Automation is bad. A lot of people lose jobs. Companies only want money. The government should do something about it. It is a big problem.\"",
+     "hint": "Replace vague words with precise ones and join the sentences.",
+     "sample": "Automation puts many people out of work, and companies seem to care mainly about cutting costs.",
+     "model": "Rarely does automation harm those who own the machines; far more often, it is ordinary workers who bear the cost. Not only do firms use new technology to cut costs, but they also leave thousands facing redundancy. Governments cannot remain bystanders: a robust retraining policy is needed if the labour market is to absorb displaced workers fairly.",
+     "minWords": 50,
+     "useWords": [
+      "Rarely",
+      "Not only",
+      "redundancy"
+     ],
+     "outline": [
+      "Câu mở nêu vấn đề chính xác",
+      "Một câu nói về nguyên nhân",
+      "Một câu nói về giải pháp"
+     ],
+     "checklist": [
+      "Thay từ mơ hồ bằng từ cụ thể",
+      "Dùng ít nhất một đảo ngữ đúng",
+      "Giọng văn trang trọng",
+      "Các câu nối với nhau mạch lạc"
+     ]
+    }
+   ]
+  },
+  "wed": {
+   "title": "Sub 2: The case for automation",
+   "kind": "new",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Khởi động",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Đoán nghĩa của cụm được hỏi.",
+       "core": 4,
+       "items": [
+        {
+         "q": "\"The firm hopes to boost productivity without hiring more staff.\" To boost productivity is to",
+         "options": [
+          "increase the amount produced per worker or hour",
+          "reduce wages",
+          "slow down production"
+         ],
+         "answer": "increase the amount produced per worker or hour",
+         "why": "boost = tăng cường; productivity = năng suất."
+        },
+        {
+         "q": "\"The company plans to cut costs by closing two offices.\" To cut costs is to",
+         "options": [
+          "reduce spending",
+          "raise prices",
+          "hire more people"
+         ],
+         "answer": "reduce spending",
+         "why": "cut costs = cắt giảm chi phí."
+        },
+        {
+         "q": "\"They intend to streamline operations to avoid duplication.\" To streamline operations is to",
+         "options": [
+          "make processes simpler and more efficient",
+          "close the business",
+          "expand overseas"
+         ],
+         "answer": "make processes simpler and more efficient",
+         "why": "streamline: tinh gọn."
+        },
+        {
+         "q": "\"Social media is a double-edged sword.\" This means it",
+         "options": [
+          "has both benefits and harms",
+          "is dangerous",
+          "is very expensive"
+         ],
+         "answer": "has both benefits and harms",
+         "why": "double-edged sword: con dao hai lưỡi."
+        },
+        {
+         "q": "\"Only a few will reap the benefits of the new scheme.\" To reap the benefits is to",
+         "options": [
+          "receive the advantages",
+          "miss the opportunity",
+          "pay the costs"
+         ],
+         "answer": "receive the advantages",
+         "why": "reap = gặt hái."
+        },
+        {
+         "q": "\"The lab uses cutting-edge technology.\" Cutting-edge means",
+         "options": [
+          "the most advanced",
+          "very old",
+          "cheap"
+         ],
+         "answer": "the most advanced",
+         "why": "cutting-edge: tiên tiến nhất."
+        },
+        {
+         "q": "\"A labour-saving device such as a dishwasher reduces effort.\" Labour-saving means",
+         "options": [
+          "reducing the work people must do",
+          "increasing wages",
+          "made by hand"
+         ],
+         "answer": "reducing the work people must do",
+         "why": "labour-saving: tiết kiệm sức lao động."
+        }
+       ],
+       "ungraded": true
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "read",
+     "title": "Đọc",
+     "min": "5–17′",
+     "heading": "The case for automation",
+     "purpose": "Đọc để tìm: tác giả đưa ra những lý lẽ nào ủng hộ tự động hóa, và lưu ý gì ở cuối bài?",
+     "text": [
+      "Supporters of automation make a case that is difficult to dismiss. Machines do not tire, take holidays or make arithmetic errors, so firms that adopt them can boost productivity without extending working hours. McKinsey estimates that up to 30 per cent of the hours worked in the United States could be automated by 2030. That figure explains why so many executives are eager to cut costs. In practice, the gains are often visible within months: an invoice that once took an hour to process now takes seconds. Few managers would willingly return to the old methods once they have seen the results.",
+      "Nor is the argument purely financial. Companies that streamline operations with cutting-edge systems tend to deliver faster, safer and more consistent services, and customers notice the difference. Seldom does a warehouse manager regret replacing a heavy lifting task with a machine, since labour-saving equipment removes precisely the work that injures backs and shortens careers.",
+      "Yet enthusiasm should be tempered. Automation is a double-edged sword: the very efficiency that lowers prices may also hollow out the occupations that once sustained entire towns. Little did the early adopters of factory robots imagine that the gains would be so unevenly shared. Economists remain divided on how quickly the benefits will spread. Not until policymakers intervene will the many reap the benefits that the few currently enjoy."
+     ],
+     "vocab": {
+      "boost productivity": "tăng năng suất",
+      "cut costs": "cắt giảm chi phí",
+      "streamline operations": "tinh gọn hoạt động",
+      "a double-edged sword": "con dao hai lưỡi",
+      "reap the benefits": "gặt hái lợi ích",
+      "cutting-edge": "tiên tiến nhất",
+      "labour-saving": "tiết kiệm sức lao động"
+     },
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Đọc bài rồi chọn đáp án đúng nhất.",
+       "core": 5,
+       "items": [
+        {
+         "q": "What is the main argument of the first paragraph?",
+         "options": [
+          "Automation makes firms more productive without longer hours.",
+          "Machines are cheaper than people in every case.",
+          "Managers dislike old methods."
+         ],
+         "answer": "Automation makes firms more productive without longer hours.",
+         "why": "Đoạn 1: boost productivity without extending working hours."
+        },
+        {
+         "q": "According to McKinsey, up to what share of US working hours could be automated by 2030?",
+         "options": [
+          "about 30 per cent",
+          "about 3 per cent",
+          "about 90 per cent"
+         ],
+         "answer": "about 30 per cent",
+         "why": "Đoạn 1: up to 30 per cent."
+        },
+        {
+         "q": "Why does the writer say \"Nor is the argument purely financial\"?",
+         "options": [
+          "Automation also improves service quality and safety.",
+          "Automation costs nothing.",
+          "Customers prefer cheaper goods."
+         ],
+         "answer": "Automation also improves service quality and safety.",
+         "why": "Đoạn 2: faster, safer and more consistent services."
+        },
+        {
+         "q": "What does \"precisely the work that injures backs\" refer to?",
+         "options": [
+          "heavy lifting tasks",
+          "office filing",
+          "customer calls"
+         ],
+         "answer": "heavy lifting tasks",
+         "why": "Câu trước nhắc heavy lifting task."
+        },
+        {
+         "q": "In paragraph 3, why does the writer call automation \"a double-edged sword\"?",
+         "options": [
+          "Its efficiency can also hollow out occupations.",
+          "It is both cheap and expensive.",
+          "It is old and new at once."
+         ],
+         "answer": "Its efficiency can also hollow out occupations.",
+         "why": "Sau dấu hai chấm giải thích."
+        },
+        {
+         "q": "What does \"the many\" and \"the few\" suggest?",
+         "options": [
+          "Benefits are currently shared unevenly.",
+          "Few people use machines.",
+          "Many people refuse to learn."
+         ],
+         "answer": "Benefits are currently shared unevenly.",
+         "why": "Câu cuối: the many reap what the few enjoy."
+        },
+        {
+         "q": "The writer's overall position is best described as",
+         "options": [
+          "supportive but cautious",
+          "strongly opposed",
+          "completely neutral"
+         ],
+         "answer": "supportive but cautious",
+         "why": "Mở đầu ủng hộ, đoạn 3 nêu lưu ý."
+        },
+        {
+         "q": "What condition does the writer give for the benefits to spread?",
+         "options": [
+          "Policymakers must intervene.",
+          "Prices must rise.",
+          "Workers must work longer."
+         ],
+         "answer": "Policymakers must intervene.",
+         "why": "Not until policymakers intervene..."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "instruction": "Dùng cấu trúc và cụm của bài để trả lời (tự đối chiếu với mẫu).",
+       "core": 4,
+       "items": [
+        {
+         "prompt": "Explain in one sentence why firms are eager to cut costs through automation.",
+         "answer": "Because machines can do routine tasks faster and without extra pay, which lowers expenses and raises output."
+        },
+        {
+         "prompt": "Use Seldom to say that managers rarely regret buying labour-saving equipment.",
+         "answer": "Seldom do managers regret buying labour-saving equipment."
+        },
+        {
+         "prompt": "Name one benefit and one risk of automation, using a double-edged sword.",
+         "answer": "Automation is a double-edged sword: it boosts productivity but can put people out of work."
+        },
+        {
+         "prompt": "Use Not until ... will to say when the many will reap the benefits.",
+         "answer": "Not until governments invest in training will the many reap the benefits."
+        },
+        {
+         "prompt": "Describe a cutting-edge technology in your own field.",
+         "answer": "In education, adaptive software that adjusts to each learner is a cutting-edge tool."
+        },
+        {
+         "prompt": "Use Little did ... to talk about early adopters of factory robots.",
+         "answer": "Little did the early adopters imagine that the gains would be so unevenly shared."
+        },
+        {
+         "prompt": "What does it mean to streamline operations?",
+         "answer": "To make processes simpler and faster by removing unnecessary steps."
+        }
+       ],
+       "role": "apply"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "key": "listen",
+     "title": "Nghe",
+     "min": "17–24′",
+     "text": [
+      "Supporters of automation make a case that is difficult to dismiss. Machines do not tire, take holidays or make arithmetic errors, so firms that adopt them can boost productivity without extending working hours. McKinsey estimates that up to 30 per cent of the hours worked in the United States could be automated by 2030. That figure explains why so many executives are eager to cut costs. In practice, the gains are often visible within months: an invoice that once took an hour to process now takes seconds. Few managers would willingly return to the old methods once they have seen the results.",
+      "Nor is the argument purely financial. Companies that streamline operations with cutting-edge systems tend to deliver faster, safer and more consistent services, and customers notice the difference. Seldom does a warehouse manager regret replacing a heavy lifting task with a machine, since labour-saving equipment removes precisely the work that injures backs and shortens careers.",
+      "Yet enthusiasm should be tempered. Automation is a double-edged sword: the very efficiency that lowers prices may also hollow out the occupations that once sustained entire towns. Little did the early adopters of factory robots imagine that the gains would be so unevenly shared. Economists remain divided on how quickly the benefits will spread. Not until policymakers intervene will the many reap the benefits that the few currently enjoy."
+     ],
+     "sets": [
+      {
+       "type": "listenpick",
+       "instruction": "Nghe rồi chọn đáp án đúng, sau đó chép lại câu.",
+       "core": 4,
+       "items": [
+        {
+         "say": "Seldom does a warehouse manager regret replacing a heavy lifting task with a machine.",
+         "q": "Điều gì hiếm khi xảy ra?",
+         "options": [
+          "Quản lý kho hối tiếc vì dùng máy thay việc nặng",
+          "Máy hỏng",
+          "Giá hàng tăng"
+         ],
+         "answer": "Quản lý kho hối tiếc vì dùng máy thay việc nặng",
+         "why": "Seldom + does + S + V. Ở câu này: \"Quản lý kho hối tiếc vì dùng máy thay\"."
+        },
+        {
+         "say": "Little did the early adopters of factory robots imagine that the gains would be so unevenly shared.",
+         "q": "Những người dùng robot đầu tiên không ngờ điều gì?",
+         "options": [
+          "Lợi ích sẽ chia không đều",
+          "Robot sẽ hỏng",
+          "Giá sẽ giảm"
+         ],
+         "answer": "Lợi ích sẽ chia không đều",
+         "why": "Little did + S + V. Ở câu này: \"Lợi ích sẽ chia không đều\"."
+        },
+        {
+         "say": "Not until policymakers intervene will the many reap the benefits.",
+         "q": "Khi nào số đông mới hưởng lợi?",
+         "options": [
+          "Khi nhà hoạch định chính sách can thiệp",
+          "Khi giá giảm",
+          "Khi công nghệ cũ đi"
+         ],
+         "answer": "Khi nhà hoạch định chính sách can thiệp",
+         "why": "Not until ... will."
+        },
+        {
+         "say": "Automation is a double-edged sword.",
+         "q": "Tác giả ví tự động hóa như gì?",
+         "options": [
+          "Con dao hai lưỡi",
+          "Cây cầu",
+          "Cái khiên"
+         ],
+         "answer": "Con dao hai lưỡi",
+         "why": "double-edged sword."
+        },
+        {
+         "say": "An invoice that once took an hour now takes seconds.",
+         "q": "Việc xử lý hóa đơn thay đổi thế nào?",
+         "options": [
+          "Từ một giờ xuống vài giây",
+          "Từ vài giây lên một giờ",
+          "Không đổi"
+         ],
+         "answer": "Từ một giờ xuống vài giây",
+         "why": "once took ... now takes."
+        },
+        {
+         "say": "Machines do not tire, take holidays or make arithmetic errors.",
+         "q": "Máy móc không làm điều gì?",
+         "options": [
+          "Mệt mỏi, nghỉ lễ hay tính sai",
+          "Tiêu điện",
+          "Cần bảo trì"
+         ],
+         "answer": "Mệt mỏi, nghỉ lễ hay tính sai",
+         "why": "Ba việc máy không làm."
+        },
+        {
+         "say": "Companies that streamline operations tend to deliver faster services.",
+         "q": "Công ty tinh gọn quy trình thường có kết quả gì?",
+         "options": [
+          "Dịch vụ nhanh hơn",
+          "Dịch vụ chậm hơn",
+          "Giá cao hơn"
+         ],
+         "answer": "Dịch vụ nhanh hơn",
+         "why": "streamline operations."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "practice",
+     "title": "Luyện tập",
+     "min": "30–48′",
+     "sets": [
+      {
+       "type": "transform",
+       "instruction": "Viết lại câu theo yêu cầu, dùng từ gợi ý.",
+       "core": 8,
+       "items": [
+        {
+         "prompt": "Managers rarely regret replacing heavy lifting with machines.",
+         "instruction": "Viết lại bắt đầu bằng Seldom.",
+         "answer": "Seldom do managers regret replacing heavy lifting with machines.",
+         "why": "Seldom + do + S + V. Ở câu này: \"Seldom do managers regret replacing heavy lifting with machines.\".",
+         "keyword": "do"
+        },
+        {
+         "prompt": "The early adopters did not imagine that the gains would be so unevenly shared.",
+         "instruction": "Viết lại bắt đầu bằng Little.",
+         "answer": "Little did the early adopters imagine that the gains would be so unevenly shared.",
+         "why": "Little did + S + V. Ở câu này: \"Little did the early adopters imagine that the gains\".",
+         "keyword": "did"
+        },
+        {
+         "prompt": "The many will not reap the benefits until policymakers intervene.",
+         "instruction": "Viết lại bắt đầu bằng Not until.",
+         "answer": "Not until policymakers intervene will the many reap the benefits.",
+         "why": "Not until + mệnh đề + will + S + V.",
+         "keyword": "will"
+        },
+        {
+         "prompt": "Automation raises productivity, and it also lowers costs.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only does automation raise productivity, but it also lowers costs.",
+         "why": "Đảo does automation.",
+         "keyword": "does"
+        },
+        {
+         "prompt": "Companies rarely return to old methods once they see the results.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely do companies return to old methods once they see the results.",
+         "why": "Rarely + do + S + V.",
+         "keyword": "do"
+        },
+        {
+         "prompt": "The argument is not purely financial either.",
+         "instruction": "Viết lại bắt đầu bằng Nor.",
+         "answer": "Nor is the argument purely financial.",
+         "why": "Nor + is + S.",
+         "keyword": "is"
+        },
+        {
+         "prompt": "Firms had hardly installed the system when productivity improved.",
+         "instruction": "Viết lại bắt đầu bằng Hardly.",
+         "answer": "Hardly had firms installed the system when productivity improved.",
+         "why": "Hardly + had + S + V3 + when. Ở câu này: \"Hardly had firms installed the system when productivity improved.\".",
+         "keyword": "had"
+        },
+        {
+         "prompt": "Machines never tire, and they never make errors either.",
+         "instruction": "Viết lại bằng Neither ... nor hoặc Nor; dùng từ gợi ý.",
+         "answer": "Machines never tire, nor do they make errors.",
+         "why": "Nor + do + they + V.",
+         "keyword": "nor"
+        },
+        {
+         "prompt": "The company had never seen such an improvement in productivity.",
+         "instruction": "Viết lại bắt đầu bằng Never.",
+         "answer": "Never had the company seen such an improvement in productivity.",
+         "why": "Never + had + S + V3. Ở câu này: \"Never had the company seen such an improvement in\".",
+         "keyword": "had"
+        },
+        {
+         "prompt": "Customers seldom complain about faster services.",
+         "instruction": "Viết lại bắt đầu bằng Seldom.",
+         "answer": "Seldom do customers complain about faster services.",
+         "why": "Seldom + do + S + V. Ở câu này: \"Seldom do customers complain about faster services.\".",
+         "keyword": "do"
+        },
+        {
+         "prompt": "The managers did not realise at all how quickly the system would cut costs.",
+         "instruction": "Viết lại bắt đầu bằng Little.",
+         "answer": "Little did the managers realise how quickly the system would cut costs.",
+         "why": "Little did + S + V. Ở câu này: \"Little did the managers realise how quickly the system\".",
+         "keyword": "did"
+        },
+        {
+         "prompt": "The benefits will not spread until training is widely available.",
+         "instruction": "Viết lại bắt đầu bằng Not until.",
+         "answer": "Not until training is widely available will the benefits spread.",
+         "why": "Not until + mệnh đề + will + S + V. Ở câu này: \"Not until training is widely available will the benefits\".",
+         "keyword": "will"
+        },
+        {
+         "prompt": "Few firms have so quickly streamlined their operations.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely have firms so quickly streamlined their operations.",
+         "why": "Rarely + have + S + V3.",
+         "keyword": "have"
+        },
+        {
+         "prompt": "Automation helps firms, and it also hurts some workers.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only does automation help firms, but it also hurts some workers.",
+         "why": "Đảo does automation. Ở câu này: \"Not only does automation help firms, but it also\".",
+         "keyword": "does"
+        }
+       ]
+      },
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng nhất.",
+       "core": 8,
+       "items": [
+        {
+         "q": "Which sentence uses inversion correctly?",
+         "options": [
+          "Seldom does a manager regret the decision.",
+          "Seldom a manager does regret the decision.",
+          "Seldom a manager regrets the decision."
+         ],
+         "answer": "Seldom does a manager regret the decision.",
+         "why": "Sau Seldom: does + S + V."
+        },
+        {
+         "q": "Firms adopt new systems to ___ productivity.",
+         "options": [
+          "boost",
+          "bust",
+          "bond"
+         ],
+         "answer": "boost",
+         "why": "boost productivity."
+        },
+        {
+         "q": "Which phrase means \"to make processes simpler\"?",
+         "options": [
+          "streamline operations",
+          "widen operations",
+          "freeze operations"
+         ],
+         "answer": "streamline operations",
+         "why": "streamline = tinh gọn."
+        },
+        {
+         "q": "Technology that is the most advanced available is",
+         "options": [
+          "cutting-edge",
+          "edge-cutting",
+          "sharp-cut"
+         ],
+         "answer": "cutting-edge",
+         "why": "cutting-edge technology."
+        },
+        {
+         "q": "Not until reforms are introduced ___ the many reap the benefits.",
+         "options": [
+          "will",
+          "would be",
+          "are"
+         ],
+         "answer": "will",
+         "why": "Not until ... will + S + V."
+        },
+        {
+         "q": "A device that reduces human effort is",
+         "options": [
+          "labour-saving",
+          "labour-making",
+          "labour-free"
+         ],
+         "answer": "labour-saving",
+         "why": "labour-saving."
+        },
+        {
+         "q": "Which collocation is correct?",
+         "options": [
+          "reap the benefits",
+          "harvest the benefits",
+          "pick the benefits"
+         ],
+         "answer": "reap the benefits",
+         "why": "reap the benefits là cụm cố định."
+        },
+        {
+         "q": "Little did they ___ that costs would rise.",
+         "options": [
+          "imagine",
+          "imagined",
+          "imagining"
+         ],
+         "answer": "imagine",
+         "why": "Little did + S + V nguyên thể. Ở câu này: \"imagine\"."
+        },
+        {
+         "q": "A double-edged sword is something that",
+         "options": [
+          "has both positive and negative effects",
+          "is very sharp",
+          "is old-fashioned"
+         ],
+         "answer": "has both positive and negative effects",
+         "why": "Nghĩa bóng của cụm."
+        },
+        {
+         "q": "To cut costs means to",
+         "options": [
+          "reduce spending",
+          "increase output",
+          "raise wages"
+         ],
+         "answer": "reduce spending",
+         "why": "cut costs."
+        },
+        {
+         "q": "Nor ___ the argument purely financial.",
+         "options": [
+          "is",
+          "does",
+          "has"
+         ],
+         "answer": "is",
+         "why": "Nor + is + S, động từ be."
+        },
+        {
+         "q": "Never ___ a technology been so widely adopted.",
+         "options": [
+          "has",
+          "did",
+          "is"
+         ],
+         "answer": "has",
+         "why": "Never + has + S + V3. Ở câu này: \"has\"."
+        },
+        {
+         "q": "Which is NOT a benefit mentioned in the passage?",
+         "options": [
+          "higher wages for every worker",
+          "faster services",
+          "safer working conditions"
+         ],
+         "answer": "higher wages for every worker",
+         "why": "Bài không nói lương tăng cho mọi người."
+        },
+        {
+         "q": "The adjective for something that saves time and effort is",
+         "options": [
+          "efficient",
+          "efficiently",
+          "efficiency"
+         ],
+         "answer": "efficient",
+         "why": "Cần tính từ."
+        }
+       ]
+      },
+      {
+       "type": "fix",
+       "instruction": "Tìm lỗi sai và viết lại câu đúng.",
+       "core": 8,
+       "items": [
+        {
+         "wrong": "Seldom a manager regrets replacing heavy lifting.",
+         "answer": "Seldom does a manager regret replacing heavy lifting.",
+         "why": "Seldom phải đảo does lên trước chủ ngữ."
+        },
+        {
+         "wrong": "Not until policymakers intervene the many will reap the benefits.",
+         "answer": "Not until policymakers intervene will the many reap the benefits.",
+         "why": "Mệnh đề chính sau Not until phải đảo."
+        },
+        {
+         "wrong": "Little they imagined that gains would be so uneven.",
+         "answer": "Little did they imagine that gains would be so uneven.",
+         "why": "Little + did + S + V."
+        },
+        {
+         "wrong": "The firm wants boost productivity without cutting jobs.",
+         "answer": "The firm wants to boost productivity without cutting jobs.",
+         "why": "want + to V."
+        },
+        {
+         "wrong": "Automation is a double-edge sword.",
+         "answer": "Automation is a double-edged sword.",
+         "why": "Tính từ ghép: double-edged."
+        },
+        {
+         "wrong": "Cutting edge tools are transforming the sector.",
+         "answer": "Cutting-edge tools are transforming the sector.",
+         "why": "Tính từ ghép trước danh từ cần gạch nối."
+        },
+        {
+         "wrong": "Nor the argument is purely financial.",
+         "answer": "Nor is the argument purely financial.",
+         "why": "Nor phải đảo be lên trước chủ ngữ."
+        },
+        {
+         "wrong": "Never had the pace so fast been.",
+         "answer": "Never has the pace been so fast.",
+         "why": "Never + has + S + V3 + so fast."
+        },
+        {
+         "wrong": "A few will reaping the benefits.",
+         "answer": "A few will reap the benefits.",
+         "why": "will + V nguyên thể."
+        },
+        {
+         "wrong": "They streamline operation to save money.",
+         "answer": "They streamline operations to save money.",
+         "why": "Cụm cố định ở số nhiều: operations."
+        },
+        {
+         "wrong": "Labour saving equipment removes heavy tasks.",
+         "answer": "Labour-saving equipment removes heavy tasks.",
+         "why": "Cần gạch nối trong tính từ ghép."
+        },
+        {
+         "wrong": "Seldom machines make arithmetic errors.",
+         "answer": "Seldom do machines make arithmetic errors.",
+         "why": "Seldom đầu câu cần do."
+        },
+        {
+         "wrong": "Cut cost is a priority for most firms.",
+         "answer": "Cutting costs is a priority for most firms.",
+         "why": "Chủ ngữ cần V-ing: cutting costs."
+        },
+        {
+         "wrong": "Firms can boost productivity without to extend hours.",
+         "answer": "Firms can boost productivity without extending hours.",
+         "why": "without + V-ing."
+        }
+       ]
+      },
+      {
+       "type": "gap",
+       "instruction": "Điền một từ vào chỗ trống.",
+       "core": 8,
+       "items": [
+        {
+         "text": "Machines do not tire or make arithmetic ___.",
+         "answer": "errors",
+         "why": "arithmetic errors: lỗi số học."
+        },
+        {
+         "text": "Firms can ___ productivity without extending working hours.",
+         "answer": "boost",
+         "why": "boost productivity. Ở câu này: \"boost\"."
+        },
+        {
+         "text": "Many executives are eager to ___ costs.",
+         "answer": "cut",
+         "why": "cut costs. Ở câu này: \"cut\"."
+        },
+        {
+         "text": "Companies that ___ operations tend to deliver faster services.",
+         "answer": "streamline",
+         "why": "streamline operations. Ở câu này: \"streamline\"."
+        },
+        {
+         "text": "Automation is a double-edged ___.",
+         "answer": "sword",
+         "why": "a double-edged sword."
+        },
+        {
+         "text": "Not until policymakers intervene will the many ___ the benefits.",
+         "answer": "reap",
+         "why": "reap the benefits."
+        },
+        {
+         "text": "Companies use ___ systems to remain competitive.",
+         "answer": "cutting-edge",
+         "why": "cutting-edge."
+        },
+        {
+         "text": "Seldom ___ a manager regret the change.",
+         "answer": "does",
+         "why": "Seldom + does."
+        },
+        {
+         "text": "Little ___ the founders imagine such rapid growth.",
+         "answer": "did",
+         "why": "Little + did."
+        },
+        {
+         "text": "Heavy lifting is replaced by ___ equipment that spares workers' backs.",
+         "answer": "labour-saving",
+         "why": "labour-saving equipment."
+        },
+        {
+         "text": "Nor ___ the benefits spread evenly.",
+         "answer": "do",
+         "why": "Nor + do + S (số nhiều)."
+        },
+        {
+         "text": "The figure explains why executives are eager to cut ___.",
+         "answer": "costs",
+         "why": "cut costs. Ở câu này: \"costs\"."
+        },
+        {
+         "text": "Never ___ a technology spread so quickly.",
+         "answer": "has",
+         "why": "Never + has."
+        },
+        {
+         "text": "Few managers would return to the old ___ once they see the results.",
+         "answer": "methods",
+         "why": "old methods."
+        }
+       ]
+      },
+      {
+       "type": "cloze",
+       "instruction": "Gõ từ còn thiếu vào từng chỗ trống.",
+       "core": 6,
+       "items": [
+        {
+         "answer": "boost",
+         "why": "boost productivity. Ở câu này: \"boost\"."
+        },
+        {
+         "answer": "cut",
+         "why": "cut costs. Ở câu này: \"cut\"."
+        },
+        {
+         "answer": "cutting-edge",
+         "why": "cutting-edge systems."
+        },
+        {
+         "answer": "operations",
+         "why": "streamline operations. Ở câu này: \"operations\"."
+        },
+        {
+         "answer": "does",
+         "why": "Seldom + does + S + V. Ở câu này: \"does\"."
+        },
+        {
+         "answer": "labour-saving",
+         "why": "labour-saving equipment. Ở câu này: \"labour-saving\"."
+        },
+        {
+         "answer": "sword",
+         "why": "double-edged sword. Ở câu này: \"sword\"."
+        },
+        {
+         "answer": "will",
+         "why": "Not until ... will. Ở câu này: \"will\"."
+        },
+        {
+         "answer": "reap",
+         "why": "reap the benefits. Ở câu này: \"reap\"."
+        },
+        {
+         "answer": "did",
+         "why": "Little did early adopters ..."
+        },
+        {
+         "answer": "are",
+         "why": "Nor + are + S (số nhiều: the effects)."
+        }
+       ],
+       "passage": "Supporters of automation argue that machines can ___ productivity without extending hours. Once a firm decides to ___ costs, it often turns to ___ systems that streamline ___. Seldom ___ a manager regret replacing heavy lifting with ___ equipment. Yet automation is a double-edged ___: not until policymakers intervene ___ the many ___ the benefits that the few currently enjoy. Little ___ early adopters imagine that gains would be so unevenly shared, and nor ___ the effects confined to one sector.",
+       "mode": "type"
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết",
+     "min": "48–60′",
+     "prompt": "Write an argument of 110 to 130 words on this claim: \"Automation does more good than harm.\" State your position, give one strong reason, then acknowledge the opposing view and rebut it.",
+     "hint": "Position, reason, concession, rebuttal, conclusion.",
+     "sample": "Automation does more good than harm, provided its gains are shared. Not only does it raise productivity, but it also removes dangerous work.",
+     "model": "Automation does more good than harm, provided its gains are shared. Not only does it raise productivity, but it also removes the dangerous and repetitive tasks that injure workers and shorten careers. Admittedly, critics point out that job displacement is real and that its costs fall mainly on the low paid. That concern is legitimate, but it is an argument for better policy, not for rejecting the technology. Rarely has a society grown richer by refusing efficiency; far more often, it has done so by spreading the benefits widely. Seldom do workers need protection from machines as much as they need protection from a lack of training. Governments should therefore fund reskilling, so that the many reap the benefits that the few currently enjoy.",
+     "minWords": 110,
+     "useWords": [
+      "boost productivity",
+      "Not only",
+      "Admittedly",
+      "reap the benefits"
+     ],
+     "outline": [
+      "Luận điểm",
+      "Lý do chính kèm ví dụ",
+      "Nhượng bộ ý kiến đối lập",
+      "Phản bác",
+      "Kết luận"
+     ],
+     "checklist": [
+      "Có luận điểm rõ",
+      "Có lý do và ví dụ",
+      "Có nhượng bộ rồi phản bác",
+      "Dùng ít nhất một đảo ngữ",
+      "Số từ 110 đến 130"
+     ]
+    }
+   ]
+  },
+  "thu": {
+   "title": "Ôn Sub 1–2, đọc trước Sub 3",
+   "kind": "review",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Khởi động",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "form",
+       "instruction": "Điền dạng đúng của từ trong ngoặc.",
+       "core": 4,
+       "items": [
+        {
+         "text": "Rapid ___ (AUTOMATE) is reshaping the labour market.",
+         "answer": "automation",
+         "why": "Danh từ: automation."
+        },
+        {
+         "text": "Workers are often ___ (RELUCTANCE) to retrain at fifty.",
+         "answer": "reluctant",
+         "why": "Cần tính từ: reluctant."
+        },
+        {
+         "text": "The company's ___ (PRODUCE) rose by ten per cent.",
+         "answer": "productivity",
+         "why": "Danh từ: productivity (năng suất). Ở câu này: \"productivity\"."
+        },
+        {
+         "text": "Many tasks are now ___ (EASY) completed by software.",
+         "answer": "easily",
+         "why": "Trạng từ bổ nghĩa cho động từ."
+        },
+        {
+         "text": "A ___ (DRAMA) fall in demand left thousands redundant.",
+         "answer": "dramatic",
+         "why": "Tính từ đứng trước fall."
+        },
+        {
+         "text": "The ___ (EFFECTIVE) of the scheme remains unproven.",
+         "answer": "effectiveness",
+         "why": "Danh từ sau The."
+        },
+        {
+         "text": "Flexible hours can be an ___ (ATTRACT) feature of gig work.",
+         "answer": "attractive",
+         "why": "Tính từ: attractive."
+        }
+       ],
+       "ungraded": true
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "review",
+     "title": "Ôn tập",
+     "min": "5–36′",
+     "sets": [
+      {
+       "type": "cloze",
+       "instruction": "Gõ từ còn thiếu vào từng chỗ trống.",
+       "core": 8,
+       "items": [
+        {
+         "answer": "rarely",
+         "why": "Rarely + have + S."
+        },
+        {
+         "answer": "cutting-edge",
+         "why": "cutting-edge systems. Ở câu này: \"cutting-edge\"."
+        },
+        {
+         "answer": "costs",
+         "why": "cut costs. Ở câu này: \"costs\"."
+        },
+        {
+         "answer": "sword",
+         "why": "double-edged sword. Ở câu này: \"sword\"."
+        },
+        {
+         "answer": "redundancy",
+         "why": "face redundancy."
+        },
+        {
+         "answer": "security",
+         "why": "job security."
+        },
+        {
+         "answer": "does",
+         "why": "Seldom + does + S + V. Ở câu này: \"does\"."
+        },
+        {
+         "answer": "labour-saving",
+         "why": "labour-saving equipment. Ở câu này: \"labour-saving\"."
+        },
+        {
+         "answer": "did",
+         "why": "Little did + S + V. Ở câu này: \"did\"."
+        },
+        {
+         "answer": "will",
+         "why": "Not until ... will. Ở câu này: \"will\"."
+        },
+        {
+         "answer": "workforce",
+         "why": "casual workforce. Ở câu này: \"workforce\"."
+        },
+        {
+         "answer": "and",
+         "why": "Nối hai vế: and the gig economy leaves ..."
+        },
+        {
+         "answer": "had",
+         "why": "Hardly + had + S + V3. Ở câu này: \"had\"."
+        },
+        {
+         "answer": "when",
+         "why": "Hardly ... when. Ở câu này: \"when\"."
+        },
+        {
+         "answer": "have",
+         "why": "Never + have + S + V3 (so many people)."
+        },
+        {
+         "answer": "has",
+         "why": "nor + has + the labour market + V3."
+        }
+       ],
+       "passage": "___ have employers faced such a skills gap. Firms that adopt ___ systems can boost productivity and cut ___, yet automation remains a double-edged ___. Not only do some workers face ___, but they also lose any claim to job ___. Seldom ___ a manager regret replacing heavy lifting with ___ equipment, but little ___ the early adopters imagine how unevenly the gains would be shared. Not until policymakers step in ___ the many reap the benefits. A casual ___ can shrink within days, ___ the gig economy leaves such people unprotected. Hardly ___ the plant closed ___ the rumours began. Never ___ so many people depended on short contracts, nor ___ the labour market been so uncertain.",
+       "mode": "type"
+      },
+      {
+       "type": "form",
+       "instruction": "Điền dạng đúng của từ trong ngoặc.",
+       "core": 8,
+       "items": [
+        {
+         "text": "The ___ (VULNERABLE) of casual staff to redundancy is well documented.",
+         "answer": "vulnerability",
+         "why": "Danh từ vulnerability. Ở câu này: \"vulnerability\"."
+        },
+        {
+         "text": "Rapid ___ (TECHNOLOGY) change is a defining feature of the era.",
+         "answer": "technological",
+         "why": "Tính từ technological."
+        },
+        {
+         "text": "Firms are keen to improve ___ (EFFICIENT) without raising costs.",
+         "answer": "efficiency",
+         "why": "Danh từ efficiency."
+        },
+        {
+         "text": "A ___ (SIGNIFY) number of roles will disappear by 2030.",
+         "answer": "significant",
+         "why": "Tính từ significant."
+        },
+        {
+         "text": "The ___ (INEQUAL) between high and low earners is widening.",
+         "answer": "inequality",
+         "why": "Danh từ inequality."
+        },
+        {
+         "text": "Many companies have ___ (DRAMATIC) cut their workforce.",
+         "answer": "dramatically",
+         "why": "Trạng từ dramatically."
+        },
+        {
+         "text": "Workers need ___ (LIFE) learning to stay employable.",
+         "answer": "lifelong",
+         "why": "Tính từ lifelong."
+        },
+        {
+         "text": "The scheme offers ___ (AFFORD) training to those made redundant.",
+         "answer": "affordable",
+         "why": "Tính từ affordable."
+        },
+        {
+         "text": "Automation raises serious questions about job ___ (SECURE).",
+         "answer": "security",
+         "why": "Danh từ security."
+        },
+        {
+         "text": "A ___ (PERSIST) skills gap holds back growth.",
+         "answer": "persistent",
+         "why": "Tính từ persistent."
+        },
+        {
+         "text": "The ___ (REPLACE) of clerks by software is under way.",
+         "answer": "replacement",
+         "why": "Danh từ replacement."
+        }
+       ]
+      },
+      {
+       "type": "oddone",
+       "instruction": "Chọn từ khác loại với các từ còn lại.",
+       "core": 6,
+       "items": [
+        {
+         "options": [
+          "redundancy",
+          "dismissal",
+          "layoff",
+          "promotion"
+         ],
+         "answer": "promotion",
+         "why": "Ba từ còn lại nói về mất việc; promotion là thăng chức."
+        },
+        {
+         "options": [
+          "boost",
+          "raise",
+          "increase",
+          "reduce"
+         ],
+         "answer": "reduce",
+         "why": "Ba từ kia nghĩa là tăng; reduce là giảm."
+        },
+        {
+         "options": [
+          "streamline",
+          "simplify",
+          "rationalise",
+          "complicate"
+         ],
+         "answer": "complicate",
+         "why": "Ba từ còn lại làm cho đơn giản hơn."
+        },
+        {
+         "options": [
+          "cutting-edge",
+          "state-of-the-art",
+          "pioneering",
+          "outdated"
+         ],
+         "answer": "outdated",
+         "why": "outdated là lỗi thời, trái nghĩa với ba từ kia."
+        },
+        {
+         "options": [
+          "Rarely",
+          "Seldom",
+          "Hardly",
+          "Often"
+         ],
+         "answer": "Often",
+         "why": "Ba trạng từ còn lại mang nghĩa phủ định, đảo ngữ được."
+        },
+        {
+         "options": [
+          "workforce",
+          "staff",
+          "personnel",
+          "employer"
+         ],
+         "answer": "employer",
+         "why": "employer là người thuê; ba từ còn lại là người lao động."
+        },
+        {
+         "options": [
+          "tire",
+          "exhaust",
+          "drain",
+          "energise"
+         ],
+         "answer": "energise",
+         "why": "energise là tiếp thêm năng lượng, ngược với ba từ còn lại."
+        },
+        {
+         "options": [
+          "gig",
+          "freelance",
+          "casual",
+          "permanent"
+         ],
+         "answer": "permanent",
+         "why": "permanent là công việc dài hạn, khác ba từ còn lại."
+        },
+        {
+         "options": [
+          "labour market",
+          "skills gap",
+          "job displacement",
+          "sunshine"
+         ],
+         "answer": "sunshine",
+         "why": "sunshine không thuộc chủ đề việc làm."
+        },
+        {
+         "options": [
+          "reap",
+          "gain",
+          "harvest",
+          "lose"
+         ],
+         "answer": "lose",
+         "why": "lose là mất đi, ngược với ba từ kia."
+        },
+        {
+         "options": [
+          "double-edged",
+          "two-sided",
+          "ambivalent",
+          "one-sided"
+         ],
+         "answer": "one-sided",
+         "why": "one-sided chỉ có một mặt, khác ba từ còn lại."
+        },
+        {
+         "options": [
+          "Never",
+          "Little",
+          "Not only",
+          "Always"
+         ],
+         "answer": "Always",
+         "why": "Always không mở đầu cấu trúc đảo ngữ."
+        },
+        {
+         "options": [
+          "displace",
+          "replace",
+          "supplant",
+          "hire"
+         ],
+         "answer": "hire",
+         "why": "hire là thuê; ba từ kia là thay thế."
+        },
+        {
+         "options": [
+          "productivity",
+          "output",
+          "yield",
+          "loss"
+         ],
+         "answer": "loss",
+         "why": "loss không phải thước đo sản xuất."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "instruction": "Viết lại câu theo yêu cầu.",
+       "core": 6,
+       "items": [
+        {
+         "prompt": "Employers rarely see the cost of insecurity.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely do employers see the cost of insecurity.",
+         "why": "Rarely + do + S + V. Ở câu này: \"Rarely do employers see the cost of insecurity.\".",
+         "keyword": "do"
+        },
+        {
+         "prompt": "Automation cuts costs, and it also improves quality.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only does automation cut costs, but it also improves quality.",
+         "why": "Đảo does automation. Ở câu này: \"Not only does automation cut costs, but it also\".",
+         "keyword": "does"
+        },
+        {
+         "prompt": "The plant had hardly closed when the rumours began.",
+         "instruction": "Viết lại bắt đầu bằng Hardly.",
+         "answer": "Hardly had the plant closed when the rumours began.",
+         "why": "Hardly + had + S + V3 + when. Ở câu này: \"Hardly had the plant closed when the rumours began.\".",
+         "keyword": "had"
+        },
+        {
+         "prompt": "Policymakers will not intervene until the gap becomes visible.",
+         "instruction": "Viết lại bắt đầu bằng Not until.",
+         "answer": "Not until the gap becomes visible will policymakers intervene.",
+         "why": "Not until + mệnh đề + will + S + V. Ở câu này: \"Not until the gap becomes visible will policymakers intervene.\".",
+         "keyword": "will"
+        },
+        {
+         "prompt": "The board did not realise how serious the skills gap was.",
+         "instruction": "Viết lại bắt đầu bằng Little.",
+         "answer": "Little did the board realise how serious the skills gap was.",
+         "why": "Little did + S + V. Ở câu này: \"Little did the board realise how serious the skills\".",
+         "keyword": "did"
+        },
+        {
+         "prompt": "Workers are seldom compensated for a long redundancy notice.",
+         "instruction": "Viết lại bắt đầu bằng Seldom.",
+         "answer": "Seldom are workers compensated for a long redundancy notice.",
+         "why": "Bị động: đảo are.",
+         "keyword": "are"
+        },
+        {
+         "prompt": "The market has never been so unpredictable.",
+         "instruction": "Viết lại bắt đầu bằng Never.",
+         "answer": "Never has the market been so unpredictable.",
+         "why": "Never + has + S + V3. Ở câu này: \"Never has the market been so unpredictable.\".",
+         "keyword": "has"
+        },
+        {
+         "prompt": "The gig economy is not simple, and neither is the labour market.",
+         "instruction": "Viết lại bằng Nor.",
+         "answer": "The gig economy is not simple, nor is the labour market.",
+         "why": "Nor + is + S. Ở câu này: \"The gig economy is not simple, nor is the\".",
+         "keyword": "nor"
+        }
+       ]
+      },
+      {
+       "type": "dictation",
+       "instruction": "Nghe và chép lại đúng từng từ.",
+       "core": 4,
+       "items": [
+        {
+         "say": "Rarely have employers complained so loudly of a skills gap.",
+         "why": "Rarely đảo have trước employers."
+        },
+        {
+         "say": "Not only does automation cut costs, but it also creates risks.",
+         "why": "Not only + does + S + V."
+        },
+        {
+         "say": "Automation is a double-edged sword.",
+         "why": "Cụm cố định double-edged sword."
+        },
+        {
+         "say": "Hardly had the plant closed when rumours began to spread.",
+         "why": "Hardly + had + S + V3 + when."
+        },
+        {
+         "say": "Not until policymakers intervene will the many reap the benefits.",
+         "why": "Not until + mệnh đề + will + S."
+        },
+        {
+         "say": "Seldom does a manager regret buying labour-saving equipment.",
+         "why": "Seldom + does + S + V."
+        }
+       ]
+      },
+      {
+       "type": "fix",
+       "instruction": "Tìm lỗi sai và viết lại câu đúng.",
+       "core": 5,
+       "items": [
+        {
+         "wrong": "Rarely governments have invested enough in reskilling.",
+         "answer": "Rarely have governments invested enough in reskilling.",
+         "why": "Sau Rarely phải đảo have."
+        },
+        {
+         "wrong": "Not only the model offers flexibility, but it also lacks protection.",
+         "answer": "Not only does the model offer flexibility, but it also lacks protection.",
+         "why": "Not only cần mượn does."
+        },
+        {
+         "wrong": "Seldom firms streamline operation carefully.",
+         "answer": "Seldom do firms streamline operations carefully.",
+         "why": "Seldom đảo do; operations số nhiều."
+        },
+        {
+         "wrong": "Little the managers knew about the gig economy.",
+         "answer": "Little did the managers know about the gig economy.",
+         "why": "Little did + S + V. Ở câu này: \"Little did the managers know about the gig economy.\"."
+        },
+        {
+         "wrong": "Hardly the plant had closed when staff protested.",
+         "answer": "Hardly had the plant closed when staff protested.",
+         "why": "Hardly + had + S + V3 + when. Ở câu này: \"Hardly had the plant closed when staff protested.\"."
+        },
+        {
+         "wrong": "They face to be made redundant next month.",
+         "answer": "They face being made redundant next month.",
+         "why": "face + V-ing."
+        },
+        {
+         "wrong": "Never the economy has been so connected.",
+         "answer": "Never has the economy been so connected.",
+         "why": "Never + has + S + V3. Ở câu này: \"Never has the economy been so connected.\"."
+        },
+        {
+         "wrong": "Job displacement are rising in routine sectors.",
+         "answer": "Job displacement is rising in routine sectors.",
+         "why": "displacement là danh từ không đếm được, dùng is."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "preview",
+     "title": "Đọc trước Sub 3",
+     "min": "36–46′",
+     "heading": "The risks (preview)",
+     "purpose": "Đọc lướt để làm quen với bài Thứ 6: tác giả lo ngại những rủi ro nào?",
+     "text": [
+      "Critics of automation focus on what the headline statistics leave out. Rarely does a low-paid worker have the savings, or the time, to retrain. Not only do employees fear losing their positions, but they also sense that their bargaining power is shrinking."
+     ],
+     "vocab": {
+      "widen the inequality gap": "nới rộng khoảng cách bất bình đẳng",
+      "job security": "sự ổn định việc làm",
+      "erode skills": "làm mai một kỹ năng",
+      "put people out of work": "khiến người ta mất việc",
+      "a growing sense of insecurity": "cảm giác bất an ngày một tăng",
+      "overreliance on": "sự phụ thuộc quá mức vào",
+      "fall short of": "không đạt được"
+     },
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Đọc lướt rồi chọn đáp án đúng.",
+       "core": 2,
+       "items": [
+        {
+         "q": "According to the passage, who do critics focus on?",
+         "options": [
+          "what the headline statistics leave out",
+          "the profits of large firms",
+          "the speed of new machines"
+         ],
+         "answer": "what the headline statistics leave out",
+         "why": "Câu 1 của đoạn."
+        },
+        {
+         "q": "Why can a low-paid worker not easily retrain?",
+         "options": [
+          "They lack savings and time.",
+          "They dislike learning.",
+          "Training is illegal."
+         ],
+         "answer": "They lack savings and time.",
+         "why": "Rarely does a low-paid worker have the savings, or the time."
+        },
+        {
+         "q": "What do employees fear, according to the last sentence?",
+         "options": [
+          "losing their positions and bargaining power",
+          "working longer hours",
+          "higher taxes"
+         ],
+         "answer": "losing their positions and bargaining power",
+         "why": "Not only do employees fear ... but they also sense ..."
+        }
+       ],
+       "role": "apply"
+      }
+     ],
+     "note": "Bài đọc trước ngắn; Thứ 6 sẽ đọc bản đầy đủ."
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Nói",
+     "min": "46–60′",
+     "mode": "speak",
+     "seconds": 60,
+     "prompt": "Speak for 60 seconds: \"Is automation more of a threat or an opportunity for workers in your country?\" State a position, give a reason and one example.",
+     "hint": "Position, reason, example, brief conclusion.",
+     "sample": "In my view, automation is both a threat and an opportunity, but the threat is more urgent for people in routine jobs.",
+     "model": "In my view, automation is both a threat and an opportunity, but the threat is more urgent for people in routine jobs. Rarely do factory workers have the savings to retrain, so job displacement hits them hardest. At the same time, not only does automation boost productivity, but it also creates new roles in technology and healthcare. For that reason, I believe the question is not whether to adopt it, but how to help workers adapt.",
+     "useWords": [
+      "Rarely",
+      "Not only",
+      "job displacement"
+     ],
+     "outline": [
+      "Quan điểm một câu",
+      "Lý do",
+      "Ví dụ",
+      "Kết luận ngắn"
+     ],
+     "checklist": [
+      "Nói rõ quan điểm ngay từ đầu",
+      "Có lý do và ví dụ",
+      "Dùng ít nhất một đảo ngữ",
+      "Nói liền mạch trong 60 giây"
+     ]
+    }
+   ]
+  },
+  "fri": {
+   "title": "Sub 3: The risks",
+   "kind": "new",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Khởi động",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Đoán nghĩa của cụm được hỏi.",
+       "core": 4,
+       "items": [
+        {
+         "q": "\"Critics fear that the reform will widen the inequality gap.\" To widen the inequality gap is to",
+         "options": [
+          "make differences between rich and poor larger",
+          "close the gap",
+          "change the law"
+         ],
+         "answer": "make differences between rich and poor larger",
+         "why": "widen the inequality gap: nới rộng khoảng cách bất bình đẳng."
+        },
+        {
+         "q": "\"A permanent contract gives workers job security.\" Job security means",
+         "options": [
+          "confidence that one's job is safe",
+          "a security guard's job",
+          "a high salary"
+         ],
+         "answer": "confidence that one's job is safe",
+         "why": "job security: sự ổn định việc làm."
+        },
+        {
+         "q": "\"Too much calculator use can erode skills.\" To erode skills is to",
+         "options": [
+          "gradually weaken abilities",
+          "build new abilities",
+          "test abilities"
+         ],
+         "answer": "gradually weaken abilities",
+         "why": "erode: bào mòn dần."
+        },
+        {
+         "q": "\"The plant closure will put hundreds of people out of work.\" To put people out of work is to",
+         "options": [
+          "make them unemployed",
+          "give them new training",
+          "raise their pay"
+         ],
+         "answer": "make them unemployed",
+         "why": "put people out of work."
+        },
+        {
+         "q": "\"There is a growing sense of insecurity among young graduates.\" This means they feel",
+         "options": [
+          "increasingly unsure about their future",
+          "very confident",
+          "bored"
+         ],
+         "answer": "increasingly unsure about their future",
+         "why": "a growing sense of insecurity."
+        },
+        {
+         "q": "\"Overreliance on GPS can weaken our sense of direction.\" Overreliance on means",
+         "options": [
+          "depending too heavily on",
+          "avoiding",
+          "owning"
+         ],
+         "answer": "depending too heavily on",
+         "why": "overreliance on: quá phụ thuộc vào."
+        },
+        {
+         "q": "\"Current protections fall short of what workers need.\" To fall short of is to",
+         "options": [
+          "fail to reach the required level",
+          "exceed expectations",
+          "be unrelated to"
+         ],
+         "answer": "fail to reach the required level",
+         "why": "fall short of: không đạt tới."
+        }
+       ],
+       "ungraded": true
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "read",
+     "title": "Đọc",
+     "min": "5–17′",
+     "heading": "The risks of automation",
+     "purpose": "Đọc để tìm: tác giả lo ngại những rủi ro nào, và bằng chứng gì được dùng?",
+     "text": [
+      "Critics of automation focus on what the headline statistics leave out. In the short term, it may well widen the inequality gap. McKinsey's analysis suggests that the two lowest wage groups are up to fourteen times more likely to have to switch occupations than the highest earners. Rarely does a cleaner or a cashier have the savings, or the time, to retrain for a new profession. The cost of failing is borne almost entirely by the individual.",
+      "Job security, once taken for granted in many industries, can no longer be assumed. Not only do employees fear losing their positions, but they also sense that their bargaining power is shrinking. A growing sense of insecurity now shapes how people spend, vote and plan their families. Employers rarely see this cost, yet it eventually reaches them in the form of lower morale and higher turnover.",
+      "There are subtler dangers too. Overreliance on automated tools can erode skills that took years to acquire; pilots, translators and radiologists all report that they practise fundamental techniques less than they once did. Never has a technology been so capable of imitating expertise. Seldom have organisations asked so few questions about what happens when it fails. If systems continue to put people out of work faster than new roles appear, existing protections will fall short of what society expects."
+     ],
+     "vocab": {
+      "widen the inequality gap": "nới rộng khoảng cách bất bình đẳng",
+      "job security": "sự ổn định việc làm",
+      "erode skills": "làm mai một kỹ năng",
+      "put people out of work": "khiến người ta mất việc",
+      "a growing sense of insecurity": "cảm giác bất an ngày một tăng",
+      "overreliance on": "sự phụ thuộc quá mức vào",
+      "fall short of": "không đạt được"
+     },
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Đọc bài rồi chọn đáp án đúng nhất.",
+       "core": 5,
+       "items": [
+        {
+         "q": "What is the main concern of the first paragraph?",
+         "options": [
+          "Automation may widen the inequality gap.",
+          "Automation is too expensive.",
+          "Automation is unpopular."
+         ],
+         "answer": "Automation may widen the inequality gap.",
+         "why": "Câu 2 đoạn 1."
+        },
+        {
+         "q": "According to McKinsey's analysis, the two lowest wage groups are",
+         "options": [
+          "far more likely to have to switch occupations",
+          "less affected than high earners",
+          "unaffected by automation"
+         ],
+         "answer": "far more likely to have to switch occupations",
+         "why": "up to fourteen times more likely."
+        },
+        {
+         "q": "Why is it hard for a cleaner or a cashier to retrain?",
+         "options": [
+          "They rarely have the savings or the time.",
+          "They refuse to learn.",
+          "There are no courses."
+         ],
+         "answer": "They rarely have the savings or the time.",
+         "why": "Rarely does a cleaner or a cashier have the savings."
+        },
+        {
+         "q": "According to paragraph 2, who rarely sees the cost of insecurity?",
+         "options": [
+          "employers",
+          "employees",
+          "politicians"
+         ],
+         "answer": "employers",
+         "why": "Employers rarely see this cost."
+        },
+        {
+         "q": "What does \"it eventually reaches them\" refer to?",
+         "options": [
+          "the cost of insecurity",
+          "a new machine",
+          "a tax"
+         ],
+         "answer": "the cost of insecurity",
+         "why": "this cost = chi phí của sự bất an."
+        },
+        {
+         "q": "Which skills does the writer say can be eroded?",
+         "options": [
+          "those that took years to acquire",
+          "those learned in school only",
+          "new digital skills"
+         ],
+         "answer": "those that took years to acquire",
+         "why": "Overreliance can erode skills that took years to acquire."
+        },
+        {
+         "q": "The tone of the final paragraph is best described as",
+         "options": [
+          "cautious and concerned",
+          "humorous",
+          "celebratory"
+         ],
+         "answer": "cautious and concerned",
+         "why": "Giọng lo ngại."
+        },
+        {
+         "q": "What does the writer warn will happen if systems put people out of work faster than new roles appear?",
+         "options": [
+          "Protections will fall short of expectations.",
+          "Wages will rise.",
+          "Companies will close."
+         ],
+         "answer": "Protections will fall short of expectations.",
+         "why": "Câu cuối bài."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "instruction": "Dùng cấu trúc và cụm của bài để trả lời (tự đối chiếu với mẫu).",
+       "core": 4,
+       "items": [
+        {
+         "prompt": "Why might automation widen the inequality gap?",
+         "answer": "Because low-paid workers are far more likely to lose their jobs and rarely have the means to retrain."
+        },
+        {
+         "prompt": "Use Rarely to say that employers do not see the cost of insecurity.",
+         "answer": "Rarely do employers see the cost of insecurity."
+        },
+        {
+         "prompt": "Use Not only ... but also to describe how employees feel.",
+         "answer": "Not only do employees fear job losses, but they also sense that their bargaining power is shrinking."
+        },
+        {
+         "prompt": "Give an example of a skill that overreliance on technology can erode.",
+         "answer": "Overreliance on spell-checkers can erode spelling skills."
+        },
+        {
+         "prompt": "Use Never to comment on how capable technology has become.",
+         "answer": "Never has a technology been so capable of imitating expertise."
+        },
+        {
+         "prompt": "What does a growing sense of insecurity change in people's behaviour?",
+         "answer": "It shapes how people spend, vote and plan their families."
+        },
+        {
+         "prompt": "Use fall short of in a sentence about current protections.",
+         "answer": "Existing protections fall short of what society expects."
+        }
+       ],
+       "role": "apply"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "key": "listen",
+     "title": "Nghe",
+     "min": "17–24′",
+     "text": [
+      "Critics of automation focus on what the headline statistics leave out. In the short term, it may well widen the inequality gap. McKinsey's analysis suggests that the two lowest wage groups are up to fourteen times more likely to have to switch occupations than the highest earners. Rarely does a cleaner or a cashier have the savings, or the time, to retrain for a new profession. The cost of failing is borne almost entirely by the individual.",
+      "Job security, once taken for granted in many industries, can no longer be assumed. Not only do employees fear losing their positions, but they also sense that their bargaining power is shrinking. A growing sense of insecurity now shapes how people spend, vote and plan their families. Employers rarely see this cost, yet it eventually reaches them in the form of lower morale and higher turnover.",
+      "There are subtler dangers too. Overreliance on automated tools can erode skills that took years to acquire; pilots, translators and radiologists all report that they practise fundamental techniques less than they once did. Never has a technology been so capable of imitating expertise. Seldom have organisations asked so few questions about what happens when it fails. If systems continue to put people out of work faster than new roles appear, existing protections will fall short of what society expects."
+     ],
+     "sets": [
+      {
+       "type": "listenpick",
+       "instruction": "Nghe rồi chọn đáp án đúng, sau đó chép lại câu.",
+       "core": 4,
+       "items": [
+        {
+         "say": "Rarely does a cleaner or a cashier have the savings to retrain.",
+         "q": "Điều gì hiếm khi xảy ra?",
+         "options": [
+          "Người lao động lương thấp có tiền học nghề mới",
+          "Người lao động bị tăng lương",
+          "Công ty tuyển thêm người"
+         ],
+         "answer": "Người lao động lương thấp có tiền học nghề mới",
+         "why": "Rarely + does + S + V. Ở câu này: \"Người lao động lương thấp có tiền học nghề\"."
+        },
+        {
+         "say": "Not only do employees fear losing their positions, but they also sense that their bargaining power is shrinking.",
+         "q": "Nhân viên lo ngại điều gì?",
+         "options": [
+          "Mất việc và mất sức mạnh thương lượng",
+          "Lương giảm và giờ làm tăng",
+          "Công ty phá sản"
+         ],
+         "answer": "Mất việc và mất sức mạnh thương lượng",
+         "why": "Hai vế Not only ... but also. Ở câu này: \"Mất việc và mất sức mạnh thương lượng\"."
+        },
+        {
+         "say": "Never has a technology been so capable of imitating expertise.",
+         "q": "Công nghệ hiện nay có đặc điểm gì?",
+         "options": [
+          "Mô phỏng chuyên môn giỏi chưa từng có",
+          "Rẻ hơn mọi khi",
+          "Khó dùng"
+         ],
+         "answer": "Mô phỏng chuyên môn giỏi chưa từng có",
+         "why": "Never + has + S + V3. Ở câu này: \"Mô phỏng chuyên môn giỏi chưa từng có\"."
+        },
+        {
+         "say": "Seldom have organisations asked so few questions about what happens when it fails.",
+         "q": "Các tổ chức đã làm gì?",
+         "options": [
+          "Hầu như không đặt câu hỏi về sự cố",
+          "Kiểm tra kỹ mọi thứ",
+          "Dừng sử dụng"
+         ],
+         "answer": "Hầu như không đặt câu hỏi về sự cố",
+         "why": "Seldom have organisations asked so few questions."
+        },
+        {
+         "say": "A growing sense of insecurity shapes how people spend, vote and plan their families.",
+         "q": "Sự bất an ảnh hưởng đến điều gì?",
+         "options": [
+          "Cách chi tiêu, bỏ phiếu và lập kế hoạch gia đình",
+          "Chỉ chi tiêu",
+          "Chỉ việc học"
+         ],
+         "answer": "Cách chi tiêu, bỏ phiếu và lập kế hoạch gia đình",
+         "why": "spend, vote and plan."
+        },
+        {
+         "say": "Overreliance on automated tools can erode skills that took years to acquire.",
+         "q": "Việc quá phụ thuộc vào công cụ tự động gây ra gì?",
+         "options": [
+          "Làm mai một kỹ năng",
+          "Làm tăng kỹ năng",
+          "Không ảnh hưởng"
+         ],
+         "answer": "Làm mai một kỹ năng",
+         "why": "erode skills."
+        },
+        {
+         "say": "Existing protections will fall short of what society expects.",
+         "q": "Các biện pháp bảo vệ hiện có sẽ ra sao?",
+         "options": [
+          "Không đáp ứng được kỳ vọng",
+          "Vượt kỳ vọng",
+          "Được bãi bỏ"
+         ],
+         "answer": "Không đáp ứng được kỳ vọng",
+         "why": "fall short of."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "practice",
+     "title": "Luyện tập",
+     "min": "30–48′",
+     "sets": [
+      {
+       "type": "transform",
+       "instruction": "Viết lại câu theo yêu cầu, dùng từ gợi ý.",
+       "core": 8,
+       "items": [
+        {
+         "prompt": "Employees fear losing their jobs, and they also sense that their bargaining power is shrinking.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only do employees fear losing their jobs, but they also sense that their bargaining power is shrinking.",
+         "why": "Chủ ngữ số nhiều: do employees.",
+         "keyword": "do"
+        },
+        {
+         "prompt": "A cleaner rarely has the savings to retrain.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely does a cleaner have the savings to retrain.",
+         "why": "Rarely + does + S + V. Ở câu này: \"Rarely does a cleaner have the savings to retrain.\".",
+         "keyword": "does"
+        },
+        {
+         "prompt": "A technology has never been so capable of imitating expertise.",
+         "instruction": "Viết lại bắt đầu bằng Never.",
+         "answer": "Never has a technology been so capable of imitating expertise.",
+         "why": "Never + has + S + V3. Ở câu này: \"Never has a technology been so capable of imitating\".",
+         "keyword": "has"
+        },
+        {
+         "prompt": "Organisations have seldom asked so few questions about failure.",
+         "instruction": "Viết lại bắt đầu bằng Seldom.",
+         "answer": "Seldom have organisations asked so few questions about failure.",
+         "why": "Seldom + have + S + V3.",
+         "keyword": "have"
+        },
+        {
+         "prompt": "Employers rarely see this cost.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely do employers see this cost.",
+         "why": "Rarely + do + S + V. Ở câu này: \"Rarely do employers see this cost.\".",
+         "keyword": "do"
+        },
+        {
+         "prompt": "Workers did not realise at all how fast their skills would erode.",
+         "instruction": "Viết lại bắt đầu bằng Little.",
+         "answer": "Little did workers realise how fast their skills would erode.",
+         "why": "Little did + S + V. Ở câu này: \"Little did workers realise how fast their skills would\".",
+         "keyword": "did"
+        },
+        {
+         "prompt": "The new law does not close the inequality gap, and it does not protect job security either.",
+         "instruction": "Viết lại bằng Nor.",
+         "answer": "The new law does not close the inequality gap, nor does it protect job security.",
+         "why": "Nor + does + it + V.",
+         "keyword": "nor"
+        },
+        {
+         "prompt": "Managers will not accept the cost until profits are affected.",
+         "instruction": "Viết lại bắt đầu bằng Not until.",
+         "answer": "Not until profits are affected will managers accept the cost.",
+         "why": "Not until + mệnh đề + will + S + V. Ở câu này: \"Not until profits are affected will managers accept the\".",
+         "keyword": "will"
+        },
+        {
+         "prompt": "Cheap software has widened the inequality gap, and it has also eroded skills.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only has cheap software widened the inequality gap, but it has also eroded skills.",
+         "why": "Đảo has cheap software.",
+         "keyword": "has"
+        },
+        {
+         "prompt": "The firm had barely announced the changes when staff began to fear for their jobs.",
+         "instruction": "Viết lại bắt đầu bằng Barely.",
+         "answer": "Barely had the firm announced the changes when staff began to fear for their jobs.",
+         "why": "Barely + had + S + V3 + when.",
+         "keyword": "had"
+        },
+        {
+         "prompt": "Workers have never before felt such a growing sense of insecurity.",
+         "instruction": "Viết lại bắt đầu bằng Never before.",
+         "answer": "Never before have workers felt such a growing sense of insecurity.",
+         "why": "Never before + have + S + V3.",
+         "keyword": "have"
+        },
+        {
+         "prompt": "Policymakers seldom consider the long-term effects on job security.",
+         "instruction": "Viết lại bắt đầu bằng Seldom.",
+         "answer": "Seldom do policymakers consider the long-term effects on job security.",
+         "why": "Seldom + do + S + V. Ở câu này: \"Seldom do policymakers consider the long-term effects on job\".",
+         "keyword": "do"
+        },
+        {
+         "prompt": "The system is not reliable, and it is not transparent either.",
+         "instruction": "Viết lại bằng Nor.",
+         "answer": "The system is not reliable, nor is it transparent.",
+         "why": "Nor + is + it.",
+         "keyword": "nor"
+        },
+        {
+         "prompt": "Support for the unemployed is rarely adequate.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely is support for the unemployed adequate.",
+         "why": "Rarely + is + S.",
+         "keyword": "is"
+        }
+       ]
+      },
+      {
+       "type": "fix",
+       "instruction": "Tìm lỗi sai và viết lại câu đúng.",
+       "core": 6,
+       "items": [
+        {
+         "wrong": "Rarely a cashier has the savings to retrain.",
+         "answer": "Rarely does a cashier have the savings to retrain.",
+         "why": "Rarely đầu câu cần does."
+        },
+        {
+         "wrong": "Not only employees fear job losses, but they also feel powerless.",
+         "answer": "Not only do employees fear job losses, but they also feel powerless.",
+         "why": "Not only + do + S + V."
+        },
+        {
+         "wrong": "Never a technology has been so capable.",
+         "answer": "Never has a technology been so capable.",
+         "why": "Never + has + S + V3. Ở câu này: \"Never has a technology been so capable.\"."
+        },
+        {
+         "wrong": "Overreliance of automated tools erodes skills.",
+         "answer": "Overreliance on automated tools erodes skills.",
+         "why": "Cụm cố định overreliance on."
+        },
+        {
+         "wrong": "Protections fall short to what society expects.",
+         "answer": "Protections fall short of what society expects.",
+         "why": "fall short of. Ở câu này: \"Protections fall short of what society expects.\"."
+        },
+        {
+         "wrong": "Automation could widen the gap inequality.",
+         "answer": "Automation could widen the inequality gap.",
+         "why": "Trật tự từ: inequality gap."
+        },
+        {
+         "wrong": "Seldom organisations ask questions about failure.",
+         "answer": "Seldom do organisations ask questions about failure.",
+         "why": "Seldom đầu câu cần do. Ở câu này: \"Seldom do organisations ask questions about failure.\"."
+        },
+        {
+         "wrong": "The closure will put hundreds people out of work.",
+         "answer": "The closure will put hundreds of people out of work.",
+         "why": "hundreds of people."
+        },
+        {
+         "wrong": "A growing sense of insecurities shapes how people vote.",
+         "answer": "A growing sense of insecurity shapes how people vote.",
+         "why": "insecurity không đếm được ở đây."
+        },
+        {
+         "wrong": "Skills that took years to acquire can be erode quickly.",
+         "answer": "Skills that took years to acquire can be eroded quickly.",
+         "why": "can be + V3."
+        },
+        {
+         "wrong": "Little employers realised how deep the insecurity ran.",
+         "answer": "Little did employers realise how deep the insecurity ran.",
+         "why": "Little did + S + V. Ở câu này: \"Little did employers realise how deep the insecurity ran.\"."
+        },
+        {
+         "wrong": "Job security have become a rare benefit.",
+         "answer": "Job security has become a rare benefit.",
+         "why": "Chủ ngữ số ít."
+        }
+       ]
+      },
+      {
+       "type": "dialogue",
+       "instruction": "Chọn câu trả lời phù hợp nhất để hoàn thành hội thoại.",
+       "core": 6,
+       "items": [
+        {
+         "lines": [
+          "A: Why are people so anxious about automation?",
+          "B: Because there is a growing sense of insecurity among workers.",
+          "A: But will it really put people out of work?"
+         ],
+         "options": [
+          "B: In routine jobs, yes, often faster than new roles appear.",
+          "B: I enjoy my lunch breaks.",
+          "B: The weather is fine."
+         ],
+         "answer": "B: In routine jobs, yes, often faster than new roles appear.",
+         "why": "Trả lời trực tiếp câu hỏi."
+        },
+        {
+         "lines": [
+          "A: Do you think automation will widen the inequality gap?",
+          "B: Quite possibly, since low-paid workers are most exposed.",
+          "A: Can they not simply retrain?"
+         ],
+         "options": [
+          "B: Rarely do they have the savings or the time.",
+          "B: They like their jobs.",
+          "B: Not many machines are sold."
+         ],
+         "answer": "B: Rarely do they have the savings or the time.",
+         "why": "Rarely + do + S + V mô tả rào cản."
+        },
+        {
+         "lines": [
+          "A: Pilots now fly on autopilot most of the time.",
+          "B: That worries me a little.",
+          "A: Why is that a problem?"
+         ],
+         "options": [
+          "B: Overreliance on it can erode fundamental skills.",
+          "B: Planes are very expensive.",
+          "B: Pilots wear uniforms."
+         ],
+         "answer": "B: Overreliance on it can erode fundamental skills.",
+         "why": "Nêu hệ quả của overreliance."
+        },
+        {
+         "lines": [
+          "A: Is job security still common?",
+          "B: Not as common as it once was.",
+          "A: What changed?"
+         ],
+         "options": [
+          "B: Temporary contracts have spread across many industries.",
+          "B: Offices have got bigger.",
+          "B: Coffee is cheaper."
+         ],
+         "answer": "B: Temporary contracts have spread across many industries.",
+         "why": "Giải thích nguyên nhân thay đổi."
+        },
+        {
+         "lines": [
+          "A: Existing protections are supposed to help.",
+          "B: They often fall short of what workers need.",
+          "A: In what way?"
+         ],
+         "options": [
+          "B: They rarely cover gig workers or the self-employed.",
+          "B: They are printed on thick paper.",
+          "B: They are very modern."
+         ],
+         "answer": "B: They rarely cover gig workers or the self-employed.",
+         "why": "Cho ví dụ về thiếu sót."
+        },
+        {
+         "lines": [
+          "A: Do employers see the cost of insecurity?",
+          "B: Rarely, but it reaches them eventually.",
+          "A: How?"
+         ],
+         "options": [
+          "B: Through lower morale and higher turnover.",
+          "B: Through bigger offices.",
+          "B: Through faster computers."
+         ],
+         "answer": "B: Through lower morale and higher turnover.",
+         "why": "Theo bài đọc."
+        },
+        {
+         "lines": [
+          "A: I read that technology now imitates expertise.",
+          "B: Never has it been so capable.",
+          "A: Should we be worried?"
+         ],
+         "options": [
+          "B: We should at least ask what happens when it fails.",
+          "B: We should buy more screens.",
+          "B: We should stop eating."
+         ],
+         "answer": "B: We should at least ask what happens when it fails.",
+         "why": "Phản hồi hợp lý nhất."
+        },
+        {
+         "lines": [
+          "A: Why do cashiers face more risk than managers?",
+          "B: Their tasks are more routine.",
+          "A: And what happens to them afterwards?"
+         ],
+         "options": [
+          "B: Many struggle because they cannot afford to retrain.",
+          "B: They receive medals.",
+          "B: They go on long holidays."
+         ],
+         "answer": "B: Many struggle because they cannot afford to retrain.",
+         "why": "Liên hệ với bài đọc."
+        }
+       ]
+      },
+      {
+       "type": "gap",
+       "instruction": "Điền một từ vào chỗ trống.",
+       "core": 6,
+       "items": [
+        {
+         "text": "Critics argue that automation will ___ the inequality gap.",
+         "answer": "widen",
+         "why": "widen the inequality gap."
+        },
+        {
+         "text": "A permanent contract gives workers greater job ___.",
+         "answer": "security",
+         "why": "job security. Ở câu này: \"security\"."
+        },
+        {
+         "text": "Overreliance on calculators can ___ numerical skills.",
+         "answer": "erode",
+         "why": "erode skills. Ở câu này: \"erode\"."
+        },
+        {
+         "text": "The closure will put hundreds of people ___ of work.",
+         "answer": "out",
+         "why": "put people out of work. Ở câu này: \"out\"."
+        },
+        {
+         "text": "There is a growing ___ of insecurity among graduates.",
+         "answer": "sense",
+         "why": "a growing sense of insecurity. Ở câu này: \"sense\"."
+        },
+        {
+         "text": "Overreliance ___ automated tools is a hidden danger.",
+         "answer": "on",
+         "why": "overreliance on."
+        },
+        {
+         "text": "Current protections ___ short of what workers need.",
+         "answer": "fall",
+         "why": "fall short of. Ở câu này: \"fall\"."
+        },
+        {
+         "text": "Rarely ___ a cleaner have the time to retrain.",
+         "answer": "does",
+         "why": "Rarely + does."
+        },
+        {
+         "text": "Never ___ a technology been so capable of imitating expertise.",
+         "answer": "has",
+         "why": "Never + has. Ở câu này: \"has\"."
+        },
+        {
+         "text": "Not only ___ employees fear redundancy, but they also feel powerless.",
+         "answer": "do",
+         "why": "Not only + do + S."
+        },
+        {
+         "text": "Seldom ___ organisations ask what happens when systems fail.",
+         "answer": "do",
+         "why": "Seldom + do + S (số nhiều)."
+        },
+        {
+         "text": "The cost of failure is borne by the ___.",
+         "answer": "individual",
+         "why": "individual: cá nhân."
+        }
+       ]
+      },
+      {
+       "type": "translate",
+       "instruction": "Dịch sang tiếng Anh rồi tự đối chiếu với mẫu.",
+       "core": 4,
+       "items": [
+        {
+         "prompt": "Tự động hóa có thể làm gia tăng khoảng cách bất bình đẳng.",
+         "answer": "Automation may widen the inequality gap.",
+         "why": "widen the inequality gap. Ở câu này: \"Automation may widen the inequality gap.\"."
+        },
+        {
+         "prompt": "Hiếm khi người thu ngân có đủ tiền để học nghề mới.",
+         "answer": "Rarely does a cashier have enough savings to retrain.",
+         "why": "Rarely + does + S."
+        },
+        {
+         "prompt": "Sự phụ thuộc quá mức vào công cụ tự động có thể làm mai một kỹ năng.",
+         "answer": "Overreliance on automated tools can erode skills.",
+         "why": "overreliance on, erode skills."
+        },
+        {
+         "prompt": "Các biện pháp bảo vệ hiện nay chưa đáp ứng được kỳ vọng của xã hội.",
+         "answer": "Existing protections fall short of what society expects.",
+         "why": "fall short of. Ở câu này: \"Existing protections fall short of what society expects.\"."
+        },
+        {
+         "prompt": "Không chỉ nhân viên lo mất việc, mà họ còn cảm thấy quyền thương lượng đang giảm.",
+         "answer": "Not only do employees fear losing their jobs, but they also sense their bargaining power is shrinking.",
+         "why": "Not only + do + S. Ở câu này: \"Not only do employees fear losing their jobs, but\"."
+        },
+        {
+         "prompt": "Chưa bao giờ công nghệ mô phỏng chuyên môn giỏi đến thế.",
+         "answer": "Never has a technology been so capable of imitating expertise.",
+         "why": "Never + has + S + V3. Ở câu này: \"Never has a technology been so capable of imitating\"."
+        },
+        {
+         "prompt": "Cảm giác bất an ngày càng tăng ảnh hưởng đến cách mọi người chi tiêu.",
+         "answer": "A growing sense of insecurity shapes how people spend.",
+         "why": "a growing sense of insecurity. Ở câu này: \"A growing sense of insecurity shapes how people spend.\"."
+        },
+        {
+         "prompt": "Nếu máy móc khiến người ta mất việc nhanh hơn việc làm mới xuất hiện, xã hội sẽ gặp khó khăn.",
+         "answer": "If machines put people out of work faster than new jobs appear, society will struggle.",
+         "why": "put people out of work. Ở câu này: \"If machines put people out of work faster than\"."
+        }
+       ]
+      },
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng nhất.",
+       "core": 6,
+       "items": [
+        {
+         "q": "Which sentence uses inversion correctly?",
+         "options": [
+          "Rarely does a cashier have the savings to retrain.",
+          "Rarely a cashier does have the savings to retrain.",
+          "Rarely a cashier has the savings to retrain."
+         ],
+         "answer": "Rarely does a cashier have the savings to retrain.",
+         "why": "Rarely + does + S + V. Ở câu này: \"Rarely does a cashier have the savings to retrain.\"."
+        },
+        {
+         "q": "Which is the best synonym for erode in \"erode skills\"?",
+         "options": [
+          "gradually weaken",
+          "quickly improve",
+          "carefully measure"
+         ],
+         "answer": "gradually weaken",
+         "why": "erode: bào mòn."
+        },
+        {
+         "q": "Job security refers to",
+         "options": [
+          "the likelihood of keeping one's job",
+          "the safety of the office",
+          "a security job"
+         ],
+         "answer": "the likelihood of keeping one's job",
+         "why": "job security. Ở câu này: \"the likelihood of keeping one's job\"."
+        },
+        {
+         "q": "Never ___ a technology been so capable of imitating expertise.",
+         "options": [
+          "has",
+          "is",
+          "does"
+         ],
+         "answer": "has",
+         "why": "Never + has + S + V3. Ở câu này: \"has\"."
+        },
+        {
+         "q": "A growing sense of insecurity means people feel",
+         "options": [
+          "increasingly unsure about their future",
+          "very safe",
+          "bored with work"
+         ],
+         "answer": "increasingly unsure about their future",
+         "why": "Nghĩa của cụm."
+        },
+        {
+         "q": "Not only ___ employees fear job losses, but they also feel powerless.",
+         "options": [
+          "do",
+          "does",
+          "are"
+         ],
+         "answer": "do",
+         "why": "employees số nhiều."
+        },
+        {
+         "q": "Overreliance on is followed by",
+         "options": [
+          "a noun or noun phrase",
+          "an infinitive",
+          "a bare verb"
+         ],
+         "answer": "a noun or noun phrase",
+         "why": "overreliance on + noun."
+        },
+        {
+         "q": "Existing laws fall short of expectations. Fall short of means",
+         "options": [
+          "fail to reach",
+          "exceed",
+          "ignore"
+         ],
+         "answer": "fail to reach",
+         "why": "fall short of. Ở câu này: \"fail to reach\"."
+        },
+        {
+         "q": "Which is a correct collocation?",
+         "options": [
+          "widen the inequality gap",
+          "stretch the inequality gap",
+          "grow the inequality gap up"
+         ],
+         "answer": "widen the inequality gap",
+         "why": "Cụm cố định."
+        },
+        {
+         "q": "Seldom ___ organisations ask what happens when systems fail.",
+         "options": [
+          "do",
+          "does",
+          "is"
+         ],
+         "answer": "do",
+         "why": "organisations số nhiều."
+        },
+        {
+         "q": "To put people out of work means to",
+         "options": [
+          "make them unemployed",
+          "find them jobs",
+          "pay them more"
+         ],
+         "answer": "make them unemployed",
+         "why": "put people out of work. Ở câu này: \"make them unemployed\"."
+        },
+        {
+         "q": "Who bears the cost of failing to retrain, according to the text?",
+         "options": [
+          "the individual",
+          "the government",
+          "the employer"
+         ],
+         "answer": "the individual",
+         "why": "Câu cuối đoạn 1."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Nói",
+     "min": "48–60′",
+     "mode": "speak",
+     "seconds": 90,
+     "prompt": "Speak for 90 seconds: \"What are the biggest risks of automation for ordinary workers, and what should governments do about them?\" Give two risks and one recommendation.",
+     "hint": "Position, risk 1, risk 2, recommendation, conclusion.",
+     "sample": "In my view, the two biggest risks are job insecurity and the loss of skills, and governments should respond with funded retraining.",
+     "model": "In my view, the two biggest risks are job insecurity and the loss of skills, and governments should respond with funded retraining. First, a growing sense of insecurity affects how people spend and plan their lives. Rarely do low-paid workers have the savings to retrain after they have been put out of work. Second, overreliance on automated tools can erode skills that took years to acquire. Not only does this harm individuals, but it also weakens whole industries. Existing protections fall short of what is needed, so I would argue that governments should pay for retraining and extend protection to gig workers.",
+     "useWords": [
+      "job security",
+      "erode skills",
+      "fall short of",
+      "Not only"
+     ],
+     "outline": [
+      "Quan điểm",
+      "Rủi ro 1",
+      "Rủi ro 2",
+      "Khuyến nghị",
+      "Kết luận"
+     ],
+     "checklist": [
+      "Nêu hai rủi ro rõ ràng",
+      "Có khuyến nghị cụ thể",
+      "Dùng ít nhất hai cụm của bài",
+      "Có một đảo ngữ",
+      "Nói liền mạch trong 90 giây"
+     ]
+    }
+   ]
+  },
+  "sat": {
+   "title": "Ôn cả tuần, giới thiệu Sub 4",
+   "kind": "week",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "quiz",
+     "title": "Quiz tuần",
+     "min": "0–6′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Quiz nhanh: chọn đáp án đúng.",
+       "core": 10,
+       "items": [
+        {
+         "q": "Which sentence is correct?",
+         "options": [
+          "Rarely have employers faced such a gap.",
+          "Rarely employers have faced such a gap.",
+          "Rarely have faced employers such a gap."
+         ],
+         "answer": "Rarely have employers faced such a gap.",
+         "why": "Rarely + have + S + V3. Ở câu này: \"Rarely have employers faced such a gap.\"."
+        },
+        {
+         "q": "\"A shortage of abilities employers need\" is a",
+         "options": [
+          "skills gap",
+          "labour market",
+          "gig economy"
+         ],
+         "answer": "skills gap",
+         "why": "skills gap. Ở câu này: \"skills gap\"."
+        },
+        {
+         "q": "To boost productivity is to",
+         "options": [
+          "increase output per worker",
+          "lower prices",
+          "hire more staff"
+         ],
+         "answer": "increase output per worker",
+         "why": "boost productivity. Ở câu này: \"increase output per worker\"."
+        },
+        {
+         "q": "Technology that is the most advanced is",
+         "options": [
+          "cutting-edge",
+          "double-edged",
+          "labour-saving"
+         ],
+         "answer": "cutting-edge",
+         "why": "cutting-edge. Ở câu này: \"cutting-edge\"."
+        },
+        {
+         "q": "Not only ___ automation raise output, but it also changes jobs.",
+         "options": [
+          "does",
+          "do",
+          "is"
+         ],
+         "answer": "does",
+         "why": "automation số ít."
+        },
+        {
+         "q": "To erode skills is to",
+         "options": [
+          "weaken them gradually",
+          "teach them",
+          "measure them"
+         ],
+         "answer": "weaken them gradually",
+         "why": "erode."
+        },
+        {
+         "q": "Which phrase means \"make people unemployed\"?",
+         "options": [
+          "put people out of work",
+          "put people to work",
+          "put people on notice"
+         ],
+         "answer": "put people out of work",
+         "why": "Cụm cố định. Ở câu này: \"put people out of work\"."
+        },
+        {
+         "q": "Hardly had the plant closed ___ rumours began.",
+         "options": [
+          "when",
+          "than",
+          "while"
+         ],
+         "answer": "when",
+         "why": "Hardly ... when. Ở câu này: \"when\"."
+        },
+        {
+         "q": "A double-edged sword is something with",
+         "options": [
+          "both good and bad effects",
+          "two names",
+          "a sharp end"
+         ],
+         "answer": "both good and bad effects",
+         "why": "Nghĩa bóng."
+        },
+        {
+         "q": "Overreliance on technology means",
+         "options": [
+          "depending on it too much",
+          "using it carefully",
+          "avoiding it"
+         ],
+         "answer": "depending on it too much",
+         "why": "overreliance on. Ở câu này: \"depending on it too much\"."
+        },
+        {
+         "q": "Seldom ___ managers regret automating heavy work.",
+         "options": [
+          "do",
+          "does",
+          "is"
+         ],
+         "answer": "do",
+         "why": "managers số nhiều."
+        },
+        {
+         "q": "Job security refers to",
+         "options": [
+          "the safety of keeping one's job",
+          "a guard's job",
+          "job training"
+         ],
+         "answer": "the safety of keeping one's job",
+         "why": "job security. Ở câu này: \"the safety of keeping one's job\"."
+        },
+        {
+         "q": "Little ___ the founders imagine such rapid growth.",
+         "options": [
+          "did",
+          "do",
+          "were"
+         ],
+         "answer": "did",
+         "why": "Little did + S + V. Ở câu này: \"did\"."
+        },
+        {
+         "q": "The gig economy is based on",
+         "options": [
+          "short-term, task-based work",
+          "lifelong contracts",
+          "family businesses"
+         ],
+         "answer": "short-term, task-based work",
+         "why": "gig economy. Ở câu này: \"short-term, task-based work\"."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "transfer",
+     "title": "Đọc bài mới",
+     "min": "6–20′",
+     "heading": "Societies and automation: transfer text",
+     "purpose": "Đọc một bài mới dùng lại từ vựng và đảo ngữ của tuần: tác giả đề xuất chính sách gì?",
+     "text": [
+      "Public debate about automation tends to swing between panic and complacency. Neither mood helps. The World Economic Forum expects 170 million jobs to be created and 92 million to disappear by 2030, which suggests a net gain. Yet a net figure says nothing about who gains and who loses.",
+      "Rarely do displaced workers move smoothly into the new roles. A welder who has been made redundant seldom finds that a vacancy in software testing matches his experience. It makes little difference how many such vacancies exist. Hardly had one cohort of workers been retrained when a new technology rendered their qualifications obsolete. That is why training must be continuous rather than occasional.",
+      "Governments therefore face a delicate task, and the margin for error is small. Not only must they encourage firms to invest in cutting-edge tools, but they must also ensure that the benefits are shared. Never has the case for a robust safety net been stronger, because without one a growing sense of insecurity will erode public trust in innovation itself.",
+      "The most credible policies combine three elements: affordable reskilling, protection for those between jobs, and honest information about which occupations are changing. Such a package is neither cheap nor quick, but it costs far less than the social consequences of inaction. Were societies to neglect any of these, the gap between winners and losers would only widen, and trust in institutions would follow it downwards."
+     ],
+     "vocab": {
+      "job displacement": "tình trạng mất việc do bị thay thế",
+      "labour market": "thị trường lao động",
+      "skills gap": "khoảng cách kỹ năng",
+      "redundancy": "tình trạng bị sa thải do dư thừa",
+      "gig economy": "nền kinh tế làm việc tự do ngắn hạn",
+      "workforce": "lực lượng lao động",
+      "be made redundant": "bị cho thôi việc",
+      "boost productivity": "tăng năng suất",
+      "cut costs": "cắt giảm chi phí",
+      "streamline operations": "tinh gọn hoạt động",
+      "a double-edged sword": "con dao hai lưỡi",
+      "reap the benefits": "gặt hái lợi ích",
+      "cutting-edge": "tiên tiến nhất",
+      "labour-saving": "tiết kiệm sức lao động",
+      "widen the inequality gap": "nới rộng khoảng cách bất bình đẳng",
+      "job security": "sự ổn định việc làm",
+      "erode skills": "làm mai một kỹ năng",
+      "put people out of work": "khiến người ta mất việc",
+      "a growing sense of insecurity": "cảm giác bất an ngày một tăng",
+      "overreliance on": "sự phụ thuộc quá mức vào",
+      "fall short of": "không đạt được"
+     },
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Đọc bài rồi chọn đáp án đúng nhất.",
+       "core": 5,
+       "items": [
+        {
+         "q": "What is the writer's main message in the first paragraph?",
+         "options": [
+          "A net figure hides who gains and who loses.",
+          "Automation will end all jobs.",
+          "Governments should ban automation."
+         ],
+         "answer": "A net figure hides who gains and who loses.",
+         "why": "Câu cuối đoạn 1. Ở câu này: \"A net figure hides who gains and who loses.\"."
+        },
+        {
+         "q": "According to the writer, why is training important?",
+         "options": [
+          "New technology can quickly make qualifications obsolete.",
+          "Training is cheap.",
+          "Workers enjoy classes."
+         ],
+         "answer": "New technology can quickly make qualifications obsolete.",
+         "why": "Đoạn 2: training must be continuous."
+        },
+        {
+         "q": "What does the writer say governments must do?",
+         "options": [
+          "Encourage investment and ensure benefits are shared.",
+          "Prevent firms from investing.",
+          "Reduce all taxes."
+         ],
+         "answer": "Encourage investment and ensure benefits are shared.",
+         "why": "Not only must they encourage ... but they must also ensure."
+        },
+        {
+         "q": "What does the writer say about the costs of such a package?",
+         "options": [
+          "It is expensive, but cheaper than inaction.",
+          "It is free.",
+          "It is impossible to afford."
+         ],
+         "answer": "It is expensive, but cheaper than inaction.",
+         "why": "Đoạn 4."
+        },
+        {
+         "q": "What is the effect of neglecting the three policy elements?",
+         "options": [
+          "The gap between winners and losers would widen.",
+          "Trust in institutions would rise.",
+          "Wages would increase."
+         ],
+         "answer": "The gap between winners and losers would widen.",
+         "why": "Were societies to neglect any of these..."
+        },
+        {
+         "q": "The word \"cohort\" most likely means",
+         "options": [
+          "a group of people",
+          "a machine",
+          "a policy"
+         ],
+         "answer": "a group of people",
+         "why": "cohort: một nhóm người."
+        },
+        {
+         "q": "What is the writer's attitude to the public debate?",
+         "options": [
+          "critical of both panic and complacency",
+          "fully optimistic",
+          "indifferent"
+         ],
+         "answer": "critical of both panic and complacency",
+         "why": "Neither mood helps."
+        },
+        {
+         "q": "Which is NOT one of the three policy elements?",
+         "options": [
+          "higher taxes on robots",
+          "affordable reskilling",
+          "protection for those between jobs"
+         ],
+         "answer": "higher taxes on robots",
+         "why": "Bài không đề cập thuế robot."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "instruction": "Dùng cấu trúc và cụm của bài để trả lời (tự đối chiếu với mẫu).",
+       "core": 3,
+       "items": [
+        {
+         "prompt": "Use Rarely to say that displaced workers do not move smoothly into new roles.",
+         "answer": "Rarely do displaced workers move smoothly into new roles."
+        },
+        {
+         "prompt": "In one sentence, say why a net gain in jobs does not settle the debate.",
+         "answer": "A net figure says nothing about who gains and who loses, so individual workers may still suffer."
+        },
+        {
+         "prompt": "Use Not only ... but also to describe what governments must do.",
+         "answer": "Not only must governments encourage investment, but they must also ensure that the benefits are shared."
+        },
+        {
+         "prompt": "Use a growing sense of insecurity in a sentence about public trust.",
+         "answer": "Without a safety net, a growing sense of insecurity will erode public trust in innovation."
+        }
+       ],
+       "role": "apply"
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "mix",
+     "title": "Tổng hợp",
+     "min": "20–38′",
+     "sets": [
+      {
+       "type": "cloze",
+       "instruction": "Gõ từ còn thiếu vào từng chỗ trống.",
+       "core": 8,
+       "items": [
+        {
+         "answer": "rarely",
+         "why": "Rarely + do + S + V. Ở câu này: \"rarely\"."
+        },
+        {
+         "answer": "hardly",
+         "why": "Hardly + had + S + V3 + when. Ở câu này: \"hardly\"."
+        },
+        {
+         "answer": "when",
+         "why": "Hardly ... when. Ở câu này: \"when\"."
+        },
+        {
+         "answer": "only",
+         "why": "Not only must ..."
+        },
+        {
+         "answer": "cutting-edge",
+         "why": "cutting-edge tools."
+        },
+        {
+         "answer": "has",
+         "why": "Never + has + S + V3. Ở câu này: \"has\"."
+        },
+        {
+         "answer": "net",
+         "why": "safety net."
+        },
+        {
+         "answer": "sense",
+         "why": "a growing sense of insecurity. Ở câu này: \"sense\"."
+        },
+        {
+         "answer": "were",
+         "why": "Were + S + to V (đảo điều kiện)."
+        },
+        {
+         "answer": "gap",
+         "why": "the gap between winners and losers."
+        },
+        {
+         "answer": "will",
+         "why": "Not until ... will. Ở câu này: \"will\"."
+        },
+        {
+         "answer": "did",
+         "why": "Little did + S + V. Ở câu này: \"did\"."
+        },
+        {
+         "answer": "gap",
+         "why": "skills gap. Ở câu này: \"gap\"."
+        },
+        {
+         "answer": "has",
+         "why": "Seldom + has + S + V3. Ở câu này: \"has\"."
+        },
+        {
+         "answer": "has",
+         "why": "nor + has + S + V3: nor has the labour market been so unpredictable."
+        }
+       ],
+       "passage": "The World Economic Forum expects 170 million jobs to be created and 92 million to disappear by 2030, but a net figure says nothing about who gains. ___ do displaced workers move smoothly into the new roles. ___ had one cohort been retrained ___ new technology made their qualifications obsolete. Not ___ must governments encourage investment in ___ tools, but they must also ensure that benefits are shared. Never ___ the case for a robust safety ___ been stronger, because a growing ___ of insecurity will erode public trust. ___ societies to neglect reskilling, the ___ between winners and losers would widen. Not until training becomes continuous ___ workers adapt to change, and little ___ most firms realise how costly a skills ___ can be. Seldom ___ the workforce been so exposed, nor ___ the labour market so unpredictable.",
+       "mode": "type"
+      },
+      {
+       "type": "transform",
+       "instruction": "Viết lại câu theo yêu cầu.",
+       "core": 6,
+       "items": [
+        {
+         "prompt": "Displaced workers rarely move smoothly into the new roles.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely do displaced workers move smoothly into the new roles.",
+         "why": "Rarely + do + S + V. Ở câu này: \"Rarely do displaced workers move smoothly into the new\".",
+         "keyword": "do"
+        },
+        {
+         "prompt": "One cohort had hardly been retrained when new technology made its skills obsolete.",
+         "instruction": "Viết lại bắt đầu bằng Hardly.",
+         "answer": "Hardly had one cohort been retrained when new technology made its skills obsolete.",
+         "why": "Hardly + had + S + V3 + when. Ở câu này: \"Hardly had one cohort been retrained when new technology\".",
+         "keyword": "had"
+        },
+        {
+         "prompt": "The case for a robust safety net has never been stronger.",
+         "instruction": "Viết lại bắt đầu bằng Never.",
+         "answer": "Never has the case for a robust safety net been stronger.",
+         "why": "Never + has + S + V3. Ở câu này: \"Never has the case for a robust safety net\".",
+         "keyword": "has"
+        },
+        {
+         "prompt": "If societies neglected any of these, the gap would widen.",
+         "instruction": "Viết lại bắt đầu bằng Were.",
+         "answer": "Were societies to neglect any of these, the gap would widen.",
+         "why": "Were + S + to V đảo điều kiện loại 2.",
+         "keyword": "were"
+        },
+        {
+         "prompt": "Governments must encourage investment, and they must also ensure that benefits are shared.",
+         "instruction": "Viết lại bằng Not only ... but also.",
+         "answer": "Not only must governments encourage investment, but they must also ensure that benefits are shared.",
+         "why": "Not only + modal + S + V.",
+         "keyword": "must"
+        },
+        {
+         "prompt": "Workers will not adapt to change until training becomes continuous.",
+         "instruction": "Viết lại bắt đầu bằng Not until.",
+         "answer": "Not until training becomes continuous will workers adapt to change.",
+         "why": "Not until + mệnh đề + will + S + V. Ở câu này: \"Not until training becomes continuous will workers adapt to\".",
+         "keyword": "will"
+        },
+        {
+         "prompt": "Most firms did not realise at all how costly a skills gap could be.",
+         "instruction": "Viết lại bắt đầu bằng Little.",
+         "answer": "Little did most firms realise how costly a skills gap could be.",
+         "why": "Little did + S + V. Ở câu này: \"Little did most firms realise how costly a skills\".",
+         "keyword": "did"
+        },
+        {
+         "prompt": "A welder seldom finds that a vacancy matches his experience.",
+         "instruction": "Viết lại bắt đầu bằng Seldom.",
+         "answer": "Seldom does a welder find that a vacancy matches his experience.",
+         "why": "Seldom + does + S + V. Ở câu này: \"Seldom does a welder find that a vacancy matches\".",
+         "keyword": "does"
+        },
+        {
+         "prompt": "The labour market has rarely been so unpredictable.",
+         "instruction": "Viết lại bắt đầu bằng Rarely.",
+         "answer": "Rarely has the labour market been so unpredictable.",
+         "why": "Rarely + has + S + V3.",
+         "keyword": "has"
+        }
+       ]
+      },
+      {
+       "type": "fix",
+       "instruction": "Tìm lỗi sai và viết lại câu đúng.",
+       "core": 6,
+       "items": [
+        {
+         "wrong": "Rarely displaced workers move smoothly into new roles.",
+         "answer": "Rarely do displaced workers move smoothly into new roles.",
+         "why": "Rarely đầu câu cần do."
+        },
+        {
+         "wrong": "Hardly one cohort had been retrained when skills became obsolete.",
+         "answer": "Hardly had one cohort been retrained when skills became obsolete.",
+         "why": "Hardly + had + S + V3. Ở câu này: \"Hardly had one cohort been retrained when skills became\"."
+        },
+        {
+         "wrong": "Never the case for a safety net has been stronger.",
+         "answer": "Never has the case for a safety net been stronger.",
+         "why": "Never + has + S + V3. Ở câu này: \"Never has the case for a safety net been\"."
+        },
+        {
+         "wrong": "Were societies neglect reskilling, the gap would widen.",
+         "answer": "Were societies to neglect reskilling, the gap would widen.",
+         "why": "Were + S + to V."
+        },
+        {
+         "wrong": "Not only governments must encourage investment, but they must also share benefits.",
+         "answer": "Not only must governments encourage investment, but they must also share benefits.",
+         "why": "Not only + modal + S."
+        },
+        {
+         "wrong": "A growing sense of insecurity will erode public trust of innovation.",
+         "answer": "A growing sense of insecurity will erode public trust in innovation.",
+         "why": "trust in."
+        },
+        {
+         "wrong": "Little firms realised how costly a skills gap could be.",
+         "answer": "Little did firms realise how costly a skills gap could be.",
+         "why": "Little did + S + V. Ở câu này: \"Little did firms realise how costly a skills gap\"."
+        },
+        {
+         "wrong": "The net figure say nothing about who loses.",
+         "answer": "The net figure says nothing about who loses.",
+         "why": "The net figure số ít."
+        },
+        {
+         "wrong": "Not until training is continuous workers will adapt.",
+         "answer": "Not until training is continuous will workers adapt.",
+         "why": "Mệnh đề chính sau Not until phải đảo. Ở câu này: \"Not until training is continuous will workers adapt.\"."
+        },
+        {
+         "wrong": "Seldom the market has been so uncertain.",
+         "answer": "Seldom has the market been so uncertain.",
+         "why": "Seldom + has + S + V3. Ở câu này: \"Seldom has the market been so uncertain.\"."
+        }
+       ]
+      },
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng nhất.",
+       "core": 6,
+       "items": [
+        {
+         "q": "Which sentence is correct?",
+         "options": [
+          "Seldom has the labour market been so uncertain.",
+          "Seldom the labour market has been so uncertain.",
+          "Seldom been the labour market so uncertain."
+         ],
+         "answer": "Seldom has the labour market been so uncertain.",
+         "why": "Seldom + has + S + V3. Ở câu này: \"Seldom has the labour market been so uncertain.\"."
+        },
+        {
+         "q": "Not only ___ firms cut costs, but they also reduce jobs.",
+         "options": [
+          "do",
+          "does",
+          "are"
+         ],
+         "answer": "do",
+         "why": "firms số nhiều."
+        },
+        {
+         "q": "A group of people who start something at the same time is a",
+         "options": [
+          "cohort",
+          "vacancy",
+          "gig"
+         ],
+         "answer": "cohort",
+         "why": "cohort."
+        },
+        {
+         "q": "Were societies ___ neglect reskilling, the gap would widen.",
+         "options": [
+          "to",
+          "for",
+          "at"
+         ],
+         "answer": "to",
+         "why": "Were + S + to V. Ở câu này: \"to\"."
+        },
+        {
+         "q": "Qualifications that are no longer useful are",
+         "options": [
+          "obsolete",
+          "cutting-edge",
+          "labour-saving"
+         ],
+         "answer": "obsolete",
+         "why": "obsolete: lỗi thời."
+        },
+        {
+         "q": "A robust safety net is",
+         "options": [
+          "strong protection for those in difficulty",
+          "a sports tool",
+          "a type of fishing gear"
+         ],
+         "answer": "strong protection for those in difficulty",
+         "why": "safety net. Ở câu này: \"strong protection for those in difficulty\"."
+        },
+        {
+         "q": "Not until training is continuous ___ workers adapt.",
+         "options": [
+          "will",
+          "do",
+          "are"
+         ],
+         "answer": "will",
+         "why": "Not until ... will. Ở câu này: \"will\"."
+        },
+        {
+         "q": "Which collocation is correct?",
+         "options": [
+          "a growing sense of insecurity",
+          "a growth sense of insecure",
+          "a growing feel of insecurity"
+         ],
+         "answer": "a growing sense of insecurity",
+         "why": "Cụm cố định. Ở câu này: \"a growing sense of insecurity\"."
+        },
+        {
+         "q": "Little ___ the managers realise how costly the gap was.",
+         "options": [
+          "did",
+          "do",
+          "were"
+         ],
+         "answer": "did",
+         "why": "Little did."
+        },
+        {
+         "q": "Hardly had one cohort been retrained ___ skills became obsolete.",
+         "options": [
+          "when",
+          "than",
+          "if"
+         ],
+         "answer": "when",
+         "why": "Hardly ... when. Ở câu này: \"when\"."
+        },
+        {
+         "q": "Rarely ___ displaced workers find a perfect match.",
+         "options": [
+          "do",
+          "does",
+          "is"
+         ],
+         "answer": "do",
+         "why": "workers số nhiều."
+        },
+        {
+         "q": "Which expression means \"fail to reach the required level\"?",
+         "options": [
+          "fall short of",
+          "fall in with",
+          "fall out of"
+         ],
+         "answer": "fall short of",
+         "why": "fall short of. Ở câu này: \"fall short of\"."
+        }
+       ]
+      },
+      {
+       "type": "dialogue",
+       "instruction": "Chọn câu trả lời phù hợp nhất.",
+       "core": 4,
+       "items": [
+        {
+         "lines": [
+          "A: Will the new jobs offset the lost ones?",
+          "B: Overall, perhaps, but not for the same people.",
+          "A: So what should happen?"
+         ],
+         "options": [
+          "B: Workers will need to reskill, and governments must help.",
+          "B: Everyone should buy more computers.",
+          "B: Nothing can be done."
+         ],
+         "answer": "B: Workers will need to reskill, and governments must help.",
+         "why": "Nêu giải pháp hợp lý."
+        },
+        {
+         "lines": [
+          "A: Why do welders find it hard to move into software testing?",
+          "B: The skills differ so much.",
+          "A: Could they train for it?"
+         ],
+         "options": [
+          "B: Yes, but affordable reskilling is rarely on offer.",
+          "B: No, welders dislike computers.",
+          "B: Software testing is dull."
+         ],
+         "answer": "B: Yes, but affordable reskilling is rarely on offer.",
+         "why": "Rarely + is..."
+        },
+        {
+         "lines": [
+          "A: Is there any evidence for a net gain in jobs?",
+          "B: The World Economic Forum expects more jobs created than lost.",
+          "A: Does that settle the matter?"
+         ],
+         "options": [
+          "B: Not at all, because a net figure says nothing about who gains.",
+          "B: Yes, it ends the debate.",
+          "B: I don't use figures."
+         ],
+         "answer": "B: Not at all, because a net figure says nothing about who gains.",
+         "why": "Theo bài đọc. Ở câu này: \"B: Not at all, because a net figure says\"."
+        },
+        {
+         "lines": [
+          "A: Why is a safety net important?",
+          "B: Because of the growing sense of insecurity.",
+          "A: Is it expensive?"
+         ],
+         "options": [
+          "B: It costs less than the consequences of inaction.",
+          "B: It costs nothing.",
+          "B: It is only for rich people."
+         ],
+         "answer": "B: It costs less than the consequences of inaction.",
+         "why": "Theo đoạn 4."
+        },
+        {
+         "lines": [
+          "A: Is panic the right response?",
+          "B: No, and complacency is no better.",
+          "A: Then what is?"
+         ],
+         "options": [
+          "B: A balanced policy that combines training and protection.",
+          "B: Ignoring the whole matter.",
+          "B: Banning all machines."
+         ],
+         "answer": "B: A balanced policy that combines training and protection.",
+         "why": "Phù hợp với quan điểm tác giả."
+        },
+        {
+         "lines": [
+          "A: Should training be occasional?",
+          "B: No, it must be continuous.",
+          "A: Why?"
+         ],
+         "options": [
+          "B: Because new technology can make qualifications obsolete quickly.",
+          "B: Because teachers need work.",
+          "B: Because it is fashionable."
+         ],
+         "answer": "B: Because new technology can make qualifications obsolete quickly.",
+         "why": "Theo đoạn 2."
+        }
+       ]
+      },
+      {
+       "type": "dictation",
+       "instruction": "Nghe và chép lại.",
+       "core": 2,
+       "items": [
+        {
+         "say": "Hardly had one cohort been retrained when a new technology rendered their qualifications obsolete.",
+         "why": "Hardly + had + S + V3 + when."
+        },
+        {
+         "say": "Never has the case for a robust safety net been stronger.",
+         "why": "Never + has + S + V3."
+        },
+        {
+         "say": "Were societies to neglect any of these, the gap between winners and losers would widen.",
+         "why": "Were + S + to V."
+        },
+        {
+         "say": "Not only must governments encourage investment, but they must also ensure that benefits are shared.",
+         "why": "Not only + must + S + V."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "preview",
+     "title": "Đọc trước Sub 4",
+     "min": "38–44′",
+     "heading": "The way forward (preview)",
+     "purpose": "Đọc lướt để làm quen với tuần sau: tác giả đề xuất giải pháp gì?",
+     "text": [
+      "What, then, should be done? The sensible answer is neither to resist technology nor to ignore its victims. Workers will need to reskill repeatedly, and lifelong learning must become a normal part of a career rather than an emergency measure. Societies that adapt to change quickly will fare better, but only if governments strike a balance between innovation and fairness and build a safety net for those who fall behind. This is a pressing issue, and the sooner policymakers act, the more they can mitigate the impact on the people least able to bear it."
+     ],
+     "vocab": {
+      "reskill": "đào tạo lại kỹ năng",
+      "lifelong learning": "học tập suốt đời",
+      "adapt to": "thích nghi với",
+      "strike a balance": "tìm được sự cân bằng",
+      "safety net": "mạng lưới an sinh",
+      "a pressing issue": "một vấn đề cấp bách",
+      "mitigate the impact": "giảm nhẹ tác động"
+     },
+     "sets": [
+      {
+       "type": "answer",
+       "instruction": "Dùng các cụm của Sub 4 để trả lời (tự đối chiếu với mẫu).",
+       "core": 3,
+       "items": [
+        {
+         "prompt": "Use strike a balance to say what governments should do.",
+         "answer": "Governments must strike a balance between innovation and fairness."
+        },
+        {
+         "prompt": "Use lifelong learning in one sentence about careers.",
+         "answer": "Lifelong learning should become a normal part of every career."
+        },
+        {
+         "prompt": "Say who must adapt to change and why.",
+         "answer": "Workers must adapt to change because technology keeps altering the skills that employers need."
+        },
+        {
+         "prompt": "Name one pressing issue about work in your country.",
+         "answer": "A pressing issue is the shortage of affordable retraining for older workers."
+        },
+        {
+         "prompt": "How can a government mitigate the impact of job losses?",
+         "answer": "It can mitigate the impact by funding reskilling and offering income support between jobs."
+        }
+       ],
+       "role": "apply"
+      }
+     ],
+     "note": "Bài đọc trước của Sub 4; tuần 2 sẽ học kỹ phần này."
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết có hẹn giờ",
+     "min": "44–56′",
+     "prompt": "Timed writing (12 minutes): write a closing paragraph of 140 to 160 words answering the question \"How should societies respond to automation?\" Include a clear position, one policy proposal, and a counter-argument with a rebuttal. Try to use reskill, lifelong learning, strike a balance, a safety net, or mitigate the impact.",
+     "hint": "Position, proposal, concession, rebuttal, closing sentence.",
+     "sample": "Societies should respond to automation by combining affordable reskilling with a robust safety net.",
+     "model": "Societies should respond to automation by combining affordable reskilling with a robust safety net. Workers will need to reskill repeatedly, and lifelong learning must become an ordinary part of a career rather than an emergency measure. Critics may object that such programmes are costly and slow to deliver results. Admittedly, they are neither cheap nor quick; nevertheless, they cost far less than the social consequences of inaction. Rarely does a society recover easily once trust in its institutions has eroded. Governments must therefore strike a balance between encouraging innovation and protecting those who fall behind, because this is a pressing issue that will only grow. Not only will such a policy mitigate the impact of job displacement, but it will also keep the benefits of technology widely shared. In the end, a society is judged less by the machines it builds than by how fairly it treats the people those machines replace.",
+     "minWords": 140,
+     "useWords": [
+      "reskill",
+      "lifelong learning",
+      "strike a balance",
+      "safety net",
+      "mitigate the impact",
+      "Admittedly"
+     ],
+     "outline": [
+      "Luận điểm",
+      "Đề xuất chính sách",
+      "Ý kiến phản đối",
+      "Phản bác",
+      "Câu kết"
+     ],
+     "checklist": [
+      "Luận điểm rõ ở câu đầu",
+      "Có đề xuất chính sách cụ thể",
+      "Có phản bác ý kiến đối lập",
+      "Dùng ít nhất hai cụm Sub 4",
+      "Dùng ít nhất một đảo ngữ",
+      "Số từ 140 đến 160"
+     ]
+    },
+    {
+     "type": "report",
+     "key": "report",
+     "title": "Báo cáo tuần",
+     "min": "56–60′"
+    }
+   ]
+  }
+ },
+ "challenges": {}
+}
