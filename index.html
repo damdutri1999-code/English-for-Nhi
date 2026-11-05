@@ -405,6 +405,12 @@ html[data-learner=tri] .card.today{border-radius:8px; background:linear-gradient
 html[data-learner=tri] .pill{border-radius:4px; font-weight:600}
 html[data-learner=tri] .tabs a{border-radius:6px; font-weight:600; justify-content:center; padding:11px 4px}
 html[data-learner=tri] .tabs{border-radius:10px}
+/* thanh điều hướng của Trí: cột dọc ở lề trái */
+html[data-learner=tri] .tabs{left:0; right:auto; top:86px; bottom:auto; width:68px; max-width:none; margin:0; flex-direction:column; justify-content:flex-start; align-items:stretch; gap:6px; padding:10px 6px; border-radius:0 12px 12px 0; border-left:0}
+html[data-learner=tri] .tabs a,html[data-learner=tri] .tabs a.on{flex:none; width:100%; max-width:none; padding:9px 2px; font-size:.64rem; line-height:1.15; gap:4px; border-radius:8px}
+html[data-learner=tri] .wrap{max-width:720px; margin:0 auto; padding-left:84px; padding-right:16px; padding-bottom:40px}
+html[data-learner=tri] body.immersive .wrap{padding-left:16px; padding-bottom:140px}
+@media (min-width:900px){ html[data-learner=tri] .wrap{margin:0 auto 0 max(84px, calc(50vw - 360px)); padding-left:24px} html[data-learner=tri] body.immersive .wrap{margin:0 auto; padding-left:16px} }
 html[data-learner=tri] .stepbtn{border-radius:8px; border-width:1px; font-weight:600}
 html[data-learner=tri] .opt,html[data-learner=tri] .mchoice,html[data-learner=tri] .chip,html[data-learner=tri] .tok{border-radius:6px; border-width:1px; font-weight:600}
 html[data-learner=tri] .model,html[data-learner=tri] .taskbox{border-radius:6px}
@@ -2548,7 +2554,7 @@ function vlistCard(W){
       h("div",{class:"grow"}, h("b",null,x.en), x.pos ? h("span",{class:"small muted"},"  "+x.pos) : null, x.ipa ? h("span",{class:"small muted"},"  "+x.ipa) : null, h("div",{class:"small muted"}, x.vi), x.ex ? h("div",{class:"small",style:"font-style:italic"}, x.ex) : null),
       v ? h("span",{class:"boxdots",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""}))) : h("span",{class:"pill lock"},"Mở "+dn(x.day))); };
   return h("details",{class:"card flat plan-w",style:"margin-bottom:16px"}, h("summary",{class:"plan-sum"}, h("span",{class:"pill"},"📖"),
-    h("div",{class:"grow"}, h("b",null,"Từ cần học thuộc tuần này"), h("div",{class:"small muted"}, L.length+" từ, "+got+" từ đã vào sổ ôn")), h("span",{class:"muted"},"▾")),
+    h("div",{class:"grow"}, h("b",null,"Từ cần học thuộc tuần này"), h("div",{class:"small muted"}, L.length+" từ, "+got+" từ đã vào sổ ôn"))),
     h("div",{class:"plan-body"}, groups.map(([i, list]) => h("div",null, h("h4",{style:"margin:12px 0 2px"}, i === "up" ? "Từ nâng cấp" : "Sub "+i+(subName(i) ? ": "+subName(i) : "")), list.map(row)))));
 }
 function weekView(){
