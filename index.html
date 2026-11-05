@@ -498,6 +498,14 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 .plan-s:hover{background:var(--p50)}
 .plan-s .pd{flex:none; width:30px; height:30px; border-radius:50%; background:var(--p100); color:var(--p700); font-weight:800; font-size:.8rem; display:grid; place-items:center}
 .plan-s.is-done .pd{background:var(--ok-bg); color:var(--ok)}
+.pgrid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-bottom:6px}
+@media (min-width:700px){.pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pgh{margin:18px 0 8px; font-size:1rem}
+.ptile{display:flex; flex-direction:column; align-items:flex-start; gap:2px; background:var(--paper); border:2px solid var(--p200); border-radius:18px; padding:12px; text-decoration:none; color:inherit; box-shadow:0 3px 0 var(--p100); line-height:1.25}
+.ptile:active{transform:translateY(2px); box-shadow:none}
+.ptile .pic{font-size:1.6rem; width:42px; height:42px; display:grid; place-items:center; background:var(--p100); border-radius:12px; margin-bottom:6px}
+.ptile b{font-size:.98rem}
+.ptile.hot{background:var(--p50); border-color:var(--p400)}
 </style>
 </head>
 <body>
@@ -2205,11 +2213,17 @@ function practiceView(type){
       h("p",{class:"muted"},"Mỗi lần mở là một bộ câu khác nhau, lấy từ các bài đã học."), sets.map(x => h("div",{class:"card"}, exerciseSet(x))));
   }
   const p = type && TYPES[type] ? practiceSetFor(type) : null;
-  if (!p) return h("div",null, h("h1",null,"Bài tập"), h("p",{class:"muted"},"Làm lại từng dạng bài bất cứ lúc nào, câu được lấy từ các bài đã học."),
-    S.mistakes.length ? h("a",{class:"card day",href:"#/mistakes"}, h("div",{class:"when",style:"font-size:1.7rem"},"🩹"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Ôn câu sai"), h("div",{class:"small muted"},S.mistakes.length+" câu đang chờ bạn sửa"))) : null,
-    h("a",{class:"card day",href:"#/practice/mix"}, h("div",{class:"when",style:"font-size:1.7rem"},"🎲"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Ôn tổng hợp"), h("div",{class:"small muted"},"Trộn nhiều dạng, mỗi lần một bộ khác"))),
-    PRACTICE_TYPES.filter(k => poolSets(k).length).map(k => { const v = TYPES[k];
-      return h("a",{class:"card day",href:"#/practice/"+k}, h("div",{class:"when",style:"font-size:1.7rem"},v.icon), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},v.label), h("div",{class:"small muted"},v.desc))); }));
+  if (!p){
+    const tile = (href, icon, title, sub, cls) => h("a",{class:"ptile"+(cls ? " "+cls : ""),href}, h("span",{class:"pic"}, icon), h("b",null,title), h("span",{class:"small muted"}, sub));
+    const groups = [["🎯 Chọn đáp án",["mcq","truefalse","oddone","match","dialogue"]],["🎧 Nghe",["listenpick","dictation","shadow"]],
+      ["🧩 Điền và xếp câu",["gap","form","cloze","reorder"]],["✍️ Viết",["fix","transform","translate","answer"]]];
+    return h("div",null, h("h1",null,"Bài tập"), h("p",{class:"muted"},"Làm lại từng dạng bài bất cứ lúc nào, câu được lấy từ các bài đã học."),
+      h("div",{class:"pgrid"},
+        S.mistakes.length ? tile("#/mistakes","🩹","Ôn câu sai", S.mistakes.length+" câu chờ sửa","hot") : null,
+        tile("#/practice/mix","🎲","Ôn tổng hợp","Trộn nhiều dạng","hot")),
+      groups.map(([gt, keys]) => { const ks = keys.filter(k => poolSets(k).length); if (!ks.length) return null;
+        return [h("h3",{class:"pgh"}, gt), h("div",{class:"pgrid"}, ks.map(k => tile("#/practice/"+k, TYPES[k].icon, TYPES[k].label, TYPES[k].desc)))]; }));
+  }
   return h("div",null, h("a",{class:"btn soft",href:"#/practice"},"← Các dạng bài"), h("div",{class:"card",style:"margin-top:16px"}, exerciseSet(p)));
 }
 function mistakesView(){
