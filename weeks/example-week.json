@@ -1,2917 +1,2984 @@
 {
-  "schema": "a1-week/1",
-  "week": 1,
-  "title": "Family",
-  "grammar": "to be (am / is / are)",
-  "subs": [
-    "Family members",
-    "Describing family",
-    "Asking about family",
-    "Extended family"
-  ],
-  "sessions": {
-    "mon": {
-      "title": "Sub 1: Family members",
-      "kind": "new",
-      "steps": [
+ "schema": "a1-week/1",
+ "week": 1,
+ "title": "Family",
+ "grammar": "to be (am / is / are)",
+ "subs": [
+  "Family members",
+  "Describing family",
+  "Asking about family",
+  "Extended family"
+ ],
+ "sessions": {
+  "mon": {
+   "title": "Sub 1: Family members",
+   "kind": "new",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Khởi động",
+     "min": "0–3′",
+     "sets": [
+      {
+       "type": "mcq",
+       "items": [
         {
-          "type": "sets",
-          "key": "warmup",
-          "title": "Khởi động",
-          "min": "0–3′",
-          "sets": [
-            {
-              "type": "mcq",
-              "items": [
-                {
-                  "q": "\"mother\" nghĩa là gì?",
-                  "options": [
-                    "bố",
-                    "mẹ",
-                    "chị gái"
-                  ],
-                  "answer": "mẹ",
-                  "why": "mother = mẹ."
-                }
-              ],
-              "ungraded": true,
-              "title": "Khởi động: đoán thử"
-            }
-          ]
-        },
-        {
-          "type": "read",
-          "key": "read",
-          "title": "Đọc",
-          "min": "3–9′",
-          "heading": "My family",
-          "text": [
-            "Hello! I am Mai. This is my family.",
-            "My father is a driver. My mother is a teacher.",
-            "We are a happy family."
-          ],
-          "vocab": {
-            "father": "bố",
-            "mother": "mẹ",
-            "family": "gia đình",
-            "driver": "tài xế",
-            "teacher": "giáo viên",
-            "happy": "vui vẻ"
-          },
-          "sets": [
-            {
-              "type": "mcq",
-              "items": [
-                {
-                  "q": "Mai's father is a ___.",
-                  "options": [
-                    "teacher",
-                    "driver"
-                  ],
-                  "answer": "driver",
-                  "why": "My father is a driver."
-                }
-              ],
-              "title": "Hiểu bài đọc"
-            }
-          ]
-        },
-        {
-          "type": "listen",
-          "key": "listen",
-          "title": "Nghe",
-          "min": "9–13′",
-          "text": [
-            "Hello! I am Mai. This is my family.",
-            "My father is a driver. My mother is a teacher.",
-            "We are a happy family."
-          ],
-          "sets": []
-        },
-        {
-          "type": "notice",
-          "key": "notice",
-          "title": "Tìm ngữ pháp",
-          "min": "13–15′",
-          "text": [
-            "Hello! I am Mai. This is my family.",
-            "My father is a driver. My mother is a teacher.",
-            "We are a happy family."
-          ],
-          "target": [
-            "am",
-            "is",
-            "are"
-          ],
-          "find": "am, is, are",
-          "box": {
-            "title": "Ghi nhớ: động từ to be",
-            "intro": "Tiếng Anh luôn cần am / is / are.",
-            "rows": [
-              {
-                "subject": "I",
-                "form": "am",
-                "example": "I am a student."
-              },
-              {
-                "subject": "He / She / My mother",
-                "form": "is",
-                "example": "She is a teacher."
-              },
-              {
-                "subject": "We / You / They",
-                "form": "are",
-                "example": "They are my parents."
-              }
-            ]
-          }
-        },
-        {
-          "type": "sets",
-          "key": "practice",
-          "title": "Luyện tập",
-          "min": "15–26′",
-          "sets": [
-            {
-              "type": "match",
-              "items": [
-                {
-                  "left": "mother",
-                  "right": "mẹ"
-                },
-                {
-                  "left": "father",
-                  "right": "bố"
-                },
-                {
-                  "left": "sister",
-                  "right": "chị / em gái"
-                },
-                {
-                  "left": "brother",
-                  "right": "anh / em trai"
-                },
-                {
-                  "left": "parents",
-                  "right": "bố mẹ"
-                }
-              ]
-            },
-            {
-              "type": "mcq",
-              "items": [
-                {
-                  "q": "This is Tom. He ___ my brother.",
-                  "options": [
-                    "am",
-                    "is",
-                    "are"
-                  ],
-                  "answer": "is",
-                  "why": "He là một người nên dùng is."
-                },
-                {
-                  "q": "I ___ ten years old.",
-                  "options": [
-                    "is",
-                    "are",
-                    "am"
-                  ],
-                  "answer": "am",
-                  "why": "I luôn đi với am."
-                },
-                {
-                  "q": "Peter and Anna ___ my parents.",
-                  "options": [
-                    "is",
-                    "am",
-                    "are"
-                  ],
-                  "answer": "are",
-                  "why": "Hai người (they) dùng are."
-                }
-              ],
-              "core": 2
-            },
-            {
-              "type": "gap",
-              "items": [
-                {
-                  "text": "My father ___ a teacher.",
-                  "answer": "is",
-                  "why": "My father = he, dùng is."
-                },
-                {
-                  "text": "We ___ a happy family.",
-                  "answer": "are",
-                  "why": "We đi với are."
-                },
-                {
-                  "text": "I ___ happy today.",
-                  "answer": "am",
-                  "why": "I đi với am."
-                }
-              ],
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "reorder",
-              "items": [
-                {
-                  "words": [
-                    "is",
-                    "a",
-                    "teacher",
-                    "father",
-                    "My"
-                  ],
-                  "answer": "My father is a teacher.",
-                  "why": "Chủ ngữ, to be, phần còn lại."
-                },
-                {
-                  "words": [
-                    "are",
-                    "happy",
-                    "We",
-                    "a",
-                    "family"
-                  ],
-                  "answer": "We are a happy family.",
-                  "why": "We are + a happy family."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "output",
-          "key": "output",
-          "title": "Tự viết",
-          "min": "26–30′",
-          "prompt": "Viết 2–3 câu giới thiệu một người trong gia đình.",
-          "hint": "This is my ___. His / Her name is ___.",
-          "sample": "This is my father. His name is Nam. He is a driver.",
-          "model": "This is my mother. Her name is Hoa. She is a teacher.",
-          "checklist": [
-            "Mỗi câu đều có am / is / are",
-            "Chữ đầu câu viết hoa, cuối câu có dấu chấm",
-            "Dùng His / Her đúng"
-          ]
+         "q": "\"mother\" nghĩa là gì?",
+         "options": [
+          "bố",
+          "mẹ",
+          "chị gái"
+         ],
+         "answer": "mẹ",
+         "why": "mother = mẹ."
         }
-      ]
+       ],
+       "ungraded": true,
+       "title": "Khởi động: đoán thử"
+      }
+     ]
     },
-    "tue": {
-      "title": "Ôn Sub 1, đọc trước Sub 2",
-      "kind": "review",
-      "steps": [
+    {
+     "type": "read",
+     "key": "read",
+     "title": "Đọc",
+     "min": "3–9′",
+     "heading": "My family",
+     "text": [
+      "Hello! I am Mai. This is my family.",
+      "My father is a driver. My mother is a teacher.",
+      "We are a happy family."
+     ],
+     "vocab": {
+      "father": "bố",
+      "mother": "mẹ",
+      "family": "gia đình",
+      "driver": "tài xế",
+      "teacher": "giáo viên",
+      "happy": "vui vẻ"
+     },
+     "sets": [
+      {
+       "type": "mcq",
+       "items": [
         {
-          "type": "sets",
-          "key": "warmup",
-          "title": "Nhớ lại",
-          "min": "0–3′",
-          "sets": [
-            {
-              "type": "mcq",
-              "items": [
-                {
-                  "q": "This is Tom. He ___ my brother.",
-                  "options": [
-                    "am",
-                    "is",
-                    "are"
-                  ],
-                  "answer": "is",
-                  "why": "He là một người nên dùng is."
-                },
-                {
-                  "q": "I ___ ten years old.",
-                  "options": [
-                    "is",
-                    "are",
-                    "am"
-                  ],
-                  "answer": "am",
-                  "why": "I luôn đi với am."
-                },
-                {
-                  "q": "Peter and Anna ___ my parents.",
-                  "options": [
-                    "is",
-                    "am",
-                    "are"
-                  ],
-                  "answer": "are",
-                  "why": "Hai người (they) dùng are."
-                }
-              ],
-              "core": 2
-            }
-          ]
-        },
-        {
-          "type": "sets",
-          "key": "review",
-          "title": "Ôn dạng bài khác",
-          "min": "3–20′",
-          "sets": [
-            {
-              "type": "truefalse",
-              "items": [
-                {
-                  "q": "\"Mother\" nghĩa là bố.",
-                  "answer": false,
-                  "why": "mother = mẹ."
-                },
-                {
-                  "q": "I am a student. (Câu này đúng ngữ pháp)",
-                  "answer": true,
-                  "why": "I đi với am."
-                },
-                {
-                  "q": "She are my sister. (Câu này đúng ngữ pháp)",
-                  "answer": false,
-                  "why": "She đi với is."
-                }
-              ]
-            },
-            {
-              "type": "listenpick",
-              "items": [
-                {
-                  "say": "My father is a driver.",
-                  "q": "Bố của bạn ấy làm nghề gì?",
-                  "options": [
-                    "driver",
-                    "teacher",
-                    "doctor"
-                  ],
-                  "answer": "driver",
-                  "why": "Nghe: \"My father is a driver.\""
-                },
-                {
-                  "say": "She is sixteen.",
-                  "q": "Cô ấy bao nhiêu tuổi?",
-                  "options": [
-                    "6",
-                    "16",
-                    "60"
-                  ],
-                  "answer": "16",
-                  "why": "sixteen = 16."
-                }
-              ]
-            },
-            {
-              "type": "form",
-              "items": [
-                {
-                  "text": "My sister ___ (be) sixteen.",
-                  "answer": "is",
-                  "why": "be thành is với she."
-                },
-                {
-                  "text": "___ (he) name is Nam.",
-                  "answer": "His",
-                  "why": "he thành his."
-                }
-              ]
-            },
-            {
-              "type": "transform",
-              "items": [
-                {
-                  "prompt": "My mother is a teacher.",
-                  "instruction": "Viết lại câu, dùng đại từ she hoặc he thay cho My mother.",
-                  "answer": "She is a teacher.",
-                  "why": "My mother = she, đi với is."
-                },
-                {
-                  "prompt": "My brother is ten years old.",
-                  "instruction": "Viết lại câu, dùng đại từ she hoặc he thay cho My brother.",
-                  "answer": "He is ten years old.",
-                  "why": "My brother = he, đi với is."
-                },
-                {
-                  "prompt": "My parents are kind.",
-                  "instruction": "Viết lại câu, dùng đại từ thay cho My parents.",
-                  "answer": "They are kind.",
-                  "why": "My parents = they, đi với are."
-                }
-              ]
-            },
-            {
-              "type": "fix",
-              "items": [
-                {
-                  "wrong": "My mother a teacher.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Thiếu động từ to be."
-                },
-                {
-                  "wrong": "I is a student.",
-                  "answer": "I am a student.",
-                  "why": "I đi với am."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "read",
-          "key": "preview",
-          "title": "Đọc trước Sub 2",
-          "min": "20–25′",
-          "heading": "Tom's family",
-          "text": [
-            "Hi, I am Tom. My family is not big.",
-            "My father is a doctor. He is not a teacher."
-          ],
-          "vocab": {
-            "doctor": "bác sĩ",
-            "big": "to, đông",
-            "not": "không"
-          },
-          "sets": [],
-          "note": "Hôm nay chỉ đọc để làm quen."
+         "q": "Mai's father is a ___.",
+         "options": [
+          "teacher",
+          "driver"
+         ],
+         "answer": "driver",
+         "why": "My father is a driver."
         }
-      ]
+       ],
+       "title": "Hiểu bài đọc"
+      }
+     ]
     },
-    "wed": {
-      "title": "Sub 2: Describing family",
-      "kind": "new",
-      "steps": [
-        {
-          "type": "sets",
-          "key": "warmup",
-          "title": "Nhớ lại",
-          "min": "0–3′",
-          "sets": [
-            {
-              "type": "mcq",
-              "items": [
-                {
-                  "q": "This is Tom. He ___ my brother.",
-                  "options": [
-                    "am",
-                    "is",
-                    "are"
-                  ],
-                  "answer": "is",
-                  "why": "He là một người nên dùng is."
-                },
-                {
-                  "q": "I ___ ten years old.",
-                  "options": [
-                    "is",
-                    "are",
-                    "am"
-                  ],
-                  "answer": "am",
-                  "why": "I luôn đi với am."
-                },
-                {
-                  "q": "Peter and Anna ___ my parents.",
-                  "options": [
-                    "is",
-                    "am",
-                    "are"
-                  ],
-                  "answer": "are",
-                  "why": "Hai người (they) dùng are."
-                }
-              ],
-              "core": 2
-            }
-          ]
-        },
-        {
-          "type": "read",
-          "key": "read",
-          "title": "Đọc",
-          "min": "3–9′",
-          "heading": "Tom's family",
-          "text": [
-            "Hi, I am Tom. My family is not big.",
-            "My father is a doctor. He is not a teacher."
-          ],
-          "vocab": {
-            "doctor": "bác sĩ",
-            "big": "to, đông",
-            "not": "không"
-          },
-          "sets": []
-        },
-        {
-          "type": "listen",
-          "key": "listen",
-          "title": "Nghe",
-          "min": "9–13′",
-          "text": [
-            "My father is a doctor."
-          ],
-          "sets": [
-            {
-              "type": "listenpick",
-              "items": [
-                {
-                  "say": "My father is a driver.",
-                  "q": "Bố của bạn ấy làm nghề gì?",
-                  "options": [
-                    "driver",
-                    "teacher",
-                    "doctor"
-                  ],
-                  "answer": "driver",
-                  "why": "Nghe: \"My father is a driver.\""
-                },
-                {
-                  "say": "She is sixteen.",
-                  "q": "Cô ấy bao nhiêu tuổi?",
-                  "options": [
-                    "6",
-                    "16",
-                    "60"
-                  ],
-                  "answer": "16",
-                  "why": "sixteen = 16."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "notice",
-          "key": "notice",
-          "title": "Tìm ngữ pháp",
-          "min": "13–15′",
-          "text": [
-            "Hello! I am Mai. This is my family.",
-            "My father is a driver. My mother is a teacher.",
-            "We are a happy family."
-          ],
-          "target": [
-            "am",
-            "is",
-            "are"
-          ],
-          "find": "am, is, are",
-          "box": {
-            "title": "Ghi nhớ: động từ to be",
-            "intro": "Tiếng Anh luôn cần am / is / are.",
-            "rows": [
-              {
-                "subject": "I",
-                "form": "am",
-                "example": "I am a student."
-              },
-              {
-                "subject": "He / She / My mother",
-                "form": "is",
-                "example": "She is a teacher."
-              },
-              {
-                "subject": "We / You / They",
-                "form": "are",
-                "example": "They are my parents."
-              }
-            ]
-          }
-        },
-        {
-          "type": "sets",
-          "key": "practice",
-          "title": "Luyện tập",
-          "min": "15–26′",
-          "sets": [
-            {
-              "type": "oddone",
-              "items": [
-                {
-                  "options": [
-                    "mother",
-                    "father",
-                    "teacher",
-                    "sister"
-                  ],
-                  "answer": "teacher",
-                  "why": "Ba từ kia là người trong gia đình."
-                },
-                {
-                  "options": [
-                    "tall",
-                    "kind",
-                    "old",
-                    "doctor"
-                  ],
-                  "answer": "doctor",
-                  "why": "doctor là nghề nghiệp, ba từ kia là tính từ."
-                }
-              ]
-            },
-            {
-              "type": "listenpick",
-              "items": [
-                {
-                  "say": "My father is a driver.",
-                  "q": "Bố của bạn ấy làm nghề gì?",
-                  "options": [
-                    "driver",
-                    "teacher",
-                    "doctor"
-                  ],
-                  "answer": "driver",
-                  "why": "Nghe: \"My father is a driver.\""
-                },
-                {
-                  "say": "She is sixteen.",
-                  "q": "Cô ấy bao nhiêu tuổi?",
-                  "options": [
-                    "6",
-                    "16",
-                    "60"
-                  ],
-                  "answer": "16",
-                  "why": "sixteen = 16."
-                }
-              ]
-            },
-            {
-              "type": "gap",
-              "items": [
-                {
-                  "text": "My father ___ a teacher.",
-                  "answer": "is",
-                  "why": "My father = he, dùng is."
-                },
-                {
-                  "text": "We ___ a happy family.",
-                  "answer": "are",
-                  "why": "We đi với are."
-                },
-                {
-                  "text": "I ___ happy today.",
-                  "answer": "am",
-                  "why": "I đi với am."
-                }
-              ],
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "form",
-              "items": [
-                {
-                  "text": "My sister ___ (be) sixteen.",
-                  "answer": "is",
-                  "why": "be thành is với she."
-                },
-                {
-                  "text": "___ (he) name is Nam.",
-                  "answer": "His",
-                  "why": "he thành his."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "output",
-          "key": "output",
-          "title": "Tự viết",
-          "min": "26–30′",
-          "prompt": "Viết 2–3 câu giới thiệu một người trong gia đình.",
-          "hint": "This is my ___. His / Her name is ___.",
-          "sample": "This is my father. His name is Nam. He is a driver.",
-          "model": "This is my mother. Her name is Hoa. She is a teacher.",
-          "checklist": [
-            "Mỗi câu đều có am / is / are",
-            "Chữ đầu câu viết hoa, cuối câu có dấu chấm",
-            "Dùng His / Her đúng"
-          ]
-        }
-      ]
+    {
+     "type": "listen",
+     "key": "listen",
+     "title": "Nghe",
+     "min": "9–13′",
+     "text": [
+      "Hello! I am Mai. This is my family.",
+      "My father is a driver. My mother is a teacher.",
+      "We are a happy family."
+     ],
+     "sets": []
     },
-    "thu": {
-      "title": "Ôn Sub 1–2, đọc trước Sub 3",
-      "kind": "review",
-      "steps": [
-        {
-          "type": "sets",
-          "key": "warmup",
-          "title": "Nhớ lại",
-          "min": "0–3′",
-          "sets": [
-            {
-              "type": "mcq",
-              "items": [
-                {
-                  "q": "This is Tom. He ___ my brother.",
-                  "options": [
-                    "am",
-                    "is",
-                    "are"
-                  ],
-                  "answer": "is",
-                  "why": "He là một người nên dùng is."
-                },
-                {
-                  "q": "I ___ ten years old.",
-                  "options": [
-                    "is",
-                    "are",
-                    "am"
-                  ],
-                  "answer": "am",
-                  "why": "I luôn đi với am."
-                },
-                {
-                  "q": "Peter and Anna ___ my parents.",
-                  "options": [
-                    "is",
-                    "am",
-                    "are"
-                  ],
-                  "answer": "are",
-                  "why": "Hai người (they) dùng are."
-                }
-              ],
-              "core": 2
-            }
-          ]
-        },
-        {
-          "type": "sets",
-          "key": "review",
-          "title": "Ôn dạng bài khác",
-          "min": "3–20′",
-          "sets": [
-            {
-              "type": "mcq",
-              "items": [
-                {
-                  "q": "This is Tom. He ___ my brother.",
-                  "options": [
-                    "am",
-                    "is",
-                    "are"
-                  ],
-                  "answer": "is",
-                  "why": "He là một người nên dùng is."
-                },
-                {
-                  "q": "I ___ ten years old.",
-                  "options": [
-                    "is",
-                    "are",
-                    "am"
-                  ],
-                  "answer": "am",
-                  "why": "I luôn đi với am."
-                },
-                {
-                  "q": "Peter and Anna ___ my parents.",
-                  "options": [
-                    "is",
-                    "am",
-                    "are"
-                  ],
-                  "answer": "are",
-                  "why": "Hai người (they) dùng are."
-                }
-              ],
-              "core": 2
-            },
-            {
-              "type": "cloze",
-              "items": [
-                {
-                  "answer": "am",
-                  "why": "I đi với am."
-                },
-                {
-                  "answer": "is",
-                  "why": "My father = he."
-                },
-                {
-                  "answer": "are",
-                  "why": "We đi với are."
-                }
-              ],
-              "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
-              "mode": "pick",
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "reorder",
-              "items": [
-                {
-                  "words": [
-                    "is",
-                    "a",
-                    "teacher",
-                    "father",
-                    "My"
-                  ],
-                  "answer": "My father is a teacher.",
-                  "why": "Chủ ngữ, to be, phần còn lại."
-                },
-                {
-                  "words": [
-                    "are",
-                    "happy",
-                    "We",
-                    "a",
-                    "family"
-                  ],
-                  "answer": "We are a happy family.",
-                  "why": "We are + a happy family."
-                }
-              ]
-            },
-            {
-              "type": "fix",
-              "items": [
-                {
-                  "wrong": "My mother a teacher.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Thiếu động từ to be."
-                },
-                {
-                  "wrong": "I is a student.",
-                  "answer": "I am a student.",
-                  "why": "I đi với am."
-                }
-              ]
-            },
-            {
-              "type": "match",
-              "items": [
-                {
-                  "left": "mother",
-                  "right": "mẹ"
-                },
-                {
-                  "left": "father",
-                  "right": "bố"
-                },
-                {
-                  "left": "sister",
-                  "right": "chị / em gái"
-                },
-                {
-                  "left": "brother",
-                  "right": "anh / em trai"
-                },
-                {
-                  "left": "parents",
-                  "right": "bố mẹ"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "read",
-          "key": "preview",
-          "title": "Đọc trước Sub 3",
-          "min": "20–25′",
-          "heading": "Who is she?",
-          "text": [
-            "Who is she? She is my sister.",
-            "How old is she? She is sixteen."
-          ],
-          "vocab": {
-            "who": "ai",
-            "how": "như thế nào",
-            "old": "tuổi"
-          },
-          "sets": []
-        }
+    {
+     "type": "notice",
+     "key": "notice",
+     "title": "Tìm ngữ pháp",
+     "min": "13–15′",
+     "text": [
+      "Hello! I am Mai. This is my family.",
+      "My father is a driver. My mother is a teacher.",
+      "We are a happy family."
+     ],
+     "target": [
+      "am",
+      "is",
+      "are"
+     ],
+     "find": "am, is, are",
+     "box": {
+      "title": "Ghi nhớ: động từ to be",
+      "intro": "Tiếng Anh luôn cần am / is / are.",
+      "rows": [
+       {
+        "subject": "I",
+        "form": "am",
+        "example": "I am a student."
+       },
+       {
+        "subject": "He / She / My mother",
+        "form": "is",
+        "example": "She is a teacher."
+       },
+       {
+        "subject": "We / You / They",
+        "form": "are",
+        "example": "They are my parents."
+       }
       ]
+     }
     },
-    "fri": {
-      "title": "Sub 3: Asking about family",
-      "kind": "new",
-      "steps": [
+    {
+     "type": "sets",
+     "key": "practice",
+     "title": "Luyện tập",
+     "min": "15–26′",
+     "sets": [
+      {
+       "type": "match",
+       "items": [
         {
-          "type": "sets",
-          "key": "warmup",
-          "title": "Nhớ lại",
-          "min": "0–3′",
-          "sets": [
-            {
-              "type": "mcq",
-              "items": [
-                {
-                  "q": "This is Tom. He ___ my brother.",
-                  "options": [
-                    "am",
-                    "is",
-                    "are"
-                  ],
-                  "answer": "is",
-                  "why": "He là một người nên dùng is."
-                },
-                {
-                  "q": "I ___ ten years old.",
-                  "options": [
-                    "is",
-                    "are",
-                    "am"
-                  ],
-                  "answer": "am",
-                  "why": "I luôn đi với am."
-                },
-                {
-                  "q": "Peter and Anna ___ my parents.",
-                  "options": [
-                    "is",
-                    "am",
-                    "are"
-                  ],
-                  "answer": "are",
-                  "why": "Hai người (they) dùng are."
-                }
-              ],
-              "core": 2
-            }
-          ]
+         "left": "mother",
+         "right": "mẹ"
         },
         {
-          "type": "read",
-          "key": "read",
-          "title": "Đọc",
-          "min": "3–9′",
-          "heading": "Who is she?",
-          "text": [
-            "Who is she? She is my sister.",
-            "How old is she? She is sixteen."
-          ],
-          "vocab": {
-            "who": "ai",
-            "how": "như thế nào",
-            "old": "tuổi"
-          },
-          "sets": []
+         "left": "father",
+         "right": "bố"
         },
         {
-          "type": "listen",
-          "key": "listen",
-          "title": "Nghe",
-          "min": "9–13′",
-          "text": [
-            "Who is she? She is my sister."
-          ],
-          "sets": []
+         "left": "sister",
+         "right": "chị / em gái"
         },
         {
-          "type": "notice",
-          "key": "notice",
-          "title": "Tìm ngữ pháp",
-          "min": "13–15′",
-          "text": [
-            "Hello! I am Mai. This is my family.",
-            "My father is a driver. My mother is a teacher.",
-            "We are a happy family."
-          ],
-          "target": [
-            "am",
-            "is",
-            "are"
-          ],
-          "find": "am, is, are",
-          "box": {
-            "title": "Ghi nhớ: động từ to be",
-            "intro": "Tiếng Anh luôn cần am / is / are.",
-            "rows": [
-              {
-                "subject": "I",
-                "form": "am",
-                "example": "I am a student."
-              },
-              {
-                "subject": "He / She / My mother",
-                "form": "is",
-                "example": "She is a teacher."
-              },
-              {
-                "subject": "We / You / They",
-                "form": "are",
-                "example": "They are my parents."
-              }
-            ]
-          }
+         "left": "brother",
+         "right": "anh / em trai"
         },
         {
-          "type": "sets",
-          "key": "practice",
-          "title": "Luyện tập",
-          "min": "15–26′",
-          "sets": [
-            {
-              "type": "dialogue",
-              "items": [
-                {
-                  "lines": [
-                    "Who is he?"
-                  ],
-                  "options": [
-                    "He is my brother.",
-                    "She is my sister.",
-                    "I am ten."
-                  ],
-                  "answer": "He is my brother.",
-                  "why": "Hỏi về một người nam nên trả lời He is…"
-                },
-                {
-                  "lines": [
-                    "How old are you?",
-                    "…"
-                  ],
-                  "options": [
-                    "I am twelve.",
-                    "I is twelve.",
-                    "He is twelve."
-                  ],
-                  "answer": "I am twelve.",
-                  "why": "Trả lời về mình: I am…"
-                }
-              ]
-            },
-            {
-              "type": "gap",
-              "items": [
-                {
-                  "text": "My father ___ a teacher.",
-                  "answer": "is",
-                  "why": "My father = he, dùng is."
-                },
-                {
-                  "text": "We ___ a happy family.",
-                  "answer": "are",
-                  "why": "We đi với are."
-                },
-                {
-                  "text": "I ___ happy today.",
-                  "answer": "am",
-                  "why": "I đi với am."
-                }
-              ],
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "mcq",
-              "items": [
-                {
-                  "q": "This is Tom. He ___ my brother.",
-                  "options": [
-                    "am",
-                    "is",
-                    "are"
-                  ],
-                  "answer": "is",
-                  "why": "He là một người nên dùng is."
-                },
-                {
-                  "q": "I ___ ten years old.",
-                  "options": [
-                    "is",
-                    "are",
-                    "am"
-                  ],
-                  "answer": "am",
-                  "why": "I luôn đi với am."
-                },
-                {
-                  "q": "Peter and Anna ___ my parents.",
-                  "options": [
-                    "is",
-                    "am",
-                    "are"
-                  ],
-                  "answer": "are",
-                  "why": "Hai người (they) dùng are."
-                }
-              ],
-              "core": 2
-            },
-            {
-              "type": "reorder",
-              "items": [
-                {
-                  "words": [
-                    "is",
-                    "a",
-                    "teacher",
-                    "father",
-                    "My"
-                  ],
-                  "answer": "My father is a teacher.",
-                  "why": "Chủ ngữ, to be, phần còn lại."
-                },
-                {
-                  "words": [
-                    "are",
-                    "happy",
-                    "We",
-                    "a",
-                    "family"
-                  ],
-                  "answer": "We are a happy family.",
-                  "why": "We are + a happy family."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "output",
-          "key": "output",
-          "title": "Tự viết",
-          "min": "26–30′",
-          "prompt": "Viết 2–3 câu giới thiệu một người trong gia đình.",
-          "hint": "This is my ___. His / Her name is ___.",
-          "sample": "This is my father. His name is Nam. He is a driver.",
-          "model": "This is my mother. Her name is Hoa. She is a teacher.",
-          "checklist": [
-            "Mỗi câu đều có am / is / are",
-            "Chữ đầu câu viết hoa, cuối câu có dấu chấm",
-            "Dùng His / Her đúng"
-          ]
+         "left": "parents",
+         "right": "bố mẹ"
         }
-      ]
+       ]
+      },
+      {
+       "type": "mcq",
+       "items": [
+        {
+         "q": "This is Tom. He ___ my brother.",
+         "options": [
+          "am",
+          "is",
+          "are"
+         ],
+         "answer": "is",
+         "why": "He là một người nên dùng is."
+        },
+        {
+         "q": "I ___ ten years old.",
+         "options": [
+          "is",
+          "are",
+          "am"
+         ],
+         "answer": "am",
+         "why": "I luôn đi với am."
+        },
+        {
+         "q": "Peter and Anna ___ my parents.",
+         "options": [
+          "is",
+          "am",
+          "are"
+         ],
+         "answer": "are",
+         "why": "Hai người (they) dùng are."
+        }
+       ],
+       "core": 2
+      },
+      {
+       "type": "gap",
+       "items": [
+        {
+         "text": "My father ___ a teacher.",
+         "answer": "is",
+         "why": "My father = he, dùng is."
+        },
+        {
+         "text": "We ___ a happy family.",
+         "answer": "are",
+         "why": "We đi với are."
+        },
+        {
+         "text": "I ___ happy today.",
+         "answer": "am",
+         "why": "I đi với am."
+        }
+       ],
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "reorder",
+       "items": [
+        {
+         "words": [
+          "is",
+          "a",
+          "teacher",
+          "father",
+          "My"
+         ],
+         "answer": "My father is a teacher.",
+         "why": "Chủ ngữ, to be, phần còn lại."
+        },
+        {
+         "words": [
+          "are",
+          "happy",
+          "We",
+          "a",
+          "family"
+         ],
+         "answer": "We are a happy family.",
+         "why": "We are + a happy family."
+        }
+       ]
+      }
+     ]
     },
-    "sat": {
-      "title": "Ôn cả tuần, giới thiệu Sub 4",
-      "kind": "week",
-      "steps": [
-        {
-          "type": "sets",
-          "key": "quiz",
-          "title": "Quiz cả tuần",
-          "min": "0–5′",
-          "sets": [
-            {
-              "type": "mcq",
-              "items": [
-                {
-                  "q": "This is Tom. He ___ my brother.",
-                  "options": [
-                    "am",
-                    "is",
-                    "are"
-                  ],
-                  "answer": "is",
-                  "why": "He là một người nên dùng is."
-                },
-                {
-                  "q": "I ___ ten years old.",
-                  "options": [
-                    "is",
-                    "are",
-                    "am"
-                  ],
-                  "answer": "am",
-                  "why": "I luôn đi với am."
-                },
-                {
-                  "q": "Peter and Anna ___ my parents.",
-                  "options": [
-                    "is",
-                    "am",
-                    "are"
-                  ],
-                  "answer": "are",
-                  "why": "Hai người (they) dùng are."
-                }
-              ],
-              "core": 2
-            }
-          ]
-        },
-        {
-          "type": "read",
-          "key": "transfer",
-          "title": "Bài đọc mới",
-          "min": "5–12′",
-          "heading": "Linh's family",
-          "text": [
-            "Linh is my friend. Her father is a teacher."
-          ],
-          "vocab": {
-            "friend": "bạn bè"
-          },
-          "sets": []
-        },
-        {
-          "type": "sets",
-          "key": "mix",
-          "title": "Tổng hợp",
-          "min": "12–22′",
-          "sets": [
-            {
-              "type": "cloze",
-              "items": [
-                {
-                  "answer": "am",
-                  "why": "I đi với am."
-                },
-                {
-                  "answer": "is",
-                  "why": "My father = he."
-                },
-                {
-                  "answer": "are",
-                  "why": "We đi với are."
-                }
-              ],
-              "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
-              "mode": "pick",
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "fix",
-              "items": [
-                {
-                  "wrong": "My mother a teacher.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Thiếu động từ to be."
-                },
-                {
-                  "wrong": "I is a student.",
-                  "answer": "I am a student.",
-                  "why": "I đi với am."
-                }
-              ]
-            },
-            {
-              "type": "transform",
-              "items": [
-                {
-                  "prompt": "My father is a driver.",
-                  "instruction": "Viết lại câu phủ định (is not).",
-                  "answer": "My father is not a driver.",
-                  "alt": [
-                    "My father isn't a driver."
-                  ],
-                  "why": "is + not."
-                }
-              ]
-            },
-            {
-              "type": "dialogue",
-              "items": [
-                {
-                  "lines": [
-                    "Who is he?"
-                  ],
-                  "options": [
-                    "He is my brother.",
-                    "She is my sister.",
-                    "I am ten."
-                  ],
-                  "answer": "He is my brother.",
-                  "why": "Hỏi về một người nam nên trả lời He is…"
-                },
-                {
-                  "lines": [
-                    "How old are you?",
-                    "…"
-                  ],
-                  "options": [
-                    "I am twelve.",
-                    "I is twelve.",
-                    "He is twelve."
-                  ],
-                  "answer": "I am twelve.",
-                  "why": "Trả lời về mình: I am…"
-                }
-              ]
-            },
-            {
-              "type": "listenpick",
-              "items": [
-                {
-                  "say": "My father is a driver.",
-                  "q": "Bố của bạn ấy làm nghề gì?",
-                  "options": [
-                    "driver",
-                    "teacher",
-                    "doctor"
-                  ],
-                  "answer": "driver",
-                  "why": "Nghe: \"My father is a driver.\""
-                },
-                {
-                  "say": "She is sixteen.",
-                  "q": "Cô ấy bao nhiêu tuổi?",
-                  "options": [
-                    "6",
-                    "16",
-                    "60"
-                  ],
-                  "answer": "16",
-                  "why": "sixteen = 16."
-                }
-              ]
-            },
-            {
-              "type": "dictation",
-              "items": [
-                {
-                  "say": "My mother is a teacher.",
-                  "why": "Chú ý is sau My mother."
-                },
-                {
-                  "say": "We are a happy family.",
-                  "why": "We đi với are."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "read",
-          "key": "preview",
-          "title": "Làm quen Sub 4",
-          "min": "22–28′",
-          "heading": "Extended family",
-          "text": [
-            "This is my grandmother. She is sixty-five."
-          ],
-          "vocab": {
-            "grandmother": "bà",
-            "uncle": "chú",
-            "cousin": "anh chị em họ"
-          },
-          "sets": []
-        },
-        {
-          "type": "report",
-          "key": "report",
-          "title": "Báo cáo tuần",
-          "min": "28–30′"
-        }
-      ]
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết",
+     "min": "26–30′",
+     "prompt": "Viết 2–3 câu giới thiệu một người trong gia đình.",
+     "hint": "This is my ___. His / Her name is ___.",
+     "sample": "This is my father. His name is Nam. He is a driver.",
+     "model": "This is my mother. Her name is Hoa. She is a teacher.",
+     "checklist": [
+      "Mỗi câu đều có am / is / are",
+      "Chữ đầu câu viết hoa, cuối câu có dấu chấm",
+      "Dùng His / Her đúng"
+     ]
     }
+   ]
   },
-  "challenges": {
-    "mon": {
-      "title": "Challenge MON",
-      "stages": [
+  "tue": {
+   "title": "Ôn Sub 1, đọc trước Sub 2",
+   "kind": "review",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Nhớ lại",
+     "min": "0–3′",
+     "sets": [
+      {
+       "type": "mcq",
+       "items": [
         {
-          "title": "Khởi động nhanh",
-          "sets": [
-            {
-              "type": "truefalse",
-              "items": [
-                {
-                  "q": "\"Mother\" nghĩa là bố.",
-                  "answer": false,
-                  "why": "mother = mẹ."
-                },
-                {
-                  "q": "I am a student. (Câu này đúng ngữ pháp)",
-                  "answer": true,
-                  "why": "I đi với am."
-                },
-                {
-                  "q": "She are my sister. (Câu này đúng ngữ pháp)",
-                  "answer": false,
-                  "why": "She đi với is."
-                }
-              ]
-            },
-            {
-              "type": "match",
-              "items": [
-                {
-                  "left": "mother",
-                  "right": "mẹ"
-                },
-                {
-                  "left": "father",
-                  "right": "bố"
-                },
-                {
-                  "left": "sister",
-                  "right": "chị / em gái"
-                },
-                {
-                  "left": "brother",
-                  "right": "anh / em trai"
-                },
-                {
-                  "left": "parents",
-                  "right": "bố mẹ"
-                }
-              ]
-            },
-            {
-              "type": "dictation",
-              "items": [
-                {
-                  "say": "My mother is a teacher.",
-                  "why": "Chú ý is sau My mother."
-                },
-                {
-                  "say": "We are a happy family.",
-                  "why": "We đi với are."
-                }
-              ]
-            }
-          ]
+         "q": "This is Tom. He ___ my brother.",
+         "options": [
+          "am",
+          "is",
+          "are"
+         ],
+         "answer": "is",
+         "why": "He là một người nên dùng is."
         },
         {
-          "title": "Điền và ghép",
-          "sets": [
-            {
-              "type": "gap",
-              "items": [
-                {
-                  "text": "My father ___ a teacher.",
-                  "answer": "is",
-                  "why": "My father = he, dùng is."
-                },
-                {
-                  "text": "We ___ a happy family.",
-                  "answer": "are",
-                  "why": "We đi với are."
-                },
-                {
-                  "text": "I ___ happy today.",
-                  "answer": "am",
-                  "why": "I đi với am."
-                }
-              ],
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "cloze",
-              "items": [
-                {
-                  "answer": "am",
-                  "why": "I đi với am."
-                },
-                {
-                  "answer": "is",
-                  "why": "My father = he."
-                },
-                {
-                  "answer": "are",
-                  "why": "We đi với are."
-                }
-              ],
-              "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
-              "mode": "pick",
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "reorder",
-              "items": [
-                {
-                  "words": [
-                    "is",
-                    "a",
-                    "teacher",
-                    "father",
-                    "My"
-                  ],
-                  "answer": "My father is a teacher.",
-                  "why": "Chủ ngữ, to be, phần còn lại."
-                },
-                {
-                  "words": [
-                    "are",
-                    "happy",
-                    "We",
-                    "a",
-                    "family"
-                  ],
-                  "answer": "We are a happy family.",
-                  "why": "We are + a happy family."
-                }
-              ]
-            },
-            {
-              "type": "form",
-              "items": [
-                {
-                  "text": "My sister ___ (be) sixteen.",
-                  "answer": "is",
-                  "why": "be thành is với she."
-                },
-                {
-                  "text": "___ (he) name is Nam.",
-                  "answer": "His",
-                  "why": "he thành his."
-                }
-              ]
-            },
-            {
-              "type": "dialogue",
-              "items": [
-                {
-                  "lines": [
-                    "Who is he?"
-                  ],
-                  "options": [
-                    "He is my brother.",
-                    "She is my sister.",
-                    "I am ten."
-                  ],
-                  "answer": "He is my brother.",
-                  "why": "Hỏi về một người nam nên trả lời He is…"
-                },
-                {
-                  "lines": [
-                    "How old are you?",
-                    "…"
-                  ],
-                  "options": [
-                    "I am twelve.",
-                    "I is twelve.",
-                    "He is twelve."
-                  ],
-                  "answer": "I am twelve.",
-                  "why": "Trả lời về mình: I am…"
-                }
-              ]
-            }
-          ]
+         "q": "I ___ ten years old.",
+         "options": [
+          "is",
+          "are",
+          "am"
+         ],
+         "answer": "am",
+         "why": "I luôn đi với am."
         },
         {
-          "title": "Viết và nói",
-          "sets": [
-            {
-              "type": "fix",
-              "items": [
-                {
-                  "wrong": "My mother a teacher.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Thiếu động từ to be."
-                },
-                {
-                  "wrong": "I is a student.",
-                  "answer": "I am a student.",
-                  "why": "I đi với am."
-                }
-              ]
-            },
-            {
-              "type": "transform",
-              "items": [
-                {
-                  "prompt": "My father is a driver.",
-                  "instruction": "Viết lại câu phủ định (is not).",
-                  "answer": "My father is not a driver.",
-                  "alt": [
-                    "My father isn't a driver."
-                  ],
-                  "why": "is + not."
-                }
-              ]
-            },
-            {
-              "type": "translate",
-              "items": [
-                {
-                  "prompt": "Mẹ tôi là giáo viên.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Nhớ có is."
-                }
-              ]
-            },
-            {
-              "type": "answer",
-              "items": [
-                {
-                  "prompt": "What is your mother's name?",
-                  "answer": "Her name is Lan.",
-                  "alt": [
-                    "My mother's name is Lan."
-                  ],
-                  "why": "Câu trả lời mẫu, tên của bạn có thể khác."
-                }
-              ]
-            },
-            {
-              "type": "shadow",
-              "items": [
-                {
-                  "say": "This is my family."
-                },
-                {
-                  "say": "We are a happy family."
-                }
-              ]
-            }
-          ]
+         "q": "Peter and Anna ___ my parents.",
+         "options": [
+          "is",
+          "am",
+          "are"
+         ],
+         "answer": "are",
+         "why": "Hai người (they) dùng are."
         }
-      ]
+       ],
+       "core": 2
+      }
+     ]
     },
-    "tue": {
-      "title": "Challenge TUE",
-      "stages": [
+    {
+     "type": "sets",
+     "key": "review",
+     "title": "Ôn dạng bài khác",
+     "min": "3–20′",
+     "sets": [
+      {
+       "type": "truefalse",
+       "items": [
         {
-          "title": "Khởi động nhanh",
-          "sets": [
-            {
-              "type": "truefalse",
-              "items": [
-                {
-                  "q": "\"Mother\" nghĩa là bố.",
-                  "answer": false,
-                  "why": "mother = mẹ."
-                },
-                {
-                  "q": "I am a student. (Câu này đúng ngữ pháp)",
-                  "answer": true,
-                  "why": "I đi với am."
-                },
-                {
-                  "q": "She are my sister. (Câu này đúng ngữ pháp)",
-                  "answer": false,
-                  "why": "She đi với is."
-                }
-              ]
-            },
-            {
-              "type": "match",
-              "items": [
-                {
-                  "left": "mother",
-                  "right": "mẹ"
-                },
-                {
-                  "left": "father",
-                  "right": "bố"
-                },
-                {
-                  "left": "sister",
-                  "right": "chị / em gái"
-                },
-                {
-                  "left": "brother",
-                  "right": "anh / em trai"
-                },
-                {
-                  "left": "parents",
-                  "right": "bố mẹ"
-                }
-              ]
-            },
-            {
-              "type": "dictation",
-              "items": [
-                {
-                  "say": "My mother is a teacher.",
-                  "why": "Chú ý is sau My mother."
-                },
-                {
-                  "say": "We are a happy family.",
-                  "why": "We đi với are."
-                }
-              ]
-            }
-          ]
+         "q": "\"Mother\" nghĩa là bố.",
+         "answer": false,
+         "why": "mother = mẹ."
         },
         {
-          "title": "Điền và ghép",
-          "sets": [
-            {
-              "type": "gap",
-              "items": [
-                {
-                  "text": "My father ___ a teacher.",
-                  "answer": "is",
-                  "why": "My father = he, dùng is."
-                },
-                {
-                  "text": "We ___ a happy family.",
-                  "answer": "are",
-                  "why": "We đi với are."
-                },
-                {
-                  "text": "I ___ happy today.",
-                  "answer": "am",
-                  "why": "I đi với am."
-                }
-              ],
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "cloze",
-              "items": [
-                {
-                  "answer": "am",
-                  "why": "I đi với am."
-                },
-                {
-                  "answer": "is",
-                  "why": "My father = he."
-                },
-                {
-                  "answer": "are",
-                  "why": "We đi với are."
-                }
-              ],
-              "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
-              "mode": "pick",
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "reorder",
-              "items": [
-                {
-                  "words": [
-                    "is",
-                    "a",
-                    "teacher",
-                    "father",
-                    "My"
-                  ],
-                  "answer": "My father is a teacher.",
-                  "why": "Chủ ngữ, to be, phần còn lại."
-                },
-                {
-                  "words": [
-                    "are",
-                    "happy",
-                    "We",
-                    "a",
-                    "family"
-                  ],
-                  "answer": "We are a happy family.",
-                  "why": "We are + a happy family."
-                }
-              ]
-            },
-            {
-              "type": "form",
-              "items": [
-                {
-                  "text": "My sister ___ (be) sixteen.",
-                  "answer": "is",
-                  "why": "be thành is với she."
-                },
-                {
-                  "text": "___ (he) name is Nam.",
-                  "answer": "His",
-                  "why": "he thành his."
-                }
-              ]
-            },
-            {
-              "type": "dialogue",
-              "items": [
-                {
-                  "lines": [
-                    "Who is he?"
-                  ],
-                  "options": [
-                    "He is my brother.",
-                    "She is my sister.",
-                    "I am ten."
-                  ],
-                  "answer": "He is my brother.",
-                  "why": "Hỏi về một người nam nên trả lời He is…"
-                },
-                {
-                  "lines": [
-                    "How old are you?",
-                    "…"
-                  ],
-                  "options": [
-                    "I am twelve.",
-                    "I is twelve.",
-                    "He is twelve."
-                  ],
-                  "answer": "I am twelve.",
-                  "why": "Trả lời về mình: I am…"
-                }
-              ]
-            }
-          ]
+         "q": "I am a student. (Câu này đúng ngữ pháp)",
+         "answer": true,
+         "why": "I đi với am."
         },
         {
-          "title": "Viết và nói",
-          "sets": [
-            {
-              "type": "fix",
-              "items": [
-                {
-                  "wrong": "My mother a teacher.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Thiếu động từ to be."
-                },
-                {
-                  "wrong": "I is a student.",
-                  "answer": "I am a student.",
-                  "why": "I đi với am."
-                }
-              ]
-            },
-            {
-              "type": "transform",
-              "items": [
-                {
-                  "prompt": "My father is a driver.",
-                  "instruction": "Viết lại câu phủ định (is not).",
-                  "answer": "My father is not a driver.",
-                  "alt": [
-                    "My father isn't a driver."
-                  ],
-                  "why": "is + not."
-                }
-              ]
-            },
-            {
-              "type": "translate",
-              "items": [
-                {
-                  "prompt": "Mẹ tôi là giáo viên.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Nhớ có is."
-                }
-              ]
-            },
-            {
-              "type": "answer",
-              "items": [
-                {
-                  "prompt": "What is your mother's name?",
-                  "answer": "Her name is Lan.",
-                  "alt": [
-                    "My mother's name is Lan."
-                  ],
-                  "why": "Câu trả lời mẫu, tên của bạn có thể khác."
-                }
-              ]
-            },
-            {
-              "type": "shadow",
-              "items": [
-                {
-                  "say": "This is my family."
-                },
-                {
-                  "say": "We are a happy family."
-                }
-              ]
-            }
-          ]
+         "q": "She are my sister. (Câu này đúng ngữ pháp)",
+         "answer": false,
+         "why": "She đi với is."
         }
-      ]
+       ]
+      },
+      {
+       "type": "listenpick",
+       "items": [
+        {
+         "say": "My father is a driver.",
+         "q": "Bố của bạn ấy làm nghề gì?",
+         "options": [
+          "driver",
+          "teacher",
+          "doctor"
+         ],
+         "answer": "driver",
+         "why": "Nghe: \"My father is a driver.\""
+        },
+        {
+         "say": "She is sixteen.",
+         "q": "Cô ấy bao nhiêu tuổi?",
+         "options": [
+          "6",
+          "16",
+          "60"
+         ],
+         "answer": "16",
+         "why": "sixteen = 16."
+        }
+       ]
+      },
+      {
+       "type": "form",
+       "items": [
+        {
+         "text": "My sister ___ (be) sixteen.",
+         "answer": "is",
+         "why": "be thành is với she."
+        },
+        {
+         "text": "___ (he) name is Nam.",
+         "answer": "His",
+         "why": "he thành his."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "items": [
+        {
+         "prompt": "My mother is a teacher.",
+         "instruction": "Viết lại câu, dùng đại từ she hoặc he thay cho My mother.",
+         "answer": "She is a teacher.",
+         "why": "My mother = she, đi với is."
+        },
+        {
+         "prompt": "My brother is ten years old.",
+         "instruction": "Viết lại câu, dùng đại từ she hoặc he thay cho My brother.",
+         "answer": "He is ten years old.",
+         "why": "My brother = he, đi với is."
+        },
+        {
+         "prompt": "My parents are kind.",
+         "instruction": "Viết lại câu, dùng đại từ thay cho My parents.",
+         "answer": "They are kind.",
+         "why": "My parents = they, đi với are."
+        }
+       ]
+      },
+      {
+       "type": "fix",
+       "items": [
+        {
+         "wrong": "My mother a teacher.",
+         "answer": "My mother is a teacher.",
+         "why": "Thiếu động từ to be."
+        },
+        {
+         "wrong": "I is a student.",
+         "answer": "I am a student.",
+         "why": "I đi với am."
+        }
+       ]
+      }
+     ]
     },
-    "wed": {
-      "title": "Challenge WED",
-      "stages": [
-        {
-          "title": "Khởi động nhanh",
-          "sets": [
-            {
-              "type": "truefalse",
-              "items": [
-                {
-                  "q": "\"Mother\" nghĩa là bố.",
-                  "answer": false,
-                  "why": "mother = mẹ."
-                },
-                {
-                  "q": "I am a student. (Câu này đúng ngữ pháp)",
-                  "answer": true,
-                  "why": "I đi với am."
-                },
-                {
-                  "q": "She are my sister. (Câu này đúng ngữ pháp)",
-                  "answer": false,
-                  "why": "She đi với is."
-                }
-              ]
-            },
-            {
-              "type": "match",
-              "items": [
-                {
-                  "left": "mother",
-                  "right": "mẹ"
-                },
-                {
-                  "left": "father",
-                  "right": "bố"
-                },
-                {
-                  "left": "sister",
-                  "right": "chị / em gái"
-                },
-                {
-                  "left": "brother",
-                  "right": "anh / em trai"
-                },
-                {
-                  "left": "parents",
-                  "right": "bố mẹ"
-                }
-              ]
-            },
-            {
-              "type": "dictation",
-              "items": [
-                {
-                  "say": "My mother is a teacher.",
-                  "why": "Chú ý is sau My mother."
-                },
-                {
-                  "say": "We are a happy family.",
-                  "why": "We đi với are."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Điền và ghép",
-          "sets": [
-            {
-              "type": "gap",
-              "items": [
-                {
-                  "text": "My father ___ a teacher.",
-                  "answer": "is",
-                  "why": "My father = he, dùng is."
-                },
-                {
-                  "text": "We ___ a happy family.",
-                  "answer": "are",
-                  "why": "We đi với are."
-                },
-                {
-                  "text": "I ___ happy today.",
-                  "answer": "am",
-                  "why": "I đi với am."
-                }
-              ],
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "cloze",
-              "items": [
-                {
-                  "answer": "am",
-                  "why": "I đi với am."
-                },
-                {
-                  "answer": "is",
-                  "why": "My father = he."
-                },
-                {
-                  "answer": "are",
-                  "why": "We đi với are."
-                }
-              ],
-              "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
-              "mode": "pick",
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "reorder",
-              "items": [
-                {
-                  "words": [
-                    "is",
-                    "a",
-                    "teacher",
-                    "father",
-                    "My"
-                  ],
-                  "answer": "My father is a teacher.",
-                  "why": "Chủ ngữ, to be, phần còn lại."
-                },
-                {
-                  "words": [
-                    "are",
-                    "happy",
-                    "We",
-                    "a",
-                    "family"
-                  ],
-                  "answer": "We are a happy family.",
-                  "why": "We are + a happy family."
-                }
-              ]
-            },
-            {
-              "type": "form",
-              "items": [
-                {
-                  "text": "My sister ___ (be) sixteen.",
-                  "answer": "is",
-                  "why": "be thành is với she."
-                },
-                {
-                  "text": "___ (he) name is Nam.",
-                  "answer": "His",
-                  "why": "he thành his."
-                }
-              ]
-            },
-            {
-              "type": "dialogue",
-              "items": [
-                {
-                  "lines": [
-                    "Who is he?"
-                  ],
-                  "options": [
-                    "He is my brother.",
-                    "She is my sister.",
-                    "I am ten."
-                  ],
-                  "answer": "He is my brother.",
-                  "why": "Hỏi về một người nam nên trả lời He is…"
-                },
-                {
-                  "lines": [
-                    "How old are you?",
-                    "…"
-                  ],
-                  "options": [
-                    "I am twelve.",
-                    "I is twelve.",
-                    "He is twelve."
-                  ],
-                  "answer": "I am twelve.",
-                  "why": "Trả lời về mình: I am…"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Viết và nói",
-          "sets": [
-            {
-              "type": "fix",
-              "items": [
-                {
-                  "wrong": "My mother a teacher.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Thiếu động từ to be."
-                },
-                {
-                  "wrong": "I is a student.",
-                  "answer": "I am a student.",
-                  "why": "I đi với am."
-                }
-              ]
-            },
-            {
-              "type": "transform",
-              "items": [
-                {
-                  "prompt": "My father is a driver.",
-                  "instruction": "Viết lại câu phủ định (is not).",
-                  "answer": "My father is not a driver.",
-                  "alt": [
-                    "My father isn't a driver."
-                  ],
-                  "why": "is + not."
-                }
-              ]
-            },
-            {
-              "type": "translate",
-              "items": [
-                {
-                  "prompt": "Mẹ tôi là giáo viên.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Nhớ có is."
-                }
-              ]
-            },
-            {
-              "type": "answer",
-              "items": [
-                {
-                  "prompt": "What is your mother's name?",
-                  "answer": "Her name is Lan.",
-                  "alt": [
-                    "My mother's name is Lan."
-                  ],
-                  "why": "Câu trả lời mẫu, tên của bạn có thể khác."
-                }
-              ]
-            },
-            {
-              "type": "shadow",
-              "items": [
-                {
-                  "say": "This is my family."
-                },
-                {
-                  "say": "We are a happy family."
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    "thu": {
-      "title": "Challenge THU",
-      "stages": [
-        {
-          "title": "Khởi động nhanh",
-          "sets": [
-            {
-              "type": "truefalse",
-              "items": [
-                {
-                  "q": "\"Mother\" nghĩa là bố.",
-                  "answer": false,
-                  "why": "mother = mẹ."
-                },
-                {
-                  "q": "I am a student. (Câu này đúng ngữ pháp)",
-                  "answer": true,
-                  "why": "I đi với am."
-                },
-                {
-                  "q": "She are my sister. (Câu này đúng ngữ pháp)",
-                  "answer": false,
-                  "why": "She đi với is."
-                }
-              ]
-            },
-            {
-              "type": "match",
-              "items": [
-                {
-                  "left": "mother",
-                  "right": "mẹ"
-                },
-                {
-                  "left": "father",
-                  "right": "bố"
-                },
-                {
-                  "left": "sister",
-                  "right": "chị / em gái"
-                },
-                {
-                  "left": "brother",
-                  "right": "anh / em trai"
-                },
-                {
-                  "left": "parents",
-                  "right": "bố mẹ"
-                }
-              ]
-            },
-            {
-              "type": "dictation",
-              "items": [
-                {
-                  "say": "My mother is a teacher.",
-                  "why": "Chú ý is sau My mother."
-                },
-                {
-                  "say": "We are a happy family.",
-                  "why": "We đi với are."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Điền và ghép",
-          "sets": [
-            {
-              "type": "gap",
-              "items": [
-                {
-                  "text": "My father ___ a teacher.",
-                  "answer": "is",
-                  "why": "My father = he, dùng is."
-                },
-                {
-                  "text": "We ___ a happy family.",
-                  "answer": "are",
-                  "why": "We đi với are."
-                },
-                {
-                  "text": "I ___ happy today.",
-                  "answer": "am",
-                  "why": "I đi với am."
-                }
-              ],
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "cloze",
-              "items": [
-                {
-                  "answer": "am",
-                  "why": "I đi với am."
-                },
-                {
-                  "answer": "is",
-                  "why": "My father = he."
-                },
-                {
-                  "answer": "are",
-                  "why": "We đi với are."
-                }
-              ],
-              "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
-              "mode": "pick",
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "reorder",
-              "items": [
-                {
-                  "words": [
-                    "is",
-                    "a",
-                    "teacher",
-                    "father",
-                    "My"
-                  ],
-                  "answer": "My father is a teacher.",
-                  "why": "Chủ ngữ, to be, phần còn lại."
-                },
-                {
-                  "words": [
-                    "are",
-                    "happy",
-                    "We",
-                    "a",
-                    "family"
-                  ],
-                  "answer": "We are a happy family.",
-                  "why": "We are + a happy family."
-                }
-              ]
-            },
-            {
-              "type": "form",
-              "items": [
-                {
-                  "text": "My sister ___ (be) sixteen.",
-                  "answer": "is",
-                  "why": "be thành is với she."
-                },
-                {
-                  "text": "___ (he) name is Nam.",
-                  "answer": "His",
-                  "why": "he thành his."
-                }
-              ]
-            },
-            {
-              "type": "dialogue",
-              "items": [
-                {
-                  "lines": [
-                    "Who is he?"
-                  ],
-                  "options": [
-                    "He is my brother.",
-                    "She is my sister.",
-                    "I am ten."
-                  ],
-                  "answer": "He is my brother.",
-                  "why": "Hỏi về một người nam nên trả lời He is…"
-                },
-                {
-                  "lines": [
-                    "How old are you?",
-                    "…"
-                  ],
-                  "options": [
-                    "I am twelve.",
-                    "I is twelve.",
-                    "He is twelve."
-                  ],
-                  "answer": "I am twelve.",
-                  "why": "Trả lời về mình: I am…"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Viết và nói",
-          "sets": [
-            {
-              "type": "fix",
-              "items": [
-                {
-                  "wrong": "My mother a teacher.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Thiếu động từ to be."
-                },
-                {
-                  "wrong": "I is a student.",
-                  "answer": "I am a student.",
-                  "why": "I đi với am."
-                }
-              ]
-            },
-            {
-              "type": "transform",
-              "items": [
-                {
-                  "prompt": "My father is a driver.",
-                  "instruction": "Viết lại câu phủ định (is not).",
-                  "answer": "My father is not a driver.",
-                  "alt": [
-                    "My father isn't a driver."
-                  ],
-                  "why": "is + not."
-                }
-              ]
-            },
-            {
-              "type": "translate",
-              "items": [
-                {
-                  "prompt": "Mẹ tôi là giáo viên.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Nhớ có is."
-                }
-              ]
-            },
-            {
-              "type": "answer",
-              "items": [
-                {
-                  "prompt": "What is your mother's name?",
-                  "answer": "Her name is Lan.",
-                  "alt": [
-                    "My mother's name is Lan."
-                  ],
-                  "why": "Câu trả lời mẫu, tên của bạn có thể khác."
-                }
-              ]
-            },
-            {
-              "type": "shadow",
-              "items": [
-                {
-                  "say": "This is my family."
-                },
-                {
-                  "say": "We are a happy family."
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    "fri": {
-      "title": "Challenge FRI",
-      "stages": [
-        {
-          "title": "Khởi động nhanh",
-          "sets": [
-            {
-              "type": "truefalse",
-              "items": [
-                {
-                  "q": "\"Mother\" nghĩa là bố.",
-                  "answer": false,
-                  "why": "mother = mẹ."
-                },
-                {
-                  "q": "I am a student. (Câu này đúng ngữ pháp)",
-                  "answer": true,
-                  "why": "I đi với am."
-                },
-                {
-                  "q": "She are my sister. (Câu này đúng ngữ pháp)",
-                  "answer": false,
-                  "why": "She đi với is."
-                }
-              ]
-            },
-            {
-              "type": "match",
-              "items": [
-                {
-                  "left": "mother",
-                  "right": "mẹ"
-                },
-                {
-                  "left": "father",
-                  "right": "bố"
-                },
-                {
-                  "left": "sister",
-                  "right": "chị / em gái"
-                },
-                {
-                  "left": "brother",
-                  "right": "anh / em trai"
-                },
-                {
-                  "left": "parents",
-                  "right": "bố mẹ"
-                }
-              ]
-            },
-            {
-              "type": "dictation",
-              "items": [
-                {
-                  "say": "My mother is a teacher.",
-                  "why": "Chú ý is sau My mother."
-                },
-                {
-                  "say": "We are a happy family.",
-                  "why": "We đi với are."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Điền và ghép",
-          "sets": [
-            {
-              "type": "gap",
-              "items": [
-                {
-                  "text": "My father ___ a teacher.",
-                  "answer": "is",
-                  "why": "My father = he, dùng is."
-                },
-                {
-                  "text": "We ___ a happy family.",
-                  "answer": "are",
-                  "why": "We đi với are."
-                },
-                {
-                  "text": "I ___ happy today.",
-                  "answer": "am",
-                  "why": "I đi với am."
-                }
-              ],
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "cloze",
-              "items": [
-                {
-                  "answer": "am",
-                  "why": "I đi với am."
-                },
-                {
-                  "answer": "is",
-                  "why": "My father = he."
-                },
-                {
-                  "answer": "are",
-                  "why": "We đi với are."
-                }
-              ],
-              "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
-              "mode": "pick",
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "reorder",
-              "items": [
-                {
-                  "words": [
-                    "is",
-                    "a",
-                    "teacher",
-                    "father",
-                    "My"
-                  ],
-                  "answer": "My father is a teacher.",
-                  "why": "Chủ ngữ, to be, phần còn lại."
-                },
-                {
-                  "words": [
-                    "are",
-                    "happy",
-                    "We",
-                    "a",
-                    "family"
-                  ],
-                  "answer": "We are a happy family.",
-                  "why": "We are + a happy family."
-                }
-              ]
-            },
-            {
-              "type": "form",
-              "items": [
-                {
-                  "text": "My sister ___ (be) sixteen.",
-                  "answer": "is",
-                  "why": "be thành is với she."
-                },
-                {
-                  "text": "___ (he) name is Nam.",
-                  "answer": "His",
-                  "why": "he thành his."
-                }
-              ]
-            },
-            {
-              "type": "dialogue",
-              "items": [
-                {
-                  "lines": [
-                    "Who is he?"
-                  ],
-                  "options": [
-                    "He is my brother.",
-                    "She is my sister.",
-                    "I am ten."
-                  ],
-                  "answer": "He is my brother.",
-                  "why": "Hỏi về một người nam nên trả lời He is…"
-                },
-                {
-                  "lines": [
-                    "How old are you?",
-                    "…"
-                  ],
-                  "options": [
-                    "I am twelve.",
-                    "I is twelve.",
-                    "He is twelve."
-                  ],
-                  "answer": "I am twelve.",
-                  "why": "Trả lời về mình: I am…"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Viết và nói",
-          "sets": [
-            {
-              "type": "fix",
-              "items": [
-                {
-                  "wrong": "My mother a teacher.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Thiếu động từ to be."
-                },
-                {
-                  "wrong": "I is a student.",
-                  "answer": "I am a student.",
-                  "why": "I đi với am."
-                }
-              ]
-            },
-            {
-              "type": "transform",
-              "items": [
-                {
-                  "prompt": "My father is a driver.",
-                  "instruction": "Viết lại câu phủ định (is not).",
-                  "answer": "My father is not a driver.",
-                  "alt": [
-                    "My father isn't a driver."
-                  ],
-                  "why": "is + not."
-                }
-              ]
-            },
-            {
-              "type": "translate",
-              "items": [
-                {
-                  "prompt": "Mẹ tôi là giáo viên.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Nhớ có is."
-                }
-              ]
-            },
-            {
-              "type": "answer",
-              "items": [
-                {
-                  "prompt": "What is your mother's name?",
-                  "answer": "Her name is Lan.",
-                  "alt": [
-                    "My mother's name is Lan."
-                  ],
-                  "why": "Câu trả lời mẫu, tên của bạn có thể khác."
-                }
-              ]
-            },
-            {
-              "type": "shadow",
-              "items": [
-                {
-                  "say": "This is my family."
-                },
-                {
-                  "say": "We are a happy family."
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    "sat": {
-      "title": "Challenge SAT",
-      "stages": [
-        {
-          "title": "Khởi động nhanh",
-          "sets": [
-            {
-              "type": "truefalse",
-              "items": [
-                {
-                  "q": "\"Mother\" nghĩa là bố.",
-                  "answer": false,
-                  "why": "mother = mẹ."
-                },
-                {
-                  "q": "I am a student. (Câu này đúng ngữ pháp)",
-                  "answer": true,
-                  "why": "I đi với am."
-                },
-                {
-                  "q": "She are my sister. (Câu này đúng ngữ pháp)",
-                  "answer": false,
-                  "why": "She đi với is."
-                }
-              ]
-            },
-            {
-              "type": "match",
-              "items": [
-                {
-                  "left": "mother",
-                  "right": "mẹ"
-                },
-                {
-                  "left": "father",
-                  "right": "bố"
-                },
-                {
-                  "left": "sister",
-                  "right": "chị / em gái"
-                },
-                {
-                  "left": "brother",
-                  "right": "anh / em trai"
-                },
-                {
-                  "left": "parents",
-                  "right": "bố mẹ"
-                }
-              ]
-            },
-            {
-              "type": "dictation",
-              "items": [
-                {
-                  "say": "My mother is a teacher.",
-                  "why": "Chú ý is sau My mother."
-                },
-                {
-                  "say": "We are a happy family.",
-                  "why": "We đi với are."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Điền và ghép",
-          "sets": [
-            {
-              "type": "gap",
-              "items": [
-                {
-                  "text": "My father ___ a teacher.",
-                  "answer": "is",
-                  "why": "My father = he, dùng is."
-                },
-                {
-                  "text": "We ___ a happy family.",
-                  "answer": "are",
-                  "why": "We đi với are."
-                },
-                {
-                  "text": "I ___ happy today.",
-                  "answer": "am",
-                  "why": "I đi với am."
-                }
-              ],
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "cloze",
-              "items": [
-                {
-                  "answer": "am",
-                  "why": "I đi với am."
-                },
-                {
-                  "answer": "is",
-                  "why": "My father = he."
-                },
-                {
-                  "answer": "are",
-                  "why": "We đi với are."
-                }
-              ],
-              "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
-              "mode": "pick",
-              "distractors": [
-                "be"
-              ]
-            },
-            {
-              "type": "reorder",
-              "items": [
-                {
-                  "words": [
-                    "is",
-                    "a",
-                    "teacher",
-                    "father",
-                    "My"
-                  ],
-                  "answer": "My father is a teacher.",
-                  "why": "Chủ ngữ, to be, phần còn lại."
-                },
-                {
-                  "words": [
-                    "are",
-                    "happy",
-                    "We",
-                    "a",
-                    "family"
-                  ],
-                  "answer": "We are a happy family.",
-                  "why": "We are + a happy family."
-                }
-              ]
-            },
-            {
-              "type": "form",
-              "items": [
-                {
-                  "text": "My sister ___ (be) sixteen.",
-                  "answer": "is",
-                  "why": "be thành is với she."
-                },
-                {
-                  "text": "___ (he) name is Nam.",
-                  "answer": "His",
-                  "why": "he thành his."
-                }
-              ]
-            },
-            {
-              "type": "dialogue",
-              "items": [
-                {
-                  "lines": [
-                    "Who is he?"
-                  ],
-                  "options": [
-                    "He is my brother.",
-                    "She is my sister.",
-                    "I am ten."
-                  ],
-                  "answer": "He is my brother.",
-                  "why": "Hỏi về một người nam nên trả lời He is…"
-                },
-                {
-                  "lines": [
-                    "How old are you?",
-                    "…"
-                  ],
-                  "options": [
-                    "I am twelve.",
-                    "I is twelve.",
-                    "He is twelve."
-                  ],
-                  "answer": "I am twelve.",
-                  "why": "Trả lời về mình: I am…"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "title": "Viết và nói",
-          "sets": [
-            {
-              "type": "fix",
-              "items": [
-                {
-                  "wrong": "My mother a teacher.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Thiếu động từ to be."
-                },
-                {
-                  "wrong": "I is a student.",
-                  "answer": "I am a student.",
-                  "why": "I đi với am."
-                }
-              ]
-            },
-            {
-              "type": "transform",
-              "items": [
-                {
-                  "prompt": "My father is a driver.",
-                  "instruction": "Viết lại câu phủ định (is not).",
-                  "answer": "My father is not a driver.",
-                  "alt": [
-                    "My father isn't a driver."
-                  ],
-                  "why": "is + not."
-                }
-              ]
-            },
-            {
-              "type": "translate",
-              "items": [
-                {
-                  "prompt": "Mẹ tôi là giáo viên.",
-                  "answer": "My mother is a teacher.",
-                  "why": "Nhớ có is."
-                }
-              ]
-            },
-            {
-              "type": "answer",
-              "items": [
-                {
-                  "prompt": "What is your mother's name?",
-                  "answer": "Her name is Lan.",
-                  "alt": [
-                    "My mother's name is Lan."
-                  ],
-                  "why": "Câu trả lời mẫu, tên của bạn có thể khác."
-                }
-              ]
-            },
-            {
-              "type": "shadow",
-              "items": [
-                {
-                  "say": "This is my family."
-                },
-                {
-                  "say": "We are a happy family."
-                }
-              ]
-            }
-          ]
-        }
-      ]
+    {
+     "type": "read",
+     "key": "preview",
+     "title": "Đọc trước Sub 2",
+     "min": "20–25′",
+     "heading": "Tom's family",
+     "text": [
+      "Hi, I am Tom. My family is not big.",
+      "My father is a doctor. He is not a teacher."
+     ],
+     "vocab": {
+      "doctor": "bác sĩ",
+      "big": "to, đông",
+      "not": "không"
+     },
+     "sets": [],
+     "note": "Hôm nay chỉ đọc để làm quen."
     }
+   ]
+  },
+  "wed": {
+   "title": "Sub 2: Describing family",
+   "kind": "new",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Nhớ lại",
+     "min": "0–3′",
+     "sets": [
+      {
+       "type": "mcq",
+       "items": [
+        {
+         "q": "This is Tom. He ___ my brother.",
+         "options": [
+          "am",
+          "is",
+          "are"
+         ],
+         "answer": "is",
+         "why": "He là một người nên dùng is."
+        },
+        {
+         "q": "I ___ ten years old.",
+         "options": [
+          "is",
+          "are",
+          "am"
+         ],
+         "answer": "am",
+         "why": "I luôn đi với am."
+        },
+        {
+         "q": "Peter and Anna ___ my parents.",
+         "options": [
+          "is",
+          "am",
+          "are"
+         ],
+         "answer": "are",
+         "why": "Hai người (they) dùng are."
+        }
+       ],
+       "core": 2
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "read",
+     "title": "Đọc",
+     "min": "3–9′",
+     "heading": "Tom's family",
+     "text": [
+      "Hi, I am Tom. My family is not big.",
+      "My father is a doctor. He is not a teacher."
+     ],
+     "vocab": {
+      "doctor": "bác sĩ",
+      "big": "to, đông",
+      "not": "không"
+     },
+     "sets": []
+    },
+    {
+     "type": "listen",
+     "key": "listen",
+     "title": "Nghe",
+     "min": "9–13′",
+     "text": [
+      "My father is a doctor."
+     ],
+     "sets": [
+      {
+       "type": "listenpick",
+       "items": [
+        {
+         "say": "My father is a driver.",
+         "q": "Bố của bạn ấy làm nghề gì?",
+         "options": [
+          "driver",
+          "teacher",
+          "doctor"
+         ],
+         "answer": "driver",
+         "why": "Nghe: \"My father is a driver.\""
+        },
+        {
+         "say": "She is sixteen.",
+         "q": "Cô ấy bao nhiêu tuổi?",
+         "options": [
+          "6",
+          "16",
+          "60"
+         ],
+         "answer": "16",
+         "why": "sixteen = 16."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "notice",
+     "key": "notice",
+     "title": "Tìm ngữ pháp",
+     "min": "13–15′",
+     "text": [
+      "Hello! I am Mai. This is my family.",
+      "My father is a driver. My mother is a teacher.",
+      "We are a happy family."
+     ],
+     "target": [
+      "am",
+      "is",
+      "are"
+     ],
+     "find": "am, is, are",
+     "box": {
+      "title": "Ghi nhớ: động từ to be",
+      "intro": "Tiếng Anh luôn cần am / is / are.",
+      "rows": [
+       {
+        "subject": "I",
+        "form": "am",
+        "example": "I am a student."
+       },
+       {
+        "subject": "He / She / My mother",
+        "form": "is",
+        "example": "She is a teacher."
+       },
+       {
+        "subject": "We / You / They",
+        "form": "are",
+        "example": "They are my parents."
+       }
+      ]
+     }
+    },
+    {
+     "type": "sets",
+     "key": "practice",
+     "title": "Luyện tập",
+     "min": "15–26′",
+     "sets": [
+      {
+       "type": "oddone",
+       "items": [
+        {
+         "options": [
+          "mother",
+          "father",
+          "teacher",
+          "sister"
+         ],
+         "answer": "teacher",
+         "why": "Ba từ kia là người trong gia đình."
+        },
+        {
+         "options": [
+          "tall",
+          "kind",
+          "old",
+          "doctor"
+         ],
+         "answer": "doctor",
+         "why": "doctor là nghề nghiệp, ba từ kia là tính từ."
+        }
+       ]
+      },
+      {
+       "type": "listenpick",
+       "items": [
+        {
+         "say": "My father is a driver.",
+         "q": "Bố của bạn ấy làm nghề gì?",
+         "options": [
+          "driver",
+          "teacher",
+          "doctor"
+         ],
+         "answer": "driver",
+         "why": "Nghe: \"My father is a driver.\""
+        },
+        {
+         "say": "She is sixteen.",
+         "q": "Cô ấy bao nhiêu tuổi?",
+         "options": [
+          "6",
+          "16",
+          "60"
+         ],
+         "answer": "16",
+         "why": "sixteen = 16."
+        }
+       ]
+      },
+      {
+       "type": "gap",
+       "items": [
+        {
+         "text": "My father ___ a teacher.",
+         "answer": "is",
+         "why": "My father = he, dùng is."
+        },
+        {
+         "text": "We ___ a happy family.",
+         "answer": "are",
+         "why": "We đi với are."
+        },
+        {
+         "text": "I ___ happy today.",
+         "answer": "am",
+         "why": "I đi với am."
+        }
+       ],
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "form",
+       "items": [
+        {
+         "text": "My sister ___ (be) sixteen.",
+         "answer": "is",
+         "why": "be thành is với she."
+        },
+        {
+         "text": "___ (he) name is Nam.",
+         "answer": "His",
+         "why": "he thành his."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết",
+     "min": "26–30′",
+     "prompt": "Viết 2–3 câu giới thiệu một người trong gia đình.",
+     "hint": "This is my ___. His / Her name is ___.",
+     "sample": "This is my father. His name is Nam. He is a driver.",
+     "model": "This is my mother. Her name is Hoa. She is a teacher.",
+     "checklist": [
+      "Mỗi câu đều có am / is / are",
+      "Chữ đầu câu viết hoa, cuối câu có dấu chấm",
+      "Dùng His / Her đúng"
+     ]
+    }
+   ]
+  },
+  "thu": {
+   "title": "Ôn Sub 1–2, đọc trước Sub 3",
+   "kind": "review",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Nhớ lại",
+     "min": "0–3′",
+     "sets": [
+      {
+       "type": "mcq",
+       "items": [
+        {
+         "q": "This is Tom. He ___ my brother.",
+         "options": [
+          "am",
+          "is",
+          "are"
+         ],
+         "answer": "is",
+         "why": "He là một người nên dùng is."
+        },
+        {
+         "q": "I ___ ten years old.",
+         "options": [
+          "is",
+          "are",
+          "am"
+         ],
+         "answer": "am",
+         "why": "I luôn đi với am."
+        },
+        {
+         "q": "Peter and Anna ___ my parents.",
+         "options": [
+          "is",
+          "am",
+          "are"
+         ],
+         "answer": "are",
+         "why": "Hai người (they) dùng are."
+        }
+       ],
+       "core": 2
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "review",
+     "title": "Ôn dạng bài khác",
+     "min": "3–20′",
+     "sets": [
+      {
+       "type": "mcq",
+       "items": [
+        {
+         "q": "This is Tom. He ___ my brother.",
+         "options": [
+          "am",
+          "is",
+          "are"
+         ],
+         "answer": "is",
+         "why": "He là một người nên dùng is."
+        },
+        {
+         "q": "I ___ ten years old.",
+         "options": [
+          "is",
+          "are",
+          "am"
+         ],
+         "answer": "am",
+         "why": "I luôn đi với am."
+        },
+        {
+         "q": "Peter and Anna ___ my parents.",
+         "options": [
+          "is",
+          "am",
+          "are"
+         ],
+         "answer": "are",
+         "why": "Hai người (they) dùng are."
+        }
+       ],
+       "core": 2
+      },
+      {
+       "type": "cloze",
+       "items": [
+        {
+         "answer": "am",
+         "why": "I đi với am."
+        },
+        {
+         "answer": "is",
+         "why": "My father = he."
+        },
+        {
+         "answer": "are",
+         "why": "We đi với are."
+        }
+       ],
+       "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
+       "mode": "pick",
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "reorder",
+       "items": [
+        {
+         "words": [
+          "is",
+          "a",
+          "teacher",
+          "father",
+          "My"
+         ],
+         "answer": "My father is a teacher.",
+         "why": "Chủ ngữ, to be, phần còn lại."
+        },
+        {
+         "words": [
+          "are",
+          "happy",
+          "We",
+          "a",
+          "family"
+         ],
+         "answer": "We are a happy family.",
+         "why": "We are + a happy family."
+        }
+       ]
+      },
+      {
+       "type": "fix",
+       "items": [
+        {
+         "wrong": "My mother a teacher.",
+         "answer": "My mother is a teacher.",
+         "why": "Thiếu động từ to be."
+        },
+        {
+         "wrong": "I is a student.",
+         "answer": "I am a student.",
+         "why": "I đi với am."
+        }
+       ]
+      },
+      {
+       "type": "match",
+       "items": [
+        {
+         "left": "mother",
+         "right": "mẹ"
+        },
+        {
+         "left": "father",
+         "right": "bố"
+        },
+        {
+         "left": "sister",
+         "right": "chị / em gái"
+        },
+        {
+         "left": "brother",
+         "right": "anh / em trai"
+        },
+        {
+         "left": "parents",
+         "right": "bố mẹ"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "preview",
+     "title": "Đọc trước Sub 3",
+     "min": "20–25′",
+     "heading": "Who is she?",
+     "text": [
+      "Who is she? She is my sister.",
+      "How old is she? She is sixteen."
+     ],
+     "vocab": {
+      "who": "ai",
+      "how": "như thế nào",
+      "old": "tuổi"
+     },
+     "sets": []
+    }
+   ]
+  },
+  "fri": {
+   "title": "Sub 3: Asking about family",
+   "kind": "new",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Nhớ lại",
+     "min": "0–3′",
+     "sets": [
+      {
+       "type": "mcq",
+       "items": [
+        {
+         "q": "This is Tom. He ___ my brother.",
+         "options": [
+          "am",
+          "is",
+          "are"
+         ],
+         "answer": "is",
+         "why": "He là một người nên dùng is."
+        },
+        {
+         "q": "I ___ ten years old.",
+         "options": [
+          "is",
+          "are",
+          "am"
+         ],
+         "answer": "am",
+         "why": "I luôn đi với am."
+        },
+        {
+         "q": "Peter and Anna ___ my parents.",
+         "options": [
+          "is",
+          "am",
+          "are"
+         ],
+         "answer": "are",
+         "why": "Hai người (they) dùng are."
+        }
+       ],
+       "core": 2
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "read",
+     "title": "Đọc",
+     "min": "3–9′",
+     "heading": "Who is she?",
+     "text": [
+      "Who is she? She is my sister.",
+      "How old is she? She is sixteen."
+     ],
+     "vocab": {
+      "who": "ai",
+      "how": "như thế nào",
+      "old": "tuổi"
+     },
+     "sets": []
+    },
+    {
+     "type": "listen",
+     "key": "listen",
+     "title": "Nghe",
+     "min": "9–13′",
+     "text": [
+      "Who is she? She is my sister."
+     ],
+     "sets": []
+    },
+    {
+     "type": "notice",
+     "key": "notice",
+     "title": "Tìm ngữ pháp",
+     "min": "13–15′",
+     "text": [
+      "Hello! I am Mai. This is my family.",
+      "My father is a driver. My mother is a teacher.",
+      "We are a happy family."
+     ],
+     "target": [
+      "am",
+      "is",
+      "are"
+     ],
+     "find": "am, is, are",
+     "box": {
+      "title": "Ghi nhớ: động từ to be",
+      "intro": "Tiếng Anh luôn cần am / is / are.",
+      "rows": [
+       {
+        "subject": "I",
+        "form": "am",
+        "example": "I am a student."
+       },
+       {
+        "subject": "He / She / My mother",
+        "form": "is",
+        "example": "She is a teacher."
+       },
+       {
+        "subject": "We / You / They",
+        "form": "are",
+        "example": "They are my parents."
+       }
+      ]
+     }
+    },
+    {
+     "type": "sets",
+     "key": "practice",
+     "title": "Luyện tập",
+     "min": "15–26′",
+     "sets": [
+      {
+       "type": "dialogue",
+       "items": [
+        {
+         "lines": [
+          "Who is he?"
+         ],
+         "options": [
+          "He is my brother.",
+          "She is my sister.",
+          "I am ten."
+         ],
+         "answer": "He is my brother.",
+         "why": "Hỏi về một người nam nên trả lời He is…"
+        },
+        {
+         "lines": [
+          "How old are you?",
+          "…"
+         ],
+         "options": [
+          "I am twelve.",
+          "I is twelve.",
+          "He is twelve."
+         ],
+         "answer": "I am twelve.",
+         "why": "Trả lời về mình: I am…"
+        }
+       ]
+      },
+      {
+       "type": "gap",
+       "items": [
+        {
+         "text": "My father ___ a teacher.",
+         "answer": "is",
+         "why": "My father = he, dùng is."
+        },
+        {
+         "text": "We ___ a happy family.",
+         "answer": "are",
+         "why": "We đi với are."
+        },
+        {
+         "text": "I ___ happy today.",
+         "answer": "am",
+         "why": "I đi với am."
+        }
+       ],
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "mcq",
+       "items": [
+        {
+         "q": "This is Tom. He ___ my brother.",
+         "options": [
+          "am",
+          "is",
+          "are"
+         ],
+         "answer": "is",
+         "why": "He là một người nên dùng is."
+        },
+        {
+         "q": "I ___ ten years old.",
+         "options": [
+          "is",
+          "are",
+          "am"
+         ],
+         "answer": "am",
+         "why": "I luôn đi với am."
+        },
+        {
+         "q": "Peter and Anna ___ my parents.",
+         "options": [
+          "is",
+          "am",
+          "are"
+         ],
+         "answer": "are",
+         "why": "Hai người (they) dùng are."
+        }
+       ],
+       "core": 2
+      },
+      {
+       "type": "reorder",
+       "items": [
+        {
+         "words": [
+          "is",
+          "a",
+          "teacher",
+          "father",
+          "My"
+         ],
+         "answer": "My father is a teacher.",
+         "why": "Chủ ngữ, to be, phần còn lại."
+        },
+        {
+         "words": [
+          "are",
+          "happy",
+          "We",
+          "a",
+          "family"
+         ],
+         "answer": "We are a happy family.",
+         "why": "We are + a happy family."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết",
+     "min": "26–30′",
+     "prompt": "Viết 2–3 câu giới thiệu một người trong gia đình.",
+     "hint": "This is my ___. His / Her name is ___.",
+     "sample": "This is my father. His name is Nam. He is a driver.",
+     "model": "This is my mother. Her name is Hoa. She is a teacher.",
+     "checklist": [
+      "Mỗi câu đều có am / is / are",
+      "Chữ đầu câu viết hoa, cuối câu có dấu chấm",
+      "Dùng His / Her đúng"
+     ]
+    }
+   ]
+  },
+  "sat": {
+   "title": "Ôn cả tuần, giới thiệu Sub 4",
+   "kind": "week",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "quiz",
+     "title": "Quiz cả tuần",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "mcq",
+       "items": [
+        {
+         "q": "This is Tom. He ___ my brother.",
+         "options": [
+          "am",
+          "is",
+          "are"
+         ],
+         "answer": "is",
+         "why": "He là một người nên dùng is."
+        },
+        {
+         "q": "I ___ ten years old.",
+         "options": [
+          "is",
+          "are",
+          "am"
+         ],
+         "answer": "am",
+         "why": "I luôn đi với am."
+        },
+        {
+         "q": "Peter and Anna ___ my parents.",
+         "options": [
+          "is",
+          "am",
+          "are"
+         ],
+         "answer": "are",
+         "why": "Hai người (they) dùng are."
+        }
+       ],
+       "core": 2
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "transfer",
+     "title": "Bài đọc mới",
+     "min": "5–12′",
+     "heading": "Linh's family",
+     "text": [
+      "Linh is my friend. Her father is a teacher."
+     ],
+     "vocab": {
+      "friend": "bạn bè"
+     },
+     "sets": []
+    },
+    {
+     "type": "sets",
+     "key": "mix",
+     "title": "Tổng hợp",
+     "min": "12–22′",
+     "sets": [
+      {
+       "type": "cloze",
+       "items": [
+        {
+         "answer": "am",
+         "why": "I đi với am."
+        },
+        {
+         "answer": "is",
+         "why": "My father = he."
+        },
+        {
+         "answer": "are",
+         "why": "We đi với are."
+        }
+       ],
+       "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
+       "mode": "pick",
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "fix",
+       "items": [
+        {
+         "wrong": "My mother a teacher.",
+         "answer": "My mother is a teacher.",
+         "why": "Thiếu động từ to be."
+        },
+        {
+         "wrong": "I is a student.",
+         "answer": "I am a student.",
+         "why": "I đi với am."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "items": [
+        {
+         "prompt": "My father is a driver.",
+         "instruction": "Viết lại câu phủ định (is not).",
+         "answer": "My father is not a driver.",
+         "alt": [
+          "My father isn't a driver."
+         ],
+         "why": "is + not."
+        }
+       ]
+      },
+      {
+       "type": "dialogue",
+       "items": [
+        {
+         "lines": [
+          "Who is he?"
+         ],
+         "options": [
+          "He is my brother.",
+          "She is my sister.",
+          "I am ten."
+         ],
+         "answer": "He is my brother.",
+         "why": "Hỏi về một người nam nên trả lời He is…"
+        },
+        {
+         "lines": [
+          "How old are you?",
+          "…"
+         ],
+         "options": [
+          "I am twelve.",
+          "I is twelve.",
+          "He is twelve."
+         ],
+         "answer": "I am twelve.",
+         "why": "Trả lời về mình: I am…"
+        }
+       ]
+      },
+      {
+       "type": "listenpick",
+       "items": [
+        {
+         "say": "My father is a driver.",
+         "q": "Bố của bạn ấy làm nghề gì?",
+         "options": [
+          "driver",
+          "teacher",
+          "doctor"
+         ],
+         "answer": "driver",
+         "why": "Nghe: \"My father is a driver.\""
+        },
+        {
+         "say": "She is sixteen.",
+         "q": "Cô ấy bao nhiêu tuổi?",
+         "options": [
+          "6",
+          "16",
+          "60"
+         ],
+         "answer": "16",
+         "why": "sixteen = 16."
+        }
+       ]
+      },
+      {
+       "type": "dictation",
+       "items": [
+        {
+         "say": "My mother is a teacher.",
+         "why": "Chú ý is sau My mother."
+        },
+        {
+         "say": "We are a happy family.",
+         "why": "We đi với are."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "preview",
+     "title": "Làm quen Sub 4",
+     "min": "22–28′",
+     "heading": "Extended family",
+     "text": [
+      "This is my grandmother. She is sixty-five."
+     ],
+     "vocab": {
+      "grandmother": "bà",
+      "uncle": "chú",
+      "cousin": "anh chị em họ"
+     },
+     "sets": []
+    },
+    {
+     "type": "report",
+     "key": "report",
+     "title": "Báo cáo tuần",
+     "min": "28–30′"
+    }
+   ]
   }
+ },
+ "challenges": {
+  "mon": {
+   "title": "Challenge MON",
+   "stages": [
+    {
+     "title": "Khởi động nhanh",
+     "sets": [
+      {
+       "type": "truefalse",
+       "items": [
+        {
+         "q": "\"Mother\" nghĩa là bố.",
+         "answer": false,
+         "why": "mother = mẹ."
+        },
+        {
+         "q": "I am a student. (Câu này đúng ngữ pháp)",
+         "answer": true,
+         "why": "I đi với am."
+        },
+        {
+         "q": "She are my sister. (Câu này đúng ngữ pháp)",
+         "answer": false,
+         "why": "She đi với is."
+        }
+       ]
+      },
+      {
+       "type": "match",
+       "items": [
+        {
+         "left": "mother",
+         "right": "mẹ"
+        },
+        {
+         "left": "father",
+         "right": "bố"
+        },
+        {
+         "left": "sister",
+         "right": "chị / em gái"
+        },
+        {
+         "left": "brother",
+         "right": "anh / em trai"
+        },
+        {
+         "left": "parents",
+         "right": "bố mẹ"
+        }
+       ]
+      },
+      {
+       "type": "dictation",
+       "items": [
+        {
+         "say": "My mother is a teacher.",
+         "why": "Chú ý is sau My mother."
+        },
+        {
+         "say": "We are a happy family.",
+         "why": "We đi với are."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Điền và ghép",
+     "sets": [
+      {
+       "type": "gap",
+       "items": [
+        {
+         "text": "My father ___ a teacher.",
+         "answer": "is",
+         "why": "My father = he, dùng is."
+        },
+        {
+         "text": "We ___ a happy family.",
+         "answer": "are",
+         "why": "We đi với are."
+        },
+        {
+         "text": "I ___ happy today.",
+         "answer": "am",
+         "why": "I đi với am."
+        }
+       ],
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "cloze",
+       "items": [
+        {
+         "answer": "am",
+         "why": "I đi với am."
+        },
+        {
+         "answer": "is",
+         "why": "My father = he."
+        },
+        {
+         "answer": "are",
+         "why": "We đi với are."
+        }
+       ],
+       "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
+       "mode": "pick",
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "reorder",
+       "items": [
+        {
+         "words": [
+          "is",
+          "a",
+          "teacher",
+          "father",
+          "My"
+         ],
+         "answer": "My father is a teacher.",
+         "why": "Chủ ngữ, to be, phần còn lại."
+        },
+        {
+         "words": [
+          "are",
+          "happy",
+          "We",
+          "a",
+          "family"
+         ],
+         "answer": "We are a happy family.",
+         "why": "We are + a happy family."
+        }
+       ]
+      },
+      {
+       "type": "form",
+       "items": [
+        {
+         "text": "My sister ___ (be) sixteen.",
+         "answer": "is",
+         "why": "be thành is với she."
+        },
+        {
+         "text": "___ (he) name is Nam.",
+         "answer": "His",
+         "why": "he thành his."
+        }
+       ]
+      },
+      {
+       "type": "dialogue",
+       "items": [
+        {
+         "lines": [
+          "Who is he?"
+         ],
+         "options": [
+          "He is my brother.",
+          "She is my sister.",
+          "I am ten."
+         ],
+         "answer": "He is my brother.",
+         "why": "Hỏi về một người nam nên trả lời He is…"
+        },
+        {
+         "lines": [
+          "How old are you?",
+          "…"
+         ],
+         "options": [
+          "I am twelve.",
+          "I is twelve.",
+          "He is twelve."
+         ],
+         "answer": "I am twelve.",
+         "why": "Trả lời về mình: I am…"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Viết và nói",
+     "sets": [
+      {
+       "type": "fix",
+       "items": [
+        {
+         "wrong": "My mother a teacher.",
+         "answer": "My mother is a teacher.",
+         "why": "Thiếu động từ to be."
+        },
+        {
+         "wrong": "I is a student.",
+         "answer": "I am a student.",
+         "why": "I đi với am."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "items": [
+        {
+         "prompt": "My father is a driver.",
+         "instruction": "Viết lại câu phủ định (is not).",
+         "answer": "My father is not a driver.",
+         "alt": [
+          "My father isn't a driver."
+         ],
+         "why": "is + not."
+        }
+       ]
+      },
+      {
+       "type": "translate",
+       "items": [
+        {
+         "prompt": "Mẹ tôi là giáo viên.",
+         "answer": "My mother is a teacher.",
+         "why": "Nhớ có is."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "items": [
+        {
+         "prompt": "What is your mother's name?",
+         "answer": "Her name is Lan.",
+         "alt": [
+          "My mother's name is Lan."
+         ],
+         "why": "Câu trả lời mẫu, tên của bạn có thể khác."
+        }
+       ]
+      },
+      {
+       "type": "shadow",
+       "items": [
+        {
+         "say": "This is my family."
+        },
+        {
+         "say": "We are a happy family."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "tue": {
+   "title": "Challenge TUE",
+   "stages": [
+    {
+     "title": "Khởi động nhanh",
+     "sets": [
+      {
+       "type": "truefalse",
+       "items": [
+        {
+         "q": "\"Mother\" nghĩa là bố.",
+         "answer": false,
+         "why": "mother = mẹ."
+        },
+        {
+         "q": "I am a student. (Câu này đúng ngữ pháp)",
+         "answer": true,
+         "why": "I đi với am."
+        },
+        {
+         "q": "She are my sister. (Câu này đúng ngữ pháp)",
+         "answer": false,
+         "why": "She đi với is."
+        }
+       ]
+      },
+      {
+       "type": "match",
+       "items": [
+        {
+         "left": "mother",
+         "right": "mẹ"
+        },
+        {
+         "left": "father",
+         "right": "bố"
+        },
+        {
+         "left": "sister",
+         "right": "chị / em gái"
+        },
+        {
+         "left": "brother",
+         "right": "anh / em trai"
+        },
+        {
+         "left": "parents",
+         "right": "bố mẹ"
+        }
+       ]
+      },
+      {
+       "type": "dictation",
+       "items": [
+        {
+         "say": "My mother is a teacher.",
+         "why": "Chú ý is sau My mother."
+        },
+        {
+         "say": "We are a happy family.",
+         "why": "We đi với are."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Điền và ghép",
+     "sets": [
+      {
+       "type": "gap",
+       "items": [
+        {
+         "text": "My father ___ a teacher.",
+         "answer": "is",
+         "why": "My father = he, dùng is."
+        },
+        {
+         "text": "We ___ a happy family.",
+         "answer": "are",
+         "why": "We đi với are."
+        },
+        {
+         "text": "I ___ happy today.",
+         "answer": "am",
+         "why": "I đi với am."
+        }
+       ],
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "cloze",
+       "items": [
+        {
+         "answer": "am",
+         "why": "I đi với am."
+        },
+        {
+         "answer": "is",
+         "why": "My father = he."
+        },
+        {
+         "answer": "are",
+         "why": "We đi với are."
+        }
+       ],
+       "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
+       "mode": "pick",
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "reorder",
+       "items": [
+        {
+         "words": [
+          "is",
+          "a",
+          "teacher",
+          "father",
+          "My"
+         ],
+         "answer": "My father is a teacher.",
+         "why": "Chủ ngữ, to be, phần còn lại."
+        },
+        {
+         "words": [
+          "are",
+          "happy",
+          "We",
+          "a",
+          "family"
+         ],
+         "answer": "We are a happy family.",
+         "why": "We are + a happy family."
+        }
+       ]
+      },
+      {
+       "type": "form",
+       "items": [
+        {
+         "text": "My sister ___ (be) sixteen.",
+         "answer": "is",
+         "why": "be thành is với she."
+        },
+        {
+         "text": "___ (he) name is Nam.",
+         "answer": "His",
+         "why": "he thành his."
+        }
+       ]
+      },
+      {
+       "type": "dialogue",
+       "items": [
+        {
+         "lines": [
+          "Who is he?"
+         ],
+         "options": [
+          "He is my brother.",
+          "She is my sister.",
+          "I am ten."
+         ],
+         "answer": "He is my brother.",
+         "why": "Hỏi về một người nam nên trả lời He is…"
+        },
+        {
+         "lines": [
+          "How old are you?",
+          "…"
+         ],
+         "options": [
+          "I am twelve.",
+          "I is twelve.",
+          "He is twelve."
+         ],
+         "answer": "I am twelve.",
+         "why": "Trả lời về mình: I am…"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Viết và nói",
+     "sets": [
+      {
+       "type": "fix",
+       "items": [
+        {
+         "wrong": "My mother a teacher.",
+         "answer": "My mother is a teacher.",
+         "why": "Thiếu động từ to be."
+        },
+        {
+         "wrong": "I is a student.",
+         "answer": "I am a student.",
+         "why": "I đi với am."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "items": [
+        {
+         "prompt": "My father is a driver.",
+         "instruction": "Viết lại câu phủ định (is not).",
+         "answer": "My father is not a driver.",
+         "alt": [
+          "My father isn't a driver."
+         ],
+         "why": "is + not."
+        }
+       ]
+      },
+      {
+       "type": "translate",
+       "items": [
+        {
+         "prompt": "Mẹ tôi là giáo viên.",
+         "answer": "My mother is a teacher.",
+         "why": "Nhớ có is."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "items": [
+        {
+         "prompt": "What is your mother's name?",
+         "answer": "Her name is Lan.",
+         "alt": [
+          "My mother's name is Lan."
+         ],
+         "why": "Câu trả lời mẫu, tên của bạn có thể khác."
+        }
+       ]
+      },
+      {
+       "type": "shadow",
+       "items": [
+        {
+         "say": "This is my family."
+        },
+        {
+         "say": "We are a happy family."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "wed": {
+   "title": "Challenge WED",
+   "stages": [
+    {
+     "title": "Khởi động nhanh",
+     "sets": [
+      {
+       "type": "truefalse",
+       "items": [
+        {
+         "q": "\"Mother\" nghĩa là bố.",
+         "answer": false,
+         "why": "mother = mẹ."
+        },
+        {
+         "q": "I am a student. (Câu này đúng ngữ pháp)",
+         "answer": true,
+         "why": "I đi với am."
+        },
+        {
+         "q": "She are my sister. (Câu này đúng ngữ pháp)",
+         "answer": false,
+         "why": "She đi với is."
+        }
+       ]
+      },
+      {
+       "type": "match",
+       "items": [
+        {
+         "left": "mother",
+         "right": "mẹ"
+        },
+        {
+         "left": "father",
+         "right": "bố"
+        },
+        {
+         "left": "sister",
+         "right": "chị / em gái"
+        },
+        {
+         "left": "brother",
+         "right": "anh / em trai"
+        },
+        {
+         "left": "parents",
+         "right": "bố mẹ"
+        }
+       ]
+      },
+      {
+       "type": "dictation",
+       "items": [
+        {
+         "say": "My mother is a teacher.",
+         "why": "Chú ý is sau My mother."
+        },
+        {
+         "say": "We are a happy family.",
+         "why": "We đi với are."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Điền và ghép",
+     "sets": [
+      {
+       "type": "gap",
+       "items": [
+        {
+         "text": "My father ___ a teacher.",
+         "answer": "is",
+         "why": "My father = he, dùng is."
+        },
+        {
+         "text": "We ___ a happy family.",
+         "answer": "are",
+         "why": "We đi với are."
+        },
+        {
+         "text": "I ___ happy today.",
+         "answer": "am",
+         "why": "I đi với am."
+        }
+       ],
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "cloze",
+       "items": [
+        {
+         "answer": "am",
+         "why": "I đi với am."
+        },
+        {
+         "answer": "is",
+         "why": "My father = he."
+        },
+        {
+         "answer": "are",
+         "why": "We đi với are."
+        }
+       ],
+       "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
+       "mode": "pick",
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "reorder",
+       "items": [
+        {
+         "words": [
+          "is",
+          "a",
+          "teacher",
+          "father",
+          "My"
+         ],
+         "answer": "My father is a teacher.",
+         "why": "Chủ ngữ, to be, phần còn lại."
+        },
+        {
+         "words": [
+          "are",
+          "happy",
+          "We",
+          "a",
+          "family"
+         ],
+         "answer": "We are a happy family.",
+         "why": "We are + a happy family."
+        }
+       ]
+      },
+      {
+       "type": "form",
+       "items": [
+        {
+         "text": "My sister ___ (be) sixteen.",
+         "answer": "is",
+         "why": "be thành is với she."
+        },
+        {
+         "text": "___ (he) name is Nam.",
+         "answer": "His",
+         "why": "he thành his."
+        }
+       ]
+      },
+      {
+       "type": "dialogue",
+       "items": [
+        {
+         "lines": [
+          "Who is he?"
+         ],
+         "options": [
+          "He is my brother.",
+          "She is my sister.",
+          "I am ten."
+         ],
+         "answer": "He is my brother.",
+         "why": "Hỏi về một người nam nên trả lời He is…"
+        },
+        {
+         "lines": [
+          "How old are you?",
+          "…"
+         ],
+         "options": [
+          "I am twelve.",
+          "I is twelve.",
+          "He is twelve."
+         ],
+         "answer": "I am twelve.",
+         "why": "Trả lời về mình: I am…"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Viết và nói",
+     "sets": [
+      {
+       "type": "fix",
+       "items": [
+        {
+         "wrong": "My mother a teacher.",
+         "answer": "My mother is a teacher.",
+         "why": "Thiếu động từ to be."
+        },
+        {
+         "wrong": "I is a student.",
+         "answer": "I am a student.",
+         "why": "I đi với am."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "items": [
+        {
+         "prompt": "My father is a driver.",
+         "instruction": "Viết lại câu phủ định (is not).",
+         "answer": "My father is not a driver.",
+         "alt": [
+          "My father isn't a driver."
+         ],
+         "why": "is + not."
+        }
+       ]
+      },
+      {
+       "type": "translate",
+       "items": [
+        {
+         "prompt": "Mẹ tôi là giáo viên.",
+         "answer": "My mother is a teacher.",
+         "why": "Nhớ có is."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "items": [
+        {
+         "prompt": "What is your mother's name?",
+         "answer": "Her name is Lan.",
+         "alt": [
+          "My mother's name is Lan."
+         ],
+         "why": "Câu trả lời mẫu, tên của bạn có thể khác."
+        }
+       ]
+      },
+      {
+       "type": "shadow",
+       "items": [
+        {
+         "say": "This is my family."
+        },
+        {
+         "say": "We are a happy family."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "thu": {
+   "title": "Challenge THU",
+   "stages": [
+    {
+     "title": "Khởi động nhanh",
+     "sets": [
+      {
+       "type": "truefalse",
+       "items": [
+        {
+         "q": "\"Mother\" nghĩa là bố.",
+         "answer": false,
+         "why": "mother = mẹ."
+        },
+        {
+         "q": "I am a student. (Câu này đúng ngữ pháp)",
+         "answer": true,
+         "why": "I đi với am."
+        },
+        {
+         "q": "She are my sister. (Câu này đúng ngữ pháp)",
+         "answer": false,
+         "why": "She đi với is."
+        }
+       ]
+      },
+      {
+       "type": "match",
+       "items": [
+        {
+         "left": "mother",
+         "right": "mẹ"
+        },
+        {
+         "left": "father",
+         "right": "bố"
+        },
+        {
+         "left": "sister",
+         "right": "chị / em gái"
+        },
+        {
+         "left": "brother",
+         "right": "anh / em trai"
+        },
+        {
+         "left": "parents",
+         "right": "bố mẹ"
+        }
+       ]
+      },
+      {
+       "type": "dictation",
+       "items": [
+        {
+         "say": "My mother is a teacher.",
+         "why": "Chú ý is sau My mother."
+        },
+        {
+         "say": "We are a happy family.",
+         "why": "We đi với are."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Điền và ghép",
+     "sets": [
+      {
+       "type": "gap",
+       "items": [
+        {
+         "text": "My father ___ a teacher.",
+         "answer": "is",
+         "why": "My father = he, dùng is."
+        },
+        {
+         "text": "We ___ a happy family.",
+         "answer": "are",
+         "why": "We đi với are."
+        },
+        {
+         "text": "I ___ happy today.",
+         "answer": "am",
+         "why": "I đi với am."
+        }
+       ],
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "cloze",
+       "items": [
+        {
+         "answer": "am",
+         "why": "I đi với am."
+        },
+        {
+         "answer": "is",
+         "why": "My father = he."
+        },
+        {
+         "answer": "are",
+         "why": "We đi với are."
+        }
+       ],
+       "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
+       "mode": "pick",
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "reorder",
+       "items": [
+        {
+         "words": [
+          "is",
+          "a",
+          "teacher",
+          "father",
+          "My"
+         ],
+         "answer": "My father is a teacher.",
+         "why": "Chủ ngữ, to be, phần còn lại."
+        },
+        {
+         "words": [
+          "are",
+          "happy",
+          "We",
+          "a",
+          "family"
+         ],
+         "answer": "We are a happy family.",
+         "why": "We are + a happy family."
+        }
+       ]
+      },
+      {
+       "type": "form",
+       "items": [
+        {
+         "text": "My sister ___ (be) sixteen.",
+         "answer": "is",
+         "why": "be thành is với she."
+        },
+        {
+         "text": "___ (he) name is Nam.",
+         "answer": "His",
+         "why": "he thành his."
+        }
+       ]
+      },
+      {
+       "type": "dialogue",
+       "items": [
+        {
+         "lines": [
+          "Who is he?"
+         ],
+         "options": [
+          "He is my brother.",
+          "She is my sister.",
+          "I am ten."
+         ],
+         "answer": "He is my brother.",
+         "why": "Hỏi về một người nam nên trả lời He is…"
+        },
+        {
+         "lines": [
+          "How old are you?",
+          "…"
+         ],
+         "options": [
+          "I am twelve.",
+          "I is twelve.",
+          "He is twelve."
+         ],
+         "answer": "I am twelve.",
+         "why": "Trả lời về mình: I am…"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Viết và nói",
+     "sets": [
+      {
+       "type": "fix",
+       "items": [
+        {
+         "wrong": "My mother a teacher.",
+         "answer": "My mother is a teacher.",
+         "why": "Thiếu động từ to be."
+        },
+        {
+         "wrong": "I is a student.",
+         "answer": "I am a student.",
+         "why": "I đi với am."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "items": [
+        {
+         "prompt": "My father is a driver.",
+         "instruction": "Viết lại câu phủ định (is not).",
+         "answer": "My father is not a driver.",
+         "alt": [
+          "My father isn't a driver."
+         ],
+         "why": "is + not."
+        }
+       ]
+      },
+      {
+       "type": "translate",
+       "items": [
+        {
+         "prompt": "Mẹ tôi là giáo viên.",
+         "answer": "My mother is a teacher.",
+         "why": "Nhớ có is."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "items": [
+        {
+         "prompt": "What is your mother's name?",
+         "answer": "Her name is Lan.",
+         "alt": [
+          "My mother's name is Lan."
+         ],
+         "why": "Câu trả lời mẫu, tên của bạn có thể khác."
+        }
+       ]
+      },
+      {
+       "type": "shadow",
+       "items": [
+        {
+         "say": "This is my family."
+        },
+        {
+         "say": "We are a happy family."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "fri": {
+   "title": "Challenge FRI",
+   "stages": [
+    {
+     "title": "Khởi động nhanh",
+     "sets": [
+      {
+       "type": "truefalse",
+       "items": [
+        {
+         "q": "\"Mother\" nghĩa là bố.",
+         "answer": false,
+         "why": "mother = mẹ."
+        },
+        {
+         "q": "I am a student. (Câu này đúng ngữ pháp)",
+         "answer": true,
+         "why": "I đi với am."
+        },
+        {
+         "q": "She are my sister. (Câu này đúng ngữ pháp)",
+         "answer": false,
+         "why": "She đi với is."
+        }
+       ]
+      },
+      {
+       "type": "match",
+       "items": [
+        {
+         "left": "mother",
+         "right": "mẹ"
+        },
+        {
+         "left": "father",
+         "right": "bố"
+        },
+        {
+         "left": "sister",
+         "right": "chị / em gái"
+        },
+        {
+         "left": "brother",
+         "right": "anh / em trai"
+        },
+        {
+         "left": "parents",
+         "right": "bố mẹ"
+        }
+       ]
+      },
+      {
+       "type": "dictation",
+       "items": [
+        {
+         "say": "My mother is a teacher.",
+         "why": "Chú ý is sau My mother."
+        },
+        {
+         "say": "We are a happy family.",
+         "why": "We đi với are."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Điền và ghép",
+     "sets": [
+      {
+       "type": "gap",
+       "items": [
+        {
+         "text": "My father ___ a teacher.",
+         "answer": "is",
+         "why": "My father = he, dùng is."
+        },
+        {
+         "text": "We ___ a happy family.",
+         "answer": "are",
+         "why": "We đi với are."
+        },
+        {
+         "text": "I ___ happy today.",
+         "answer": "am",
+         "why": "I đi với am."
+        }
+       ],
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "cloze",
+       "items": [
+        {
+         "answer": "am",
+         "why": "I đi với am."
+        },
+        {
+         "answer": "is",
+         "why": "My father = he."
+        },
+        {
+         "answer": "are",
+         "why": "We đi với are."
+        }
+       ],
+       "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
+       "mode": "pick",
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "reorder",
+       "items": [
+        {
+         "words": [
+          "is",
+          "a",
+          "teacher",
+          "father",
+          "My"
+         ],
+         "answer": "My father is a teacher.",
+         "why": "Chủ ngữ, to be, phần còn lại."
+        },
+        {
+         "words": [
+          "are",
+          "happy",
+          "We",
+          "a",
+          "family"
+         ],
+         "answer": "We are a happy family.",
+         "why": "We are + a happy family."
+        }
+       ]
+      },
+      {
+       "type": "form",
+       "items": [
+        {
+         "text": "My sister ___ (be) sixteen.",
+         "answer": "is",
+         "why": "be thành is với she."
+        },
+        {
+         "text": "___ (he) name is Nam.",
+         "answer": "His",
+         "why": "he thành his."
+        }
+       ]
+      },
+      {
+       "type": "dialogue",
+       "items": [
+        {
+         "lines": [
+          "Who is he?"
+         ],
+         "options": [
+          "He is my brother.",
+          "She is my sister.",
+          "I am ten."
+         ],
+         "answer": "He is my brother.",
+         "why": "Hỏi về một người nam nên trả lời He is…"
+        },
+        {
+         "lines": [
+          "How old are you?",
+          "…"
+         ],
+         "options": [
+          "I am twelve.",
+          "I is twelve.",
+          "He is twelve."
+         ],
+         "answer": "I am twelve.",
+         "why": "Trả lời về mình: I am…"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Viết và nói",
+     "sets": [
+      {
+       "type": "fix",
+       "items": [
+        {
+         "wrong": "My mother a teacher.",
+         "answer": "My mother is a teacher.",
+         "why": "Thiếu động từ to be."
+        },
+        {
+         "wrong": "I is a student.",
+         "answer": "I am a student.",
+         "why": "I đi với am."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "items": [
+        {
+         "prompt": "My father is a driver.",
+         "instruction": "Viết lại câu phủ định (is not).",
+         "answer": "My father is not a driver.",
+         "alt": [
+          "My father isn't a driver."
+         ],
+         "why": "is + not."
+        }
+       ]
+      },
+      {
+       "type": "translate",
+       "items": [
+        {
+         "prompt": "Mẹ tôi là giáo viên.",
+         "answer": "My mother is a teacher.",
+         "why": "Nhớ có is."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "items": [
+        {
+         "prompt": "What is your mother's name?",
+         "answer": "Her name is Lan.",
+         "alt": [
+          "My mother's name is Lan."
+         ],
+         "why": "Câu trả lời mẫu, tên của bạn có thể khác."
+        }
+       ]
+      },
+      {
+       "type": "shadow",
+       "items": [
+        {
+         "say": "This is my family."
+        },
+        {
+         "say": "We are a happy family."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "sat": {
+   "title": "Challenge SAT",
+   "stages": [
+    {
+     "title": "Khởi động nhanh",
+     "sets": [
+      {
+       "type": "truefalse",
+       "items": [
+        {
+         "q": "\"Mother\" nghĩa là bố.",
+         "answer": false,
+         "why": "mother = mẹ."
+        },
+        {
+         "q": "I am a student. (Câu này đúng ngữ pháp)",
+         "answer": true,
+         "why": "I đi với am."
+        },
+        {
+         "q": "She are my sister. (Câu này đúng ngữ pháp)",
+         "answer": false,
+         "why": "She đi với is."
+        }
+       ]
+      },
+      {
+       "type": "match",
+       "items": [
+        {
+         "left": "mother",
+         "right": "mẹ"
+        },
+        {
+         "left": "father",
+         "right": "bố"
+        },
+        {
+         "left": "sister",
+         "right": "chị / em gái"
+        },
+        {
+         "left": "brother",
+         "right": "anh / em trai"
+        },
+        {
+         "left": "parents",
+         "right": "bố mẹ"
+        }
+       ]
+      },
+      {
+       "type": "dictation",
+       "items": [
+        {
+         "say": "My mother is a teacher.",
+         "why": "Chú ý is sau My mother."
+        },
+        {
+         "say": "We are a happy family.",
+         "why": "We đi với are."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Điền và ghép",
+     "sets": [
+      {
+       "type": "gap",
+       "items": [
+        {
+         "text": "My father ___ a teacher.",
+         "answer": "is",
+         "why": "My father = he, dùng is."
+        },
+        {
+         "text": "We ___ a happy family.",
+         "answer": "are",
+         "why": "We đi với are."
+        },
+        {
+         "text": "I ___ happy today.",
+         "answer": "am",
+         "why": "I đi với am."
+        }
+       ],
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "cloze",
+       "items": [
+        {
+         "answer": "am",
+         "why": "I đi với am."
+        },
+        {
+         "answer": "is",
+         "why": "My father = he."
+        },
+        {
+         "answer": "are",
+         "why": "We đi với are."
+        }
+       ],
+       "passage": "Hello! I ___ Mai. My father ___ a driver. We ___ a happy family.",
+       "mode": "pick",
+       "distractors": [
+        "be"
+       ]
+      },
+      {
+       "type": "reorder",
+       "items": [
+        {
+         "words": [
+          "is",
+          "a",
+          "teacher",
+          "father",
+          "My"
+         ],
+         "answer": "My father is a teacher.",
+         "why": "Chủ ngữ, to be, phần còn lại."
+        },
+        {
+         "words": [
+          "are",
+          "happy",
+          "We",
+          "a",
+          "family"
+         ],
+         "answer": "We are a happy family.",
+         "why": "We are + a happy family."
+        }
+       ]
+      },
+      {
+       "type": "form",
+       "items": [
+        {
+         "text": "My sister ___ (be) sixteen.",
+         "answer": "is",
+         "why": "be thành is với she."
+        },
+        {
+         "text": "___ (he) name is Nam.",
+         "answer": "His",
+         "why": "he thành his."
+        }
+       ]
+      },
+      {
+       "type": "dialogue",
+       "items": [
+        {
+         "lines": [
+          "Who is he?"
+         ],
+         "options": [
+          "He is my brother.",
+          "She is my sister.",
+          "I am ten."
+         ],
+         "answer": "He is my brother.",
+         "why": "Hỏi về một người nam nên trả lời He is…"
+        },
+        {
+         "lines": [
+          "How old are you?",
+          "…"
+         ],
+         "options": [
+          "I am twelve.",
+          "I is twelve.",
+          "He is twelve."
+         ],
+         "answer": "I am twelve.",
+         "why": "Trả lời về mình: I am…"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "title": "Viết và nói",
+     "sets": [
+      {
+       "type": "fix",
+       "items": [
+        {
+         "wrong": "My mother a teacher.",
+         "answer": "My mother is a teacher.",
+         "why": "Thiếu động từ to be."
+        },
+        {
+         "wrong": "I is a student.",
+         "answer": "I am a student.",
+         "why": "I đi với am."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "items": [
+        {
+         "prompt": "My father is a driver.",
+         "instruction": "Viết lại câu phủ định (is not).",
+         "answer": "My father is not a driver.",
+         "alt": [
+          "My father isn't a driver."
+         ],
+         "why": "is + not."
+        }
+       ]
+      },
+      {
+       "type": "translate",
+       "items": [
+        {
+         "prompt": "Mẹ tôi là giáo viên.",
+         "answer": "My mother is a teacher.",
+         "why": "Nhớ có is."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "items": [
+        {
+         "prompt": "What is your mother's name?",
+         "answer": "Her name is Lan.",
+         "alt": [
+          "My mother's name is Lan."
+         ],
+         "why": "Câu trả lời mẫu, tên của bạn có thể khác."
+        }
+       ]
+      },
+      {
+       "type": "shadow",
+       "items": [
+        {
+         "say": "This is my family."
+        },
+        {
+         "say": "We are a happy family."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "level": "A2",
+ "focus": "Giới thiệu người thân và nghề nghiệp",
+ "vocabList": [
+  {
+   "en": "husband",
+   "vi": "chồng",
+   "pos": "noun",
+   "ipa": "/ˈhʌzbənd/",
+   "ex": "Her husband is a mechanic.",
+   "exVi": "Chồng cô ấy là thợ máy.",
+   "sub": 1
+  },
+  {
+   "en": "wife",
+   "vi": "vợ",
+   "pos": "noun",
+   "ipa": "/waɪf/",
+   "ex": "His wife is a nurse.",
+   "exVi": "Vợ anh ấy là y tá.",
+   "sub": 1
+  },
+  {
+   "en": "son",
+   "vi": "con trai",
+   "pos": "noun",
+   "ipa": "/sʌn/",
+   "ex": "Their son is ten years old.",
+   "exVi": "Con trai họ mười tuổi.",
+   "sub": 1
+  },
+  {
+   "en": "daughter",
+   "vi": "con gái",
+   "pos": "noun",
+   "ipa": "/ˈdɔːtə/",
+   "ex": "My daughter is shy.",
+   "exVi": "Con gái tôi nhút nhát.",
+   "sub": 1
+  },
+  {
+   "en": "grandparents",
+   "vi": "ông bà",
+   "pos": "noun",
+   "ipa": "/ˈɡrænpeərənts/",
+   "ex": "My grandparents are retired.",
+   "exVi": "Ông bà tôi đã nghỉ hưu.",
+   "sub": 1
+  },
+  {
+   "en": "aunt",
+   "vi": "cô, dì, bác gái",
+   "pos": "noun",
+   "ipa": "/ɑːnt/",
+   "ex": "My aunt is a dentist.",
+   "exVi": "Dì tôi là nha sĩ.",
+   "sub": 1
+  },
+  {
+   "en": "uncle",
+   "vi": "chú, cậu, bác trai",
+   "pos": "noun",
+   "ipa": "/ˈʌŋkl/",
+   "ex": "My uncle is a farmer.",
+   "exVi": "Chú tôi là nông dân.",
+   "sub": 1
+  }
+ ]
 }

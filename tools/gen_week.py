@@ -6,7 +6,7 @@ Cách dùng:
   export OPENAI_API_KEY=sk-...        (Windows: set OPENAI_API_KEY=sk-...)
   python3 gen_week.py                 # chạy hết
   python3 gen_week.py --only mon ch-wed   # chỉ làm lại một vài phần
-Tuỳ chọn: --model gpt-5  --prompt ../PROMPT-soan-tuan-1-GPT.md  --out out
+Tuỳ chọn: --model gpt-5  --prompt ../prompts/PROMPT-GPT-nhi.md  --out out
 """
 import argparse, json, os, re, sys, time, collections
 
@@ -16,7 +16,7 @@ DAYS = {"mon":"Thứ 2","tue":"Thứ 3","wed":"Thứ 4","thu":"Thứ 5","fri":"T
 
 def task_for(p):
     if p == "meta":
-        return 'Soạn PHẦN `meta` (part:"meta") của tuần 1 gồm bảng từ vựng 32 từ chia 4 sub, tên nhân vật và nghề nghiệp từng bài đọc, đúng định dạng meta trong prompt.'
+        return 'Soạn PHẦN `meta` (part:"meta") của tuần đang soạn (theo BRIEF) gồm `level`, `focus` và `vocabList` đủ số từ chia 4 sub, tên nhân vật và nghề nghiệp từng bài đọc, đúng định dạng meta trong prompt.'
     if p.startswith("ch-"):
         return f'Soạn PHẦN challenge của buổi {DAYS[p[3:]]} (part:"challenge", day:"{p[3:]}"), đủ số câu theo bảng số lượng.'
     return f'Soạn PHẦN session của buổi {DAYS[p]} (part:"session", day:"{p}"), đủ mọi bước và đủ số câu theo bảng số lượng.'

@@ -11,11 +11,11 @@ drop policy if exists "kv_read"   on public.kv;
 drop policy if exists "kv_insert" on public.kv;
 drop policy if exists "kv_update" on public.kv;
 
--- Chỉ mở đúng dòng tiến độ và các dòng bài học w1..w18
+-- Chỉ mở đúng dòng tiến độ của hai học viên và các dòng bài học w1..w30 (Nhi), t1..t30 (Trí)
 create policy "kv_read" on public.kv for select to anon, authenticated
-  using (id = 'learner-nhi-7k3q9x2m' or id ~ '^w[0-9]+$');
+  using (id in ('learner-nhi-7k3q9x2m', 'learner-tri-5m8w2c4h') or id ~ '^[wt][0-9]+$');
 create policy "kv_insert" on public.kv for insert to anon, authenticated
-  with check (id = 'learner-nhi-7k3q9x2m' or id ~ '^w[0-9]+$');
+  with check (id in ('learner-nhi-7k3q9x2m', 'learner-tri-5m8w2c4h') or id ~ '^[wt][0-9]+$');
 create policy "kv_update" on public.kv for update to anon, authenticated
-  using (id = 'learner-nhi-7k3q9x2m' or id ~ '^w[0-9]+$')
-  with check (id = 'learner-nhi-7k3q9x2m' or id ~ '^w[0-9]+$');
+  using (id in ('learner-nhi-7k3q9x2m', 'learner-tri-5m8w2c4h') or id ~ '^[wt][0-9]+$')
+  with check (id in ('learner-nhi-7k3q9x2m', 'learner-tri-5m8w2c4h') or id ~ '^[wt][0-9]+$');

@@ -1,0 +1,1366 @@
+{
+ "schema": "a1-week/1",
+ "week": 1,
+ "title": "Work and automation",
+ "grammar": "Đảo ngữ sau trạng từ phủ định (Not only, Rarely, Never)",
+ "level": "B2-C1",
+ "focus": "Viết đoạn luận điểm và bài nói mở đầu thuyết phục",
+ "subs": [
+  "The changing job market",
+  "The case for automation",
+  "The risks",
+  "The way forward"
+ ],
+ "vocabList": [
+  {
+   "en": "job displacement",
+   "vi": "tình trạng mất việc do bị thay thế",
+   "pos": "noun phrase",
+   "ipa": "/dʒɒb dɪsˈpleɪsmənt/",
+   "ex": "Rapid job displacement has left many mid-career workers struggling to adapt.",
+   "sub": 1
+  },
+  {
+   "en": "labour market",
+   "vi": "thị trường lao động",
+   "pos": "noun phrase",
+   "ipa": "/ˈleɪbə ˈmɑːkɪt/",
+   "ex": "The labour market now rewards flexibility above loyalty.",
+   "sub": 1
+  },
+  {
+   "en": "skills gap",
+   "vi": "khoảng cách kỹ năng",
+   "pos": "noun phrase",
+   "ipa": "/skɪlz ɡæp/",
+   "ex": "A widening skills gap leaves vacancies unfilled in every sector.",
+   "sub": 1
+  },
+  {
+   "en": "redundancy",
+   "vi": "tình trạng bị sa thải do dư thừa",
+   "pos": "noun",
+   "ipa": "/rɪˈdʌndənsi/",
+   "ex": "Redundancy rarely comes with a plan for retraining.",
+   "sub": 1
+  },
+  {
+   "en": "gig economy",
+   "vi": "nền kinh tế làm việc tự do ngắn hạn",
+   "pos": "noun phrase",
+   "ipa": "/ɡɪɡ ɪˈkɒnəmi/",
+   "ex": "The gig economy offers flexibility but little protection.",
+   "sub": 1
+  },
+  {
+   "en": "workforce",
+   "vi": "lực lượng lao động",
+   "pos": "noun",
+   "ipa": "/ˈwɜːkfɔːs/",
+   "ex": "An ageing workforce must be retrained, not replaced.",
+   "sub": 1
+  },
+  {
+   "en": "be made redundant",
+   "vi": "bị cho thôi việc",
+   "pos": "phrase",
+   "ipa": "/biː meɪd rɪˈdʌndənt/",
+   "ex": "Thousands are likely to be made redundant once the factory is automated.",
+   "sub": 1
+  },
+  {
+   "en": "boost productivity",
+   "vi": "tăng năng suất",
+   "pos": "verb phrase",
+   "ipa": "/buːst ˌprɒdʌkˈtɪvəti/",
+   "ex": "Robots can boost productivity without raising wages.",
+   "sub": 2
+  },
+  {
+   "en": "cut costs",
+   "vi": "cắt giảm chi phí",
+   "pos": "verb phrase",
+   "ipa": "/kʌt kɒsts/",
+   "ex": "Firms automate mainly to cut costs.",
+   "sub": 2
+  },
+  {
+   "en": "streamline operations",
+   "vi": "tinh gọn hoạt động",
+   "pos": "verb phrase",
+   "ipa": "/ˈstriːmlaɪn ˌɒpəˈreɪʃnz/",
+   "ex": "Software helps companies streamline operations across borders.",
+   "sub": 2
+  },
+  {
+   "en": "a double-edged sword",
+   "vi": "con dao hai lưỡi",
+   "pos": "idiom",
+   "ipa": "/ə ˌdʌbl ˈedʒd sɔːd/",
+   "ex": "Automation is a double-edged sword for low-skilled workers.",
+   "sub": 2
+  },
+  {
+   "en": "reap the benefits",
+   "vi": "gặt hái lợi ích",
+   "pos": "idiom",
+   "ipa": "/riːp ðə ˈbenɪfɪts/",
+   "ex": "Early adopters reap the benefits of new technology.",
+   "sub": 2
+  },
+  {
+   "en": "cutting-edge",
+   "vi": "tiên tiến nhất",
+   "pos": "adjective",
+   "ipa": "/ˌkʌtɪŋ ˈedʒ/",
+   "ex": "Cutting-edge machinery now performs tasks once done by hand.",
+   "sub": 2
+  },
+  {
+   "en": "labour-saving",
+   "vi": "tiết kiệm sức lao động",
+   "pos": "adjective",
+   "ipa": "/ˈleɪbə ˌseɪvɪŋ/",
+   "ex": "Labour-saving devices free staff for more creative work.",
+   "sub": 2
+  },
+  {
+   "en": "widen the inequality gap",
+   "vi": "nới rộng khoảng cách bất bình đẳng",
+   "pos": "verb phrase",
+   "ipa": "/ˈwaɪdn ði ˌɪnɪˈkwɒləti ɡæp/",
+   "ex": "Unchecked automation could widen the inequality gap.",
+   "sub": 3
+  },
+  {
+   "en": "job security",
+   "vi": "sự ổn định việc làm",
+   "pos": "noun phrase",
+   "ipa": "/dʒɒb sɪˈkjʊərəti/",
+   "ex": "Job security can no longer be taken for granted.",
+   "sub": 3
+  },
+  {
+   "en": "erode skills",
+   "vi": "làm mai một kỹ năng",
+   "pos": "verb phrase",
+   "ipa": "/ɪˈrəʊd skɪlz/",
+   "ex": "Overreliance on software may erode skills that took years to build.",
+   "sub": 3
+  },
+  {
+   "en": "put people out of work",
+   "vi": "khiến người ta mất việc",
+   "pos": "verb phrase",
+   "ipa": "/pʊt ˈpiːpl aʊt əv wɜːk/",
+   "ex": "New machines can put people out of work overnight.",
+   "sub": 3
+  },
+  {
+   "en": "a growing sense of insecurity",
+   "vi": "cảm giác bất an ngày một tăng",
+   "pos": "noun phrase",
+   "ipa": "/ə ˈɡrəʊɪŋ sens əv ˌɪnsɪˈkjʊərəti/",
+   "ex": "A growing sense of insecurity is spreading through white-collar jobs.",
+   "sub": 3
+  },
+  {
+   "en": "overreliance on",
+   "vi": "sự phụ thuộc quá mức vào",
+   "pos": "noun phrase",
+   "ipa": "/ˌəʊvəriˈlaɪəns ɒn/",
+   "ex": "Overreliance on algorithms weakens human judgement.",
+   "sub": 3
+  },
+  {
+   "en": "fall short of",
+   "vi": "không đạt được",
+   "pos": "phrasal verb",
+   "ipa": "/fɔːl ʃɔːt əv/",
+   "ex": "Government support often falls short of what retrained workers need.",
+   "sub": 3
+  },
+  {
+   "en": "reskill",
+   "vi": "đào tạo lại kỹ năng",
+   "pos": "verb",
+   "ipa": "/ˌriːˈskɪl/",
+   "ex": "Workers must reskill every few years to stay employable.",
+   "sub": 4
+  },
+  {
+   "en": "lifelong learning",
+   "vi": "học tập suốt đời",
+   "pos": "noun phrase",
+   "ipa": "/ˌlaɪflɒŋ ˈlɜːnɪŋ/",
+   "ex": "Lifelong learning is now a survival skill.",
+   "sub": 4
+  },
+  {
+   "en": "adapt to",
+   "vi": "thích nghi với",
+   "pos": "phrasal verb",
+   "ipa": "/əˈdæpt tuː/",
+   "ex": "Societies must adapt to change faster than before.",
+   "sub": 4
+  },
+  {
+   "en": "strike a balance",
+   "vi": "tìm được sự cân bằng",
+   "pos": "idiom",
+   "ipa": "/straɪk ə ˈbæləns/",
+   "ex": "Policy should strike a balance between innovation and fairness.",
+   "sub": 4
+  },
+  {
+   "en": "safety net",
+   "vi": "mạng lưới an sinh",
+   "pos": "noun phrase",
+   "ipa": "/ˈseɪfti net/",
+   "ex": "A strong safety net makes change less frightening.",
+   "sub": 4
+  },
+  {
+   "en": "a pressing issue",
+   "vi": "một vấn đề cấp bách",
+   "pos": "noun phrase",
+   "ipa": "/ə ˈpresɪŋ ˈɪʃuː/",
+   "ex": "Retraining is a pressing issue for every government.",
+   "sub": 4
+  },
+  {
+   "en": "mitigate the impact",
+   "vi": "giảm nhẹ tác động",
+   "pos": "verb phrase",
+   "ipa": "/ˈmɪtɪɡeɪt ði ˈɪmpækt/",
+   "ex": "Early support can mitigate the impact on displaced workers.",
+   "sub": 4
+  }
+ ],
+ "sessions": {
+  "mon": {
+   "title": "Sub 1: The changing job market",
+   "kind": "new",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Khởi động",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng nhất.",
+       "core": 2,
+       "items": [
+        {
+         "q": "\"Job displacement\" most likely means",
+         "options": [
+          "losing jobs to new technology",
+          "moving to a new job",
+          "changing office"
+         ],
+         "answer": "losing jobs to new technology",
+         "why": "displacement = bị thay thế."
+        },
+        {
+         "q": "\"A skills gap\" is",
+         "options": [
+          "a shortage of the right skills",
+          "a long holiday",
+          "a pay rise"
+         ],
+         "answer": "a shortage of the right skills",
+         "why": "gap = khoảng cách."
+        }
+       ],
+       "ungraded": true
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "read",
+     "title": "Đọc",
+     "min": "5–17′",
+     "heading": "Is automation a threat or an opportunity?",
+     "purpose": "Đọc để tìm: tác giả mô tả thị trường lao động thay đổi thế nào?",
+     "text": [
+      "Few debates are as heated as the one about job displacement. Across the labour market, a widening skills gap leaves employers short of talent, while thousands face redundancy. The rise of the gig economy has reshaped the workforce, offering flexibility but little protection. Not every worker is lucky: many risk having to be made redundant when their tasks are automated. Rarely has the labour market changed so quickly."
+     ],
+     "vocab": {
+      "job displacement": "tình trạng mất việc do bị thay thế",
+      "labour market": "thị trường lao động",
+      "skills gap": "khoảng cách kỹ năng",
+      "redundancy": "tình trạng bị sa thải do dư thừa",
+      "gig economy": "nền kinh tế làm việc tự do ngắn hạn",
+      "workforce": "lực lượng lao động",
+      "be made redundant": "bị cho thôi việc"
+     },
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng nhất theo bài đọc.",
+       "core": 3,
+       "items": [
+        {
+         "q": "Which sentence is correct?",
+         "options": [
+          "Rarely has the labour market changed so quickly.",
+          "Rarely the labour market has changed so quickly.",
+          "Rarely the labour market changed has so quickly."
+         ],
+         "answer": "Rarely has the labour market changed so quickly.",
+         "why": "Sau Rarely, trợ động từ has đứng trước chủ ngữ."
+        },
+        {
+         "q": "The author's attitude to automation is best described as",
+         "options": [
+          "balanced but cautious",
+          "enthusiastic",
+          "dismissive"
+         ],
+         "answer": "balanced but cautious",
+         "why": "Tác giả nêu cả lợi ích lẫn rủi ro và kêu gọi cân bằng."
+        },
+        {
+         "q": "Which pair best fits the gap: ___ displacement and the skills ___?",
+         "options": [
+          "job / gap",
+          "work / hole",
+          "job / hole"
+         ],
+         "answer": "job / gap",
+         "why": "Collocation cố định: job displacement, skills gap."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "instruction": "Dùng cấu trúc và cụm của bài để trả lời.",
+       "core": 2,
+       "items": [
+        {
+         "prompt": "Rewrite with Rarely: \"The labour market has seldom changed so quickly.\"",
+         "answer": "Rarely has the labour market changed so quickly.",
+         "why": "Đảo has trước chủ ngữ."
+        },
+        {
+         "prompt": "In one sentence, say how the gig economy affects workers, using \"but\".",
+         "answer": "The gig economy offers flexibility but little protection.",
+         "alt": []
+        }
+       ],
+       "role": "apply"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "key": "listen",
+     "title": "Nghe",
+     "min": "17–24′",
+     "text": [
+      "Few debates are as heated as the one about job displacement. Across the labour market, a widening skills gap leaves employers short of talent, while thousands face redundancy. The rise of the gig economy has reshaped the workforce, offering flexibility but little protection. Not every worker is lucky: many risk having to be made redundant when their tasks are automated. Rarely has the labour market changed so quickly."
+     ],
+     "sets": [
+      {
+       "type": "listenpick",
+       "instruction": "Nghe rồi chọn đáp án đúng.",
+       "core": 2,
+       "items": [
+        {
+         "say": "Rarely has the labour market changed so quickly.",
+         "q": "Điều gì hiếm khi xảy ra?",
+         "options": [
+          "Thị trường lao động thay đổi nhanh đến vậy",
+          "Việc làm tăng",
+          "Lương giảm"
+         ],
+         "answer": "Thị trường lao động thay đổi nhanh đến vậy",
+         "why": "Rarely + has + chủ ngữ."
+        },
+        {
+         "say": "The gig economy offers flexibility but little protection.",
+         "q": "Gig economy thiếu điều gì?",
+         "options": [
+          "Sự bảo vệ",
+          "Sự linh hoạt",
+          "Thu nhập"
+         ],
+         "answer": "Sự bảo vệ",
+         "why": "little protection."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "notice",
+     "key": "notice",
+     "title": "Tìm ngữ pháp",
+     "min": "24–30′",
+     "text": [
+      "Few debates are as heated as the one about job displacement. Across the labour market, a widening skills gap leaves employers short of talent, while thousands face redundancy. The rise of the gig economy has reshaped the workforce, offering flexibility but little protection. Not every worker is lucky: many risk having to be made redundant when their tasks are automated. Rarely has the labour market changed so quickly."
+     ],
+     "target": [
+      "rarely",
+      "not every"
+     ],
+     "find": "cấu trúc đảo ngữ và câu phủ định mở đầu câu",
+     "box": {
+      "title": "Ghi nhớ: đảo ngữ sau trạng từ phủ định",
+      "intro": "Sau Not only, Rarely, Never, Seldom, Hardly... đặt trợ động từ trước chủ ngữ.",
+      "rows": [
+       {
+        "subject": "Not only + trợ động từ + S + V",
+        "form": "Not only does it raise output, but ...",
+        "example": "Not only does it raise output, but it also changes who is needed."
+       },
+       {
+        "subject": "Rarely / Seldom / Never + trợ động từ + S",
+        "form": "Rarely has the labour market changed so quickly.",
+        "example": "Never before have policies so often fallen short."
+       }
+      ],
+      "note": "Lỗi thường gặp: quên đảo (Rarely the market has...) hoặc đảo cả ở mệnh đề sau but also."
+     }
+    },
+    {
+     "type": "sets",
+     "key": "practice",
+     "title": "Luyện tập",
+     "min": "30–48′",
+     "sets": [
+      {
+       "type": "form",
+       "instruction": "Điền dạng đúng của từ trong ngoặc.",
+       "core": 2,
+       "items": [
+        {
+         "text": "The ___ (ADEQUATE) of the existing safety net became clear during the crisis.",
+         "answer": "inadequacy",
+         "why": "Cần danh từ phủ định: inadequacy."
+        },
+        {
+         "text": "A ___ (GROW) sense of insecurity is spreading.",
+         "answer": "growing",
+         "why": "Cần tính từ V-ing đứng trước danh từ."
+        }
+       ]
+      },
+      {
+       "type": "cloze",
+       "instruction": "Gõ từ còn thiếu vào đoạn văn.",
+       "core": 2,
+       "items": [
+        {
+         "answer": "has",
+         "why": "Đảo has sau Rarely."
+        },
+        {
+         "answer": "does",
+         "why": "Đảo does sau Not only."
+        }
+       ],
+       "passage": "Rarely ___ the workforce faced such change. Not only ___ automation cut costs, but it also raises quality.",
+       "mode": "type"
+      },
+      {
+       "type": "transform",
+       "instruction": "Viết lại câu theo yêu cầu.",
+       "core": 1,
+       "items": [
+        {
+         "prompt": "Automation cuts costs and it also raises quality.",
+         "instruction": "Viết lại bằng Not only ... but also, dùng từ gợi ý.",
+         "keyword": "does",
+         "answer": "Not only does automation cut costs, but it also raises quality.",
+         "alt": [
+          "Not only does automation cut costs but it also raises quality."
+         ],
+         "why": "Not only đứng đầu thì đảo does automation."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết",
+     "min": "48–60′",
+     "prompt": "Write one paragraph (70 to 100 words) stating your position on whether automation helps or harms workers.",
+     "hint": "Open with a clear thesis.",
+     "sample": "Rarely has a technology divided workers so sharply. In my view, automation is a double-edged sword.",
+     "model": "Never before has the labour market changed so rapidly, yet the answer is not to resist change but to prepare for it. Not only does automation cut costs, but it also frees people from repetitive work.",
+     "minWords": 60,
+     "useWords": [
+      "Rarely",
+      "Not only",
+      "Never"
+     ],
+     "outline": [
+      "Câu chủ đề nêu luận điểm",
+      "Lý do và bằng chứng",
+      "Kết nối với tuần sau"
+     ],
+     "checklist": [
+      "Có luận điểm rõ ở câu đầu",
+      "Dùng ít nhất một cấu trúc đảo ngữ đúng",
+      "Có lý do hoặc ví dụ cụ thể"
+     ]
+    }
+   ]
+  },
+  "tue": {
+   "title": "Ôn Sub 1, đọc trước Sub 2",
+   "kind": "review",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Nhớ lại",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng nhất.",
+       "core": 1,
+       "items": [
+        {
+         "q": "Which sentence needs inversion?",
+         "options": [
+          "Rarely ... the market has changed.",
+          "The market has changed quickly.",
+          "Many workers adapt."
+         ],
+         "answer": "Rarely ... the market has changed.",
+         "why": "Rarely mở đầu câu thì đảo."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "review",
+     "title": "Ôn dạng bài khác",
+     "min": "5–36′",
+     "sets": [
+      {
+       "type": "fix",
+       "instruction": "Tìm và sửa lỗi.",
+       "core": 2,
+       "items": [
+        {
+         "wrong": "Never before the labour market has changed so quickly.",
+         "answer": "Never before has the labour market changed so quickly.",
+         "why": "Sau Never before phải đảo: has + chủ ngữ."
+        },
+        {
+         "wrong": "Not only automation cuts costs, but it also raises quality.",
+         "answer": "Not only does automation cut costs, but it also raises quality.",
+         "why": "Thiếu trợ động từ does sau Not only."
+        }
+       ]
+      },
+      {
+       "type": "gap",
+       "instruction": "Điền từ vào chỗ trống.",
+       "core": 2,
+       "items": [
+        {
+         "text": "A widening skills ___ leaves vacancies unfilled.",
+         "answer": "gap",
+         "why": "skills gap."
+        },
+        {
+         "text": "Many workers risk being made ___.",
+         "answer": "redundant",
+         "why": "be made redundant."
+        }
+       ]
+      },
+      {
+       "type": "reorder",
+       "instruction": "Xếp thành câu hoàn chỉnh.",
+       "core": 1,
+       "items": [
+        {
+         "words": [
+          "Rarely",
+          "have",
+          "economists",
+          "agreed",
+          "on",
+          "such",
+          "a",
+          "complex",
+          "issue"
+         ],
+         "answer": "Rarely have economists agreed on such a complex issue.",
+         "why": "Rarely + have + chủ ngữ."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "preview",
+     "title": "Đọc trước Sub 2",
+     "min": "36–46′",
+     "heading": "The case for automation",
+     "purpose": "Đọc để tìm: hai lợi ích chính mà người ủng hộ nêu ra.",
+     "text": [
+      "Supporters argue that robots boost productivity and cut costs. Firms that streamline operations with cutting-edge systems reap the benefits quickly, and labour-saving machines free staff from dull tasks. Yet automation remains a double-edged sword. Not only does it raise output, but it also changes who is needed."
+     ],
+     "vocab": {
+      "boost productivity": "tăng năng suất",
+      "cut costs": "cắt giảm chi phí",
+      "streamline operations": "tinh gọn hoạt động",
+      "a double-edged sword": "con dao hai lưỡi",
+      "reap the benefits": "gặt hái lợi ích",
+      "cutting-edge": "tiên tiến nhất",
+      "labour-saving": "tiết kiệm sức lao động"
+     },
+     "sets": [
+      {
+       "type": "answer",
+       "instruction": "Trả lời ngắn.",
+       "core": 1,
+       "items": [
+        {
+         "prompt": "Which two benefits do supporters mention?",
+         "answer": "Higher productivity and lower costs.",
+         "alt": []
+        }
+       ],
+       "role": "apply"
+      },
+      {
+       "type": "answer",
+       "instruction": "Đoán nghĩa theo ngữ cảnh.",
+       "core": 1,
+       "items": [
+        {
+         "prompt": "What do you think a double-edged sword means here?",
+         "answer": "Something with both benefits and harms.",
+         "alt": []
+        }
+       ],
+       "role": "apply"
+      }
+     ],
+     "note": "Hôm nay chỉ đọc để làm quen; đầy đủ vào Thứ 4."
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết",
+     "min": "46–60′",
+     "prompt": "The paragraph below is weak. Rewrite it (60 to 80 words) using at least two inversion structures: \"Automation is changing jobs. It makes firms cheaper. It also makes work faster. Workers are worried about it.\"",
+     "hint": "Start with Rarely or Not only.",
+     "sample": "Not only does automation make firms cheaper, but it also makes work faster.",
+     "model": "Rarely have workers faced such a mix of promise and threat. Not only does automation cut costs, but it also speeds up work; nevertheless, many people worry about losing their jobs.",
+     "minWords": 50,
+     "useWords": [
+      "Not only",
+      "Rarely"
+     ]
+    }
+   ]
+  },
+  "wed": {
+   "title": "Sub 2: The case for automation",
+   "kind": "new",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Nhớ lại",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng nhất.",
+       "core": 1,
+       "items": [
+        {
+         "q": "Complete: Not only ___ it cut costs, but it also boosts quality.",
+         "options": [
+          "does",
+          "do",
+          "is"
+         ],
+         "answer": "does",
+         "why": "Đảo does trước it."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "read",
+     "title": "Đọc",
+     "min": "5–17′",
+     "heading": "The case for automation",
+     "purpose": "Đọc để tìm: vì sao tự động hóa được gọi là con dao hai lưỡi?",
+     "text": [
+      "Supporters argue that robots boost productivity and cut costs. Firms that streamline operations with cutting-edge systems reap the benefits quickly, and labour-saving machines free staff from dull tasks. Yet automation remains a double-edged sword. Not only does it raise output, but it also changes who is needed."
+     ],
+     "vocab": {
+      "boost productivity": "tăng năng suất",
+      "cut costs": "cắt giảm chi phí",
+      "streamline operations": "tinh gọn hoạt động",
+      "a double-edged sword": "con dao hai lưỡi",
+      "reap the benefits": "gặt hái lợi ích",
+      "cutting-edge": "tiên tiến nhất",
+      "labour-saving": "tiết kiệm sức lao động"
+     },
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng.",
+       "core": 1,
+       "items": [
+        {
+         "q": "According to the text, firms that streamline operations",
+         "options": [
+          "reap the benefits quickly",
+          "lose staff",
+          "raise prices"
+         ],
+         "answer": "reap the benefits quickly",
+         "why": "Câu 2 của đoạn."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "instruction": "Dùng cấu trúc của tuần.",
+       "core": 1,
+       "items": [
+        {
+         "prompt": "Robots boost productivity and cut costs.",
+         "instruction": "Viết lại với Not only ... but also.",
+         "answer": "Not only do robots boost productivity, but they also cut costs.",
+         "alt": [
+          "Not only do robots boost productivity but they also cut costs."
+         ],
+         "why": "Đảo do trước robots."
+        }
+       ],
+       "role": "apply"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "key": "listen",
+     "title": "Nghe",
+     "min": "17–24′",
+     "text": [
+      "Supporters argue that robots boost productivity and cut costs. Firms that streamline operations with cutting-edge systems reap the benefits quickly, and labour-saving machines free staff from dull tasks. Yet automation remains a double-edged sword. Not only does it raise output, but it also changes who is needed."
+     ],
+     "sets": [
+      {
+       "type": "listenpick",
+       "instruction": "Nghe rồi chọn đáp án đúng.",
+       "core": 1,
+       "items": [
+        {
+         "say": "Not only does it raise output, but it also changes who is needed.",
+         "q": "Ý nào đúng?",
+         "options": [
+          "Tự động hóa tăng sản lượng và thay đổi nhu cầu nhân lực",
+          "Chỉ tăng sản lượng",
+          "Chỉ giảm nhân lực"
+         ],
+         "answer": "Tự động hóa tăng sản lượng và thay đổi nhu cầu nhân lực",
+         "why": "Hai vế của Not only ... but also."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "practice",
+     "title": "Luyện tập",
+     "min": "30–48′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Chọn từ đúng.",
+       "core": 1,
+       "items": [
+        {
+         "q": "___ has so much changed in so short a time.",
+         "options": [
+          "Seldom",
+          "Not only",
+          "Such"
+         ],
+         "answer": "Seldom",
+         "why": "Seldom + has đảo."
+        }
+       ]
+      },
+      {
+       "type": "fix",
+       "instruction": "Sửa lỗi.",
+       "core": 1,
+       "items": [
+        {
+         "wrong": "Hardly the workers had arrived when the machines started.",
+         "answer": "Hardly had the workers arrived when the machines started.",
+         "why": "Hardly + had + chủ ngữ."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết",
+     "min": "48–60′",
+     "prompt": "Write an argument (130 to 170 words): should firms automate as fast as possible? Include one counter-argument and a rebuttal.",
+     "hint": "Claim, reason, evidence, counter-argument, rebuttal.",
+     "sample": "Firms should not automate blindly. Rarely do quick fixes serve everyone.",
+     "model": "Not only can automation cut costs, but it can also protect workers from dangerous tasks. Critics may argue that it destroys jobs; however, history shows that new roles emerge, so the real task is retraining.",
+     "minWords": 110,
+     "useWords": [
+      "Not only",
+      "Rarely",
+      "a double-edged sword"
+     ],
+     "outline": [
+      "Claim",
+      "Reason + evidence",
+      "Counter-argument",
+      "Rebuttal"
+     ]
+    }
+   ]
+  },
+  "thu": {
+   "title": "Ôn Sub 1–2, đọc trước Sub 3",
+   "kind": "review",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Nhớ lại",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng nhất.",
+       "core": 1,
+       "items": [
+        {
+         "q": "\"Cutting-edge\" means",
+         "options": [
+          "most advanced",
+          "very old",
+          "cheap"
+         ],
+         "answer": "most advanced",
+         "why": "cutting-edge = tiên tiến nhất."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "review",
+     "title": "Ôn dạng bài khác",
+     "min": "5–36′",
+     "sets": [
+      {
+       "type": "cloze",
+       "instruction": "Gõ từ còn thiếu.",
+       "core": 2,
+       "items": [
+        {
+         "answer": "has",
+         "why": "Đảo has sau Never before."
+        },
+        {
+         "answer": "does",
+         "why": "Đảo does sau Not only."
+        }
+       ],
+       "passage": "Never before ___ the workforce been so mobile. Not only ___ it want flexibility, but it also demands security.",
+       "mode": "type"
+      },
+      {
+       "type": "dictation",
+       "instruction": "Nghe và gõ lại câu.",
+       "core": 1,
+       "items": [
+        {
+         "say": "Not only does automation boost productivity, but it also frees workers from repetitive tasks.",
+         "why": "Chú ý đảo does automation."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "preview",
+     "title": "Đọc trước Sub 3",
+     "min": "36–46′",
+     "heading": "The risks",
+     "purpose": "Đọc để tìm: ba rủi ro mà các nhà phê bình nêu.",
+     "text": [
+      "Critics warn that automation will widen the inequality gap. Job security, once taken for granted, is fading, and a growing sense of insecurity affects even skilled staff. Overreliance on machines can erode skills, and software that can put people out of work will not easily create new jobs. Never before have policies so often fall short of the pace of change."
+     ],
+     "vocab": {
+      "widen the inequality gap": "nới rộng khoảng cách bất bình đẳng",
+      "job security": "sự ổn định việc làm",
+      "erode skills": "làm mai một kỹ năng",
+      "put people out of work": "khiến người ta mất việc",
+      "a growing sense of insecurity": "cảm giác bất an ngày một tăng",
+      "overreliance on": "sự phụ thuộc quá mức vào",
+      "fall short of": "không đạt được"
+     },
+     "sets": [
+      {
+       "type": "answer",
+       "instruction": "Trả lời ngắn.",
+       "core": 1,
+       "items": [
+        {
+         "prompt": "Name one risk mentioned.",
+         "answer": "A growing sense of insecurity.",
+         "alt": [
+          "Job security is fading."
+         ]
+        }
+       ],
+       "role": "apply"
+      },
+      {
+       "type": "answer",
+       "instruction": "Trả lời ngắn.",
+       "core": 1,
+       "items": [
+        {
+         "prompt": "What does overreliance on machines do?",
+         "answer": "It can erode skills.",
+         "alt": []
+        }
+       ],
+       "role": "apply"
+      }
+     ],
+     "note": "Hôm nay chỉ đọc để làm quen."
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự nói",
+     "min": "46–60′",
+     "mode": "speak",
+     "seconds": 60,
+     "prompt": "Speak for 60 seconds: rebut the claim that automation always destroys jobs.",
+     "hint": "Start with your position.",
+     "sample": "Let me be clear: automation does not always destroy jobs.",
+     "model": "Let me be clear from the outset: automation does not always destroy jobs. Consider this: rarely has technology reduced total employment in the long run. New roles emerge, and the real challenge is retraining."
+    }
+   ]
+  },
+  "fri": {
+   "title": "Sub 3: The risks",
+   "kind": "new",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "warmup",
+     "title": "Nhớ lại",
+     "min": "0–5′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng nhất.",
+       "core": 1,
+       "items": [
+        {
+         "q": "\"Erode skills\" means to",
+         "options": [
+          "weaken skills gradually",
+          "teach skills",
+          "test skills"
+         ],
+         "answer": "weaken skills gradually",
+         "why": "erode = bào mòn."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "read",
+     "title": "Đọc",
+     "min": "5–17′",
+     "heading": "The risks",
+     "purpose": "Đọc để tìm: vì sao người lao động có cảm giác bất an?",
+     "text": [
+      "Critics warn that automation will widen the inequality gap. Job security, once taken for granted, is fading, and a growing sense of insecurity affects even skilled staff. Overreliance on machines can erode skills, and software that can put people out of work will not easily create new jobs. Never before have policies so often fall short of the pace of change."
+     ],
+     "vocab": {
+      "widen the inequality gap": "nới rộng khoảng cách bất bình đẳng",
+      "job security": "sự ổn định việc làm",
+      "erode skills": "làm mai một kỹ năng",
+      "put people out of work": "khiến người ta mất việc",
+      "a growing sense of insecurity": "cảm giác bất an ngày một tăng",
+      "overreliance on": "sự phụ thuộc quá mức vào",
+      "fall short of": "không đạt được"
+     },
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng.",
+       "core": 1,
+       "items": [
+        {
+         "q": "The text suggests policies",
+         "options": [
+          "fall short of the pace of change",
+          "are too fast",
+          "are unnecessary"
+         ],
+         "answer": "fall short of the pace of change",
+         "why": "Câu cuối đoạn."
+        }
+       ]
+      },
+      {
+       "type": "transform",
+       "instruction": "Dùng cấu trúc của tuần.",
+       "core": 1,
+       "items": [
+        {
+         "prompt": "Policies have never before fallen so far short.",
+         "instruction": "Viết lại bắt đầu bằng Never before.",
+         "answer": "Never before have policies fallen so far short.",
+         "alt": [],
+         "why": "Never before + have + chủ ngữ."
+        }
+       ],
+       "role": "apply"
+      }
+     ]
+    },
+    {
+     "type": "listen",
+     "key": "listen",
+     "title": "Nghe",
+     "min": "17–24′",
+     "text": [
+      "Critics warn that automation will widen the inequality gap. Job security, once taken for granted, is fading, and a growing sense of insecurity affects even skilled staff. Overreliance on machines can erode skills, and software that can put people out of work will not easily create new jobs. Never before have policies so often fall short of the pace of change."
+     ],
+     "sets": [
+      {
+       "type": "listenpick",
+       "instruction": "Nghe rồi chọn đáp án đúng.",
+       "core": 1,
+       "items": [
+        {
+         "say": "Overreliance on machines can erode skills.",
+         "q": "Overreliance gây hại gì?",
+         "options": [
+          "Làm mai một kỹ năng",
+          "Tăng lương",
+          "Giảm giờ làm"
+         ],
+         "answer": "Làm mai một kỹ năng",
+         "why": "erode skills."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "practice",
+     "title": "Luyện tập",
+     "min": "30–48′",
+     "sets": [
+      {
+       "type": "dialogue",
+       "instruction": "Chọn câu đáp thuyết phục nhất.",
+       "core": 1,
+       "items": [
+        {
+         "lines": [
+          "Automation will inevitably destroy more jobs than it creates."
+         ],
+         "options": [
+          "That may hold in the short term, but history suggests new sectors absorb displaced workers.",
+          "I do not agree.",
+          "Jobs are good."
+         ],
+         "answer": "That may hold in the short term, but history suggests new sectors absorb displaced workers.",
+         "why": "Nhượng bộ một phần rồi phản biện bằng bằng chứng."
+        }
+       ]
+      },
+      {
+       "type": "translate",
+       "instruction": "Dịch sang tiếng Anh (tự chấm).",
+       "core": 1,
+       "items": [
+        {
+         "prompt": "Hiếm khi nào các chính phủ phải đối mặt với một thay đổi nhanh đến vậy.",
+         "answer": "Rarely have governments faced such rapid change.",
+         "why": "Rarely mở đầu nên đảo have governments."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự nói",
+     "min": "48–60′",
+     "mode": "speak",
+     "seconds": 90,
+     "prompt": "Speak for 90 seconds: persuade your audience that governments must act on job insecurity.",
+     "hint": "Start with your position.",
+     "sample": "Let me be blunt: job insecurity is a policy failure.",
+     "model": "Let me be blunt: job insecurity is a policy failure. Rarely have workers had so little protection, and never before has the pace of change been so fast. We must act now."
+    }
+   ]
+  },
+  "sat": {
+   "title": "Ôn cả tuần, giới thiệu Sub 4",
+   "kind": "week",
+   "steps": [
+    {
+     "type": "sets",
+     "key": "quiz",
+     "title": "Quiz tuần",
+     "min": "0–6′",
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng.",
+       "core": 1,
+       "items": [
+        {
+         "q": "Which is correct?",
+         "options": [
+          "Seldom have workers felt so secure.",
+          "Seldom workers have felt so secure.",
+          "Seldom felt workers have so secure."
+         ],
+         "answer": "Seldom have workers felt so secure.",
+         "why": "Seldom + have + chủ ngữ."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "transfer",
+     "title": "Đọc mới",
+     "min": "6–20′",
+     "heading": "Automation: a balanced view",
+     "purpose": "Đọc để tìm: tác giả đề xuất giải pháp nào?",
+     "text": [
+      "The debate about automation is often reduced to slogans. In truth, job displacement is only one part of a wider story. In the labour market, a persistent skills gap coexists with redundancy, and the workforce is increasingly shaped by the gig economy; those who fail to adapt may be made redundant. On the positive side, firms claim that new tools boost productivity, cut costs and streamline operations. Cutting-edge, labour-saving technology lets them reap the benefits, yet it remains a double-edged sword. Critics counter that it will widen the inequality gap, weaken job security and create a growing sense of insecurity. Overreliance on algorithms can erode skills, and systems that put people out of work may fall short of what society expects. The answer is neither panic nor complacency. Governments should help people reskill, support lifelong learning, and adapt to change. They must strike a balance between growth and fairness, build a safety net, and treat this as a pressing issue so as to mitigate the impact. Seldom has the choice mattered so much."
+     ],
+     "vocab": {},
+     "sets": [
+      {
+       "type": "mcq",
+       "instruction": "Chọn đáp án đúng.",
+       "core": 1,
+       "items": [
+        {
+         "q": "The author's main recommendation is to",
+         "options": [
+          "help people reskill and build a safety net",
+          "ban automation",
+          "ignore the issue"
+         ],
+         "answer": "help people reskill and build a safety net",
+         "why": "Câu gần cuối."
+        }
+       ]
+      },
+      {
+       "type": "answer",
+       "instruction": "Trả lời ngắn.",
+       "core": 1,
+       "items": [
+        {
+         "prompt": "Why does the author call automation a double-edged sword?",
+         "answer": "It brings benefits but also risks.",
+         "alt": []
+        }
+       ],
+       "role": "apply"
+      }
+     ]
+    },
+    {
+     "type": "sets",
+     "key": "mix",
+     "title": "Tổng hợp",
+     "min": "20–38′",
+     "sets": [
+      {
+       "type": "fix",
+       "instruction": "Tìm và sửa lỗi.",
+       "core": 1,
+       "items": [
+        {
+         "wrong": "Rarely workers have faced such pressure.",
+         "answer": "Rarely have workers faced such pressure.",
+         "why": "Đảo have workers."
+        }
+       ]
+      },
+      {
+       "type": "dictation",
+       "instruction": "Nghe và gõ lại.",
+       "core": 1,
+       "items": [
+        {
+         "say": "Never before have policies so often fallen short of the pace of change.",
+         "why": "Never before + have + chủ ngữ."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "read",
+     "key": "preview",
+     "title": "Đọc trước Sub 4",
+     "min": "38–44′",
+     "heading": "The way forward",
+     "purpose": "Đọc để tìm: hai biện pháp được đề xuất.",
+     "text": [
+      "The way forward is to reskill workers. Lifelong learning helps people adapt to new roles, and governments must strike a balance between innovation and a safety net. This is a pressing issue, and we must mitigate the impact on those most affected."
+     ],
+     "vocab": {
+      "reskill": "đào tạo lại kỹ năng",
+      "lifelong learning": "học tập suốt đời",
+      "adapt to": "thích nghi với",
+      "strike a balance": "tìm được sự cân bằng",
+      "safety net": "mạng lưới an sinh",
+      "a pressing issue": "một vấn đề cấp bách",
+      "mitigate the impact": "giảm nhẹ tác động"
+     },
+     "sets": [
+      {
+       "type": "answer",
+       "instruction": "Trả lời ngắn.",
+       "core": 1,
+       "items": [
+        {
+         "prompt": "Name one measure proposed.",
+         "answer": "Lifelong learning.",
+         "alt": [
+          "A safety net."
+         ]
+        }
+       ],
+       "role": "apply"
+      },
+      {
+       "type": "answer",
+       "instruction": "Trả lời ngắn.",
+       "core": 1,
+       "items": [
+        {
+         "prompt": "What must governments balance?",
+         "answer": "Innovation and fairness.",
+         "alt": []
+        }
+       ],
+       "role": "apply"
+      }
+     ],
+     "note": "Hôm nay chỉ đọc để làm quen."
+    },
+    {
+     "type": "output",
+     "key": "output",
+     "title": "Tự viết",
+     "min": "44–56′",
+     "prompt": "DATA REPORT (format demo). The line graph shows the share of tasks automated in two sectors. Summarise the information (at least 150 words).",
+     "hint": "The graph illustrates ... Overall, ...",
+     "sample": "The line graph illustrates the proportion of tasks automated in manufacturing and services between 2000 and 2030.",
+     "model": "Overall, both sectors show a steep upward trend, with manufacturing consistently ahead. Manufacturing rose from 12% in 2000 to 55% in 2020 and is projected to reach 78% by 2030, whereas services climbed from just 5% to 32% over the same period.",
+     "minWords": 150,
+     "useWords": [
+      "Overall",
+      "whereas",
+      "is projected to",
+      "a sharp rise in"
+     ],
+     "outline": [
+      "Paraphrase",
+      "Overview",
+      "Detail 1",
+      "Detail 2"
+     ],
+     "data": {
+      "title": "Share of tasks automated, by sector",
+      "unit": "%",
+      "kind": "line",
+      "headers": [
+       "Year",
+       "Manufacturing",
+       "Services"
+      ],
+      "rows": [
+       [
+        "2000",
+        12,
+        5
+       ],
+       [
+        "2010",
+        30,
+        14
+       ],
+       [
+        "2020",
+        55,
+        32
+       ],
+       [
+        "2030",
+        78,
+        60
+       ]
+      ],
+      "note": "Fictional data for practice. The 2030 figures are projections."
+     }
+    },
+    {
+     "type": "report",
+     "key": "report",
+     "title": "Báo cáo tuần",
+     "min": "56–60′"
+    }
+   ]
+  }
+ },
+ "challenges": {}
+}
