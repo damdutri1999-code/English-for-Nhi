@@ -422,7 +422,13 @@ html[data-learner=tri] .ico{display:inline-block; width:1.1em; height:1.1em; ver
 html[data-learner=tri] .ico svg{width:100%; height:100%; display:block}
 html[data-learner=tri] .say{border-radius:8px}
 html[data-learner=tri] h1 .ico,html[data-learner=tri] h2 .ico,html[data-learner=tri] h3 .ico,html[data-learner=tri] .pgh .ico{display:none}
-html[data-learner=tri] .ptile .pic{display:none}
+html[data-learner=tri] .ptile .pic{background:#0d2552; border-radius:8px; color:#f6b84e; width:38px; height:38px; display:flex; align-items:center; justify-content:center}
+html[data-learner=tri] .ptile .pic .ico{width:22px; height:22px; margin:0}
+html[data-learner=tri] .tabs a .ico{width:22px; height:22px; margin:0; vertical-align:middle}
+html[data-learner=tri] .tabs a{padding:6px 4px; gap:3px}
+html[data-learner=tri] .stepbtn .ico{width:20px; height:20px; margin:0}
+html[data-learner=tri] .stk i .ico{width:30px; height:30px; margin:0; color:#d99a2b}
+html[data-learner=tri] .stk.lock i .ico{color:#8a96b0}
 html[data-learner=tri] .ptile{border-left:3px solid #f6b84e}
 html[data-learner=tri] .tbadge{border-radius:4px; border-width:1px}
 
@@ -2445,7 +2451,7 @@ function lessonView(id, idx){
   const skip = h("div",{style:"text-align:center"});
   function refresh(){
     nav.replaceChildren(...steps.map((s,i) => h("button",{class:"stepbtn"+(i===idx?" on":"")+(sess.steps[s.key]?" done":""),type:"button",onClick:() => go(i)},
-      h("span",null,sess.steps[s.key] ? "✅" : s.icon), s.title, h("small",null,s.min))));
+      h("span",null,sess.steps[s.key] ? (SCH ? "#i:check" : "✅") : (SCH ? "#i:" + (s.mode === "speak" ? "mic" : (STEP_ICON[s.key] || "pencil")) : s.icon)), s.title, h("small",null,s.min))));
     const ok = !!sess.steps[step.key];
     setTimeout(() => { const on = nav.querySelector(".stepbtn.on"); if (on && on.scrollIntoView) on.scrollIntoView({inline:"center", block:"nearest"}); }, 0);
     pgDraw();
@@ -2758,8 +2764,8 @@ function practiceView(type){
       ["🧩 Điền và xếp câu",["gap","form","cloze","reorder"]],["✍️ Viết",["fix","transform","translate","answer"]]];
     return h("div",null, h("h1",null,"Bài tập"), h("p",{class:"muted"},"Làm lại từng dạng bài bất cứ lúc nào, câu được lấy từ các bài đã học."),
       h("div",{class:"pgrid"},
-        S.mistakes.length ? tile("#/mistakes","🩹","Ôn câu sai", S.mistakes.length+" câu chờ sửa","hot") : null,
-        tile("#/practice/mix","🎲","Ôn tổng hợp","Trộn nhiều dạng","hot")),
+        S.mistakes.length ? tile("#/mistakes",SCH ? "#i:wrench" : "🩹","Ôn câu sai", S.mistakes.length+" câu chờ sửa","hot") : null,
+        tile("#/practice/mix",SCH ? "#i:shuffle" : "🎲","Ôn tổng hợp","Trộn nhiều dạng","hot")),
       groups.map(([gt, keys]) => { const ks = keys.filter(k => poolSets(k).length); if (!ks.length) return null;
         return [h("h3",{class:"pgh"}, gt), h("div",{class:"pgrid"}, ks.map(k => tile("#/practice/"+k, TYPES[k].icon, TYPES[k].label, TYPES[k].desc)))]; }));
   }
@@ -3015,7 +3021,7 @@ function demoState(){
 const TABS = [["home","🏠","Trang chủ"],["week","📅","Tuần học"],["vocab","📖","Từ vựng"],["practice","✏️","Bài tập"],["progress","⭐","Tiến độ"]];
 const TAB_OF = { plan:"week", challenge:"week", content:"week", lesson:"week", done:"week", placement:"week", mistakes:"practice", report:"progress" };
 const tabsEl = document.getElementById("tabs");
-tabsEl.replaceChildren(...TABS.map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, SCH ? null : h("span",null,ic), t)));
+tabsEl.replaceChildren(...TABS.map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, h("span",null, SCH ? "#i:" + ({home:"home",week:"calendar",vocab:"book",practice:"pencil",progress:"chart"}[p] || "dot") : ic), t)));
 function route(){
   stopAudio(); activeLesson = null; review = null; pgReset();
   const parts = location.hash.replace(/^#\/?/,"").split("/"), page = parts[0] || "home";
@@ -3096,17 +3102,37 @@ if (SCH){
     pencil:P('<path d="M4 20l1-4L16.5 4.5a2 2 0 013 3L8 19z"/>'),
     calendar:P('<rect x="4" y="5.5" width="16" height="14" rx="1.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>'),
     spark:P('<path d="M12 4l1.8 5.2L19 11l-5.2 1.8L12 18l-1.8-5.2L5 11l5.2-1.8z"/>'),
-    dot:P('<circle cx="12" cy="12" r="3.2" fill="currentColor"/>')
+    dot:P('<circle cx="12" cy="12" r="3.2" fill="currentColor"/>'),
+    home:P('<path d="M4 11l8-7 8 7"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/>'),
+    chart:P('<path d="M4 4v16h16"/><path d="M8 15l3-4 3 3 5-7"/>'),
+    bolt:P('<path d="M13 3L5 13h6l-1 8 8-10h-6z"/>'),
+    eye:P('<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/>'),
+    search:P('<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5.5 5.5"/>'),
+    refresh:P('<path d="M4 12a8 8 0 0113.7-5.6L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 01-13.7 5.6L4 15"/><path d="M4 20v-5h5"/>'),
+    shuffle:P('<path d="M4 7h3c5 0 5 10 10 10h3"/><path d="M4 17h3c1.7 0 2.9-.9 3.8-2M13.2 9c1-1.3 2.2-2 3.8-2h3"/><path d="M18 4l3 3-3 3M18 14l3 3-3 3"/>'),
+    swap:P('<path d="M4 8h14l-3-3"/><path d="M20 16H6l3 3"/>'),
+    checksq:P('<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 12.5l3 3 5-6"/>'),
+    tf:P('<path d="M4 13l3.5 3.5L13 9"/><path d="M15 5l5 5M20 5l-5 5"/>'),
+    odd:P('<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.5"/>'),
+    link:P('<path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/>'),
+    wave:P('<path d="M4 12h1M8 8v8M12 5v14M16 8v8M20 11v2"/>'),
+    brackets:P('<path d="M8 4H5v16h3M16 4h3v16h-3"/><path d="M10 12h4"/>'),
+    lines:P('<path d="M4 7h16M4 12h6M14 12h6M4 17h16"/>'),
+    sort:P('<path d="M8 5v14M8 5L5 8M8 5l3 3M16 19V5M16 19l-3-3M16 19l3-3"/>'),
+    wrench:P('<path d="M14.5 6a4 4 0 005.5 5.5L10.5 21 7 17.5 16.5 8"/><path d="M14.5 6l3.5 3.5"/>'),
+    globe:P('<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c3 3 3 14 0 17M12 3.5c-3 3-3 14 0 17"/>'),
+    chat:P('<path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H11l-4 4v-4H6a2 2 0 01-2-2z"/>'),
+    layers:P('<path d="M12 4l9 5-9 5-9-5z"/><path d="M3 14l9 5 9-5"/>')
   };
   const EMAP = {"✅":"check","✔":"check","☑":"check","❌":"cross","✖":"cross","❎":"cross","🔊":"speaker","🔈":"speaker","🔉":"speaker","🎙":"mic","🎤":"mic","⏹":"stop","⏱":"clock","⏰":"clock","🕐":"clock","⚠":"warn","⚙":"gear","🏆":"award","🥇":"award","🏅":"award","💌":"mail","✉":"mail","📖":"book","📚":"book","📕":"book","🎧":"headphones","✏":"pencil","📝":"pencil","📅":"calendar","📆":"calendar","⭐":"spark","🌟":"spark","✨":"spark","🔍":"","🎯":"","📊":""};
-  const EMO = /(?:\p{Extended_Pictographic}️?(?:‍\p{Extended_Pictographic}️?)*)/gu;
+  const EMO = /#i:[a-z]+|(?:\p{Extended_Pictographic}️?(?:‍\p{Extended_Pictographic}️?)*)/gu;
   let busy = false;
   const mkIco = key => { const sp = document.createElement("span"); sp.className = "ico"; sp.innerHTML = ICONS[key] || ""; return sp; };
   function clean(root){
     const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => (n.parentNode && !/^(SCRIPT|STYLE|TEXTAREA|SVG|TEXT)$/i.test(n.parentNode.nodeName) && n.nodeValue && n.nodeValue.search(EMO) >= 0) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
     const list = []; while (w.nextNode()) list.push(w.currentNode);
     list.forEach(n => { const frag = document.createDocumentFragment(), t = n.nodeValue; let last = 0, m; EMO.lastIndex = 0;
-      while ((m = EMO.exec(t))){ if (m.index > last) frag.append(t.slice(last, m.index)); const k = EMAP[m[0].replace(/️/g, "")]; if (k) frag.append(mkIco(k)); last = m.index + m[0].length; }
+      while ((m = EMO.exec(t))){ if (m.index > last) frag.append(t.slice(last, m.index)); const k = m[0].startsWith("#i:") ? m[0].slice(3) : EMAP[m[0].replace(/\uFE0F/g, "")]; if (k) frag.append(mkIco(k)); last = m.index + m[0].length; }
       if (last < t.length) frag.append(t.slice(last)); n.parentNode.replaceChild(frag, n); });
   }
   function run(){ busy = true; try { clean(document.body); } catch(e){} busy = false; }
@@ -3115,7 +3141,14 @@ if (SCH){
   const start = () => { run(); mo.observe(document.body, { childList:true, subtree:true, characterData:true }); };
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 }
-if (SCH){ Object.values(STEP_DEF).forEach(d => d.icon = ""); Object.values(TYPES).forEach(d => { d.icon = ""; }); STICKERS.forEach(x => x.icon = "◆"); }
+if (SCH){
+  const TI = {mcq:"checksq",truefalse:"tf",oddone:"odd",match:"link",listenpick:"headphones",dictation:"wave",dialogue:"chat",gap:"brackets",form:"refresh",cloze:"lines",reorder:"sort",fix:"wrench",transform:"refresh",translate:"globe",answer:"chat",shadow:"mic"};
+  const SI = {first:"spark",week1:"layers",challenger:"award",streak3:"chart",perfect:"check",listener:"headphones",words:"book",fixer:"wrench",writer:"pencil"};
+  const SN = {words:"Vốn từ",fixer:"Chính xác",writer:"Người viết",first:"Khởi đầu",week1:"Trọn tuần",streak3:"Đều đặn 3 ngày",perfect:"Đúng hết",listener:"Nghe chủ động",challenger:"Thử thách"};
+  Object.values(STEP_DEF).forEach(d => d.icon = "#i:pencil"); Object.entries(TYPES).forEach(([k,d]) => { d.icon = "#i:" + (TI[k] || "dot"); });
+  STICKERS.forEach(x => { x.icon = "#i:" + (SI[x.id] || "spark"); if (SN[x.id]) x.name = SN[x.id]; });
+}
+const STEP_ICON = { warmup:"bolt", read:"book", listen:"headphones", notice:"search", practice:"pencil", review:"refresh", preview:"eye", output:"pencil", quiz:"checksq", transfer:"swap", mix:"shuffle", report:"chart", challenge:"award" };
 async function boot(){
   if (COVER){ document.body.classList.add("cover"); document.title = "Học tiếng Anh · Chọn học viên"; app.replaceChildren(coverView()); return; }
   S = loadLocal(); ensureStart(); applyBrand(); loadContentLocal();
