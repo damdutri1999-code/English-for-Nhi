@@ -166,7 +166,7 @@ body.immersive .wrap{padding-bottom:140px}
 .chip.on{background:var(--p100); border-color:var(--p500)}
 .chip.used{opacity:.3}
 .answer-line{min-height:56px; border:2px dashed var(--p300); border-radius:16px; padding:8px; display:flex; flex-wrap:wrap; gap:8px; align-items:center; background:var(--p50)}
-.answer-line.empty::before{content:"Chạm vào các từ bên dưới để ghép câu"; color:var(--ink2); font-weight:700; padding:0 6px}
+.answer-line.empty::before{content:"Chạm các từ bên dưới"; color:var(--ink2); font-weight:700; padding:0 6px}
 .answer-line.right{border-color:var(--ok); background:var(--ok-bg)}
 .answer-line.wrong{border-color:var(--bad); background:var(--bad-bg)}
 .gap{font-size:1.12rem; font-weight:700; line-height:2.3}
@@ -423,6 +423,51 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
   .cloze{font-size:1rem; line-height:2}
   .reading{font-size:1.05rem; line-height:1.7; text-align:left}
 }
+
+/* bố cục gọn: ít phải cuộn */
+.taskbox{display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; background:var(--task); border:2px solid var(--task-line); border-radius:14px; padding:7px 11px; margin:0 0 8px}
+.taskbox .tbadge{background:var(--paper); border-color:var(--task-line); padding:1px 10px; font-size:.82rem; white-space:nowrap}
+.taskbox .tins{flex:1 1 160px; min-width:0; color:var(--task-ink); font-weight:700; font-size:.93rem; line-height:1.35}
+.q{padding:9px 0 10px}
+.q:not(.nocount){padding-left:34px}
+.q:not(.nocount)::before{content:counter(qn); position:absolute; left:0; top:11px; margin:0; width:25px; height:25px; padding:0; border-radius:50%; display:grid; place-items:center; font-size:.82rem; background:var(--p500); color:#fff}
+.q .qtext{margin:0 0 8px; padding:7px 12px; font-size:1.05rem}
+.opts::before{display:none}
+.opts{gap:7px}
+.opts.row{grid-template-columns:repeat(auto-fit,minmax(84px,1fr))}
+.opt{padding:8px 12px; min-height:40px; border-radius:13px}
+.opts.row .opt{text-align:center}
+.q.gap{line-height:2; padding-top:8px}
+.fbtxt{padding:7px 12px; margin-top:6px; font-size:.95rem}
+.fbtxt .why{font-weight:600; font-size:.9rem; margin-top:2px; line-height:1.4}
+.dhint{margin:0 0 6px; font-size:.84rem}
+.exset h3,.exset .tbadge{margin:0}
+@media (max-width:480px){
+  .card{padding:12px 12px}
+  .q:not(.nocount){padding-left:31px}
+}
+.readsec{margin:0 0 8px;font-size:1rem;color:var(--task-ink,inherit)}
+.abtns{gap:8px; margin:0 0 8px; flex-wrap:wrap}
+.qvi{display:block; font-weight:600; font-size:.88rem; color:var(--ink2); margin-top:2px}
+.btn.sm{padding:6px 14px; min-height:38px; font-size:.95rem; border-radius:12px; box-shadow:none}
+.abtns .btn{padding:6px 16px; min-height:38px; font-size:.95rem; border-radius:12px; box-shadow:none}
+.fbtxt .linkbtn{padding:0 0 0 6px; color:inherit; font-size:.9rem}
+
+/* tối ưu lần 2: bỏ chữ lặp, gọn hội thoại, từ khác loại 2 cột */
+.answer-line{min-height:44px; padding:6px 8px; gap:6px}
+.q .bank:not(.stick)::before{display:none}
+.q .bank:not(.stick){margin-top:6px}
+.opts:has(> .opt:nth-child(4):last-child){grid-template-columns:1fr 1fr}
+.chat{padding:8px; display:grid; gap:5px}
+.chat .bub{padding:5px 11px; font-size:.98rem}
+.chat .spk{width:24px; height:24px; font-size:.78rem}
+.chat .bub.ask{padding:3px 10px}
+.qlabel{margin:4px 0 6px; font-size:.88rem}
+.q .row.abtns + input,.q .abtns + .txt{margin-top:0}
+.mlines .mchip{padding:6px 10px; min-height:38px; font-size:.98rem; line-height:1.25}
+.mlines .mcol{gap:6px}
+.mlines{margin:4px 0 8px}
+.mlines .chip{font-size:.98rem}
 </style>
 </head>
 <body>
@@ -810,7 +855,7 @@ const SET = {
     {wrong:"I is a student.", answer:"I am a student.", why:"I đi với am, không phải is."},
     {wrong:"They is my brothers.", answer:"They are my brothers.", why:"They (nhiều người) đi với are."},
     {wrong:"My sister are ten years old.", answer:"My sister is ten years old.", why:"My sister là một người (she), dùng is."} ]},
-  form1:{ type:"form", title:"Word form", instruction:"Điền dạng đúng của từ trong ngoặc.", items:[
+  form1:{ type:"form", title:"Đổi dạng từ", instruction:"Điền dạng đúng của từ trong ngoặc.", items:[
     {text:"My sister ___ (be) sixteen.", answer:"is", why:"be đổi thành is với she, he, it."},
     {text:"I ___ (be) a student.", answer:"am", why:"be đổi thành am với I."},
     {text:"___ (he) name is Nam.", answer:"His", why:"he thành his (của anh ấy)."},
@@ -865,7 +910,7 @@ const OUTPUT_MON = { key:"output", type:"output", icon:"🌷", title:"Tự viế
 const LESSONS = {
   "w1-mon": { steps:[
     {key:"warmup", type:"sets", icon:"☀️", title:"Khởi động", min:"0–3′", sets:[SET.warm1]},
-    {key:"read", type:"read", icon:"📖", title:"Đọc", min:"3–9′", heading:"My family", text:TEXT_MON, vocab:VOC_MON, sets:[SET.comp1]},
+    {key:"read", type:"read", icon:"📖", title:"Đọc", min:"3–9′", heading:"My family", purpose:"Đọc để tìm: Mai có những ai trong gia đình?", text:TEXT_MON, vocab:VOC_MON, sets:[SET.comp1]},
     {key:"listen", type:"listen", icon:"🎧", title:"Nghe", min:"9–13′", text:TEXT_MON, sets:[SET.listen1]},
     {key:"notice", type:"notice", icon:"🔍", title:"Tìm ngữ pháp", min:"13–15′", text:TEXT_MON},
     {key:"practice", type:"sets", icon:"✏️", title:"Luyện tập", min:"15–26′", sets:[SET.mcq1, SET.gap1]},
@@ -874,13 +919,13 @@ const LESSONS = {
   "w1-tue": { steps:[
     {key:"warmup", type:"sets", icon:"☀️", title:"Nhớ lại", min:"0–3′", sets:[SET.recall1]},
     {key:"review", type:"sets", icon:"✏️", title:"Ôn dạng bài khác", min:"3–20′", sets:[SET.reorder1, SET.fix1, SET.form1]},
-    {key:"read", type:"read", icon:"📖", title:"Đọc trước Sub 2", min:"20–25′", heading:"Tom's family", text:TEXT_TUE, vocab:VOC_TUE, sets:[],
+    {key:"read", type:"read", icon:"📖", title:"Đọc trước Sub 2", min:"20–25′", heading:"Tom's family", purpose:"Đọc để tìm: ai là ai trong gia đình Tom?", text:TEXT_TUE, vocab:VOC_TUE, sets:[],
       note:"Hôm nay chỉ đọc để làm quen. Bài tập của phần này sẽ có vào ngày mai."},
     {key:"listen", type:"listen", icon:"🎧", title:"Nghe", min:"25–30′", text:TEXT_TUE, sets:[SET.listen2]}
   ]},
   "w1-wed": { demo:true, steps:[
     {key:"warmup", type:"sets", icon:"☀️", title:"Nhớ lại", min:"0–3′", sets:[SET.recall1]},
-    {key:"read", type:"read", icon:"📖", title:"Đọc", min:"3–9′", heading:"Tom's family", text:TEXT_TUE, vocab:VOC_TUE, sets:[SET.comp2]},
+    {key:"read", type:"read", icon:"📖", title:"Đọc", min:"3–9′", heading:"Tom's family", purpose:"Đọc để tìm: ai là ai trong gia đình Tom?", text:TEXT_TUE, vocab:VOC_TUE, sets:[SET.comp2]},
     {key:"listen", type:"listen", icon:"🎧", title:"Nghe", min:"9–13′", text:TEXT_TUE, sets:[SET.listen2]},
     {key:"notice", type:"notice", icon:"🔍", title:"Tìm ngữ pháp", min:"13–15′", text:TEXT_TUE},
     {key:"practice", type:"sets", icon:"✏️", title:"Luyện tập", min:"15–26′", sets:[SET.gap1, SET.form1]},
@@ -889,13 +934,13 @@ const LESSONS = {
   "w1-thu": { demo:true, steps:[
     {key:"warmup", type:"sets", icon:"☀️", title:"Nhớ lại", min:"0–3′", sets:[SET.recall1]},
     {key:"review", type:"sets", icon:"✏️", title:"Ôn dạng bài khác", min:"3–20′", sets:[SET.mcq1, SET.reorder1]},
-    {key:"read", type:"read", icon:"📖", title:"Đọc trước Sub 3", min:"20–25′", heading:"Who is she?", text:TEXT_THU, vocab:VOC_THU, sets:[],
+    {key:"read", type:"read", icon:"📖", title:"Đọc trước Sub 3", min:"20–25′", heading:"Who is she?", purpose:"Đọc để tìm: người trong ảnh là ai?", text:TEXT_THU, vocab:VOC_THU, sets:[],
       note:"Hôm nay chỉ đọc để làm quen với câu hỏi. Bài tập của phần này sẽ có vào ngày mai."},
     {key:"listen", type:"listen", icon:"🎧", title:"Nghe", min:"25–30′", text:TEXT_THU, sets:[SET.listen3]}
   ]},
   "w1-fri": { demo:true, steps:[
     {key:"warmup", type:"sets", icon:"☀️", title:"Nhớ lại", min:"0–3′", sets:[SET.recall1]},
-    {key:"read", type:"read", icon:"📖", title:"Đọc", min:"3–9′", heading:"Who is she?", text:TEXT_THU, vocab:VOC_THU, sets:[SET.comp3]},
+    {key:"read", type:"read", icon:"📖", title:"Đọc", min:"3–9′", heading:"Who is she?", purpose:"Đọc để tìm: người trong ảnh là ai?", text:TEXT_THU, vocab:VOC_THU, sets:[SET.comp3]},
     {key:"listen", type:"listen", icon:"🎧", title:"Nghe", min:"9–13′", text:TEXT_THU, sets:[SET.listen3]},
     {key:"notice", type:"notice", icon:"🔍", title:"Tìm ngữ pháp", min:"13–15′", text:TEXT_THU},
     {key:"practice", type:"sets", icon:"✏️", title:"Luyện tập", min:"15–26′", sets:[SET.reorder1, SET.form1]},
@@ -907,10 +952,10 @@ const LESSONS = {
   ]},
   "w1-sat": { demo:true, steps:[
     {key:"quiz", type:"sets", icon:"🧠", title:"Quiz cả tuần", min:"0–5′", gen:() => [recallWeekSet()]},
-    {key:"transfer", type:"read", icon:"📖", title:"Bài đọc mới", min:"5–12′", heading:"Linh's family", text:TEXT_SAT, vocab:VOC_SAT, sets:[SET.comp4],
+    {key:"transfer", type:"read", icon:"📖", title:"Bài đọc mới", min:"5–12′", heading:"Linh's family", purpose:"Đọc để so với gia đình mình: gia đình Linh có gì giống gia đình bạn?", text:TEXT_SAT, vocab:VOC_SAT, sets:[SET.comp4],
       note:"Bài đọc mới dùng lại từ và ngữ pháp đã học, để xem bạn đọc hiểu được mà không cần tra."},
     {key:"mix", type:"sets", icon:"✏️", title:"Tổng hợp 5 dạng", min:"12–22′", gen:mixSets},
-    {key:"preview", type:"read", icon:"👀", title:"Làm quen Sub 4", min:"22–28′", heading:"Extended family", text:TEXT_EXT, vocab:VOC_EXT, sets:[],
+    {key:"preview", type:"read", icon:"👀", title:"Làm quen Sub 4", min:"22–28′", heading:"Extended family", purpose:"Đọc để làm quen: tìm các từ chỉ họ hàng mà bạn đã biết.", text:TEXT_EXT, vocab:VOC_EXT, sets:[],
       note:"Chỉ đọc để làm quen, tuần sau mình sẽ học kỹ."},
     {key:"report", type:"report", icon:"📊", title:"Báo cáo tuần", min:"28–30′"}
   ]}
@@ -939,7 +984,7 @@ function prepItem(type, it){
   if (MCQLIKE.includes(type) && typeof o.answer === "string") o.answer = optIndex(o.options || [], o.answer);
   if (MCQLIKE.includes(type) && Array.isArray(o.options) && typeof o.answer === "number"){ const seenO = new Set(), keep = [], ans = o.options[o.answer]; o.options.forEach(x => { const k = String(x).trim().toLowerCase(); if (!seenO.has(k)){ seenO.add(k); keep.push(x); } }); if (keep.length !== o.options.length && keep.length >= 2){ const ai = keep.findIndex(x => String(x).trim().toLowerCase() === String(ans).trim().toLowerCase()); if (ai >= 0){ o.options = keep; o.answer = ai; } } }
   if (type === "truefalse"){ o.options = ["Đúng","Sai"]; o.answer = (o.answer === true || /^(true|đúng|dung)$/i.test(String(o.answer))) ? 0 : 1; }
-  if (type === "oddone" && !o.q) o.q = "Chọn từ khác loại với các từ còn lại.";
+  if (type === "oddone" && (!o.q || /^chọn từ (khác loại|không cùng nhóm)/i.test(String(o.q).trim()))){ o.q = "Chọn từ khác loại với các từ còn lại."; o._gen = true; }
   if (SELF_TYPES.has(type)) o.self = true;
   return o;
 }
@@ -947,8 +992,10 @@ function prepSet(raw, key, ctx){
   const set = Object.assign({}, raw); set.key = key;
   set.items = (raw.items || []).map((it, i) => Object.assign(prepItem(raw.type, it), { _ref:key + "#" + i }));
   if (ctx) set.ctx = true;
-  if (!set.title) set.title = TYPES[set.type].label;
-  if (!set.instruction) set.instruction = TYPES[set.type].how;
+  const techName = /^(mcq|multiple choice|truefalse|true false|true or false|oddone|odd one|odd one out|match|matching|listenpick|listen pick|dictation|dialogue|dialog|gap|gap fill|form|word form|cloze|reorder|fix|transform|translate|answer|shadow|shadowing)$/i;
+  if (!set.title || techName.test(String(set.title).trim())) set.title = TYPES[set.type].label;
+  const genericIns = /^(hoàn thành( từng)? câu|làm( từng)? câu|làm bài|trả lời( các)? câu hỏi|chọn từ phù hợp để hoàn thành đoạn văn)\.?$/i;
+  if (!set.instruction || genericIns.test(String(set.instruction).trim())) set.instruction = TYPES[set.type].how;
   SET[key] = set; return set;
 }
 function compileWeek(j){
@@ -1079,6 +1126,8 @@ function validateWeek(j){
       const key = st.key || (st.type + si); if (keys.has(key)) E.push(sw + ": key \"" + key + "\" bị trùng trong buổi."); keys.add(key);
       if (st.type === "read"){
         if (!isStr(st.heading)) E.push(sw + ": thiếu heading."); if (!Array.isArray(st.text) || !st.text.length || !st.text.every(isStr)) E.push(sw + ": text phải là mảng các đoạn.");
+        if (!isStr(st.purpose)) W.push(sw + ": thiếu purpose (mục tiêu đọc, ví dụ \"Đọc để tìm: Mai có mấy anh chị em?\"). Đọc không có mục tiêu thì chỉ là đọc suông.");
+        if ((st.sets || []).length && !(st.sets || []).some(x => x && x.role === "apply")) W.push(sw + ": chưa có bộ vận dụng (role:\"apply\"). Bài đọc phải được dùng vào việc có ý nghĩa, không chỉ hỏi hiểu bài.");
         if (!st.vocab || typeof st.vocab !== "object" || Array.isArray(st.vocab)) E.push(sw + ": vocab phải là object {\"word\":\"nghĩa\"}.");
         else Object.keys(st.vocab).forEach(x => { if (!isStr(st.vocab[x])) E.push(sw + ": vocab \"" + x + "\" thiếu nghĩa."); vocab.add(x.toLowerCase()); });
       }
@@ -1304,22 +1353,22 @@ function karaoke(paras){
    BỘ BÀI TẬP: 16 dạng (13 dạng chấm điểm + 3 dạng tự chấm)
    ===================================================================== */
 const TYPES = {
-  mcq:{label:"Trắc nghiệm", icon:"☑️", desc:"Chọn đáp án đúng", how:"Chọn đáp án đúng."},
-  truefalse:{label:"Đúng / Sai", icon:"✔️", desc:"Đúng hay sai theo bài", how:"Câu này đúng hay sai?"},
-  oddone:{label:"Từ khác loại", icon:"🧐", desc:"Tìm từ không cùng nhóm", how:"Chọn từ khác loại với các từ còn lại."},
-  match:{label:"Nối cặp", icon:"🔗", desc:"Nối từ với nghĩa", how:"Chạm một mục bên trái, rồi chạm mục tương ứng bên phải."},
-  listenpick:{label:"Nghe và chọn", icon:"🎧", desc:"Nghe rồi chọn đáp án", how:"Nghe rồi chọn đáp án đúng."},
-  dictation:{label:"Nghe và chép", icon:"✍️", desc:"Nghe rồi gõ lại câu", how:"Nghe rồi gõ lại câu bạn nghe được."},
-  dialogue:{label:"Hội thoại", icon:"💬", desc:"Chọn câu đáp phù hợp", how:"Chọn câu đáp phù hợp."},
-  gap:{label:"Điền từ", icon:"🧩", desc:"Chọn từ cho sẵn để điền", how:"Chạm vào từ trong khung để điền vào chỗ trống. Chạm vào ô đã điền để gỡ ra."},
-  form:{label:"Word form", icon:"✨", desc:"Điền dạng đúng của từ", how:"Điền dạng đúng của từ trong ngoặc."},
-  cloze:{label:"Điền đoạn văn", icon:"📝", desc:"Điền nhiều chỗ trống trong đoạn", how:"Điền các chỗ trống trong đoạn văn."},
-  reorder:{label:"Sắp xếp câu", icon:"🔀", desc:"Ghép từ thành câu", how:"Ghép các từ thành câu đúng."},
-  fix:{label:"Sửa lỗi sai", icon:"🔧", desc:"Tìm và sửa lỗi trong câu", how:"Mỗi câu có một lỗi. Sửa trực tiếp trong ô (viết hoa và dấu chấm không ảnh hưởng)."},
-  transform:{label:"Chuyển câu", icon:"🔄", desc:"Viết lại câu theo yêu cầu", how:"Viết lại câu theo yêu cầu."},
-  translate:{label:"Dịch Việt sang Anh", icon:"🌏", desc:"Tự dịch rồi so với đáp án mẫu", how:"Dịch sang tiếng Anh, rồi so với đáp án mẫu.", self:true},
-  answer:{label:"Trả lời một câu", icon:"🗣️", desc:"Tự trả lời rồi so với mẫu", how:"Trả lời bằng một câu tiếng Anh, rồi so với đáp án mẫu.", self:true},
-  shadow:{label:"Đọc to theo audio", icon:"🎤", desc:"Nghe rồi đọc theo", how:"Nghe rồi đọc to theo, nghe lại để so sánh.", self:true}
+  mcq:{label:"Chọn đáp án", icon:"☑️", desc:"Chọn một đáp án đúng", how:"Chọn một đáp án đúng cho mỗi câu."},
+  truefalse:{label:"Đúng hay Sai", icon:"✔️", desc:"Đọc câu rồi chọn Đúng hoặc Sai", how:"Đọc từng câu rồi chọn Đúng hoặc Sai."},
+  oddone:{label:"Tìm từ khác loại", icon:"🧐", desc:"Tìm từ không cùng nhóm", how:"Chọn từ không cùng nhóm với các từ còn lại."},
+  match:{label:"Nối cặp", icon:"🔗", desc:"Nối từ với nghĩa", how:"Nối mỗi từ bên trái với nghĩa đúng bên phải."},
+  listenpick:{label:"Nghe và chọn", icon:"🎧", desc:"Nghe rồi chọn đáp án", how:"Bấm 🔊 để nghe, rồi chọn đáp án đúng."},
+  dictation:{label:"Nghe và viết lại", icon:"✍️", desc:"Nghe rồi gõ lại câu", how:"Bấm 🔊 để nghe, rồi gõ lại câu bạn nghe được."},
+  dialogue:{label:"Chọn câu đáp lại", icon:"💬", desc:"Chọn câu đáp phù hợp trong hội thoại", how:"Đọc hội thoại, rồi chọn câu đáp phù hợp."},
+  gap:{label:"Điền từ vào chỗ trống", icon:"🧩", desc:"Chọn từ cho sẵn để điền", how:"Kéo từ trong kho thả vào đúng chỗ trống."},
+  form:{label:"Đổi dạng từ", icon:"✨", desc:"Điền dạng đúng của từ trong ngoặc", how:"Điền dạng đúng của từ trong ngoặc."},
+  cloze:{label:"Điền vào đoạn văn", icon:"📝", desc:"Điền nhiều chỗ trống trong đoạn", how:"Điền từ vào các chỗ trống để hoàn chỉnh đoạn văn."},
+  reorder:{label:"Xếp thành câu", icon:"🔀", desc:"Ghép các từ thành câu", how:"Chạm các từ theo thứ tự để ghép thành câu đúng."},
+  fix:{label:"Tìm và sửa lỗi", icon:"🔧", desc:"Tìm và sửa lỗi trong câu", how:"Mỗi câu có một lỗi sai. Sửa lại ngay trong ô (không cần chú ý chữ hoa và dấu chấm)."},
+  transform:{label:"Viết lại câu", icon:"🔄", desc:"Viết lại câu theo yêu cầu", how:"Viết lại câu theo yêu cầu."},
+  translate:{label:"Dịch sang tiếng Anh", icon:"🌏", desc:"Tự dịch rồi so với đáp án mẫu", how:"Dịch câu tiếng Việt sang tiếng Anh rồi so với đáp án mẫu.", self:true},
+  answer:{label:"Trả lời bằng tiếng Anh", icon:"🗣️", desc:"Tự trả lời rồi so với mẫu", how:"Trả lời bằng một câu tiếng Anh rồi so với đáp án mẫu.", self:true},
+  shadow:{label:"Nghe và đọc theo", icon:"🎤", desc:"Nghe rồi đọc to theo", how:"Nghe rồi đọc to theo, nghe lại để so sánh.", self:true}
 };
 const SELF_TYPES = new Set(["translate","answer","shadow"]);
 const TYPE_LABEL = Object.assign({}, ...Object.keys(TYPES).map(k => ({[k]:TYPES[k].label})), {notice:"Tìm ngữ pháp"});
@@ -1334,7 +1383,7 @@ function expand(s){
 const same = (a, b) => norm(expand(a)) === norm(expand(b));
 const anyOk = (it, v) => [it.answer].concat(it.alt || []).some(a => same(a, v));
 
-const audioBar = (text, src) => h("div",{class:"row",style:"gap:8px;margin:2px 0 10px"},
+const audioBar = (text, src) => h("div",{class:"row abtns"},
   h("button",{class:"btn soft",type:"button",onClick:() => { S.stats.plays++; playAudio({text, src, rate:1}); }},"🔊 Nghe"),
   h("button",{class:"btn soft",type:"button",onClick:() => { playAudio({text, src, rate:.75}); }},"🐢 Chậm"));
 const chatEl = lines => { const nxt = lines.length % 2 ? "B" : "A";
@@ -1348,8 +1397,8 @@ function mcqItem(it, onChange, pre){
   const fixed = it.noShuffle || (it.options.length === 2 && it.options[0] === "Đúng");
   const order = fixed ? it.options.map((_, i) => i) : shuffle(it.options.map((_, i) => i));
   const fbSlot = h("div");
-  const el = h("div", {class:"q"}, it.q ? h("p",{class:"qtext"}, it.q) : null, pre || null,
-    h("div",{class:"opts"}, order.map((oi,i) => { const b = h("button",{class:"opt",type:"button",onClick:() => {
+  const el = h("div", {class:"q"}, it.q && !it._gen ? h("p",{class:"qtext"}, it.q) : null, pre || null,
+    h("div",{class:"opts"+(it.options.length <= 4 && it.options.every(o => String(o).length <= 16) ? " row" : "")}, order.map((oi,i) => { const b = h("button",{class:"opt",type:"button",onClick:() => {
       if (locked) return; sel = i; btns.forEach((x,j) => { x.classList.toggle("sel", j===i); x.classList.remove("wrong"); }); onChange(); }}, it.options[oi]); btns.push(b); return b; })), fbSlot);
   return { el, fbSlot, retry:true, isAnswered:() => sel >= 0,
     lock(){ locked = true; btns.forEach((b,j) => { if (order[j] === it.answer) b.classList.add("right"); }); },
@@ -1531,7 +1580,7 @@ function formItem(it, onChange){
 }
 function dictItem(it, onChange){
   const fbSlot = h("div"), input = h("input",{class:"txt",type:"text",placeholder:"Gõ câu bạn nghe được",onInput:onChange});
-  return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, it.q || "Nghe rồi gõ lại câu."), audioBar(it.say, it.audioSrc), input, fbSlot), fbSlot, retry:true, lock(){ input.readOnly = true; }, isAnswered:() => input.value.trim() !== "",
+  return { el:h("div",{class:"q"}, (it.q && !/^nghe (rồi|và) (gõ|chép|viết)/i.test(String(it.q).trim()) ? h("p",{class:"qtext"}, it.q) : null), audioBar(it.say, it.audioSrc), input, fbSlot), fbSlot, retry:true, lock(){ input.readOnly = true; }, isAnswered:() => input.value.trim() !== "",
     check(){ const ok = [it.say].concat(it.alt || []).some(a => same(a, input.value)); if (ok) input.readOnly = true;
       input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: it.say, why: it.why, prompt: it.say }; } };
 }
@@ -1547,7 +1596,8 @@ function textItem(it, onChange){
 function shadowItem(it, onChange){
   let done = false; const fbSlot = h("div");
   const btn = h("button",{class:"btn soft",type:"button",onClick:() => { done = !done; btn.textContent = done ? "✅ Mình đã đọc theo" : "Mình đã đọc theo"; onChange(); }},"Mình đã đọc theo");
-  return { el:h("div",{class:"q"}, h("p",{class:"qtext"},"Nghe rồi đọc to theo, nghe lại để so sánh:"), audioBar(it.say, it.audioSrc), it.vi ? h("p",{class:"muted small"}, it.vi) : null, btn, fbSlot), fbSlot,
+  const ab = audioBar(it.say, it.audioSrc); btn.classList.add("sm"); ab.append(btn);
+  return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, it.say, it.vi ? h("span",{class:"qvi"}, it.vi) : null), ab, fbSlot), fbSlot,
     isAnswered:() => done, check(){ return { ok:true, self:true, correct: it.say, why: it.why, prompt: it.say }; } };
 }
 const mapItems = (fn, pre) => (set, ch) => ({ head:[], items:set.items.map(it => fn(it, ch, pre ? pre(it) : null)) });
@@ -1584,7 +1634,7 @@ function exerciseSet(set, onDone){
         if (counted){ PG.total -= N; PG.done -= cnt; pgDraw(); } wrap.replaceChildren(...build()); }}, "Làm lại");
       const exBtn = extra ? h("button",{class:"btn soft block",type:"button",style:"margin-top:10px",onClick:() => {
         exBtn.hidden = true; extraHost.replaceChildren(h("div",{class:"card tint flat small",style:"margin-top:12px"},"Làm thêm "+extra.items.length+" câu để chắc hơn (không bắt buộc)."),
-          exerciseSet(Object.assign({}, extra, {title:"Làm thêm: "+set.title, core:null, _np:true}))); }}, "➕ Làm thêm "+extra.items.length+" câu") : null;
+          exerciseSet(Object.assign({}, extra, {title:"Làm thêm: "+(TYPES[set.type] ? TYPES[set.type].label : set.title), core:null, _np:true}))); }}, "➕ Làm thêm "+extra.items.length+" câu") : null;
       scoreBox.replaceChildren(h("div",{class:"score"}, mascot(right === total ? "cheer" : "happy"),
         h("div",null, quietScore || main.doneMsg ? "Xong rồi" : right+" / "+total+" câu đúng", h("div",{class:"small muted"}, msg)), retry), exBtn);
       recordResult(main, res); onDone && onDone(right, total, res);
@@ -1618,8 +1668,7 @@ function exerciseSet(set, onDone){
       it.el.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.tagName === "INPUT"){ e.preventDefault(); checkOne(i); } });
     });
     const T = TYPES[main.type] || { icon:"", label:"", how:"" };
-    return [h("div",{class:"taskhead"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), set.title && set.title !== T.label ? h("span",{class:"ttitle"}, set.title) : null),
-      h("div",{class:"taskhow"}, h("b",null,"📌 Yêu cầu: "), set.instruction || T.how),
+    return [h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), h("span",{class:"tins"}, set.instruction || T.how)),
       ...built.head, ...built.items.map(i => i.el).filter(Boolean), scoreBox, extraHost];
   }
   wrap.replaceChildren(...build());
@@ -1660,10 +1709,16 @@ function readStep(step, ctx){
     sp.addEventListener("click", open); sp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); } });
     return [t.pre, sp, t.post, " "]; }))));
   const finish = () => { addVocab(step.vocab); ctx.done(); };
-  const out = h("div",null, h("div",{class:"card"}, h("h2",null,step.heading), gloss, box), step.note ? h("p",{class:"muted"}, step.note) : null);
+  const purpose = h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, "🎯 Đọc để"), h("span",{class:"tins"}, step.purpose || "Hiểu ý chính của bài, rồi dùng bài này để làm các câu bên dưới."));
+  const out = h("div",null, h("div",{class:"card"}, h("h2",null,step.heading), purpose, gloss, box), step.note ? h("p",{class:"muted"}, step.note) : null);
   if (step.sets.length){
-    let n = 0;
-    step.sets.forEach(s => out.append(h("div",{class:"card"}, exerciseSet(s, () => { if (++n >= step.sets.length) finish(); }))));
+    let n = 0, sawApply = false, sawComp = false;
+    step.sets.forEach(s => {
+      const apply = s.role === "apply";
+      const lab = apply ? (sawApply ? null : "✍️ Vận dụng: dùng bài đọc để tự làm") : (sawComp ? null : "🔎 Hiểu bài: tìm thông tin trong bài");
+      if (apply) sawApply = true; else sawComp = true;
+      out.append(h("div",{class:"card"}, lab ? h("h3",{class:"readsec"}, lab) : null, exerciseSet(s, () => { if (++n >= step.sets.length) finish(); })));
+    });
   } else {
     out.append(h("button",{class:"btn block",type:"button",onClick:() => { finish(); toast("Đã thêm từ mới vào sổ từ vựng"); }}, "Mình đọc xong rồi"));
   }

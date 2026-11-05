@@ -48,15 +48,15 @@ Ngữ pháp đi theo tuần: Thứ 2 khẳng định; Thứ 4 phủ định và 
 | Bước | `type` | `key` | `min` | Nội dung |
 |---|---|---|---|---|
 | Nhớ lại / Khởi động | `sets` | `warmup` | `0–3′` | Thứ 2: 6 câu mcq đoán nghĩa từ mới (`"ungraded": true`, `core` 3). Thứ 4, 6: 6 câu mcq nhớ lại bài trước (`core` 3) |
-| Đọc | `read` | `read` | `3–9′` | Bài đọc 60 đến 90 từ, có `vocab`, kèm bộ `sets` kiểm tra hiểu (câu chính 4 đến 6, cộng thêm 3 câu làm thêm; mcq hoặc truefalse) |
+| Đọc | `read` | `read` | `3–9′` | Bài đọc 60 đến 90 từ, có `purpose` (mục tiêu đọc) và `vocab`, kèm **2 bộ `sets`**: (1) bộ hiểu bài (4 đến 6 câu chính, mcq hoặc truefalse) và (2) bộ **vận dụng** `"role":"apply"` (xem mục "Bài đọc phải được vận dụng"), mỗi bộ có thêm 3 câu làm thêm |
 | Nghe | `listen` | `listen` | `9–13′` | Dùng lại đúng bài đọc, kèm câu chính 3 đến 4, cộng thêm 3 câu làm thêm (`listenpick` hoặc `mcq`) |
 | Tìm ngữ pháp | `notice` | `notice` | `13–15′` | Học viên tự tìm am/is/are trong bài, rồi xem bảng ghi nhớ |
 | Luyện tập | `sets` | `practice` | `15–26′` | Các bộ bài tập ở bảng số lượng bên dưới |
 | Tự viết | `output` | `output` | `26–30′` | Xem phần "Bước tự viết" |
 
-**Buổi `review` (Thứ 3, 5):** `warmup` (`0–3′`, nhớ lại không nhìn bài), `review` (`3–20′`, các bộ bài tập ôn bằng **dạng khác** với buổi trước và **câu hoàn toàn mới**), `preview` (`20–25′`, bước `read` đọc trước sub kế tiếp, **không có bộ câu hỏi**, thêm `"note"`: "Hôm nay chỉ đọc để làm quen. Bài tập của phần này sẽ có vào ngày mai."), `listen` (`25–30′`, nghe lại bài vừa đọc trước, kèm 1 đến 2 câu).
+**Buổi `review` (Thứ 3, 5):** `warmup` (`0–3′`, nhớ lại không nhìn bài), `review` (`3–20′`, các bộ bài tập ôn bằng **dạng khác** với buổi trước và **câu hoàn toàn mới**), `preview` (`20–25′`, bước `read` đọc trước sub kế tiếp, **chỉ có bộ vận dụng nhẹ 2 câu, không có bộ hiểu bài đầy đủ**, thêm `"note"`: "Hôm nay chỉ đọc để làm quen. Bài tập của phần này sẽ có vào ngày mai."), `listen` (`25–30′`, nghe lại bài vừa đọc trước, kèm 1 đến 2 câu).
 
-**Buổi `week` (Thứ 7):** `quiz` (`0–5′`, quiz cả tuần), `transfer` (`5–12′`, bước `read` bài đọc **mới hoàn toàn** chỉ dùng từ và ngữ pháp đã học, kèm 4 câu hiểu bài), `mix` (`12–22′`, tổng hợp), `preview` (`22–28′`, `read` giới thiệu Sub 4, không có bộ câu hỏi), `report` (`28–30′`, `{"type":"report"}`).
+**Buổi `week` (Thứ 7):** `quiz` (`0–5′`, quiz cả tuần), `transfer` (`5–12′`, bước `read` bài đọc **mới hoàn toàn** chỉ dùng từ và ngữ pháp đã học, kèm 4 câu hiểu bài), `mix` (`12–22′`, tổng hợp), `preview` (`22–28′`, `read` giới thiệu Sub 4, có `purpose` và bộ vận dụng nhẹ 2 câu), `report` (`28–30′`, `{"type":"report"}`).
 
 # SỐ LƯỢNG BÀI TẬP (BẮT BUỘC TUÂN THỦ)
 
@@ -99,11 +99,12 @@ Mỗi bộ có **tổng số câu** (`items`) và **số câu chính** (`core`).
 |---|---|---|
 | Khởi động / Nhớ lại (`warmup`, mcq) | 3 | 6 |
 | Hiểu bài đọc (bộ trong bước `read`) | 4 đến 6 | thêm 3 câu mỗi bộ |
+| Vận dụng bài đọc (`role:"apply"`) | 3 đến 4 | thêm 3 câu mỗi bộ |
 | Câu nghe (bộ trong bước `listen`) | 3 đến 4 | thêm 3 câu mỗi bộ |
 | Thứ 7 `quiz` (mcq/truefalse trộn các sub) | 8 | 14 |
 | Thứ 7 hiểu bài đọc mới | 4 | 7 |
 
-Bước `read` đọc trước và các bước chỉ để làm quen (`preview`) vẫn không có câu hỏi.
+Bước `read` đọc trước và các bước làm quen (`preview`) chỉ có bộ vận dụng nhẹ 2 câu (không tính câu làm thêm).
 
 **Tỉ lệ nội dung của bộ luyện tập:** 60% thuộc sub hiện tại, 20% thuộc các sub trước, 20% là câu "bẫy tích lũy" (dùng nền tảng: đại từ, chào hỏi, số, am/is/are).
 
@@ -187,12 +188,18 @@ Mỗi bước có `type`, `key` (duy nhất trong buổi), `title`, `min`. Giá 
 
 **`read`**: bài đọc có từ vựng chạm để xem nghĩa.
 ```json
-{ "type":"read", "key":"read", "title":"Đọc", "min":"3–9′", "heading":"My family",
+{ "type":"read", "key":"read", "title":"Đọc", "min":"3–9′", "heading":"My family", "purpose":"Đọc để tìm: Mai có những ai trong gia đình?",
   "text":["Hello! My name is Mai. I am twelve years old.", "My father is a driver. His name is Nam."],
   "vocab":{ "father":"bố, ba", "driver":"tài xế" },
-  "sets":[ BỘ_HIỂU_BÀI ], "note":"(chỉ dùng cho bước đọc trước, không có sets)" }
+  "sets":[ BỘ_HIỂU_BÀI, BỘ_VẬN_DỤNG ], "note":"(chỉ dùng cho bước đọc trước)" }
 ```
-`vocab`: khóa là từ viết thường đúng như xuất hiện trong bài (dạng nguyên, không số nhiều trừ khi là từ vựng như "parents"), giá trị là nghĩa tiếng Việt ngắn. Chỉ liệt kê **từ mới** của sub đó (khoảng 8 từ), cộng vài từ phụ cần thiết. Buổi đọc trước thì `sets` là `[]`.
+`vocab`: khóa là từ viết thường đúng như xuất hiện trong bài (dạng nguyên, không số nhiều trừ khi là từ vựng như "parents"), giá trị là nghĩa tiếng Việt ngắn. Chỉ liệt kê **từ mới** của sub đó (khoảng 8 từ), cộng vài từ phụ cần thiết. 
+
+**Bài đọc phải được vận dụng, không đọc suông.** Đọc xong rồi bấm "xong" là vô nghĩa. Mỗi bước `read` phải làm đủ 3 việc, tùy theo nội dung của buổi và của tuần:
+1. `purpose`: một câu tiếng Việt nêu **mục tiêu đọc cụ thể** trước khi đọc, bắt học viên đọc để tìm hoặc so sánh một điều gì đó, ví dụ "Đọc để tìm: Mai có những ai trong gia đình?" hoặc "Đọc để so sánh: gia đình Linh khác gia đình bạn ở điểm nào?". Không viết kiểu "Hãy đọc bài".
+2. Bộ **hiểu bài** (không có `role`): câu hỏi tìm thông tin ngay trong bài.
+3. Bộ **vận dụng** có `"role":"apply"`: 3 đến 4 câu **dùng chính nội dung và mẫu câu của bài** vào một việc có ý nghĩa, và việc đó phải gắn với chủ đề của tuần (tuần 1: gia đình, giới thiệu người). Chọn dạng phù hợp với buổi: `answer` (trả lời câu hỏi về bản thân theo mẫu trong bài, ví dụ "Who is your mother?"), `transform` hoặc `reorder` (viết lại câu trong bài về người khác, ví dụ đổi "My father is a driver" thành câu về "My mother"), `fix` (sửa đoạn giới thiệu sai về một người trong bài), `gap` hoặc `cloze` (hoàn thành đoạn giới thiệu mới dùng cùng mẫu câu). Câu vận dụng **không được chép lại nguyên câu trong bài**, phải buộc học viên tự dùng từ và mẫu câu đã đọc. `instruction` của bộ này nói rõ việc cần làm bằng tiếng Việt, ví dụ "Dùng mẫu câu trong bài để nói về mẹ của Mai."
+Bước đọc trước (`preview`) cũng phải có `purpose` và **một bộ vận dụng nhẹ 2 câu** (ví dụ đoán nghĩa từ mới theo ngữ cảnh, hoặc tìm trong bài người nào được nhắc), vì đọc trước mà không làm gì thì học viên không nhớ. Câu đầy đủ của bài sẽ có vào ngày mai.
 
 **`listen`**: `{ "type":"listen", "key":"listen", "title":"Nghe", "min":"9–13′", "text":[...đúng bằng text bài đọc...], "sets":[ BỘ ] }`
 
@@ -215,15 +222,44 @@ Thứ 4 `target` thêm `"not"` và `box` thêm hàng "is not". Thứ 6 `target` 
 
 ## Các bộ bài (`sets`): 16 dạng
 
-Mọi bộ có dạng `{ "type":"...", "title":"...", "instruction":"...", "core":N, "items":[...] }`. `title` và `instruction` có thể bỏ trống, web sẽ tự điền. `core` là số câu chính (xem bảng số lượng). Bộ khởi động thêm `"ungraded":true`.
+Mọi bộ có dạng `{ "type":"...", "instruction":"...", "core":N, "items":[...] }`.
+
+**QUY TẮC ĐẶT TÊN (rất quan trọng, vì học viên là người Việt A1 đọc trực tiếp):**
+- `type` (mcq, gap, cloze, match...) chỉ là **mã kỹ thuật nội bộ**, học viên **không bao giờ thấy**. Dùng đúng mã trong bảng dưới đây.
+- **Không viết `title` cho bộ bài** (bỏ hẳn trường này). Web tự hiện tên tiếng Việt cho từng dạng. Tuyệt đối không viết `"title":"Mcq"`, `"Gap"`, `"Cloze"`, `"Word form"`, `"Dialogue"`...
+- `instruction` là **một câu yêu cầu bằng tiếng Việt đơn giản, riêng cho bộ đó**, nói rõ việc cần làm và nội dung cần chú ý, ví dụ: "Chọn am, is hoặc are cho mỗi câu.", "Nối từ tiếng Anh với nghĩa tiếng Việt.", "Nghe rồi chọn nghề nghiệp đúng." Không viết chung chung kiểu "Hoàn thành từng câu." hay "Làm bài.". Có thể bỏ trống nếu không có gì riêng cần nói, web sẽ dùng yêu cầu mặc định.
+- Mọi chữ học viên đọc (tiêu đề bước, `instruction`, `why`, `hint`, tiêu đề Challenge) viết bằng **tiếng Việt dễ hiểu**, không dùng thuật ngữ tiếng Anh như MCQ, cloze, word form, gap fill.
+
+Bảng **mã `type` và tên tiếng Việt web hiển thị** (để bạn hiểu, không cần ghi tên vào file):
+
+| type | Tên hiển thị cho học viên |
+|---|---|
+| mcq | Chọn đáp án |
+| truefalse | Đúng hay Sai |
+| oddone | Tìm từ khác loại |
+| match | Nối cặp |
+| listenpick | Nghe và chọn |
+| dictation | Nghe và viết lại |
+| dialogue | Chọn câu đáp lại |
+| gap | Điền từ vào chỗ trống |
+| form | Đổi dạng từ |
+| cloze | Điền vào đoạn văn |
+| reorder | Xếp thành câu |
+| fix | Tìm và sửa lỗi |
+| transform | Viết lại câu |
+| translate | Dịch sang tiếng Anh |
+| answer | Trả lời bằng tiếng Anh |
+| shadow | Nghe và đọc theo |
+
+ `core` là số câu chính (xem bảng số lượng). Bộ khởi động thêm `"ungraded":true`.
 
 Dưới đây là **mẫu một câu** cho mỗi dạng. Mọi câu đều nên có `why`, trừ ba dạng tự chấm.
 
 ```json
-// mcq: trắc nghiệm. answer là CHÍNH XÁC chuỗi trong options. Đặt đáp án đúng ở vị trí khác nhau.
+// mcq: chọn đáp án. answer là CHÍNH XÁC chuỗi trong options. Đặt đáp án đúng ở vị trí khác nhau.
 { "q":"This is Tom. He ___ my brother.", "options":["am","is","are"], "answer":"is", "why":"He là một người nên dùng is." }
 
-// truefalse: đúng/sai. answer là true hoặc false (không có nháy). q là một câu khẳng định để xét đúng/sai (theo bài đọc, theo ngữ pháp, hoặc theo nghĩa từ).
+// truefalse: đúng hay sai. answer là true hoặc false (không có nháy). q là một câu khẳng định để xét đúng/sai (theo bài đọc, theo ngữ pháp, hoặc theo nghĩa từ).
 { "q":"\"Mother\" nghĩa là bố.", "answer":false, "why":"mother = mẹ, father mới là bố." }
 
 // oddone: từ khác loại. Đúng 4 lựa chọn.
@@ -333,6 +369,8 @@ Bạn phải **tự làm liên tục cả 13 file trong cùng một lần chạy
 - [ ] **Mọi câu do tôi tự viết, không sinh bằng mẫu hay vòng lặp; mỗi `why` riêng cho từng câu; đã tự kiểm tra ngữ pháp của từng đáp án.**
 - [ ] `answer` trùng từng ký tự với một chuỗi trong `options`; các `options` không trùng nhau.
 - [ ] Tên người, đại từ và từ chỉ quan hệ cùng giới tính ("Tom is my grandmother" là sai). Chỗ trống giữa câu thì đáp án, bank, options viết thường.
+- [ ] **Không có `title` kiểu "Mcq", "Gap", "Cloze"... trong bất kỳ bộ bài nào; `instruction` bằng tiếng Việt, riêng cho từng bộ.**
+- [ ] Mỗi bước `read` có `purpose` cụ thể và có bộ `role:"apply"` dùng bài đọc vào việc có ý nghĩa (không chép lại câu trong bài).
 - [ ] JSON hợp lệ: nháy kép thẳng, không dấu phẩy thừa, không chú thích, `true/false` không có nháy.
 - [ ] Số câu của từng bộ khớp bảng (kể cả các bộ nhỏ và Challenge); `core` đúng; `cloze` có số `___` bằng số `items`.
 - [ ] `mcq`/`oddone`/`listenpick`/`dialogue`: `answer` trùng đúng một chuỗi trong `options`.
