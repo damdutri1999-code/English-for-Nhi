@@ -507,6 +507,9 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 .ptile b{font-size:.98rem}
 .ptile.hot{background:var(--p50); border-color:var(--p400)}
 .wadd{margin-top:8px; width:100%}
+.fbtxt.ok.late{background:var(--ok-bg); color:var(--ok)}
+.fbtxt .latenote{display:block; font-weight:600; font-size:.85rem; color:var(--ink2); margin-top:1px}
+.fbtxt.ok.late .why{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -1746,8 +1749,8 @@ function exerciseSet(set, onDone){
         if (!it.quietRetry) it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, msg + " ", it.lock ? h("button",{class:"linkbtn",type:"button",onClick:() => reveal(i)}, "Xem đáp án") : null)); return; }
       done[i] = true; if (tried[i]) r.ok = false; res[i] = r; cnt++;
       const quiet = it.quietOk && r.ok;
-      it.fbSlot.replaceChildren(quiet ? null : h("div",{class:"fbtxt "+(r.self && r.match === false ? "note" : r.ok ? "ok" : "bad")},
-        r.self ? [r.match === true ? "Giống đáp án mẫu, giỏi lắm! " : r.match === false ? "Chưa giống đáp án mẫu, bạn so sánh nhé. " : "", "Đáp án mẫu: ", h("b",null,r.correct)] : r.ok ? "Đúng rồi!" : tried[i] && r.retry === false && it.retry ? ["Đúng rồi! (lần đầu chưa đúng, tính là sai)"] : ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null));
+      it.fbSlot.replaceChildren(quiet ? null : h("div",{class:"fbtxt "+(r.self && r.match === false ? "note" : r.ok ? "ok" : (!r.self && tried[i] && r.retry === false && it.retry) ? "ok late" : "bad")},
+        r.self ? [r.match === true ? "Giống đáp án mẫu, giỏi lắm! " : r.match === false ? "Chưa giống đáp án mẫu, bạn so sánh nhé. " : "", "Đáp án mẫu: ", h("b",null,r.correct)] : r.ok ? "✅ Đúng rồi!" : tried[i] && r.retry === false && it.retry ? ["✅ Đúng rồi! ", h("span",{class:"latenote"},"Lần đầu chưa đúng nên câu này không được tính điểm.")] : ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null));
       if (cbs[i]) cbs[i].remove(); unlockNext(i);
       if (counted){ PG.done++; pgDraw(); }
       if (cnt === N) finishSet();
