@@ -21,6 +21,10 @@ Theo bảng "Lịch 6 buổi" của prompt (mỗi buổi 60 phút, có `output` 
 
 Problem–solution essay 220 đến 280 từ về biến đổi khí hậu, có điều kiện đảo ngữ.
 
+## Nguồn thật cần tìm đọc trước khi soạn (gợi ý, bạn phải tự tìm và kiểm chứng)
+
+báo cáo tóm tắt của IPCC, Our World in Data, Nature Climate Change, The Guardian (environment), The Economist
+
 ## Bài viết và nói (`output`)
 
 - Thứ 2: đoạn 70 đến 100 từ nêu vấn đề.

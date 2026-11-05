@@ -29,6 +29,10 @@ Theo bảng "Lịch 6 buổi" của prompt (mỗi buổi 60 phút, có `output` 
 
 Bài phát biểu thuyết phục (persuasive speech) 280 đến 360 từ, có tricolon, đối lập, subjunctive.
 
+## Nguồn thật cần tìm đọc trước khi soạn (gợi ý, bạn phải tự tìm và kiểm chứng)
+
+bài phát biểu thật về khí hậu (ví dụ phát biểu tại Liên Hợp Quốc, TED) để học nhịp và tu từ; chỉ học cách viết, không chép
+
 ## Bài viết và nói (`output`)
 
 - Thứ 2: đoạn mở bài phát biểu 80 đến 110 từ.

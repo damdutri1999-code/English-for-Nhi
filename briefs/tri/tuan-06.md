@@ -28,6 +28,10 @@ Mỗi cụm là cách nói trang trọng, chính xác hơn cho một ý đã h�
 
 Bài viết dài 380 đến 480 từ về giám sát và niềm tin xã hội.
 
+## Nguồn thật cần tìm đọc trước khi soạn (gợi ý, bạn phải tự tìm và kiểm chứng)
+
+như tuần 4 và 5
+
 ## Bài viết và nói (`output`)
 
 - Thứ 7 (viết có giờ): luận 250 từ: Does digital convenience justify the loss of privacy?

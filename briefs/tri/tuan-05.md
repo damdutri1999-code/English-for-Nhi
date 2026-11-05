@@ -29,6 +29,10 @@ Theo bảng "Lịch 6 buổi" của prompt (mỗi buổi 60 phút, có `output` 
 
 Bài học thuật 280 đến 360 từ về quyền riêng tư, dày danh hóa (the proliferation of, the erosion of).
 
+## Nguồn thật cần tìm đọc trước khi soạn (gợi ý, bạn phải tự tìm và kiểm chứng)
+
+khảo sát công khai về quan ngại quyền riêng tư (Pew Research Center, Eurobarometer) cho bảng số liệu; văn phong học thuật ở tạp chí khoa học xã hội
+
 ## Bài viết và nói (`output`)
 
 - Thứ 2: đoạn học thuật 80 đến 110 từ.

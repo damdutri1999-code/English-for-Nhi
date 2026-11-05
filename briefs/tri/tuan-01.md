@@ -21,6 +21,10 @@ Theo bảng "Lịch 6 buổi" của prompt (mỗi buổi 60 phút, có `output` 
 
 Bài luận mẫu (opinion essay) 220 đến 280 từ: tự động hóa là mối đe dọa hay cơ hội; đoạn đầu có luận điểm, có nhượng bộ ngắn.
 
+## Nguồn thật cần tìm đọc trước khi soạn (gợi ý, bạn phải tự tìm và kiểm chứng)
+
+McKinsey Global Institute (jobs lost and gained), World Economic Forum Future of Jobs Report, OECD Employment Outlook, The Economist và The Guardian về tự động hóa, bài trên tạp chí học thuật về lao động và công nghệ (Journal of Economic Perspectives)
+
 ## Bài viết và nói (`output`)
 
 - Thứ 2 (viết): 1 đoạn luận điểm 70 đến 100 từ, `useWords` Not only / Rarely / Never.

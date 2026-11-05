@@ -37,6 +37,22 @@ Bạn viết nội dung. Web đọc dữ liệu bạn xuất ra, tự dựng bà
 - Trình bày tiếng Việt: tiêu đề bước, `instruction`, `why` (giải thích) viết bằng **tiếng Việt ngắn gọn**, được phép trích thuật ngữ tiếng Anh (thesis, rebuttal, nominalisation) vì Trí đủ trình độ. Nội dung học (bài đọc, câu hỏi, đáp án) bằng tiếng Anh.
 - Mỗi tuần có **bài viết, bài nói** theo BRIEF. Tuần có `DATA REPORT` thì có thêm **bảng hoặc biểu đồ** (xem bước `output`).
 
+# NGUỒN THẬT VÀ HỌC CÁCH VIẾT (BẮT BUỘC)
+
+Trí đang học lên C1–C2, nên bài đọc và bài mẫu phải mang **chất văn phong thật** của báo chí và học thuật, không phải văn "giáo khoa". Trước khi soạn, bạn **phải tìm và đọc nguồn thật** về chủ đề của tuần:
+
+1. **Tìm nguồn (dùng công cụ duyệt web nếu có).** Với mỗi tuần, tìm **ít nhất 4 nguồn thật**, đa dạng thể loại:
+   - 1 đến 2 bài báo hoặc xã luận chất lượng cao (The Economist, The Guardian, Financial Times, BBC, New York Times, Scientific American, Wired...);
+   - 1 đến 2 nguồn học thuật hoặc báo cáo chính thức (bài trên tạp chí khoa học có phản biện, báo cáo của OECD, World Bank, World Economic Forum, McKinsey Global Institute, IPCC, WHO, Our World in Data, Eurostat, ONS...);
+   - với tuần `DATA REPORT`: **1 bộ số liệu công khai thật** để làm nền cho biểu đồ.
+   Nếu bạn **không có công cụ duyệt web**, hãy nói rõ ngay từ đầu, rồi dùng hiểu biết của bạn về các nguồn trên nhưng **không bịa tên bài, tác giả, năm, trích dẫn hay số liệu**.
+2. **Đọc để học cách viết, không để chép.** Quan sát và ghi lại: cách mở bài và đặt luận điểm; cách nêu nhượng bộ và phản biện; cách dùng hedging và boosting; cách chuyển đoạn; collocation và cụm trang trọng thường gặp; nhịp câu dài ngắn; cách báo cáo số liệu ở nguồn học thuật.
+3. **Viết lại hoàn toàn bằng lời của bạn.** Mọi bài đọc, bài mẫu, bài nghe là **văn bản gốc do bạn viết**, mô phỏng văn phong của thể loại đã đọc (ví dụ "bài xã luận kiểu The Economist", "đoạn tổng quan kiểu báo cáo OECD"). **Cấm chép nguyên câu hay đoạn từ nguồn**, cấm đổi vài từ rồi dùng lại. Nếu cần một ý hay một lập luận, diễn đạt lại và nêu nguồn.
+4. **Số liệu và sự kiện dựa trên nguồn thật**, làm tròn hợp lý và đúng chiều xu hướng. Với bài `data`, ghi nguồn ở trường `data.note`, ví dụ `"Source: adapted from OECD Employment Outlook (rounded figures)."`. Nếu số liệu hoàn toàn minh họa, ghi `"Fictional data for practice."`. Không trộn: đã ghi nguồn thật thì số phải đúng với nguồn.
+5. **Trích dẫn ngắn (nếu có):** tối đa một cụm dưới 15 từ, trong ngoặc kép, có nêu nguồn; mặc định không trích.
+6. **Mỗi tuần, phần học cách viết phải vào bài:** `purpose` của bài đọc nêu một đặc điểm văn phong để Trí quan sát (ví dụ "Đọc để tìm: tác giả nhượng bộ ở đâu và chuyển sang phản biện bằng từ nào?"); bước `notice` và các `why` chỉ ra cụm và cách viết đáng học; `outline`, `sample`, `model` của bài viết bám theo cấu trúc bạn quan sát được.
+7. **Danh sách nguồn:** khi trả lời bước 1 (trước khi soạn) và khi giao file, đưa **bảng nguồn tham khảo ngoài JSON** (tên nguồn, tác giả hoặc tổ chức, năm, đường link nếu có, và **điều bạn học được về cách viết**). Không đưa trường lạ vào JSON. Tôi sẽ dùng bảng này để Trí đọc nguồn thật thêm.
+
 # LỊCH 6 BUỔI TRONG TUẦN (tuần 1 và 2 của chủ đề)
 
 | Buổi | `day` | `kind` | Nội dung | Bài `output` |
@@ -345,7 +361,7 @@ Dùng đúng các bộ và số câu ở mục "Challenge". Không dùng `core`.
 2. **Mỗi câu hỏi khác nhau có một `why` riêng**, 1 đến 2 câu tiếng Việt nêu lý do cụ thể (có thể trích thuật ngữ tiếng Anh).
 3. **Tự làm lại từng câu như học viên** và đối chiếu `answer`. Với `transform`, mọi cách viết đúng đều phải có trong `answer` hoặc `alt`. Với câu nhiều đáp án hợp lý, **thiết kế lại câu** để chỉ còn một đáp án, hoặc liệt kê hết trong `alt`.
 4. **`answer` trùng từng ký tự với một chuỗi trong `options`**; các `options` khác nhau; chữ hoa chỉ khi đứng đầu câu hoặc danh từ riêng.
-5. **Mọi nhận định trong bài (số liệu, sự kiện, thuật ngữ) phải chính xác.** Nếu không chắc, dùng số liệu minh họa và ghi rõ là minh họa. Không bịa trích dẫn của người thật hay nghiên cứu cụ thể.
+5. **Mọi nhận định trong bài (số liệu, sự kiện, thuật ngữ) phải chính xác và dựa trên nguồn thật.** Nếu không chắc, dùng số liệu minh họa và ghi rõ là minh họa. Không bịa trích dẫn của người thật, tên bài báo hay nghiên cứu cụ thể.
 6. **Trung lập và chín chắn:** chủ đề tranh luận được trình bày cả hai phía; không đưa nội dung chính trị nóng hay nhạy cảm gây chia rẽ; bài mẫu có lập luận lý trí, không công kích cá nhân.
 7. **Văn phong đúng mức C1–C2:** collocation tự nhiên, không dịch từng chữ từ tiếng Việt, đúng register (không trộn từ lóng với văn phong học thuật).
 8. **`listenpick`, `dictation`, `shadow`:** câu `say` là câu độc lập, tự nhiên, đúng chính tả, không quá 25 từ, không có ký hiệu lạ.
@@ -377,13 +393,14 @@ Bạn tự soạn và tự ghi từng phần (có thể ghi dần vào file tạ
 
 # QUY TRÌNH LÀM VIỆC
 
-1. Nhận prompt và BRIEF, **chưa soạn ngay**. Trả lời ngắn: (a) bảng `vocabList` đủ số cụm, chia 4 sub (đánh dấu `recycled`/`upgrade`); (b) kế hoạch 3 bài đọc và 2 đề viết, 1 đề nói (và đề báo cáo số liệu kèm số liệu nếu có); (c) điểm ngữ pháp và 3 ví dụ. Chờ tôi nói "OK".
+1. Nhận prompt và BRIEF, **chưa soạn ngay**. Đầu tiên **tìm nguồn thật** theo mục "Nguồn thật và học cách viết" rồi trả lời ngắn: (0) bảng nguồn tham khảo và điều học được về văn phong; (a) bảng `vocabList` đủ số cụm, chia 4 sub (đánh dấu `recycled`/`upgrade`); (b) kế hoạch 3 bài đọc và 2 đề viết, 1 đề nói (và đề báo cáo số liệu kèm số liệu nếu có); (c) điểm ngữ pháp và 3 ví dụ. Chờ tôi nói "OK".
 2. Sau "OK", **tự làm liên tục hết 13 phần, không dừng**.
 3. Cuối cùng gửi bảng đếm số câu từng dạng từng buổi và bảng đếm số lần mỗi cụm của `vocabList` xuất hiện (phải từ 2 trở lên).
 4. Nếu tôi dán lại lỗi từ web, chỉ sửa **đúng chỗ lỗi** và xuất lại đúng phần đó.
 
 # CHECKLIST TRƯỚC KHI GỬI
 
+- [ ] Đã tìm và đọc nguồn thật (ít nhất 4 nguồn, có bài báo và nguồn học thuật); bài viết là văn bản **gốc**, không chép nguồn; có bảng nguồn tham khảo ngoài JSON; `data.note` ghi nguồn hoặc "Fictional data".
 - [ ] `meta` có `level` hợp lệ, `focus`, `vocabList` đủ số lượng (28 / 30 với 12 `recycled` / 14 `upgrade`), đủ `ipa`, `ex` chứa đúng cụm.
 - [ ] 6 session đủ bước theo khung giờ 60 phút (`min` đúng bảng, `output` có mặt cả 6 buổi); có `output` đúng buổi (Thứ 2 viết đoạn, Thứ 4 lập luận hoặc báo cáo số liệu, Thứ 6 nói; Thứ 3 viết lại đoạn; Thứ 5 nói phản biện; Thứ 7 bài viết có giờ); tuần ôn có bài luận hoặc báo cáo và bài nói ở Thứ 7.
 - [ ] Bài đọc đúng độ dài và câu không vượt giới hạn; `text` của `listen` khớp từng chữ bài đọc.

@@ -21,6 +21,10 @@ Theo bảng "Lịch 6 buổi" của prompt (mỗi buổi 60 phút, có `output` 
 
 Discursive essay 220 đến 280 từ cân bằng hai phía về giám sát bằng camera và dữ liệu cá nhân; nhiều bị động và impersonal.
 
+## Nguồn thật cần tìm đọc trước khi soạn (gợi ý, bạn phải tự tìm và kiểm chứng)
+
+The Guardian, Wired, MIT Technology Review về giám sát và dữ liệu cá nhân; Electronic Frontier Foundation; văn bản GDPR; tạp chí học thuật như Surveillance & Society
+
 ## Bài viết và nói (`output`)
 
 - Thứ 2: đoạn 70 đến 100 từ về dữ liệu cá nhân.

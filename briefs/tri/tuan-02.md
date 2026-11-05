@@ -29,6 +29,10 @@ Theo bảng "Lịch 6 buổi" của prompt (mỗi buổi 60 phút, có `output` 
 
 Bài lập luận 280 đến 360 từ: claim, reason, evidence, phản biện; dùng nhiều câu chẻ.
 
+## Nguồn thật cần tìm đọc trước khi soạn (gợi ý, bạn phải tự tìm và kiểm chứng)
+
+như chủ đề: dữ liệu về tỉ lệ việc làm có rủi ro tự động hóa (OECD, ILO) cho biểu đồ số liệu
+
 ## Bài viết và nói (`output`)
 
 - Thứ 2 (viết): đoạn claim + reason + evidence 80 đến 110 từ.

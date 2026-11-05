@@ -208,6 +208,15 @@ TRI = {
    write=["Thứ 7 (viết có giờ): luận 250 từ: Who should bear the cost of tackling climate change?","Thứ 7 (nói): bài phát biểu 2 phút."]),
 }
 
+SRC = {1:"McKinsey Global Institute (jobs lost and gained), World Economic Forum Future of Jobs Report, OECD Employment Outlook, The Economist và The Guardian về tự động hóa, bài trên tạp chí học thuật về lao động và công nghệ (Journal of Economic Perspectives)",
+       2:"như chủ đề: dữ liệu về tỉ lệ việc làm có rủi ro tự động hóa (OECD, ILO) cho biểu đồ số liệu",
+       3:"như tuần 1 và 2, thêm một bài xã luận phản biện",
+       4:"The Guardian, Wired, MIT Technology Review về giám sát và dữ liệu cá nhân; Electronic Frontier Foundation; văn bản GDPR; tạp chí học thuật như Surveillance & Society",
+       5:"khảo sát công khai về quan ngại quyền riêng tư (Pew Research Center, Eurobarometer) cho bảng số liệu; văn phong học thuật ở tạp chí khoa học xã hội",
+       6:"như tuần 4 và 5",
+       7:"báo cáo tóm tắt của IPCC, Our World in Data, Nature Climate Change, The Guardian (environment), The Economist",
+       8:"bài phát biểu thật về khí hậu (ví dụ phát biểu tại Liên Hợp Quốc, TED) để học nhịp và tu từ; chỉ học cách viết, không chép",
+       9:"như tuần 7 và 8"}
 def tri_brief(n):
     d = TRI[n]; role = (n - 1) % 3
     lines = [f"# BRIEF Trí, Tuần {n}: {d['topic']}", "",
@@ -237,7 +246,7 @@ def tri_brief(n):
             lines += ["", f"**12 cụm cũ quay lại** (`\"recycled\":true`, lấy từ tuần {n-1}; gán 3 cụm cho mỗi sub 1 đến 4):", "", ", ".join(d["recyc"]), "",
                       "Mỗi cụm cũ có `ex` **mới** (khác ví dụ cũ) và được dùng lại trong bài đọc hoặc bài tập."]
         lines += ["", "## Lịch các buổi", "", "Theo bảng \"Lịch 6 buổi\" của prompt (mỗi buổi 60 phút, có `output` cả 6 buổi). Tên sub: " + "; ".join(f"Sub {i}: {sn}" for i,(sn,_) in enumerate(d['subs'],1)) + "."]
-    lines += ["", "## Bài đọc", "", d["reading"], "", "## Bài viết và nói (`output`)", ""] + ["- " + w for w in d["write"]]
+    lines += ["", "## Bài đọc", "", d["reading"], "", "## Nguồn thật cần tìm đọc trước khi soạn (gợi ý, bạn phải tự tìm và kiểm chứng)", "", SRC[n], "", "## Bài viết và nói (`output`)", ""] + ["- " + w for w in d["write"]]
     if d.get("dr"):
         lines += ["", "## Báo cáo số liệu (DATA REPORT)", "", "Dùng mục \"Mảng báo cáo số liệu\" của prompt. Đề: \"The chart below shows ... Summarise the information by selecting and reporting the main features, and make comparisons where relevant. Write at least 150 words.\" Số liệu là minh họa (ghi `note: \"Fictional data for practice.\"`) và **phải khớp tuyệt đối** với `sample`, `model` và mọi câu hỏi về số liệu."]
     lines += ["", "## Ghi chú cho `meta`", "", f"- `week`: {n}; `title`: \"{d['topic']}\"; `level`: \"{d['level']}\"; `grammar`: \"{d['grammar']}\"."]
