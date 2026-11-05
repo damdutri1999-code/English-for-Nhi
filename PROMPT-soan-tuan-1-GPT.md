@@ -168,10 +168,9 @@ Bạn xuất **13 phần**, mỗi phần là **một khối mã JSON riêng** (`
 
 ```json
 { "schema": "a1-week/1", "part": "meta", "week": 1, "title": "Family", "grammar": "to be (am / is / are)",
-  "subs": ["Family members", "Describing family", "Asking about family", "Extended family"],
-  "names": ["Mai", "Lan", "Nam", "Minh", "Hoa"] }
+  "subs": ["Family members", "Describing family", "Asking about family", "Extended family"] }
 ```
-`names`: liệt kê **mọi tên người Việt** (và tên địa danh Việt như "Hanoi") dùng trong cả tuần, viết đúng như trong bài. Web dùng danh sách này để đọc tên bằng giọng tiếng Việt khi nghe (phần còn lại vẫn đọc bằng giọng tiếng Anh). Nên chọn tên Việt phổ biến, ngắn, dễ đọc.
+Tên nhân vật nên là tên Việt phổ biến, ngắn, dễ đọc (Mai, Lan, Nam, Minh, Hoa, Linh). Trình duyệt đọc tên theo giọng tiếng Anh, như người nước ngoài đọc tên Việt.
 
 ## Phần session (6 phần)
 

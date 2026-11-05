@@ -1041,7 +1041,6 @@ function prepSet(raw, key, ctx){
   SET[key] = set; return set;
 }
 function compileWeek(j){
-  (Array.isArray(j.names) ? j.names : []).forEach(x => { if (typeof x === "string" && x.trim()) VI_EXTRA.add(x.trim()); });
   const n = j.week, subs = j.subs || [];
   const sessions = DAYK.map((k, i) => ({ id:"w"+n+"-"+k, day:DAYN[i], kind:j.sessions[k].kind || DEFAULT_KIND[i], title:j.sessions[k].title }));
   DAYK.forEach(k => {
@@ -1351,28 +1350,6 @@ function stopAudio(){
   if ("speechSynthesis" in window) speechSynthesis.cancel();
   if (audioEl){ audioEl.pause(); audioEl = null; }
 }
-/* tên người Việt: tách ra để đọc bằng giọng tiếng Việt (nếu máy có), phần còn lại giữ giọng tiếng Anh */
-const VI_NAMES = new Set("Mai Lan Nam Minh Hoa Linh Huy Hung Nga Thu Trang Tuan Bao Binh Chi Dung Duc Hai Hanh Hien Hieu Hong Khanh Khoa Lien Loan Van Ngoc Nhi Phuong Quan Quang Tam Thanh Thao Trung Tuyet Vy Yen Viet Phong Dat Cuong Huong Nhung Oanh Quynh Tien Toan Thuy Duy Hanoi Hue Saigon Pho Tet Nguyen Tran Pham Hoang Vu Dang Bui Do Ngo Duong".split(" "));
-const VI_AMBIG = new Set(["An","Long","Kim","Van","Son","Ha","Hue","Do","Tran","Pham","Vu","Dang","Bui","Ngo","Tien","Duc","Hai","Thu","Tam","Hong","Chi","Dung","Dat"]);   // trùng từ tiếng Anh hoặc dễ nhầm: chỉ nhận khi viết hoa và không đứng đầu câu (trừ khi cả cụm là tên)
-const VI_EXTRA = new Set();
-const VI_DIAC = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i;
-function splitVi(text, hasVi){
-  if (!hasVi || !text) return [{ t:text, s:0, vi:false }];
-  const re = /[A-Za-zÀ-ỹ][A-Za-zÀ-ỹ'’-]*/g; let m; const hits = [];
-  while ((m = re.exec(text))){
-    const w = m[0], cap = /^[A-ZÀ-Ỹ]/.test(w), st = m.index;
-    const before = text.slice(0, st).replace(/\s+$/, ""), initial = !before || /[.!?:]["”’)]?$/.test(before);
-    const isName = VI_DIAC.test(w) ? true : VI_EXTRA.has(w) ? true : cap && VI_NAMES.has(w) && (!VI_AMBIG.has(w) || !initial);
-    if (isName) hits.push({ s:st, e:st + w.length });
-  }
-  if (!hits.length) return [{ t:text, s:0, vi:false }];
-  for (let i = hits.length - 1; i > 0; i--) if (/^\s+$/.test(text.slice(hits[i-1].e, hits[i].s))){ hits[i-1].e = hits[i].e; hits.splice(i, 1); }
-  const segs = []; let pos = 0;
-  const push = (s, e, vi) => { if (e > s) segs.push({ t:text.slice(s, e), s, vi }); };
-  hits.forEach(x => { push(pos, x.s, false); push(x.s, x.e, true); pos = x.e; });
-  push(pos, text.length, false);
-  return segs.filter(x => x.t.trim());
-}
 function playAudio({text, src, rate}, onend, onprog){
   stopAudio(); const my = audioToken; let timer = null; const L = (text || "").length;
   const stopT = () => { if (timer){ clearInterval(timer); timer = null; } };
@@ -1384,8 +1361,7 @@ function playAudio({text, src, rate}, onend, onprog){
   const want = (CONFIG.voiceName || "").toLowerCase();
   const enV = (want && voices.find(x => (x.name || "").toLowerCase().includes(want)))   // giọng ưu tiên, ví dụ Sonia
     || voices.find(x => /en[-_]US/i.test(x.lang)) || voices.find(x => /^en/i.test(x.lang));
-  const viV = voices.find(x => /^vi/i.test(x.lang));   // giọng tiếng Việt (nếu máy có) để đọc tên người Việt
-  const segs = splitVi(text || "", !!viV);
+  const segs = [{ t:text || "", s:0 }];   // tên người Việt đọc theo giọng tiếng Anh, như người nước ngoài đọc
   let bChar = -1, t0 = performance.now(), failed = false;
   if (onprog && L) timer = setInterval(() => {
     if (my !== audioToken){ stopT(); return; }
@@ -1395,7 +1371,7 @@ function playAudio({text, src, rate}, onend, onprog){
     if (my !== audioToken) return;
     if (k >= segs.length){ end(true); return; }
     const sg = segs[k], u = new SpeechSynthesisUtterance(sg.t); u.rate = rate || 1;
-    const v = sg.vi && viV ? viV : enV; u.lang = v ? v.lang : (sg.vi && viV ? "vi-VN" : "en-US"); if (v) u.voice = v;
+    const v = enV; u.lang = v ? v.lang : "en-US"; if (v) u.voice = v;
     if (k === 0) u.onstart = () => { t0 = performance.now(); };
     u.onboundary = e => { if (typeof e.charIndex === "number") bChar = sg.s + e.charIndex; };
     u.onend = () => { bChar = Math.max(bChar, sg.s + sg.t.length - 1); speakSeg(k + 1); };
