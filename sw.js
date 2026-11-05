@@ -1,5 +1,5 @@
 /* Cho phép mở web khi mất mạng. Trang chính luôn lấy bản mới nhất khi có mạng. */
-const CACHE = "a1-english-v4";
+const CACHE = "a1-english-v5";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png", "icons/icon-512.png", "icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", e => {

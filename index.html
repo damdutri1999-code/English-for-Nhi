@@ -1773,25 +1773,37 @@ function setsStep(step, ctx){
 }
 /* tra từ: bấm vào từ trong bài, cửa sổ nhỏ xổ ngay dưới từ (nghĩa tiếng Việt, IPA, phát âm, định nghĩa và ví dụ từ Free Dictionary) */
 const DICT = { mem:new Map(), ls:null };
-function dictGet(word){
-  const w = word.toLowerCase().replace(/[^a-z'-]/g, "");
-  if (!w) return Promise.resolve(null);
-  if (DICT.mem.has(w)) return DICT.mem.get(w);
-  if (!DICT.ls){ try { DICT.ls = JSON.parse(localStorage.getItem("a1-dict") || "{}"); } catch(e){ DICT.ls = {}; } }
-  if (DICT.ls[w]){ const v = Promise.resolve(DICT.ls[w]); DICT.mem.set(w, v); return v; }
-  const ac = new AbortController(), to = setTimeout(() => ac.abort(), 7000);
-  const p = fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + encodeURIComponent(w), { signal:ac.signal }).then(r => r.ok ? r.json() : null).then(d => {
-    clearTimeout(to); if (!Array.isArray(d) || !d.length) return null;
+const strip = s => { const d = document.createElement("div"); d.innerHTML = String(s || ""); return (d.textContent || "").replace(/\s+/g, " ").trim(); };
+const getJSON = (url, ms) => { const ac = new AbortController(), to = setTimeout(() => ac.abort(), ms || 7000);
+  return fetch(url, { signal:ac.signal }).then(r => { clearTimeout(to); if (r.status === 404) return { _nf:true }; if (!r.ok) throw new Error("http " + r.status); return r.json(); }, e => { clearTimeout(to); throw e; }); };
+/* nguồn 1: dictionaryapi.dev (có IPA, file đọc, ví dụ); nguồn 2: Wiktionary (định nghĩa, ví dụ) khi nguồn 1 lỗi */
+function dictFetch(w){
+  const fromA = d => { if (!Array.isArray(d) || !d.length) return null;
     const ph = d.flatMap(x => x.phonetics || []);
     const ipa = (ph.find(x => x.text) || {}).text || (d.find(x => x.phonetic) || {}).phonetic || "";
     const aud = (ph.find(x => x.audio && /-us\./i.test(x.audio)) || ph.find(x => x.audio) || {}).audio || "";
     const mean = [], ex = [];
     d.forEach(e => (e.meanings || []).forEach(m => { const df = (m.definitions || [])[0]; if (df && mean.length < 3) mean.push({ pos:m.partOfSpeech, def:df.definition });
       (m.definitions || []).forEach(x => { if (x.example && ex.length < 3 && !ex.includes(x.example)) ex.push(x.example); }); }));
-    const out = { ipa, aud, mean, ex };
-    DICT.ls[w] = out; try { const k = Object.keys(DICT.ls); if (k.length > 300) delete DICT.ls[k[0]]; localStorage.setItem("a1-dict", JSON.stringify(DICT.ls)); } catch(e){}
-    return out;
-  }).catch(() => { clearTimeout(to); DICT.mem.delete(w); return null; });
+    return { ipa, aud, mean, ex, src:"dictionaryapi.dev" }; };
+  const fromW = d => { const L = d && d.en; if (!Array.isArray(L) || !L.length) return null; const mean = [], ex = [];
+    L.forEach(e => { const df = (e.definitions || [])[0]; if (df && mean.length < 3) mean.push({ pos:String(e.partOfSpeech || "").toLowerCase(), def:strip(df.definition) });
+      (e.definitions || []).forEach(x => (x.examples || []).forEach(t => { const s = strip(t); if (s && ex.length < 3 && !ex.includes(s)) ex.push(s); })); });
+    return mean.length ? { ipa:"", aud:"", mean, ex, src:"Wiktionary" } : null; };
+  return getJSON("https://api.dictionaryapi.dev/api/v2/entries/en/" + encodeURIComponent(w), 6000).then(d => d._nf ? { _nf:true } : fromA(d))
+    .catch(() => getJSON("https://en.wiktionary.org/api/rest_v1/page/definition/" + encodeURIComponent(w), 7000).then(d => d._nf ? { _nf:true } : fromW(d)));
+}
+function dictGet(word){
+  const w = word.toLowerCase().replace(/[^a-z'-]/g, "");
+  if (!w) return Promise.resolve({ _nf:true });
+  if (DICT.mem.has(w)) return DICT.mem.get(w);
+  if (!DICT.ls){ try { DICT.ls = JSON.parse(localStorage.getItem("a1-dict") || "{}"); } catch(e){ DICT.ls = {}; } }
+  if (DICT.ls[w]){ const v = Promise.resolve(DICT.ls[w]); DICT.mem.set(w, v); return v; }
+  const p = dictFetch(w).then(out => {
+    if (out && !out._nf){ DICT.ls[w] = out; try { const k = Object.keys(DICT.ls); if (k.length > 300) delete DICT.ls[k[0]]; localStorage.setItem("a1-dict", JSON.stringify(DICT.ls)); } catch(e){} }
+    else DICT.mem.delete(w);
+    return out || { _nf:true };
+  }).catch(() => { DICT.mem.delete(w); return null; });
   DICT.mem.set(w, p); return p;
 }
 function wordCard(host, anchor, word, vi){
@@ -1810,12 +1822,14 @@ function wordCard(host, anchor, word, vi){
   card.style.setProperty("--ax", Math.max(14, Math.min(wd - 14, ar.left - hr.left + ar.width / 2 - left)) + "px");
   dictGet(word).then(d => {
     if (!card.isConnected) return;
-    if (!d){ body.replaceChildren(h("span",{class:"muted small"}, navigator.onLine === false ? "Đang offline nên chưa tra được thêm." : "Chưa có thêm thông tin cho từ này.")); return; }
+    if (!d || d._nf){ body.replaceChildren(h("span",{class:"muted small"}, !d ? "Không kết nối được từ điển (mạng hoặc trang từ điển đang lỗi). " : "Từ điển chưa có từ này. "),
+      !d ? h("button",{class:"linkbtn",type:"button",onClick:() => wordCard(host, anchor, word, vi)}, "Thử lại") : null); return; }
     if (d.ipa) head.querySelector(".wipa").textContent = d.ipa;
     head.querySelector(".say").onclick = () => say(d.aud);
     body.replaceChildren(
       ...d.mean.map(m => h("div",{class:"wdef"}, h("i",null, m.pos), " ", m.def)),
-      d.ex.length ? h("div",{class:"wex"}, h("div",{class:"wexh"},"Ví dụ"), d.ex.map(x => h("div",null, "• ", x))) : null);
+      d.ex.length ? h("div",{class:"wex"}, h("div",{class:"wexh"},"Ví dụ"), d.ex.map(x => h("div",null, "• ", x))) : null,
+      h("div",{class:"muted",style:"font-size:.72rem;margin-top:6px"}, "Nguồn: "+(d.src || "từ điển")));
     const hr2 = host.getBoundingClientRect(), cr = card.getBoundingClientRect();
     if (cr.bottom > window.innerHeight - 70) window.scrollBy({ top: cr.bottom - window.innerHeight + 90, behavior:"smooth" });
   });
