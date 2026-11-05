@@ -739,6 +739,9 @@ const fmt = sec => Math.floor(sec/60) + ":" + String(sec%60).padStart(2,"0");
 function shuffle(a){ const b=a.slice(); for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b; }
 let toastTimer;
 /* chế độ toàn màn hình: Android và máy tính dùng Fullscreen API; iPhone phải thêm vào màn hình chính */
+const FS_SVG = on => '<svg class="fsi" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+  + (on ? '<path d="M9 4v4a1 1 0 01-1 1H4M15 4v4a1 1 0 001 1h4M9 20v-4a1 1 0 00-1-1H4M15 20v-4a1 1 0 011-1h4"/>' : '<path d="M4 9V5a1 1 0 011-1h4M20 9V5a1 1 0 00-1-1h-4M4 15v4a1 1 0 001 1h4M20 15v4a1 1 0 01-1 1h-4"/>') + '</svg>';
+const FS_TXT = on => FS_SVG(on) + '<span style="margin-left:6px">' + (on ? "Thoát toàn màn hình" : "Bật toàn màn hình") + '</span>';
 const FS = {
   on:() => !!(document.fullscreenElement || document.webkitFullscreenElement),
   can:() => !!(document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen),
@@ -752,10 +755,11 @@ const FS = {
     } catch(e){ toast("Trình duyệt không cho bật toàn màn hình."); }
   },
   sync(){ const on = FS.on(); document.body.classList.toggle("isfs", on);
-    document.querySelectorAll(".fsbtn").forEach(b => { if (b.classList.contains("gear")) b.textContent = on ? "🗗" : "⛶"; else b.textContent = on ? "🗗 Thoát toàn màn hình" : "⛶ Bật toàn màn hình"; b.setAttribute("aria-label", on ? "Thoát toàn màn hình" : "Toàn màn hình"); }); }
+    document.querySelectorAll(".fsbtn").forEach(b => { b.innerHTML = b.classList.contains("gear") ? FS_SVG(on) : FS_TXT(on); const t = on ? "Thoát toàn màn hình (thu nhỏ lại)" : "Phóng to toàn màn hình"; b.setAttribute("aria-label", t); b.title = t; }); }
 };
 ["fullscreenchange","webkitfullscreenchange"].forEach(ev => document.addEventListener(ev, FS.sync));
-const fsBtn = () => h("button",{class:"gear fsbtn",type:"button","aria-label":"Toàn màn hình",title:"Toàn màn hình",onClick:FS.toggle}, FS.on() ? "🗗" : "⛶");
+FS.sync();
+const fsBtn = () => h("button",{class:"gear fsbtn",type:"button","aria-label":"Phóng to toàn màn hình",title:"Phóng to toàn màn hình",onClick:FS.toggle,html:FS_SVG(FS.on())});
 function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove("show"), msg.length > 60 ? 6000 : 2400); }
 
 /* =====================================================================
@@ -2798,7 +2802,7 @@ function settingsView(){
   return h("div",null, h("h1",null,"Cài đặt"),
     h("div",{class:"card tint"}, h("h3",null,"📚 Tải bài học lên"), h("p",{class:"muted small"},"Dán JSON do GPT soạn, kiểm tra rồi dùng ngay."), h("a",{class:"btn",href:"#/content"},"Mở trang tải bài")),
     h("div",{class:"card"}, h("h3",null,"Toàn màn hình"), h("p",{class:"muted small"}, FS.app() ? "Bạn đang mở app ở chế độ toàn màn hình." : FS.can() ? "Ẩn thanh địa chỉ của trình duyệt để học cho tập trung." : "Trên iPhone: bấm nút Chia sẻ, chọn “Thêm vào MH chính”, rồi mở app từ biểu tượng trên màn hình, app sẽ chạy toàn màn hình."),
-      FS.app() ? null : h("button",{class:"btn fsbtn",type:"button",onClick:FS.toggle}, FS.on() ? "🗗 Thoát toàn màn hình" : "⛶ Bật toàn màn hình")),
+      FS.app() ? null : h("button",{class:"btn fsbtn",type:"button",onClick:FS.toggle,html:FS_TXT(FS.on())})),
     h("div",{class:"card"}, h("h3",null,"Học viên: "+LRN.name+" ("+LRN.level+")"), h("p",{class:"muted small"},"Tên hiện trong lời chào ở trang chủ."), nameIn,
       h("button",{class:"btn soft sm",type:"button",style:"margin-top:12px",onClick:switchLearner},"↩ Đổi học viên")),
     LRN.id === "nhi" ? h("div",{class:"card"}, h("h3",null,"Giao diện"), h("div",{class:"row",style:"flex-wrap:nowrap"}, tk("light"), tk("night"))) : null,
