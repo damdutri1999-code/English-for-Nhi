@@ -468,6 +468,25 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 .mlines .mcol{gap:6px}
 .mlines{margin:4px 0 8px}
 .mlines .chip{font-size:.98rem}
+.lpstage:empty{display:none}
+.lpstage{margin:6px 0}
+.lphead{font-weight:800; font-size:.9rem; color:var(--task-ink); background:var(--task); border:2px solid var(--task-line); border-radius:12px; padding:6px 10px; margin-bottom:8px}
+.lpstage .reading{margin-bottom:6px}
+.lpstage .txt{margin:2px 0 8px}
+.reading.rd{position:relative}
+.tok.pick{background:var(--p200)}
+.wcard{position:absolute; z-index:20; background:var(--paper); color:var(--ink); border:2px solid var(--p400); border-radius:16px; padding:10px 12px 10px; box-shadow:0 10px 28px rgba(156,33,89,.22); font-size:.95rem; line-height:1.45; font-weight:600; text-align:left}
+.wcard::before{content:""; position:absolute; top:-8px; left:var(--ax,20px); width:14px; height:14px; margin-left:-7px; background:var(--paper); border-left:2px solid var(--p400); border-top:2px solid var(--p400); transform:rotate(45deg)}
+.whead{display:flex; align-items:center; gap:8px}
+.whead .say{width:36px; height:36px; min-height:36px; flex:none}
+.wword{font-size:1.15rem}
+.wipa{color:var(--ink2); font-weight:600; flex:1}
+.wclose{border:0; background:transparent; font-size:1rem; padding:6px 8px; min-height:36px; color:var(--ink2); cursor:pointer}
+.wvi{margin:6px 0 2px; background:var(--p100); border-radius:10px; padding:5px 10px}
+.wdef{margin-top:4px}
+.wdef i{color:var(--p700); font-weight:800; font-size:.85rem}
+.wex{margin-top:6px; border-top:1px dashed var(--line); padding-top:5px}
+.wexh{font-size:.75rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--ink2)}
 </style>
 </head>
 <body>
@@ -1357,7 +1376,7 @@ const TYPES = {
   truefalse:{label:"Đúng hay Sai", icon:"✔️", desc:"Đọc câu rồi chọn Đúng hoặc Sai", how:"Đọc từng câu rồi chọn Đúng hoặc Sai."},
   oddone:{label:"Tìm từ khác loại", icon:"🧐", desc:"Tìm từ không cùng nhóm", how:"Chọn từ không cùng nhóm với các từ còn lại."},
   match:{label:"Nối cặp", icon:"🔗", desc:"Nối từ với nghĩa", how:"Nối mỗi từ bên trái với nghĩa đúng bên phải."},
-  listenpick:{label:"Nghe và chọn", icon:"🎧", desc:"Nghe rồi chọn đáp án", how:"Bấm 🔊 để nghe, rồi chọn đáp án đúng."},
+  listenpick:{label:"Nghe và chọn", icon:"🎧", desc:"Nghe rồi chọn đáp án", how:"Mỗi câu có 3 bước: nghe và chọn đáp án, nghe dò theo chữ 2 lần, rồi chép lại câu (chữ sẽ ẩn). Đúng mới sang câu sau."},
   dictation:{label:"Nghe và viết lại", icon:"✍️", desc:"Nghe rồi gõ lại câu", how:"Bấm 🔊 để nghe, rồi gõ lại câu bạn nghe được."},
   dialogue:{label:"Chọn câu đáp lại", icon:"💬", desc:"Chọn câu đáp phù hợp trong hội thoại", how:"Đọc hội thoại, rồi chọn câu đáp phù hợp."},
   gap:{label:"Điền từ vào chỗ trống", icon:"🧩", desc:"Chọn từ cho sẵn để điền", how:"Kéo từ trong kho thả vào đúng chỗ trống."},
@@ -1400,7 +1419,7 @@ function mcqItem(it, onChange, pre){
   const el = h("div", {class:"q"}, it.q && !it._gen ? h("p",{class:"qtext"}, it.q) : null, pre || null,
     h("div",{class:"opts"+(it.options.length <= 4 && it.options.every(o => String(o).length <= 16) ? " row" : "")}, order.map((oi,i) => { const b = h("button",{class:"opt",type:"button",onClick:() => {
       if (locked) return; sel = i; btns.forEach((x,j) => { x.classList.toggle("sel", j===i); x.classList.remove("wrong"); }); onChange(); }}, it.options[oi]); btns.push(b); return b; })), fbSlot);
-  return { el, fbSlot, retry:true, isAnswered:() => sel >= 0,
+  return { el, fbSlot, retry:true, isAnswered:() => sel >= 0, _sel:() => sel >= 0,
     lock(){ locked = true; btns.forEach((b,j) => { if (order[j] === it.answer) b.classList.add("right"); }); },
     check(){ const ok = sel >= 0 && order[sel] === it.answer;
     if (ok){ locked = true; btns[sel].classList.add("right"); } else if (sel >= 0) btns[sel].classList.add("wrong");
@@ -1578,6 +1597,58 @@ function formItem(it, onChange){
     check(){ const ok = anyOk(it, input.value); if (ok) input.readOnly = true;
       input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.text }; } };
 }
+function listenpickItem(it, onChange){
+  /* 3 chặng: chọn đáp án (chọn sai được chọn lại) -> nghe dò theo chữ chạy như karaoke 2 lần -> chữ ẩn đi, gõ lại câu, đúng mới sang câu sau */
+  let stage = "pick", submitted = false, plays = 0, cur = false, timer = null;
+  const base = mcqItem(it, () => onChange(), audioBar(it.say, it.audioSrc));
+  const mcCheck = base.check, mcLock = base.lock;
+  const host = h("div",{class:"lpstage"});
+  base.el.insertBefore(host, base.fbSlot);
+  const stopAll = () => { cur = false; clearTimeout(timer); stopAudio(); };
+  function startDict(){
+    stage = "dict"; stopAll();
+    const input = h("input",{class:"txt",type:"text",placeholder:"Chữ đã ẩn. Gõ lại câu bạn nghe được",autocomplete:"off",autocapitalize:"off",spellcheck:"false"});
+    const msg = h("div"), btn = h("button",{class:"btn sm",type:"button",onClick:go}, "Kiểm tra");
+    function go(){ if (!input.value.trim()) return; submitted = true; base._val = input.value; onChange(); }
+    input.addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); go(); } });
+    host.replaceChildren(h("div",{class:"lphead"}, "✍️ Chép chính tả: chữ đã ẩn, nghe rồi gõ lại cả câu"), audioBar(it.say, it.audioSrc), input, btn, msg);
+    base._msg = msg; base._input = input; setTimeout(() => input.focus(), 50);
+  }
+  function startFollow(){
+    stage = "follow";
+    const kar = karaoke([it.say]), prog = audioProg(), info = h("span",{class:"small muted"}, "Đã nghe theo: 0/2 lần");
+    const btn = h("button",{class:"btn sm",type:"button"}, "▶ Nghe và dò theo chữ (2 lần)");
+    const finishRound = () => { cur = false; btn.textContent = "▶ Nghe và dò theo chữ (2 lần)"; };
+    function round(){
+      if (!cur) return; kar.clear(); prog.start();
+      playAudio({text:kar.plain, src:it.audioSrc, rate:.9}, ok => {
+        if (!cur) return;
+        if (!ok){ finishRound(); prog.reset(); kar.clear(); return; }
+        kar.done(); plays++; S.stats.plays++; save(); info.textContent = "Đã nghe theo: "+plays+"/2 lần";
+        if (plays >= 2){ finishRound(); timer = setTimeout(startDict, 700); } else timer = setTimeout(round, 700);
+      }, (f, ci) => { prog.set(f); kar.set(ci); });
+    }
+    btn.addEventListener("click", () => { if (cur){ stopAll(); finishRound(); prog.reset(); kar.clear(); return; }
+      cur = true; btn.textContent = "⏹ Dừng"; round(); });
+    host.replaceChildren(h("div",{class:"lphead"}, "🎤 Đúng rồi! Nghe và dò theo chữ nhảy theo giọng đọc (2 lần). Sau đó chữ sẽ ẩn."),
+      h("div",{class:"reading karaoke"}, kar.el), prog.el, h("div",{class:"row abtns"}, btn, info));
+  }
+  const out = Object.assign(base, { quietRetry:false,
+    isAnswered(){ return stage !== "pick" || base._sel(); },
+    lock(){ mcLock(); stage = "done"; stopAll(); host.replaceChildren(h("div",{class:"lphead"}, "📄 Câu trong bài nghe: ", h("b",null,it.say))); },
+    check(){
+      if (stage === "done") return { ok:true, correct:it.say, why:it.why, prompt:it.q || it.say };
+      if (stage === "pick"){ const r = mcCheck.call(base); if (r.ok){ startFollow(); return { pending:true }; } return r; }
+      if (stage === "follow") return { pending:true };
+      if (!submitted) return { pending:true };
+      submitted = false; const v = base._input.value, ok = [it.say].concat(it.alt || []).some(a => same(a, v));
+      base._input.classList.remove("right","wrong"); base._input.classList.add(ok ? "right" : "wrong");
+      if (ok){ base._input.readOnly = true; stage = "done"; return { ok:true, correct:it.say, why:it.why, prompt:it.q || it.say }; }
+      base._msg.replaceChildren(h("div",{class:"fbtxt bad"}, "Chưa đúng, nghe lại rồi sửa nhé. Chữ hoa và dấu câu không quan trọng."));
+      return { pending:true };
+    } });
+  return out;
+}
 function dictItem(it, onChange){
   const fbSlot = h("div"), input = h("input",{class:"txt",type:"text",placeholder:"Gõ câu bạn nghe được",onInput:onChange});
   return { el:h("div",{class:"q"}, (it.q && !/^nghe (rồi|và) (gõ|chép|viết)/i.test(String(it.q).trim()) ? h("p",{class:"qtext"}, it.q) : null), audioBar(it.say, it.audioSrc), input, fbSlot), fbSlot, retry:true, lock(){ input.readOnly = true; }, isAnswered:() => input.value.trim() !== "",
@@ -1603,7 +1674,7 @@ function shadowItem(it, onChange){
 const mapItems = (fn, pre) => (set, ch) => ({ head:[], items:set.items.map(it => fn(it, ch, pre ? pre(it) : null)) });
 const BUILD = {
   mcq:mapItems(mcqItem), truefalse:mapItems(mcqItem), oddone:mapItems(mcqItem),
-  listenpick:mapItems(mcqItem, it => audioBar(it.say, it.audioSrc)), dialogue:mapItems(mcqItem, it => chatEl(it.lines)),
+  listenpick:mapItems(listenpickItem), dialogue:mapItems(mcqItem, it => chatEl(it.lines)),
   gap:buildGap, cloze:buildCloze, match:buildMatch,
   reorder:mapItems(reorderItem), fix:mapItems(fixItem), form:mapItems(formItem), dictation:mapItems(dictItem),
   transform:mapItems(textItem), translate:mapItems(textItem), answer:mapItems(textItem), shadow:mapItems(shadowItem)
@@ -1640,13 +1711,16 @@ function exerciseSet(set, onDone){
       recordResult(main, res); onDone && onDone(right, total, res);
     };
     const tried = Array(N).fill(false), lastR = Array(N).fill(null);
+    const seq = main.type === "listenpick";   // làm tuần tự: xong câu này mới mở câu sau
+    const unlockNext = i => { if (seq && built.items[i+1] && built.items[i+1].el) built.items[i+1].el.hidden = false; };
     const reveal = i => { if (done[i]) return; const it = built.items[i]; it.lock && it.lock(); done[i] = true; cnt++;
       const r = Object.assign({}, lastR[i], { ok:false, retry:false }); res[i] = r;
       it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null));
-      if (cbs[i]) cbs[i].remove(); if (counted){ PG.done++; pgDraw(); } if (cnt === N) finishSet(); };
+      if (cbs[i]) cbs[i].remove(); unlockNext(i); if (counted){ PG.done++; pgDraw(); } if (cnt === N) finishSet(); };
     const checkOne = i => {
       if (done[i] || !built) return; const it = built.items[i]; if (!it.isAnswered()) return;
       const r = it.check();
+      if (r.pending) return;
       if (r.retry){ tried[i] = true; lastR[i] = r;
         const msg = /^(gap|cloze)$/.test(main.type) && main.mode !== "type" ? "Chưa đúng. Kéo từ khác vào để thay nhé." : MCQLIKE.includes(main.type) ? "Chưa đúng, bạn chọn lại nhé." : main.type === "reorder" ? "Chưa đúng, bạn xếp lại nhé." : "Chưa đúng, bạn sửa lại rồi kiểm tra lại nhé.";
         if (!it.quietRetry) it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, msg + " ", it.lock ? h("button",{class:"linkbtn",type:"button",onClick:() => reveal(i)}, "Xem đáp án") : null)); return; }
@@ -1654,7 +1728,7 @@ function exerciseSet(set, onDone){
       const quiet = it.quietOk && r.ok;
       it.fbSlot.replaceChildren(quiet ? null : h("div",{class:"fbtxt "+(r.self && r.match === false ? "note" : r.ok ? "ok" : "bad")},
         r.self ? [r.match === true ? "Giống đáp án mẫu, giỏi lắm! " : r.match === false ? "Chưa giống đáp án mẫu, bạn so sánh nhé. " : "", "Đáp án mẫu: ", h("b",null,r.correct)] : r.ok ? "Đúng rồi!" : tried[i] && r.retry === false && it.retry ? ["Đúng rồi! (lần đầu chưa đúng, tính là sai)"] : ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null));
-      if (cbs[i]) cbs[i].remove();
+      if (cbs[i]) cbs[i].remove(); unlockNext(i);
       if (counted){ PG.done++; pgDraw(); }
       if (cnt === N) finishSet();
     };
@@ -1667,6 +1741,7 @@ function exerciseSet(set, onDone){
       cbs[i] = cb; if (it.fbSlot && it.fbSlot.parentNode === it.el) it.el.insertBefore(cb, it.fbSlot); else it.el.append(cb);
       it.el.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.tagName === "INPUT"){ e.preventDefault(); checkOne(i); } });
     });
+    if (seq) built.items.forEach((it, i) => { if (i > 0 && it.el) it.el.hidden = true; });
     const T = TYPES[main.type] || { icon:"", label:"", how:"" };
     return [h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), h("span",{class:"tins"}, set.instruction || T.how)),
       ...built.head, ...built.items.map(i => i.el).filter(Boolean), scoreBox, extraHost];
@@ -1696,18 +1771,68 @@ function setsStep(step, ctx){
   const sets = step.gen ? step.gen() : step.sets;
   return h("div",null, setsBlock(sets, () => ctx.done()));
 }
+/* tra từ: bấm vào từ trong bài, cửa sổ nhỏ xổ ngay dưới từ (nghĩa tiếng Việt, IPA, phát âm, định nghĩa và ví dụ từ Free Dictionary) */
+const DICT = { mem:new Map(), ls:null };
+function dictGet(word){
+  const w = word.toLowerCase().replace(/[^a-z'-]/g, "");
+  if (!w) return Promise.resolve(null);
+  if (DICT.mem.has(w)) return DICT.mem.get(w);
+  if (!DICT.ls){ try { DICT.ls = JSON.parse(localStorage.getItem("a1-dict") || "{}"); } catch(e){ DICT.ls = {}; } }
+  if (DICT.ls[w]){ const v = Promise.resolve(DICT.ls[w]); DICT.mem.set(w, v); return v; }
+  const ac = new AbortController(), to = setTimeout(() => ac.abort(), 7000);
+  const p = fetch("https://api.dictionaryapi.dev/api/v2/entries/en/" + encodeURIComponent(w), { signal:ac.signal }).then(r => r.ok ? r.json() : null).then(d => {
+    clearTimeout(to); if (!Array.isArray(d) || !d.length) return null;
+    const ph = d.flatMap(x => x.phonetics || []);
+    const ipa = (ph.find(x => x.text) || {}).text || (d.find(x => x.phonetic) || {}).phonetic || "";
+    const aud = (ph.find(x => x.audio && /-us\./i.test(x.audio)) || ph.find(x => x.audio) || {}).audio || "";
+    const mean = [], ex = [];
+    d.forEach(e => (e.meanings || []).forEach(m => { const df = (m.definitions || [])[0]; if (df && mean.length < 3) mean.push({ pos:m.partOfSpeech, def:df.definition });
+      (m.definitions || []).forEach(x => { if (x.example && ex.length < 3 && !ex.includes(x.example)) ex.push(x.example); }); }));
+    const out = { ipa, aud, mean, ex };
+    DICT.ls[w] = out; try { const k = Object.keys(DICT.ls); if (k.length > 300) delete DICT.ls[k[0]]; localStorage.setItem("a1-dict", JSON.stringify(DICT.ls)); } catch(e){}
+    return out;
+  }).catch(() => { clearTimeout(to); DICT.mem.delete(w); return null; });
+  DICT.mem.set(w, p); return p;
+}
+function wordCard(host, anchor, word, vi){
+  host.querySelectorAll(".wcard").forEach(x => x.remove());
+  const card = h("div",{class:"wcard",role:"dialog","aria-label":"Tra từ "+word});
+  const body = h("div",{class:"wbody"}, h("span",{class:"muted small"}, "Đang tra từ điển…"));
+  const say = (src) => { let fell = false; playAudio({text:word, src:src || undefined, rate:.85}, ok => { if (!ok && src && !fell){ fell = true; playAudio({text:word, rate:.85}); } }); };
+  const close = h("button",{class:"wclose",type:"button","aria-label":"Đóng",onClick:() => card.remove()}, "✕");
+  const head = h("div",{class:"whead"}, h("button",{class:"say",type:"button","aria-label":"Nghe từ này",onClick:() => say("")}, "🔊"),
+    h("b",{class:"wword"}, word), h("span",{class:"wipa"}), close);
+  card.append(head, vi ? h("div",{class:"wvi"}, "🇻🇳 ", h("b",null,vi)) : null, body);
+  host.append(card);
+  const hr = host.getBoundingClientRect(), ar = anchor.getBoundingClientRect();
+  const wd = Math.min(hr.width, 360), left = Math.max(0, Math.min(ar.left - hr.left - 12, hr.width - wd));
+  card.style.width = wd + "px"; card.style.left = left + "px"; card.style.top = (ar.bottom - hr.top + 8) + "px";
+  card.style.setProperty("--ax", Math.max(14, Math.min(wd - 14, ar.left - hr.left + ar.width / 2 - left)) + "px");
+  dictGet(word).then(d => {
+    if (!card.isConnected) return;
+    if (!d){ body.replaceChildren(h("span",{class:"muted small"}, navigator.onLine === false ? "Đang offline nên chưa tra được thêm." : "Chưa có thêm thông tin cho từ này.")); return; }
+    if (d.ipa) head.querySelector(".wipa").textContent = d.ipa;
+    head.querySelector(".say").onclick = () => say(d.aud);
+    body.replaceChildren(
+      ...d.mean.map(m => h("div",{class:"wdef"}, h("i",null, m.pos), " ", m.def)),
+      d.ex.length ? h("div",{class:"wex"}, h("div",{class:"wexh"},"Ví dụ"), d.ex.map(x => h("div",null, "• ", x))) : null);
+    const hr2 = host.getBoundingClientRect(), cr = card.getBoundingClientRect();
+    if (cr.bottom > window.innerHeight - 70) window.scrollBy({ top: cr.bottom - window.innerHeight + 90, behavior:"smooth" });
+  });
+  setTimeout(() => card.scrollIntoView({ block:"nearest", behavior:"smooth" }), 30);
+}
 function readStep(step, ctx){
-  const gloss = h("div",{class:"gloss"}, h("span",{class:"muted"}, "Chạm vào từ gạch chân để xem nghĩa."));
+  const gloss = h("div",{class:"muted small",style:"margin:0 0 8px"}, "Chạm vào bất kỳ từ nào để xem nghĩa, phiên âm, cách đọc và ví dụ.");
   let picked = null;
-  const box = h("div",{class:"reading"}, step.text.map(p => h("p", null, tokenize(p).map(t => {
+  const box = h("div",{class:"reading rd"}, step.text.map(p => h("p", null, tokenize(p).map(t => {
     if (!t.word) return [t.pre + t.post, " "];
     const key = t.word.toLowerCase(), m = step.vocab[key];
-    if (!m) return [t.pre, t.word, t.post, " "];
-    const sp = h("span",{class:"tok vocab",role:"button",tabindex:"0"}, t.word);
-    const open = () => { if (picked) picked.classList.remove("pick"); picked = sp; sp.classList.add("pick");
-      gloss.replaceChildren(h("button",{class:"say",type:"button","aria-label":"Nghe từ này",onClick:() => playAudio({text:t.word, rate:.8})}, "🔊"), h("span",null, h("b",null,t.word), " = ", m)); };
+    const sp = h("span",{class:"tok"+(m ? " vocab" : ""),role:"button",tabindex:"0"}, t.word);
+    const open = () => { if (picked) picked.classList.remove("pick"); if (picked === sp){ picked = null; box.querySelectorAll(".wcard").forEach(x => x.remove()); return; }
+      picked = sp; sp.classList.add("pick"); wordCard(box, sp, t.word, m || ""); };
     sp.addEventListener("click", open); sp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); } });
     return [t.pre, sp, t.post, " "]; }))));
+  document.addEventListener("keydown", function esc(e){ if (!box.isConnected){ document.removeEventListener("keydown", esc); return; } if (e.key === "Escape") box.querySelectorAll(".wcard").forEach(x => x.remove()); });
   const finish = () => { addVocab(step.vocab); ctx.done(); };
   const purpose = h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, "🎯 Đọc để"), h("span",{class:"tins"}, step.purpose || "Hiểu ý chính của bài, rồi dùng bài này để làm các câu bên dưới."));
   const out = h("div",null, h("div",{class:"card"}, h("h2",null,step.heading), purpose, gloss, box), step.note ? h("p",{class:"muted"}, step.note) : null);

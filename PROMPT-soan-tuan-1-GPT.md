@@ -268,7 +268,9 @@ Dưới đây là **mẫu một câu** cho mỗi dạng. Mọi câu đều nên 
 // match: nối cặp. Mỗi câu là MỘT cặp. Web tự chia nhóm 5 cặp và xáo trộn.
 { "left":"mother", "right":"mẹ" }
 
-// listenpick: nghe rồi chọn. say được đọc lên; q hiện trên màn hình (có thể bỏ trống).
+// listenpick: nghe rồi chọn. say được đọc lên; q hiện trên màn hình.
+// Web chạy mỗi câu thành 3 bước: (1) chọn đáp án, chọn sai thì chọn lại; (2) khi chọn đúng, chữ của `say` hiện ra và chạy sáng theo giọng đọc như karaoke, nghe dò 2 lần; (3) chữ ẩn đi, học viên nghe và chép lại chính xác câu `say`, đúng mới sang câu sau.
+// Vì vậy `say` phải là MỘT câu hoàn chỉnh, tự nhiên, 3 đến 8 từ, chỉ dùng từ đã học, đúng chính tả (học viên phải chép lại được). `q` hỏi về nội dung của chính câu `say`.
 { "say":"My father is a driver.", "q":"Bố bạn ấy làm nghề gì?", "options":["driver","teacher","doctor"], "answer":"driver", "why":"Nghe: \"My father is a driver.\"" }
 
 // dictation: nghe rồi gõ lại. say là đáp án. alt (nếu có) là cách viết khác chấp nhận được.
@@ -373,6 +375,7 @@ Bạn phải **tự làm liên tục cả 13 file trong cùng một lần chạy
 - [ ] Mỗi bước `read` có `purpose` cụ thể và có bộ `role:"apply"` dùng bài đọc vào việc có ý nghĩa (không chép lại câu trong bài).
 - [ ] JSON hợp lệ: nháy kép thẳng, không dấu phẩy thừa, không chú thích, `true/false` không có nháy.
 - [ ] Số câu của từng bộ khớp bảng (kể cả các bộ nhỏ và Challenge); `core` đúng; `cloze` có số `___` bằng số `items`.
+- [ ] `listenpick`: `say` là một câu hoàn chỉnh 3 đến 8 từ (sẽ được chép chính tả), `q` hỏi đúng về nội dung câu đó.
 - [ ] `mcq`/`oddone`/`listenpick`/`dialogue`: `answer` trùng đúng một chuỗi trong `options`.
 - [ ] `gap`/`form`: đúng một `___` mỗi câu. `reorder`: `words` khớp `answer` từng từ (không thừa, không thiếu).
 - [ ] Mọi câu tiếng Anh đúng ngữ pháp, tự nhiên, từ vựng A1–A2; `why` bằng tiếng Việt, 1 đến 2 câu, nêu lý do.
