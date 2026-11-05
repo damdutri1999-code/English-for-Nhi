@@ -41,6 +41,14 @@ Bạn viết nội dung. Một web sẽ đọc dữ liệu bạn xuất ra, tự
 
 Ngữ pháp đi theo tuần: Thứ 2 khẳng định; Thứ 4 phủ định và miêu tả; Thứ 6 câu hỏi.
 
+**QUY TẮC "CHƯA DẠY THÌ CHƯA ĐƯỢC HỎI" (rất quan trọng):** một dạng câu chỉ được xuất hiện trong bài tập **sau** buổi mà nó được dạy. Cụ thể ở tuần 1:
+- **Thứ 2 và Thứ 3:** chỉ câu **khẳng định** (am / is / are, tính từ sở hữu). Tuyệt đối **không** có câu phủ định (is not, isn't, aren't, am not), không có câu hỏi Yes/No, và không có `instruction` kiểu "Viết lại thành câu phủ định".
+- **Thứ 4 và Thứ 5:** thêm câu **phủ định**. Vẫn **không** có câu hỏi Yes/No (Is she...? Are they...?).
+- **Thứ 6 và Thứ 7:** thêm câu **hỏi** và câu trả lời ngắn (Yes, she is. / No, she isn't.).
+- Câu hỏi có từ để hỏi Who/What/How old... chỉ dùng từ Thứ 6.
+- Buổi `review` (Thứ 3, 5) ôn **chỉ những gì đã dạy**, nhưng đổi dạng bài. Phần **đọc trước** ngữ pháp mới chỉ để làm quen, **không** được có bài tập chấm điểm về nó.
+Với các tuần sau cũng áp dụng đúng nguyên tắc này: mỗi điểm ngữ pháp có một buổi dạy; trước buổi đó chưa có bài tập về nó.
+
 # KHUNG GIỜ MỖI BUỔI (30 phút) VÀ CÁC BƯỚC (`steps`)
 
 **Buổi `new` (Thứ 2, 4, 6):**
@@ -375,6 +383,7 @@ Bạn phải **tự làm liên tục cả 13 file trong cùng một lần chạy
 - [ ] Tên người, đại từ và từ chỉ quan hệ cùng giới tính ("Tom is my grandmother" là sai). Chỗ trống giữa câu thì đáp án, bank, options viết thường.
 - [ ] **Không có `title` kiểu "Mcq", "Gap", "Cloze"... trong bất kỳ bộ bài nào; `instruction` bằng tiếng Việt, riêng cho từng bộ.**
 - [ ] Mỗi bước `read` có `purpose` cụ thể và có bộ `role:"apply"` dùng bài đọc vào việc có ý nghĩa (không chép lại câu trong bài).
+- [ ] Thứ 2, 3 không có câu phủ định hay câu hỏi; Thứ 4, 5 không có câu hỏi Yes/No (chưa dạy thì chưa hỏi).
 - [ ] JSON hợp lệ: nháy kép thẳng, không dấu phẩy thừa, không chú thích, `true/false` không có nháy.
 - [ ] Số câu của từng bộ khớp bảng (kể cả các bộ nhỏ và Challenge); `core` đúng; `cloze` có số `___` bằng số `items`.
 - [ ] `listenpick`: `say` là một câu hoàn chỉnh 3 đến 8 từ (sẽ được chép chính tả), `q` hỏi đúng về nội dung câu đó.

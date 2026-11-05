@@ -1186,6 +1186,11 @@ function validateWeek(j){
       if (st.type === "sets" && (!Array.isArray(st.sets) || !st.sets.length)) E.push(sw + ": thiếu sets.");
       (st.sets || []).forEach((raw, xi) => { const r = validateSet(raw, sw + " bộ " + (xi+1), E, W, seen); n += r.n; core += r.core; sec += r.sec; });
     });
+    if (j.week === 1 && (k === "mon" || k === "tue" || k === "wed" || k === "thu")){   // chưa dạy thì chưa được hỏi: phủ định từ Thứ 4, câu hỏi từ Thứ 6
+      const txt = JSON.stringify(s.steps.map(st => (st.sets || []).map(set => [set.instruction, (set.items || []).map(it => [it.q, it.text, it.answer, it.options, it.prompt, it.words, it.lines, it.say, it.left, it.right])])));
+      if ((k === "mon" || k === "tue") && /\b(is not|are not|am not|isn't|aren't|isn’t|aren’t)\b|phủ định|\bnot\b/i.test(txt)) W.push(w + ": chưa dạy câu phủ định (học vào Thứ 4) mà đã có câu phủ định trong bài tập. Chỉ dùng câu khẳng định ở Thứ 2 và Thứ 3.");
+      if (/(\b(Is|Are|Am) (he|she|it|they|you|we|I|this|that|your|she|my|his|her)\b[^\"]*\?)|câu hỏi yes\/no|Yes, (he|she|it|they|I|we) (is|are|am)\b/i.test(txt)) W.push(w + ": chưa dạy câu hỏi Yes/No (học vào Thứ 6) mà đã có trong bài tập.");
+    }
     if (k === "sat" && !s.steps.some(x => x && x.type === "report")) W.push(w + ": buổi cuối tuần nên có bước report.");
     const c = j.challenges && j.challenges[k]; let cn = 0, csec = 0;
     if (!c) W.push(w + ": chưa có challenge.");
