@@ -1041,6 +1041,7 @@ function prepSet(raw, key, ctx){
   SET[key] = set; return set;
 }
 function compileWeek(j){
+  (Array.isArray(j.names) ? j.names : []).forEach(x => { if (typeof x === "string" && x.trim()) VI_EXTRA.add(x.trim()); });
   const n = j.week, subs = j.subs || [];
   const sessions = DAYK.map((k, i) => ({ id:"w"+n+"-"+k, day:DAYN[i], kind:j.sessions[k].kind || DEFAULT_KIND[i], title:j.sessions[k].title }));
   DAYK.forEach(k => {
@@ -1350,6 +1351,28 @@ function stopAudio(){
   if ("speechSynthesis" in window) speechSynthesis.cancel();
   if (audioEl){ audioEl.pause(); audioEl = null; }
 }
+/* tên người Việt: tách ra để đọc bằng giọng tiếng Việt (nếu máy có), phần còn lại giữ giọng tiếng Anh */
+const VI_NAMES = new Set("Mai Lan Nam Minh Hoa Linh Huy Hung Nga Thu Trang Tuan Bao Binh Chi Dung Duc Hai Hanh Hien Hieu Hong Khanh Khoa Lien Loan Van Ngoc Nhi Phuong Quan Quang Tam Thanh Thao Trung Tuyet Vy Yen Viet Phong Dat Cuong Huong Nhung Oanh Quynh Tien Toan Thuy Duy Hanoi Hue Saigon Pho Tet Nguyen Tran Pham Hoang Vu Dang Bui Do Ngo Duong".split(" "));
+const VI_AMBIG = new Set(["An","Long","Kim","Van","Son","Ha","Hue","Do","Tran","Pham","Vu","Dang","Bui","Ngo","Tien","Duc","Hai","Thu","Tam","Hong","Chi","Dung","Dat"]);   // trùng từ tiếng Anh hoặc dễ nhầm: chỉ nhận khi viết hoa và không đứng đầu câu (trừ khi cả cụm là tên)
+const VI_EXTRA = new Set();
+const VI_DIAC = /[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]/i;
+function splitVi(text, hasVi){
+  if (!hasVi || !text) return [{ t:text, s:0, vi:false }];
+  const re = /[A-Za-zÀ-ỹ][A-Za-zÀ-ỹ'’-]*/g; let m; const hits = [];
+  while ((m = re.exec(text))){
+    const w = m[0], cap = /^[A-ZÀ-Ỹ]/.test(w), st = m.index;
+    const before = text.slice(0, st).replace(/\s+$/, ""), initial = !before || /[.!?:]["”’)]?$/.test(before);
+    const isName = VI_DIAC.test(w) ? true : VI_EXTRA.has(w) ? true : cap && VI_NAMES.has(w) && (!VI_AMBIG.has(w) || !initial);
+    if (isName) hits.push({ s:st, e:st + w.length });
+  }
+  if (!hits.length) return [{ t:text, s:0, vi:false }];
+  for (let i = hits.length - 1; i > 0; i--) if (/^\s+$/.test(text.slice(hits[i-1].e, hits[i].s))){ hits[i-1].e = hits[i].e; hits.splice(i, 1); }
+  const segs = []; let pos = 0;
+  const push = (s, e, vi) => { if (e > s) segs.push({ t:text.slice(s, e), s, vi }); };
+  hits.forEach(x => { push(pos, x.s, false); push(x.s, x.e, true); pos = x.e; });
+  push(pos, text.length, false);
+  return segs.filter(x => x.t.trim());
+}
 function playAudio({text, src, rate}, onend, onprog){
   stopAudio(); const my = audioToken; let timer = null; const L = (text || "").length;
   const stopT = () => { if (timer){ clearInterval(timer); timer = null; } };
@@ -1358,20 +1381,28 @@ function playAudio({text, src, rate}, onend, onprog){
     audioEl.ontimeupdate = () => { if (my === audioToken && onprog && audioEl && audioEl.duration > 0 && isFinite(audioEl.duration)){ const f = audioEl.currentTime / audioEl.duration; onprog(f, Math.floor(f * L)); } };
     audioEl.play().catch(() => end(false)); return true; }
   if (!("speechSynthesis" in window)){ toast("Trình duyệt này chưa đọc được tiếng Anh"); return false; }
-  const u = new SpeechSynthesisUtterance(text); u.rate = rate || 1;
   const want = (CONFIG.voiceName || "").toLowerCase();
-  const v = (want && voices.find(x => (x.name || "").toLowerCase().includes(want)))   // giọng ưu tiên, ví dụ Sonia
+  const enV = (want && voices.find(x => (x.name || "").toLowerCase().includes(want)))   // giọng ưu tiên, ví dụ Sonia
     || voices.find(x => /en[-_]US/i.test(x.lang)) || voices.find(x => /^en/i.test(x.lang));
-  u.lang = v ? v.lang : "en-US"; if (v) u.voice = v;
-  let bChar = -1, t0 = performance.now();
-  u.onstart = () => { t0 = performance.now(); };
-  u.onboundary = e => { if (typeof e.charIndex === "number") bChar = e.charIndex; };
-  u.onend = () => end(true); u.onerror = () => end(false);
+  const viV = voices.find(x => /^vi/i.test(x.lang));   // giọng tiếng Việt (nếu máy có) để đọc tên người Việt
+  const segs = splitVi(text || "", !!viV);
+  let bChar = -1, t0 = performance.now(), failed = false;
   if (onprog && L) timer = setInterval(() => {
     if (my !== audioToken){ stopT(); return; }
     let ci; if (bChar >= 0) ci = bChar; else ci = Math.min(L * .98, (performance.now() - t0) / 1000 * 14.5 * (rate || 1));
     onprog(Math.min(.99, ci / L), Math.floor(ci)); }, 80);
-  speechSynthesis.speak(u); return true;
+  const speakSeg = k => {
+    if (my !== audioToken) return;
+    if (k >= segs.length){ end(true); return; }
+    const sg = segs[k], u = new SpeechSynthesisUtterance(sg.t); u.rate = rate || 1;
+    const v = sg.vi && viV ? viV : enV; u.lang = v ? v.lang : (sg.vi && viV ? "vi-VN" : "en-US"); if (v) u.voice = v;
+    if (k === 0) u.onstart = () => { t0 = performance.now(); };
+    u.onboundary = e => { if (typeof e.charIndex === "number") bChar = sg.s + e.charIndex; };
+    u.onend = () => { bChar = Math.max(bChar, sg.s + sg.t.length - 1); speakSeg(k + 1); };
+    u.onerror = () => { if (!failed){ failed = true; end(false); } };
+    speechSynthesis.speak(u);
+  };
+  speakSeg(0); return true;
 }
 /* thanh tiến độ audio + transcript tô sáng từng từ (karaoke) */
 function audioProg(){
@@ -1893,27 +1924,34 @@ function readStep(step, ctx){
   return out;
 }
 function listenStep(step, ctx){
-  let plays = 0, cur = null, setsDone = !step.sets.length;
-  const info = h("div",{class:"plays"}, "Đã nghe: 0 lần");
-  const hint = h("p",{class:"muted small"}, "Nghe ít nhất 1 lần để mở transcript. Lần sau, chữ sẽ sáng theo giọng đọc để bạn dò theo.");
+  /* nghe có chữ chạy theo như karaoke ngay từ đầu, tự phát 2 lần liền, học viên đọc nhẩm theo */
+  const NEED = 2;
+  let plays = 0, cur = null, setsDone = !step.sets.length, auto = false, timer = null;
+  const info = h("div",{class:"plays"}, "Đã nghe: 0 / "+NEED+" lần");
   const kar = karaoke(step.text), prog = audioProg();
-  const tBox = h("div",{class:"card reading karaoke",hidden:true}, kar.el);
-  const tBtn = h("button",{class:"btn soft",type:"button",disabled:true,onClick:() => { tBox.hidden = !tBox.hidden; }}, "📄 Xem transcript");
-  const mk = (label, rate) => { const b = h("button",{class:"btn",type:"button"}, label);
+  const tBox = h("div",{class:"reading karaoke"}, kar.el);
+  const tip = h("div",{class:"taskbox"}, h("span",{class:"tbadge"},"🎧 Cách nghe"), h("span",{class:"tins"},"Bấm nghe: bài phát "+NEED+" lần liền. Vừa nghe vừa nhìn chữ sáng và đọc nhẩm theo trong đầu (hoặc nói nhỏ theo)."));
+  const finishCheck = () => { if (plays >= NEED && setsDone) ctx.done(); };
+  function run(b, label, rate, left){
+    cur = b; b.textContent = "⏹ Dừng"; kar.clear(); prog.start();
+    playAudio({text:kar.plain, src:step.audioSrc, rate}, ok => {
+      if (cur !== b) return;
+      if (!ok){ cur = null; b.textContent = label; prog.reset(); kar.clear(); return; }
+      kar.done(); plays++; S.stats.plays++; save(); info.textContent = "Đã nghe: "+plays+" / "+NEED+" lần";
+      if (left > 1){ timer = setTimeout(() => { if (cur === b) run(b, label, rate, left - 1); }, 900); }
+      else { cur = null; b.textContent = label; finishCheck(); } },
+      (f, ci) => { prog.set(f); kar.set(ci); });
+  }
+  const mk = (label, rate, times) => { const b = h("button",{class:"btn",type:"button"}, label);
     b.addEventListener("click", () => {
-      if (cur === b){ stopAudio(); b.textContent = label; cur = null; prog.reset(); kar.clear(); return; }
-      stopAudio(); [b1,b2].forEach(x => x.textContent = x.dataset.l); cur = b; b.textContent = "⏹ Dừng"; kar.clear(); prog.start();
-      playAudio({text:kar.plain, src:step.audioSrc, rate}, ok => {
-        if (cur === b){ cur = null; b.textContent = label; }
-        if (ok){ kar.done(); plays++; S.stats.plays++; save(); info.textContent = "Đã nghe: "+plays+" lần"; tBtn.disabled = false; hint.hidden = true; if (setsDone) ctx.done(); } else { prog.reset(); kar.clear(); } },
-        (f, ci) => { prog.set(f); kar.set(ci); }); });
+      if (cur === b){ clearTimeout(timer); stopAudio(); b.textContent = label; cur = null; prog.reset(); kar.clear(); return; }
+      clearTimeout(timer); stopAudio(); [b1,b2].forEach(x => x.textContent = x.dataset.l); run(b, label, rate, times); });
     b.dataset.l = label; return b; };
-  const b1 = mk("▶ Nghe", 1), b2 = mk("🐢 Nghe chậm", .75);
-  const out = h("div",null, h("div",{class:"card"}, h("h2",null,"Nghe"), h("div",{class:"row"}, b1, b2), prog.el, info, hint, tBtn),
-    tBox);
+  const b1 = mk("▶ Nghe 2 lần và đọc nhẩm theo", 1, NEED), b2 = mk("🐢 Nghe chậm (1 lần)", .75, 1);
+  const out = h("div",null, h("div",{class:"card"}, h("h2",null,"Nghe"), tip, h("div",{class:"row"}, b1, b2), prog.el, info, tBox));
   if (step.sets.length){
     let n = 0;
-    step.sets.forEach(s => out.append(h("div",{class:"card"}, exerciseSet(s, () => { if (++n >= step.sets.length){ setsDone = true; if (plays > 0) ctx.done(); else toast("Nghe ít nhất 1 lần để hoàn thành bước này"); } }))));
+    step.sets.forEach(s => out.append(h("div",{class:"card"}, exerciseSet(s, () => { if (++n >= step.sets.length){ setsDone = true; if (plays >= NEED) ctx.done(); else toast("Nghe đủ "+NEED+" lần để hoàn thành bước này"); } }))));
   }
   return out;
 }

@@ -168,8 +168,10 @@ Bạn xuất **13 phần**, mỗi phần là **một khối mã JSON riêng** (`
 
 ```json
 { "schema": "a1-week/1", "part": "meta", "week": 1, "title": "Family", "grammar": "to be (am / is / are)",
-  "subs": ["Family members", "Describing family", "Asking about family", "Extended family"] }
+  "subs": ["Family members", "Describing family", "Asking about family", "Extended family"],
+  "names": ["Mai", "Lan", "Nam", "Minh", "Hoa"] }
 ```
+`names`: liệt kê **mọi tên người Việt** (và tên địa danh Việt như "Hanoi") dùng trong cả tuần, viết đúng như trong bài. Web dùng danh sách này để đọc tên bằng giọng tiếng Việt khi nghe (phần còn lại vẫn đọc bằng giọng tiếng Anh). Nên chọn tên Việt phổ biến, ngắn, dễ đọc.
 
 ## Phần session (6 phần)
 
@@ -202,6 +204,7 @@ Mỗi bước có `type`, `key` (duy nhất trong buổi), `title`, `min`. Giá 
 Bước đọc trước (`preview`) cũng phải có `purpose` và **một bộ vận dụng nhẹ 2 câu** (ví dụ đoán nghĩa từ mới theo ngữ cảnh, hoặc tìm trong bài người nào được nhắc), vì đọc trước mà không làm gì thì học viên không nhớ. Câu đầy đủ của bài sẽ có vào ngày mai.
 
 **`listen`**: `{ "type":"listen", "key":"listen", "title":"Nghe", "min":"9–13′", "text":[...đúng bằng text bài đọc...], "sets":[ BỘ ] }`
+Web cho học viên thấy **chữ chạy sáng theo giọng đọc ngay từ đầu**, tự phát bài **2 lần liền** và dặn học viên **đọc nhẩm theo**. Vì vậy `text` phải khớp từng chữ với bài đọc và không có ký hiệu lạ.
 
 **`notice`**: học viên chạm vào các từ cần tìm trong bài.
 ```json
