@@ -510,6 +510,9 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 .fbtxt.ok.late{background:var(--ok-bg); color:var(--ok)}
 .fbtxt .latenote{display:block; font-weight:600; font-size:.85rem; color:var(--ink2); margin-top:1px}
 .fbtxt.ok.late .why{color:var(--ink)}
+/* kho từ kéo thả: luôn nổi sát đáy màn hình khi còn câu phía trên, nằm đúng chỗ ở cuối bộ câu */
+.bank.stick{bottom:calc(84px + env(safe-area-inset-bottom)); margin:12px 0 8px}
+body.immersive .bank.stick{bottom:calc(88px + env(safe-area-inset-bottom))}
 </style>
 </head>
 <body>
@@ -1521,7 +1524,7 @@ function buildGap(set, onChange){
     check(){ const user = bank[blanks[qi].v].w; const ok = anyOk(it, user);
       rows[qi].blankBtn.classList.remove("right","wrong"); rows[qi].blankBtn.classList.add(ok ? "right" : "wrong"); if (ok) locked[qi] = true;
       return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.text }; } }));
-  return { head:[dragHint("Kéo từ bên dưới thả vào đúng chỗ trống (hoặc chạm vào từ rồi chạm vào chỗ trống). Mỗi câu được chấm ngay."), bankEl], items };
+  return { head:[dragHint("Kéo từ ở kho từ phía dưới thả vào chỗ trống (hoặc chạm vào từ rồi chạm vào chỗ trống). Mỗi câu được chấm ngay.")], foot:[bankEl], items };
 }
 function buildCloze(set, onChange){
   const typed = set.mode === "type", parts = set.passage.split("___"), n = set.items.length, vals = Array(n).fill(null), locked = Array(n).fill(false); let armed = null;
@@ -1545,7 +1548,7 @@ function buildCloze(set, onChange){
       check(){ const user = typed ? blanks[i].value : bank[vals[i]].w; const ok = anyOk(it, user);
         if (typed && ok) blanks[i].readOnly = true; blanks[i].classList.remove("right","wrong"); blanks[i].classList.add(ok ? "right" : "wrong"); if (ok) locked[i] = true;
         return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.text || it.answer }; } }; });
-  return { head:[typed ? null : dragHint("Kéo từ thả vào đúng chỗ trống trong đoạn (hoặc chạm vào từ rồi chạm vào chỗ trống). Mỗi chỗ được chấm ngay."), h("div",{class:"cloze"}, nodes), bankEl], items };
+  return { head:[typed ? null : dragHint("Kéo từ thả vào đúng chỗ trống trong đoạn (hoặc chạm vào từ rồi chạm vào chỗ trống). Mỗi chỗ được chấm ngay."), h("div",{class:"cloze"}, nodes)], foot:typed ? [] : [bankEl], items };
 }
 function buildMatch(set, onChange){
   const state = set.items.map(() => ({r:null})), marks = {}, draws = [];
@@ -1774,7 +1777,7 @@ function exerciseSet(set, onDone){
     if (seq) built.items.forEach((it, i) => { if (i > 0 && it.el) it.el.hidden = true; });
     const T = TYPES[main.type] || { icon:"", label:"", how:"" };
     return [h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), h("span",{class:"tins"}, set.instruction || T.how)),
-      ...built.head, ...built.items.map(i => i.el).filter(Boolean), scoreBox, extraHost];
+      ...built.head, ...built.items.map(i => i.el).filter(Boolean), ...(built.foot || []), scoreBox, extraHost];
   }
   wrap.replaceChildren(...build());
   return wrap;
