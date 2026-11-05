@@ -418,6 +418,13 @@ html[data-learner=tri] .stat,html[data-learner=tri] .const{border-radius:8px; bo
 html[data-learner=tri] .toast{border-radius:6px}
 html[data-learner=tri] .dbox{border-radius:6px}
 html[data-learner=tri] .uchip{border-radius:4px}
+html[data-learner=tri] .ico{display:inline-block; width:1.1em; height:1.1em; vertical-align:-.2em; margin:0 .18em}
+html[data-learner=tri] .ico svg{width:100%; height:100%; display:block}
+html[data-learner=tri] .say{border-radius:8px}
+html[data-learner=tri] h1 .ico,html[data-learner=tri] h2 .ico,html[data-learner=tri] h3 .ico,html[data-learner=tri] .pgh .ico{display:none}
+html[data-learner=tri] .ptile .pic{display:none}
+html[data-learner=tri] .ptile{border-left:3px solid #f6b84e}
+html[data-learner=tri] .tbadge{border-radius:4px; border-width:1px}
 
 
 /* ===== Tối ưu điện thoại ===== */
@@ -2842,7 +2849,7 @@ function progressView(){
     h("a",{class:"btn soft block",href:"#/report",style:"margin-bottom:16px"},"📊 Xem báo cáo tuần "+weekNo()),
     h("div",{class:"card"}, h("h3",null,"Chòm sao tuần "+weekNo()), gardenEl(true)),
     h("div",{class:"card"}, h("h3",null,"Lịch học"), calendarEl()),
-    h("div",{class:"card"}, h("h3",null,"Bộ sưu tập sticker"), stickersEl()),
+    h("div",{class:"card"}, h("h3",null,(SCH ? "Thành tích" : "Bộ sưu tập sticker")), stickersEl()),
     h("div",{class:"card"}, h("h3",null,"Độ chính xác theo dạng bài"), accuracyBars()),
     h("div",{class:"card"}, h("h3",null,"Những câu cần ôn lại"),
       S.mistakes.length ? [S.mistakes.slice(-6).reverse().map(m => h("div",{class:"mist"}, h("div",{class:"small muted"},TYPE_LABEL[m.t]), h("div",{style:"font-weight:700"},m.q), h("div",null,"Đáp án: ",h("b",null,m.a)), m.why ? h("div",{class:"small muted"},"💡 "+m.why) : null)),
@@ -3065,6 +3072,44 @@ function coverView(){
       card("nhi","bunny","A1–A2 · Nền tảng","Mỗi ngày 30 phút: đọc, nghe, luyện từng bước nhỏ, có linh vật Thỏ ngọc đồng hành."),
       card("tri","moon","C1–C2 · Nâng cao","Mỗi ngày 60 phút: viết luận, tranh biện, báo cáo số liệu, ngữ pháp C1–C2, ôn lặp lại.")),
     h("label",{class:"cvk"}, keep, " Nhớ lựa chọn trên máy này (lần sau vào thẳng)"));
+}
+
+/* ---- Trí: thay mọi emoji bằng biểu tượng nét mảnh hợp theme (không dùng hình emoji của hệ điều hành) ---- */
+if (SCH){
+  const P = d => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+d+'</svg>';
+  const ICONS = {
+    check:P('<path d="M5 12.5l4.2 4.2L19 7"/>'), cross:P('<path d="M6 6l12 12M18 6L6 18"/>'),
+    speaker:P('<path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11"/>'),
+    mic:P('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"/>'),
+    stop:P('<rect x="6.5" y="6.5" width="11" height="11" rx="1.5"/>'),
+    clock:P('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
+    warn:P('<path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.2v.1"/>'),
+    gear:P('<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>'),
+    award:P('<circle cx="12" cy="9" r="5.5"/><path d="M8.7 13.6L7.5 21l4.5-2.4 4.5 2.4-1.2-7.4"/>'),
+    mail:P('<rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/><path d="M4 7l8 6 8-6"/>'),
+    book:P('<path d="M4 5.5C6.5 4.5 9.5 4.5 12 6c2.5-1.5 5.5-1.5 8-.5v13c-2.5-1-5.5-1-8 .5-2.5-1.5-5.5-1.5-8-.5z"/><path d="M12 6v13.5"/>'),
+    headphones:P('<path d="M4 15v-3a8 8 0 0116 0v3"/><rect x="3.5" y="14" width="4" height="6" rx="1.5"/><rect x="16.5" y="14" width="4" height="6" rx="1.5"/>'),
+    pencil:P('<path d="M4 20l1-4L16.5 4.5a2 2 0 013 3L8 19z"/>'),
+    calendar:P('<rect x="4" y="5.5" width="16" height="14" rx="1.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>'),
+    spark:P('<path d="M12 4l1.8 5.2L19 11l-5.2 1.8L12 18l-1.8-5.2L5 11l5.2-1.8z"/>'),
+    dot:P('<circle cx="12" cy="12" r="3.2" fill="currentColor"/>')
+  };
+  const EMAP = {"✅":"check","✔":"check","☑":"check","❌":"cross","✖":"cross","❎":"cross","🔊":"speaker","🔈":"speaker","🔉":"speaker","🎙":"mic","🎤":"mic","⏹":"stop","⏱":"clock","⏰":"clock","🕐":"clock","⚠":"warn","⚙":"gear","🏆":"award","🥇":"award","🏅":"award","💌":"mail","✉":"mail","📖":"book","📚":"book","📕":"book","🎧":"headphones","✏":"pencil","📝":"pencil","📅":"calendar","📆":"calendar","⭐":"spark","🌟":"spark","✨":"spark","🔍":"","🎯":"","📊":""};
+  const EMO = /(?:\p{Extended_Pictographic}️?(?:‍\p{Extended_Pictographic}️?)*)/gu;
+  let busy = false;
+  const mkIco = key => { const sp = document.createElement("span"); sp.className = "ico"; sp.innerHTML = ICONS[key] || ""; return sp; };
+  function clean(root){
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => (n.parentNode && !/^(SCRIPT|STYLE|TEXTAREA|SVG|TEXT)$/i.test(n.parentNode.nodeName) && n.nodeValue && n.nodeValue.search(EMO) >= 0) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+    const list = []; while (w.nextNode()) list.push(w.currentNode);
+    list.forEach(n => { const frag = document.createDocumentFragment(), t = n.nodeValue; let last = 0, m; EMO.lastIndex = 0;
+      while ((m = EMO.exec(t))){ if (m.index > last) frag.append(t.slice(last, m.index)); const k = EMAP[m[0].replace(/️/g, "")]; if (k) frag.append(mkIco(k)); last = m.index + m[0].length; }
+      if (last < t.length) frag.append(t.slice(last)); n.parentNode.replaceChild(frag, n); });
+  }
+  function run(){ busy = true; try { clean(document.body); } catch(e){} busy = false; }
+  let tmr = 0;
+  const mo = new MutationObserver(() => { if (busy || tmr) return; tmr = requestAnimationFrame(() => { tmr = 0; run(); }); });
+  const start = () => { run(); mo.observe(document.body, { childList:true, subtree:true, characterData:true }); };
+  if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 }
 if (SCH){ Object.values(STEP_DEF).forEach(d => d.icon = ""); Object.values(TYPES).forEach(d => { d.icon = ""; }); STICKERS.forEach(x => x.icon = "◆"); }
 async function boot(){
