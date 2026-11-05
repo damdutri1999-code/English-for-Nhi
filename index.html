@@ -664,6 +664,20 @@ body.immersive .bank.stick{bottom:calc(88px + env(safe-area-inset-bottom))}
   .rleft{position:sticky; top:34px; max-height:calc(100vh - 150px); overflow:auto; margin-bottom:0}
   .fabread,.rsheet{display:none !important}
 }
+
+/* Trí: bài đọc luôn nằm cạnh câu hỏi, không phải cuộn lên xuống */
+@media (min-width:700px){
+  html[data-learner=tri] body.immersive .wrap{max-width:1280px}
+  html[data-learner=tri] .rsplit{display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,1fr); gap:14px; align-items:start}
+  html[data-learner=tri] .rleft{position:sticky; top:10px; max-height:calc(100vh - 96px); overflow:auto; margin-bottom:0; padding:12px 14px}
+  html[data-learner=tri] .rleft h2{font-size:1.1rem; margin:0 0 6px}
+  html[data-learner=tri] .rleft .taskbox{padding:6px 10px; margin-bottom:6px}
+  html[data-learner=tri] .rleft .muted.small{display:none}
+  html[data-learner=tri] .rleft .reading{font-size:.93rem; line-height:1.52; padding:8px 12px; text-align:left; word-spacing:0}
+  html[data-learner=tri] .rleft .reading p{margin:0 0 .45em}
+  html[data-learner=tri] .fabread,html[data-learner=tri] .rsheet{display:none !important}
+}
+@media (min-width:700px) and (max-width:1000px){ html[data-learner=tri] .rleft .reading{font-size:.88rem} }
 </style>
 </head>
 <body>
