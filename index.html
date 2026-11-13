@@ -487,6 +487,10 @@ html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index
 .cloze{line-height:2.5;font-weight:600;margin:6px 0 10px}
 .errlist{padding-left:20px}
 .weeknav{display:flex;align-items:center;gap:8px}
+.cvgv{margin-top:18px;text-align:center}.gvpick{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:10px}.gvpick[hidden]{display:none}
+.gvw{padding:0;overflow:hidden}.gvw>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px}.gvw>summary::-webkit-details-marker{display:none}
+.gvw .gvb{padding:4px 14px 14px;border-top:2px dashed var(--line)}.gvs{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8px 0;border-top:1px solid var(--line)}.gvs .grow{flex:1 1 55%;min-width:0}.gvs .txt{flex:1 1 140px;max-width:170px}.gvs:first-child{border-top:0}
+.gvs .txt{width:auto;padding:6px 8px;min-width:0}.gvd{font-weight:800;min-width:30px}.gvsch{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;margin:6px 0 8px}
 .txt.over{border-color:var(--p500);background:var(--p100);border-style:dashed}
 
 .topprog{position:fixed; top:0; left:0; right:0; height:20px; background:var(--p100); z-index:60; box-shadow:0 1px 0 var(--p200)}
@@ -1728,15 +1732,27 @@ const STICKERS = [
 ];
 const unlockedIds = () => STICKERS.filter(s => s.ok()).map(s => s.id);
 
-/* Lịch theo ngày: ngày bắt đầu (thứ Hai đầu tuần 1) → buổi của hôm nay */
+/* Lịch theo ngày: ngày bắt đầu (thứ Hai đầu tuần 1) + lịch tùy chỉnh theo từng tuần (S.settings.sched) */
+const addK = (k, n) => { const d = parseKey(k); d.setDate(d.getDate() + n); return dkey(d); };
+function schedStart(w){
+  const sc = S.settings.sched || {};
+  let st = (sc[1] && sc[1].start) || S.settings.startDate || dkey(mondayOf(new Date()));
+  for (let i = 2; i <= w; i++) st = (sc[i] && sc[i].start) ? sc[i].start : addK(st, 7);
+  return st;
+}
+function schedDates(w){
+  const st = schedStart(w), o = ((S.settings.sched || {})[w] || {}).d || [];
+  return [0,1,2,3,4,5].map(i => o[i] || addK(st, i));
+}
+const schedCustom = w => { const c = (S.settings.sched || {})[w]; return !!(c && (c.start || (c.d && c.d.some(Boolean)))); };
 function todayInfo(){
-  const start = parseKey(S.settings.startDate || dkey(mondayOf(new Date())));
-  const now = new Date(); now.setHours(0,0,0,0);
-  const diff = Math.round((now - start) / 86400000);
-  if (diff < 0) return { state:"before", days:-diff };
-  const week = Math.floor(diff / 7) + 1, wd = diff % 7;
+  const t = dkey(new Date()), N = Math.max(ROADMAP.length, 30);
+  const first = schedStart(1);
+  if (t < first) return { state:"before", days:Math.round((parseKey(first) - parseKey(t)) / 86400000) };
+  let week = 1; for (let w = 1; w <= N; w++) if (schedStart(w) <= t) week = w;
+  const ds = schedDates(week), wd = ds.indexOf(t);
   if (!WEEKS[week]) return { state:"beyond", week };
-  if (wd === 6) return { state:"rest", week };
+  if (wd < 0) return { state:"rest", week };
   return { state:"day", wd, week, session:WEEKS[week].sessions[wd] };
 }
 
@@ -3176,9 +3192,46 @@ function demoState(){
    ĐIỀU HƯỚNG
    ===================================================================== */
 const TABS = [["home","🏠","Trang chủ"],["week","📅","Tuần học"],["vocab","📖","Từ vựng"],["practice","✏️","Bài tập"],["progress","⭐","Tiến độ"]];
-const TAB_OF = { plan:"week", challenge:"week", content:"week", lesson:"week", done:"week", placement:"week", mistakes:"practice", report:"progress" };
+const TAB_OF = { plan:"week", challenge:"week", content:"settings", gv:"settings", lesson:"week", done:"week", placement:"week", mistakes:"practice", report:"progress" };
 const tabsEl = document.getElementById("tabs");
 tabsEl.replaceChildren(...TABS.map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, h("span",null, SCH ? "#i:" + ({home:"home",week:"calendar",vocab:"book",practice:"pencil",progress:"chart"}[p] || "dot") : ic), t)));
+function gvView(){
+  const rows = ROADMAP.map(r => r[0]), have = Object.keys(WEEKS).map(Number);
+  const fmtD = k => { const d = parseKey(k); return d.getDate() + "/" + (d.getMonth()+1); };
+  const setSched = (w, fn) => { S.settings.sched = S.settings.sched || {}; S.settings.sched[w] = S.settings.sched[w] || {}; fn(S.settings.sched[w]); const c = S.settings.sched[w]; if (!c.start && !(c.d && c.d.some(Boolean))) delete S.settings.sched[w]; save(); };
+  const ti = todayInfo();
+  const weekRow = w => {
+    const W = WEEKS[w], c = CONTENT[w], rm = ROADMAP.find(x => x[0] === w) || [], ds = schedDates(w);
+    const src = !W ? "" : !W.json ? "Bản demo" : c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Từ repo";
+    const sess = W ? W.sessions.map((s, i) => { const L = LESSONS[s.id], n = L && L.steps ? L.steps.length : 0;
+      const dIn = h("input",{class:"txt",type:"date",value:ds[i],onChange:e => { if (e.target.value){ setSched(w, c2 => { c2.d = c2.d || []; c2.d[i] = e.target.value; }); route(); } }});
+      return h("div",{class:"gvs"}, h("span",{class:"gvd"},s.day.replace("Thứ ","T")), h("div",{class:"grow"}, h("div",{style:"font-weight:700"},s.title), h("div",{class:"small muted"},KIND[s.kind]+" · "+n+" bước"+(CH[s.id] ? " · 🏆 Challenge" : ""))),
+        dIn, h("a",{class:"pill",href:"#/lesson/"+s.id+"/0",style:"text-decoration:none"},"Xem")); }) : null;
+    const stIn = h("input",{class:"txt",type:"date",value:schedStart(w),onChange:e => { if (e.target.value){ setSched(w, c2 => { c2.start = e.target.value; c2.d = null; }); route(); } }});
+    const det = h("details",{class:"card gvw"}, h("summary",null, h("div",{class:"when",style:"min-width:44px"},"T"+w),
+        h("div",{class:"grow"}, h("div",{style:"font-weight:800"},rm[1] ? rm[1] : "Tuần "+w), h("div",{class:"small muted"},(W ? "Tuần "+w+": "+W.title+" · " : "Tuần "+w+" · ")+fmtD(ds[0])+" – "+fmtD(ds[5]))),
+        h("span",{class:"pill"+(W ? " ok" : " lock")}, W ? "✅ Có bài" : "Chưa có"), schedCustom(w) ? h("span",{class:"pill"},"🗓 Tùy chỉnh") : null),
+      h("div",{class:"gvb"},
+        W ? h("p",{class:"small muted"},"Ngữ pháp: "+W.grammar+(src ? " · "+src : "")) : h("p",{class:"small muted"},(rm[2] ? "Dự kiến: "+rm[2]+". " : "")+"Chưa tải bài lên cho tuần này."),
+        sess,
+        h("h4",{style:"margin:12px 0 4px"},"🗓 Lịch học tuần này"),
+        h("div",{class:"gvsch"}, h("span",{class:"small"},"Bắt đầu từ"), stIn),
+        h("p",{class:"small muted"},"Các buổi T2–T7 tự xếp liên tiếp từ ngày bắt đầu; muốn lệch ngày thì chỉnh ngày ngay ở từng buổi. Các tuần sau tự dời theo."),
+        h("div",{class:"row"},
+          schedCustom(w) ? h("button",{class:"pill",type:"button",onClick:() => { if (S.settings.sched){ delete S.settings.sched[w]; save(); } route(); }},"Đặt lại lịch mặc định") : null,
+          W ? h("a",{class:"pill",href:"#/week",onClick:() => { viewWeek = w; },style:"text-decoration:none"},"Mở như học viên") : null,
+          c ? h("button",{class:"pill",type:"button",onClick:() => { const a = h("a",{href:URL.createObjectURL(new Blob([JSON.stringify(c.json,null,2)],{type:"application/json"})),download:"week-"+w+".json"}); document.body.append(a); a.click(); a.remove(); }},"Tải JSON") : null,
+          c ? h("button",{class:"pill lock",type:"button",onClick:async () => { if (confirm("Xóa nội dung tuần "+w+"? Tiến độ của học viên vẫn được giữ.")){ await deleteWeek(w); route(); } }},"Xóa bài") : null)));
+    if (ti.week === w && ti.state !== "before") det.open = true;
+    return det;
+  };
+  const extra = have.filter(n => !rows.includes(n)).sort((a, b) => a - b);
+  return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"),
+    h("h1",{style:"margin-top:16px"},"GV soạn bài · "+learnerName()),
+    h("div",{class:"row",style:"margin-bottom:12px"}, h("a",{class:"btn",href:"#/content"},"📚 Tải bài học lên"), h("a",{class:"btn soft",href:"#/teacher"},"Nhận xét và lời nhắn"), h("button",{class:"btn soft",type:"button",onClick:switchLearner},"Đổi học viên")),
+    h("p",{class:"muted small"},"Có "+have.length+"/"+ROADMAP.length+" tuần đã có bài. Bấm vào một tuần để xem bài theo buổi và chỉnh lịch học."),
+    rows.concat(extra).map(weekRow));
+}
 function route(){
   stopAudio(); activeLesson = null; review = null; pgReset();
   const parts = location.hash.replace(/^#\/?/,"").split("/"), page = parts[0] || "home";
@@ -3198,6 +3251,7 @@ function route(){
     case "report": view = h("div",null, h("h1",null,"Báo cáo tuần "+weekNo()), reportEl()); break;
     case "settings": view = settingsView(); break;
     case "teacher": view = teacherView(); break;
+    case "gv": view = gvView(); break;
     case "progress": view = progressView(); break;
     default: view = homeView();
   }
@@ -3221,9 +3275,9 @@ document.addEventListener("focusin", e => {
 });
 document.addEventListener("focusout", () => setTimeout(() => { const a = document.activeElement; if (!(a && a.matches && a.matches("input.txt,textarea.txt"))) document.body.classList.remove("kb"); }, 60));
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
-function chooseLearner(id, keep){
+function chooseLearner(id, keep, hash){
   try { sessionStorage.setItem("a1-learner", id); if (keep) localStorage.setItem("a1-learner-keep", id); else localStorage.removeItem("a1-learner-keep"); } catch(e){}
-  location.href = location.pathname + "#/home"; location.reload();
+  location.href = location.pathname + "#/" + (hash || "home"); location.reload();
 }
 function switchLearner(){
   try { sessionStorage.removeItem("a1-learner"); localStorage.removeItem("a1-learner-keep"); } catch(e){}
@@ -3238,7 +3292,10 @@ function coverView(){
     h("div",{class:"cvgrid"},
       card("nhi","bunny","A1–A2 · Nền tảng","Mỗi ngày 30 phút: đọc, nghe, luyện từng bước nhỏ, có linh vật Thỏ ngọc đồng hành."),
       card("tri","moon","C1–C2 · Nâng cao","Mỗi ngày 60 phút: viết luận, tranh biện, báo cáo số liệu, ngữ pháp C1–C2, ôn lặp lại.")),
-    h("label",{class:"cvk"}, keep, " Nhớ lựa chọn trên máy này (lần sau vào thẳng)"));
+    h("label",{class:"cvk"}, keep, " Nhớ lựa chọn trên máy này (lần sau vào thẳng)"),
+    (() => { const pick = h("div",{class:"gvpick",hidden:true}, h("span",{class:"small muted"},"Soạn bài cho:"),
+        Object.keys(LEARNERS).map(id => h("button",{class:"pill",type:"button",onClick:() => chooseLearner(id, false, "gv")}, LEARNERS[id].name)));
+      return h("div",{class:"cvgv"}, h("button",{class:"btn soft",type:"button",onClick:() => { pick.hidden = !pick.hidden; }},"✏️ GV soạn bài"), pick); })());
 }
 
 /* ---- Trí: thay mọi emoji bằng biểu tượng nét mảnh hợp theme (không dùng hình emoji của hệ điều hành) ---- */
