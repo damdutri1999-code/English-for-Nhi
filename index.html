@@ -2517,8 +2517,8 @@ function outputStep(step, ctx){
   ta.addEventListener("input", upd); upd();
   const sample = step.sample ? h("div",{class:"model",style:"margin:4px 0 14px"},
     h("div",{class:"row",style:"gap:8px;margin-bottom:4px"},
-      h("button",{class:"say",type:"button","aria-label":"Nghe bài mẫu",onClick:() => playAudio({text:step.sample, rate:.9})},"🔊"),
-      h("div",{class:"small muted"}, speak ? "Đoạn mở đầu mẫu, nghe trước khi nói" : "Bài mẫu để tham khảo, xem trước khi viết")), step.sample) : null;
+      h("button",{class:"say",type:"button","aria-label":"Nghe bài cơ bản",onClick:() => playAudio({text:step.sample, rate:.9})},"🔊"),
+      h("div",{class:"small muted"}, speak ? "Bài nói cơ bản, nghe trước khi nói" : "Bài cơ bản để tham khảo, xem trước khi viết")), step.sample) : null;
   const outline = (step.outline || []).length ? h("div",{class:"card tint flat",style:"margin:0 0 12px"}, h("h3",{style:"margin:0 0 6px"},"Dàn ý gợi ý"), h("ol",{style:"margin:0; padding-left:20px"}, step.outline.map(x => h("li",null,x)))) : null;
   const useBox = uses.length ? h("div",{style:"margin:0 0 12px"}, h("div",{class:"small muted",style:"margin-bottom:6px"}, speak ? "Cố gắng dùng các cấu trúc và cách nói này:" : "Dùng các cấu trúc này trong bài (chữ sẽ sáng lên khi bạn dùng):"), h("div",{class:"chips"}, uses.map(u => u.el))) : null;
   /* chế độ nói: đồng hồ đếm ngược + ghi âm (nếu máy cho phép) để nghe lại */
@@ -2552,10 +2552,10 @@ function outputStep(step, ctx){
     S.writing[sid] = ta.value; save(); model.hidden = false; model.replaceChildren(
       h("div",{class:"cmp"},
         h("div",{class:"model"}, h("div",{class:"small muted"}, speak ? "Dàn ý của bạn" : "Bài của bạn"), ta.value.trim() || "(chưa ghi)"),
-        h("div",{class:"model"}, h("div",{class:"row",style:"gap:8px"}, speak ? h("button",{class:"say",type:"button","aria-label":"Nghe bài nói mẫu",onClick:() => playAudio({text:step.model, rate:.9})},"🔊") : null, h("div",{class:"small muted"}, speak ? "Bài nói mẫu để so sánh" : "Bài mẫu để so sánh")), step.model)),
+        h("div",{class:"model"}, h("div",{class:"row",style:"gap:8px"}, speak ? h("button",{class:"say",type:"button","aria-label":"Nghe bài nói nâng cao",onClick:() => playAudio({text:step.model, rate:.9})},"🔊") : null, h("div",{class:"small muted"}, speak ? "Bài nói nâng cao để so sánh" : "Bài nâng cao để so sánh")), step.model)),
       h("div",{class:"card flat",style:"margin-top:12px"}, h("h3",null,"Tự kiểm tra"),
         (step.checklist || defCheck).map(t => h("label",{class:"check"}, h("input",{type:"checkbox"}), t))));
-    ctx.done(); }}, speak ? "Xong, xem bài nói mẫu" : "Lưu bài viết và xem bài mẫu");
+    ctx.done(); }}, speak ? "Xong, xem bài nói nâng cao" : "Lưu bài viết và xem bài nâng cao");
   return h("div",{class:"card"}, h("h2",null, speak ? "Tự nói" : "Tự viết"), h("p",null,step.prompt), step.data ? dataBlock(step.data) : null, sample, outline, useBox,
     speak ? [h("div",{class:"small muted",style:"margin-bottom:4px"},"Ghi dàn ý, rồi bấm nói. Bạn có "+(step.seconds || 90)+" giây."), ta, clock, h("div",{class:"row",style:"justify-content:center;margin-top:6px"}, goBtn), playback]
           : [step.hint ? h("p",{class:"muted small"},"Gợi ý: "+step.hint) : null, ta, wc], btn, model);
