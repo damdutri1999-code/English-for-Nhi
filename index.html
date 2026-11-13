@@ -2058,11 +2058,11 @@ function listenpickItem(it, onChange){
   const stopAll = () => { cur = false; clearTimeout(timer); stopAudio(); };
   function startDict(){
     stage = "dict"; stopAll();
-    const input = h("input",{class:"txt",type:"text",placeholder:"Chữ đã ẩn. Gõ lại câu bạn nghe được",autocomplete:"off",autocapitalize:"off",spellcheck:"false"});
+    const input = h("input",{class:"txt",type:"text",placeholder:"Gõ lại câu bạn vừa nghe",autocomplete:"off",autocapitalize:"off",spellcheck:"false"});
     const msg = h("div"), btn = h("button",{class:"btn sm",type:"button",onClick:go}, "Kiểm tra");
     function go(){ if (!input.value.trim()) return; submitted = true; base._val = input.value; onChange(); }
     input.addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); go(); } });
-    host.replaceChildren(h("div",{class:"lphead"}, "✍️ Chép chính tả: chữ đã ẩn, nghe rồi gõ lại cả câu"), audioBar(it.say, it.audioSrc), input, btn, msg);
+    host.replaceChildren(input, btn, msg);
     base._msg = msg; base._input = input; setTimeout(() => input.focus(), 50);
   }
   function startFollow(){
@@ -2081,8 +2081,7 @@ function listenpickItem(it, onChange){
     }
     btn.addEventListener("click", () => { if (cur){ stopAll(); finishRound(); prog.reset(); kar.clear(); return; }
       cur = true; btn.textContent = "⏹ Dừng"; round(); });
-    host.replaceChildren(h("div",{class:"lphead"}, "🎤 Đúng rồi! Nghe và dò theo chữ nhảy theo giọng đọc (2 lần). Sau đó chữ sẽ ẩn."),
-      h("div",{class:"reading karaoke"}, kar.el), prog.el, h("div",{class:"row abtns"}, btn, info));
+    host.replaceChildren(h("div",{class:"reading karaoke"}, kar.el), prog.el, h("div",{class:"row abtns"}, btn, info));
   }
   const out = Object.assign(base, { quietRetry:false,
     isAnswered(){ return stage !== "pick" || base._sel(); },
