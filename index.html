@@ -1434,6 +1434,10 @@ function validateItem(type, it, w, E, W){
   } else if (type === "transform" || type === "translate" || type === "answer"){ need(isStr(it.prompt) && isStr(it.answer), "thiếu prompt hoặc answer");
     if (it.keyword != null){ if (!isStr(it.keyword)) E.push(w + ": keyword phải là chuỗi."); else if (isStr(it.answer) && !norm(it.answer).includes(norm(it.keyword))) W.push(w + ": đáp án phải chứa keyword \"" + it.keyword + "\"."); }
   } else if (type === "cloze"){ need(isStr(it.answer), "thiếu answer"); }
+  if (it.alt != null){
+    if (!Array.isArray(it.alt) || !it.alt.every(isStr)) E.push(w + ": alt phải là mảng các chuỗi (các đáp án khác cũng được chấm đúng)");
+    else { const main = type === "dictation" ? it.say : it.answer; if (isStr(main) && it.alt.some(a => norm(a) === norm(main))) W.push(w + ": alt có đáp án trùng với đáp án chính"); if (new Set(it.alt.map(norm)).size !== it.alt.length) W.push(w + ": alt có đáp án bị trùng nhau"); }
+  }
   if (!SELF_TYPES.has(type) && type !== "dictation" && type !== "match" && !isStr(it.why)) W.push(w + ": nên có why (giải thích tiếng Việt)");
 }
 function validateSet(raw, w, E, W, seen){
@@ -1828,6 +1832,7 @@ function expand(s){
     .replace(/\b(is|are|was|were|do|does|did|have|has|had|could|would|should)n't\b/g,"$1 not");
 }
 const same = (a, b) => norm(expand(a)) === norm(expand(b));
+const withAlt = (main, it) => (it.alt && it.alt.length) ? main + "   (cũng đúng: " + it.alt.join(" / ") + ")" : main;
 const anyOk = (it, v) => [it.answer].concat(it.alt || []).some(a => same(a, v));
 
 const audioBar = (text, src) => h("div",{class:"row abtns"},
@@ -2016,14 +2021,14 @@ function fixItem(it, onChange){
     retry:true, lock(){ input.readOnly = true; },
     isAnswered:() => input.value.trim() !== "" && input.value.trim() !== it.wrong,
     check(){ const ok = anyOk(it, input.value); if (ok) input.readOnly = true;
-      input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.wrong }; } };
+      input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: withAlt(it.answer, it), why: it.why, prompt: it.wrong }; } };
 }
 function formItem(it, onChange){
   const parts = it.text.split("___"), fbSlot = h("div");
   const input = h("input",{class:"txt inline",type:"text",autocapitalize:"off",autocomplete:"off",spellcheck:"false",onInput:onChange});
   return { el:h("div",{class:"q gap"}, parts[0], input, parts[1] || "", fbSlot), fbSlot, retry:true, lock(){ input.readOnly = true; }, isAnswered:() => input.value.trim() !== "",
     check(){ const ok = anyOk(it, input.value); if (ok) input.readOnly = true;
-      input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.text }; } };
+      input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: withAlt(it.answer, it), why: it.why, prompt: it.text }; } };
 }
 function listenpickItem(it, onChange){
   /* 3 chặng: chọn đáp án (chọn sai được chọn lại) -> nghe dò theo chữ chạy như karaoke 2 lần -> chữ ẩn đi, gõ lại câu, đúng mới sang câu sau */
@@ -2081,7 +2086,7 @@ function dictItem(it, onChange){
   const fbSlot = h("div"), input = h("input",{class:"txt",type:"text",placeholder:"Gõ câu bạn nghe được",onInput:onChange});
   return { el:h("div",{class:"q"}, (it.q && !/^nghe (rồi|và) (gõ|chép|viết)/i.test(String(it.q).trim()) ? h("p",{class:"qtext"}, it.q) : null), audioBar(it.say, it.audioSrc), input, fbSlot), fbSlot, retry:true, lock(){ input.readOnly = true; }, isAnswered:() => input.value.trim() !== "",
     check(){ const ok = [it.say].concat(it.alt || []).some(a => same(a, input.value)); if (ok) input.readOnly = true;
-      input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: it.say, why: it.why, prompt: it.say }; } };
+      input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: withAlt(it.say, it), why: it.why, prompt: it.say }; } };
 }
 function textItem(it, onChange){
   const fbSlot = h("div"), input = h("input",{class:"txt",type:"text",placeholder:"Gõ câu của bạn",onInput:onChange});
@@ -2091,7 +2096,7 @@ function textItem(it, onChange){
     check(){ if (it.self) input.readOnly = true;
       if (it.self){ const match = anyOk(it, input.value); input.classList.add(match ? "right" : "wrong");
         return { ok:true, self:true, match, correct: it.answer + ((it.alt && it.alt.length) ? "   (hoặc: "+it.alt.join(" / ")+")" : ""), why: it.why, prompt: it.prompt }; }
-      const ok = anyOk(it, input.value); if (ok) input.readOnly = true; input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: it.answer, why: it.why, prompt: it.prompt }; } };
+      const ok = anyOk(it, input.value); if (ok) input.readOnly = true; input.classList.remove("right","wrong"); input.classList.add(ok ? "right" : "wrong"); return { ok, retry:!ok, correct: withAlt(it.answer, it), why: it.why, prompt: it.prompt }; } };
 }
 function shadowItem(it, onChange){
   let done = false; const fbSlot = h("div");
