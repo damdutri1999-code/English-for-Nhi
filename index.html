@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Học tiếng Anh cùng Thỏ ngọc</title>
-<meta name="theme-color" content="#ffd0e1">
+<meta name="theme-color" content="#f1cbc3">
 <script>try{var L=new URLSearchParams(location.search).get("l");if(L!=="nhi"&&L!=="tri")L=sessionStorage.getItem("a1-learner");if(L!=="nhi"&&L!=="tri")L=localStorage.getItem("a1-learner-keep");
 if(L==="tri"){document.documentElement.setAttribute("data-learner","tri");document.documentElement.setAttribute("data-theme","sea")}
-else{if(L==="nhi")document.documentElement.setAttribute("data-learner","nhi");var t=localStorage.getItem("a1-theme");if(t==="night"||t==="light")document.documentElement.setAttribute("data-theme",t);var pl=localStorage.getItem("a1-pal");if(L==="nhi"&&/^(sage|sea|rose)$/.test(pl||""))document.documentElement.setAttribute("data-pal",pl)}}catch(e){}</script>
+else{if(L==="nhi")document.documentElement.setAttribute("data-learner","nhi");var t=localStorage.getItem("a1-theme");if(t==="night"||t==="light")document.documentElement.setAttribute("data-theme",t)}}catch(e){}</script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Học Anh">
@@ -22,13 +22,13 @@ else{if(L==="nhi")document.documentElement.setAttribute("data-learner","nhi");va
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --p50:#fff6f9; --p100:#ffe8f0; --p200:#ffd0e1; --p300:#ffb0cd; --p400:#ff8db7;
-  --p500:#f2639b; --p600:#c92f72; --p700:#9c2159;
-  --ink:#4b2335; --ink2:#7d5566; --paper:#ffffff; --line:#ffd9e6;
+  --p50:#fbf2ec; --p100:#f8e1da; --p200:#f1cbc3; --p300:#e8aaa6; --p400:#dd8590;
+  --p500:#cf5f78; --p600:#b0415f; --p700:#8a2f49;
+  --ink:#3b2428; --ink2:#6c5156; --paper:#fffdfb; --line:#f0d9d1;
   --ok:#1b7f55; --ok-bg:#e6f8ee; --bad:#b8323f; --bad-bg:#ffecee; --warn-bg:#fff2c4;
   --task:#e8f0ff; --task-line:#b9cdf5; --task-ink:#27478f; --doc:#fff9e8; --doc-line:#efdca8;
   --r:22px;
-  --glow:242,99,155; --topbg:255,246,249; --c1:#d44d8d; --c2:#8c3070; --c3:#6a2458; --lift:0 5px 0 rgba(var(--glow),.16), 0 12px 26px rgba(var(--glow),.10);
+  --glow:176,65,95; --topbg:251,242,236; --c1:#e48a85; --c2:#b9506a; --c3:#7d3248; --lift:0 5px 0 rgba(var(--glow),.16), 0 12px 26px rgba(var(--glow),.10);
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -301,7 +301,7 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .brand small{font-size:.72rem; white-space:nowrap}
 @media (max-width:430px){ .sync{font-size:.7rem; padding:3px 8px} }
 .swatch{width:64px; height:78px; border-radius:22px; border:2px solid var(--p200)}
-.swatch.light{background:linear-gradient(180deg,#fff6f9,#ffc2d8)}
+.swatch.light{background:linear-gradient(180deg,#fbf2ec,#e8aaa6)}
 .swatch.night{background:linear-gradient(180deg,#f9b4cf,#9a4478 55%,#3f1a47)}
 @media (prefers-reduced-motion:reduce){ .mascot,.pulse{animation:none} }
 
@@ -321,7 +321,7 @@ html[data-theme=night] .card.today .pill{background:#fff}
 
 
 /* ===== Trang bìa chọn học viên ===== */
-body.cover{background:linear-gradient(135deg,#fff1f6 0%,#f4eff9 48%,#e7eefb 100%); background-image:none}
+body.cover{background:linear-gradient(135deg,#fbf2ec 0%,#f4eff1 48%,#e9eef5 100%); background-image:none}
 body.cover .top,body.cover .tabs{display:none}
 body.cover .wrap{max-width:860px; padding-top:calc(34px + env(safe-area-inset-top))}
 .cover .cvh{text-align:center; margin-bottom:22px}
@@ -345,6 +345,7 @@ body.cover .wrap{max-width:860px; padding-top:calc(34px + env(safe-area-inset-to
 
 /* ===== Giao diện của Trí: biển đêm, trăng và sao (navy, trắng, vàng cam) ===== */
 html[data-learner=tri]{
+  --glow:13,37,82; --topbg:7,20,46;
   --p50:#f3f6fc; --p100:#e6edf9; --p200:#cddaf0; --p300:#9db4dd; --p400:#f6b84e; --p500:#f29a2e; --p600:#173a7a; --p700:#0d2552;
   --ink:#0f2347; --ink2:#566c94; --paper:#ffffff; --line:#d5e0f2;
   --task:#e9f0ff; --task-line:#b9cdf5; --task-ink:#27478f; --doc:#fff8e6; --doc-line:#f0dba5;
@@ -468,7 +469,7 @@ body.kb .wrap{padding-bottom:40vh}
   .card{padding:16px}
   .btn{padding:13px 18px}
 }
-html[data-theme=night]{background:#3f1a47}
+html[data-theme=night]{background:#3f1a47; --p50:#fff6f9; --p100:#ffe8f0; --p200:#ffd0e1; --p300:#ffb0cd; --p400:#ff8db7; --p500:#f2639b; --p600:#c92f72; --p700:#9c2159; --ink:#4b2335; --ink2:#7d5566; --paper:#ffffff; --line:#ffd9e6; --glow:242,99,155; --topbg:255,246,249; --c1:#d44d8d; --c2:#8c3070; --c3:#6a2458}
 html[data-theme=night] body{background:none; background-image:none}
 html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index:-1; background:linear-gradient(180deg,#f9b4cf 0%,#e27aa7 22%,#9a4478 48%,#3f1a47 100%)}
 .chat{display:grid;gap:6px;margin:4px 0 10px}
@@ -705,19 +706,6 @@ body.immersive .bank.stick{bottom:calc(88px + env(safe-area-inset-bottom))}
 .sqb{flex:none; border:1.5px solid var(--p200); background:var(--paper); border-radius:10px; width:34px; height:34px; font-size:.9rem}
 .scene{margin:0 0 8px; padding:8px 12px; background:var(--doc,#fff8e6); border:1.5px solid var(--doc-line,#e8d9a8); border-radius:12px; font-weight:600}
 
-/* ===== Bảng màu của Nhi (Phòng thử màu): chỉ áp dụng giao diện sáng của Nhi ===== */
-html[data-learner=nhi][data-pal=sage]:not([data-theme=night]){ --topbg:241,245,239; --c1:#5c9a78; --c2:#2f6a4d; --c3:#214c38; --p50:#f1f5ef; --p100:#e0ebe1; --p200:#cbdfcf; --p300:#a6c9ae; --p400:#7db08a; --p500:#3a8460; --p600:#2f7650; --p700:#235a3d; --ink:#1f3a2d; --ink2:#4a6556; --paper:#fdfefb; --line:#d3e3d6; --glow:47,118,80; }
-html[data-learner=nhi][data-pal=sea]:not([data-theme=night]){ --topbg:238,243,248; --c1:#5b8fc0; --c2:#2f5f8f; --c3:#1f4468; --p50:#eef3f8; --p100:#dce8f3; --p200:#c5d8ea; --p300:#9cbad7; --p400:#6f9cc5; --p500:#3d78ad; --p600:#2e608f; --p700:#234a70; --ink:#1d3248; --ink2:#4a627c; --paper:#fcfdff; --line:#cfdcea; --glow:46,96,143; --task:#efe9f7; --task-line:#cdc1e4; --task-ink:#4a3a85; }
-html[data-learner=nhi][data-pal=rose]:not([data-theme=night]){ --topbg:246,239,232; --c1:#b8667e; --c2:#7d3f58; --c3:#5a2c40; --p50:#f6efe8; --p100:#efe0da; --p200:#e5cac6; --p300:#d4a8aa; --p400:#c3868f; --p500:#a85a70; --p600:#8c4560; --p700:#6c3248; --ink:#3d2530; --ink2:#6a5059; --paper:#fffcf9; --line:#e8d6d2; --glow:140,69,96; }
-.labp{border-radius:22px; border:2px solid var(--line); background:var(--p50); padding:14px; margin:0 0 6px; color:var(--ink)}
-.labp .lt{display:flex; align-items:center; gap:8px; margin:0 0 10px; font-weight:800; font-size:.8rem; color:var(--ink2)}
-.labp .lt i{display:inline-block; width:22px; height:22px; border-radius:50%; background:var(--p300)}
-.labp .card{margin:0 0 10px; padding:12px}
-.labp .labbar{display:flex; gap:4px; background:var(--paper); border-radius:24px; padding:5px; box-shadow:0 6px 14px rgba(var(--glow),.22); margin-top:8px}
-.labp .labbar b{flex:1; text-align:center; font-size:.72rem; padding:6px 0; border-radius:99px; color:var(--ink2)}
-.labp .labbar b.on{background:var(--p200); color:var(--p700)}
-.labsw{display:flex; gap:4px; margin:6px 0 8px} .labsw i{flex:1; height:22px; border-radius:7px; border:1px solid rgba(0,0,0,.08)}
-.labcur{display:inline-block; font-size:.75rem; font-weight:800; background:var(--ok-bg); color:var(--ok); border-radius:99px; padding:2px 10px; margin-left:6px}
 </style>
 </head>
 <body>
@@ -842,36 +830,10 @@ function themeKind(){
   try { const t = localStorage.getItem("a1-theme"); if (THEMES[t]) return t; } catch(e){}
   return "light";
 }
-const PALS = {"pink": {"name": "Hồng Mochi (hiện tại)", "p50": "#fff6f9", "p100": "#ffe8f0", "p200": "#ffd0e1", "p300": "#ffb0cd", "p400": "#ff8db7", "p500": "#f2639b", "p600": "#c92f72", "p700": "#9c2159", "ink": "#4b2335", "ink2": "#7d5566", "paper": "#ffffff", "line": "#ffd9e6", "glow": "242,99,155"}, "sage": {"name": "Xanh bạc hà dịu", "p50": "#f1f5ef", "p100": "#e0ebe1", "p200": "#cbdfcf", "p300": "#a6c9ae", "p400": "#7db08a", "p500": "#3a8460", "p600": "#2f7650", "p700": "#235a3d", "ink": "#1f3a2d", "ink2": "#4a6556", "paper": "#fdfefb", "line": "#d3e3d6", "glow": "47,118,80"}, "sea": {"name": "Xanh biển xám", "p50": "#eef3f8", "p100": "#dce8f3", "p200": "#c5d8ea", "p300": "#9cbad7", "p400": "#6f9cc5", "p500": "#3d78ad", "p600": "#2e608f", "p700": "#234a70", "ink": "#1d3248", "ink2": "#4a627c", "paper": "#fcfdff", "line": "#cfdcea", "glow": "46,96,143", "task": "#efe9f7", "tl": "#cdc1e4", "ti": "#4a3a85"}, "rose": {"name": "Hồng khói trên nền kem", "p50": "#f6efe8", "p100": "#efe0da", "p200": "#e5cac6", "p300": "#d4a8aa", "p400": "#c3868f", "p500": "#a85a70", "p600": "#8c4560", "p700": "#6c3248", "ink": "#3d2530", "ink2": "#6a5059", "paper": "#fffcf9", "line": "#e8d6d2", "glow": "140,69,96"}};
-function palKind(){ if (LRN.id !== "nhi") return "pink"; try { const k = localStorage.getItem("a1-pal"); if (PALS[k] && k !== "pink") return k; } catch(e){} return "pink"; }
-function applyPal(k){
-  try { if (k === "pink") localStorage.removeItem("a1-pal"); else localStorage.setItem("a1-pal", k); } catch(e){}
-  if (k === "pink") document.documentElement.removeAttribute("data-pal"); else document.documentElement.setAttribute("data-pal", k);
-  applyTheme(themeKind());
-}
-function labView(){
-  const cur = palKind(), vars = v => "--p50:"+v.p50+";--p100:"+v.p100+";--p200:"+v.p200+";--p300:"+v.p300+";--p400:"+v.p400+";--p500:"+v.p500+";--p600:"+v.p600+";--p700:"+v.p700+";--ink:"+v.ink+";--ink2:"+v.ink2+";--paper:"+v.paper+";--line:"+v.line+";--glow:"+v.glow+(v.task ? ";--task:"+v.task+";--task-line:"+v.tl+";--task-ink:"+v.ti : "");
-  const nightNote = themeKind() === "night" ? h("p",{class:"err small"},"Bạn đang ở giao diện đêm. Bảng màu chỉ đổi giao diện sáng; bấm nút 🌙/☀️ ở góc trên để về giao diện sáng.") : null;
-  const card = k => { const v = PALS[k];
-    const opt = (t, on) => h("button",{class:"opt"+(on ? " sel" : ""),type:"button",tabindex:"-1"}, t);
-    return h("div",{class:"card"},
-      h("h3",null, v.name, cur === k ? h("span",{class:"labcur"},"Đang dùng") : null),
-      h("div",{class:"labp",style:vars(v)},
-        h("div",{class:"lt"}, h("i"), "Thứ 2 · Gia đình"),
-        h("div",{class:"card"}, h("p",{class:"qtext",style:"margin:0 0 8px"},"Who works at night?"), h("div",{class:"opts"}, opt("Mai", true), opt("Her father", false)),
-          h("div",{class:"fbtxt ok",style:"margin-top:8px"},"✅ Đúng rồi!"), h("div",{class:"fbtxt bad",style:"margin-top:6px"},"Chưa đúng, bạn chọn lại nhé.")),
-        h("div",{class:"row"}, h("span",{class:"chip on"},"sister"), h("span",{class:"chip"},"brother"), h("button",{class:"btn sm",type:"button",tabindex:"-1"},"Tiếp tục"), h("button",{class:"btn soft sm",type:"button",tabindex:"-1"},"Nghe lại")),
-        h("div",{class:"labsw"}, ["p100","p200","p300","p400","p500","p600","p700"].map(x => h("i",{style:"background:"+v[x]}))),
-        h("div",{class:"labbar"}, h("b",{class:"on"},"Hôm nay"), h("b",null,"Tuần"), h("b",null,"Từ vựng"), h("b",null,"Bài tập"))),
-      h("button",{class:"btn"+(cur === k ? " soft" : ""),type:"button",style:"margin-top:8px",onClick:() => { applyPal(k); route(); toast("Đã đổi sang: "+v.name); }}, cur === k ? "Đang dùng bảng màu này" : "Dùng bảng màu này")); };
-  return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"), h("h1",{style:"margin-top:16px"},"🎨 Phòng thử màu"),
-    h("p",{class:"muted"},"Bảng màu cũ khá sáng. Ba bảng dưới đây dịu mắt hơn: nền không còn trắng hồng chói, chữ đậm hơn để dễ đọc. Bấm \"Dùng bảng màu này\" để áp dụng lên cả app và xem thử, đổi lại bất cứ lúc nào."), nightNote,
-    ["sage","sea","rose","pink"].map(card));
-}
 function applyTheme(t){
   document.documentElement.setAttribute("data-theme", t);
   if (LRN.id !== "tri") try { localStorage.setItem("a1-theme", t); } catch(e){}
-  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", LRN.id === "tri" ? "#07142e" : t === "night" ? "#3a1640" : (PALS[palKind()] || PALS.pink).p200);
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", LRN.id === "tri" ? "#07142e" : t === "night" ? "#3a1640" : "#f1cbc3");
   const b = document.getElementById("themebtn"); if (b){ b.textContent = t === "night" ? "☀️" : "🌙"; b.title = t === "night" ? "Chuyển sang giao diện sáng" : "Chuyển sang giao diện đêm"; }
 }
 const STAR_D = "M0-10L2.6-2.6L10 0L2.6 2.6L0 10L-2.6 2.6L-10 0L-2.6-2.6Z";
@@ -3006,7 +2968,7 @@ function settingsView(){
       FS.app() ? null : h("button",{class:"btn fsbtn",type:"button",onClick:FS.toggle,html:FS_TXT(FS.on())})),
     h("div",{class:"card"}, h("h3",null,"Học viên: "+LRN.name+" ("+LRN.level+")"), h("p",{class:"muted small"},"Tên hiện trong lời chào ở trang chủ."), nameIn,
       h("button",{class:"btn soft sm",type:"button",style:"margin-top:12px",onClick:switchLearner},"↩ Đổi học viên")),
-    LRN.id === "nhi" ? h("div",{class:"card"}, h("h3",null,"Giao diện"), h("div",{class:"row",style:"flex-wrap:nowrap"}, tk("light"), tk("night")), h("p",{class:"muted small",style:"margin:12px 0 8px"},"Màu hồng khó nhìn? Thử bảng màu dịu mắt hơn:"), h("a",{class:"btn soft sm",href:"#/lab"},"🎨 Phòng thử màu")) : null,
+    LRN.id === "nhi" ? h("div",{class:"card"}, h("h3",null,"Giao diện"), h("div",{class:"row",style:"flex-wrap:nowrap"}, tk("light"), tk("night"))) : null,
     LRN.id === "nhi" ? h("div",{class:"card"}, h("h3",null,"Linh vật"), h("div",{class:"row",style:"flex-wrap:nowrap"}, mk("bunny"), mk("hang"))) : null,
     h("div",{class:"card"}, h("h3",null,"Ngày bắt đầu khóa học"), h("p",{class:"muted small"},"Chọn ngày thứ Hai đầu tuần 1. Trang chủ dựa vào ngày này để biết hôm nay học buổi nào."), dateIn,
       notMon ? h("p",{class:"err small"},"Ngày này không phải thứ Hai, nhãn Thứ 2 đến Thứ 7 sẽ lệch.") : null),
@@ -3235,7 +3197,6 @@ function route(){
     case "placement": view = placementView(); break;
     case "report": view = h("div",null, h("h1",null,"Báo cáo tuần "+weekNo()), reportEl()); break;
     case "settings": view = settingsView(); break;
-    case "lab": view = labView(); break;
     case "teacher": view = teacherView(); break;
     case "progress": view = progressView(); break;
     default: view = homeView();
