@@ -678,6 +678,32 @@ body.immersive .bank.stick{bottom:calc(88px + env(safe-area-inset-bottom))}
   html[data-learner=tri] .fabread,html[data-learner=tri] .rsheet{display:none !important}
 }
 @media (min-width:700px) and (max-width:1000px){ html[data-learner=tri] .rleft .reading{font-size:.88rem} }
+
+/* dạng bài mới: tap, multi, inline, seqlisten */
+.taptxt{font-size:1.12rem; line-height:2.3; font-weight:600; margin:6px 0}
+.tw{border:2px solid transparent; background:transparent; border-radius:10px; padding:1px 6px; font:inherit; color:inherit; cursor:pointer}
+.tw:hover{background:var(--p50); border-color:var(--p200)}
+.tw.sel{background:var(--p100); border-color:var(--p500)}
+.tw.right{background:var(--ok-bg); border-color:var(--ok); color:var(--ok)}
+.tw.wrong{background:var(--bad-bg); border-color:var(--bad); color:var(--bad); text-decoration:line-through}
+.mneed{margin:2px 0 8px; font-size:.95rem; color:var(--ink2)}
+.mneed b{background:var(--p100); border:1.5px solid var(--p500); border-radius:999px; padding:2px 10px; color:var(--ink)}
+.mcnt{font-weight:800}
+.opt.multi{display:flex; align-items:center; gap:10px}
+.mbox{flex:none; width:20px; height:20px; border:2px solid var(--p500); border-radius:6px; background:var(--paper); display:inline-block; position:relative}
+.opt.multi.sel .mbox{background:var(--p500)} .opt.multi.sel .mbox::after{content:"✓"; color:#fff; position:absolute; inset:-2px 0 0; text-align:center; font-size:.85rem; font-weight:900}
+.opt.multi.right .mbox{background:var(--ok); border-color:var(--ok)} .opt.multi.wrong .mbox{background:var(--bad); border-color:var(--bad)}
+.isel{font:inherit; font-weight:800; border:2px solid var(--p300); background:var(--paper); border-radius:12px; padding:3px 6px; margin:0 3px; max-width:100%}
+.isel.right{border-color:var(--ok); background:var(--ok-bg)} .isel.wrong{border-color:var(--bad); background:var(--bad-bg)}
+.sqlist{display:flex; flex-direction:column; gap:8px; margin:8px 0}
+.sqrow{display:flex; align-items:center; gap:8px; border:2px solid var(--p200); background:var(--paper); border-radius:14px; padding:8px 10px}
+.sqrow.lifting{box-shadow:0 6px 18px rgba(0,0,0,.18); border-color:var(--p500)}
+.sqrow.right{border-color:var(--ok); background:var(--ok-bg)} .sqrow.wrong{border-color:var(--bad); background:var(--bad-bg)}
+.sqn{flex:none; width:24px; height:24px; border-radius:50%; background:var(--p100); font-weight:900; font-size:.85rem; display:grid; place-items:center}
+.sqh{flex:none; cursor:grab; touch-action:none; font-size:1.25rem; padding:2px 6px; color:var(--ink2); user-select:none}
+.sqt{flex:1; font-weight:600; line-height:1.4}
+.sqb{flex:none; border:1.5px solid var(--p200); background:var(--paper); border-radius:10px; width:34px; height:34px; font-size:.9rem}
+.scene{margin:0 0 8px; padding:8px 12px; background:var(--doc,#fff8e6); border:1.5px solid var(--doc-line,#e8d9a8); border-radius:12px; font-weight:600}
 </style>
 </head>
 <body>
@@ -1270,19 +1296,25 @@ if (LRN.id === "tri"){   // Trí không dùng bài demo của Nhi: nếu chưa c
 }
 const STEP_DEF = { sets:{icon:"✏️",title:"Luyện tập"}, read:{icon:"📖",title:"Đọc"}, listen:{icon:"🎧",title:"Nghe"},
   notice:{icon:"🔍",title:"Tìm ngữ pháp"}, output:{icon:"🌷",title:"Tự viết"}, report:{icon:"📊",title:"Báo cáo tuần"} };
-const EST_SEC = { mcq:25, truefalse:15, oddone:20, match:12, listenpick:30, dictation:60, dialogue:30, gap:25, form:30, cloze:30, reorder:40, fix:45, transform:60, translate:70, answer:70, shadow:40 };
+const EST_SEC = { mcq:25, truefalse:15, oddone:20, match:12, listenpick:30, dictation:60, dialogue:30, gap:25, form:30, cloze:30, reorder:40, fix:45, transform:60, translate:70, answer:70, shadow:40, tap:25, multi:35, inline:35, seqlisten:70 };
 // WEEKS ở trên; số tuần -> {id,title,grammar,subs,sessions}
 const CH = {};         // id buổi -> challenge
 let CONTENT = {};      // số tuần -> {json, at, src}
 const CKEY = LRN.ckey;
 const MCQLIKE = ["mcq","oddone","listenpick","dialogue"];
 
+const tapTokens = t => String(t).trim().split(/\s+/);
+const tapCore = w => String(w).replace(/^[^\p{L}\p{N}']+|[^\p{L}\p{N}']+$/gu, "").toLowerCase();
+function tapFind(tk, wrong, at){ if (typeof wrong !== "string") return -1; const k = tapCore(wrong), ids = []; tk.forEach((w, i) => { if (tapCore(w) === k) ids.push(i); }); if (!ids.length) return -1; if (at) return ids[at - 1] != null ? ids[at - 1] : -1; return ids.length === 1 ? ids[0] : -2; }
+const inlineParse = text => { const parts = [], re = /\[([^\]]+)\]/g; let last = 0, m; while ((m = re.exec(text))){ parts.push({t:text.slice(last, m.index)}); const opts = m[1].split("|").map(x => x.trim()); const ans = opts.findIndex(x => x[0] === "*"); parts.push({opts:opts.map(x => x.replace(/^\*/, "")), ans, bad:opts.filter(x => x[0] === "*").length !== 1}); last = m.index + m[0].length; } parts.push({t:text.slice(last)}); return parts; };
 function prepItem(type, it){
   const o = Object.assign({}, it);
   if (MCQLIKE.includes(type) && typeof o.answer === "string") o.answer = optIndex(o.options || [], o.answer);
   if (MCQLIKE.includes(type) && Array.isArray(o.options) && typeof o.answer === "number"){ const seenO = new Set(), keep = [], ans = o.options[o.answer]; o.options.forEach(x => { const k = String(x).trim().toLowerCase(); if (!seenO.has(k)){ seenO.add(k); keep.push(x); } }); if (keep.length !== o.options.length && keep.length >= 2){ const ai = keep.findIndex(x => String(x).trim().toLowerCase() === String(ans).trim().toLowerCase()); if (ai >= 0){ o.options = keep; o.answer = ai; } } }
   if (type === "truefalse"){ o.options = ["Đúng","Sai"]; o.answer = (o.answer === true || /^(true|đúng|dung)$/i.test(String(o.answer))) ? 0 : 1; }
   if (type === "oddone" && (!o.q || /^chọn từ (khác loại|không cùng nhóm)/i.test(String(o.q).trim()))){ o.q = "Chọn từ khác loại với các từ còn lại."; o._gen = true; }
+  if (type === "multi" && Array.isArray(o.options)) o.answers = (o.answers || []).map(a => typeof a === "number" ? a : optIndex(o.options, a));
+  if (type === "tap" && typeof o.text === "string"){ const tk = tapTokens(o.text), at = tapFind(tk, o.wrong, o.at); o._tk = tk; o._err = at; }
   if (SELF_TYPES.has(type)) o.self = true;
   return o;
 }
@@ -1290,7 +1322,7 @@ function prepSet(raw, key, ctx){
   const set = Object.assign({}, raw); set.key = key;
   set.items = (raw.items || []).map((it, i) => Object.assign(prepItem(raw.type, it), { _ref:key + "#" + i }));
   if (ctx) set.ctx = true;
-  const techName = /^(mcq|multiple choice|truefalse|true false|true or false|oddone|odd one|odd one out|match|matching|listenpick|listen pick|dictation|dialogue|dialog|gap|gap fill|form|word form|cloze|reorder|fix|transform|translate|answer|shadow|shadowing)$/i;
+  const techName = /^(mcq|multiple choice|truefalse|true false|true or false|oddone|odd one|odd one out|match|matching|listenpick|listen pick|dictation|dialogue|dialog|gap|gap fill|form|word form|cloze|reorder|fix|transform|translate|answer|shadow|shadowing|tap|multi|inline|seqlisten)$/i;
   if (!set.title || techName.test(String(set.title).trim())) set.title = TYPES[set.type].label;
   const genericIns = /^(hoàn thành( từng)? câu|làm( từng)? câu|làm bài|trả lời( các)? câu hỏi|chọn từ phù hợp để hoàn thành đoạn văn)\.?$/i;
   if (!set.instruction || genericIns.test(String(set.instruction).trim())) set.instruction = TYPES[set.type].how;
@@ -1372,6 +1404,31 @@ function validateItem(type, it, w, E, W){
       need(a === b, "các từ trong words không khớp với answer (thừa hoặc thiếu từ)");
     }
   } else if (type === "fix"){ need(isStr(it.wrong) && isStr(it.answer), "thiếu wrong hoặc answer"); if (isStr(it.wrong) && isStr(it.answer)) need(norm(it.wrong) !== norm(it.answer), "wrong và answer giống nhau");
+  } else if (type === "tap"){
+    need(isStr(it.text) && isStr(it.wrong) && isStr(it.answer), "tap cần text (câu có lỗi), wrong (từ sai, đúng như trong câu) và answer (từ đúng)");
+    if (isStr(it.text) && isStr(it.wrong)){ const tk = tapTokens(it.text), at = tapFind(tk, it.wrong, it.at);
+      need(tk.length >= 4, "câu quá ngắn để chạm tìm lỗi (nên từ 4 từ)");
+      need(at !== -1, "wrong \"" + it.wrong + "\" không có trong text");
+      need(at !== -2, "wrong \"" + it.wrong + "\" xuất hiện nhiều lần trong text, thêm at (1 = lần xuất hiện thứ nhất, 2 = thứ hai...)");
+      if (isStr(it.answer) && tapCore(it.answer) === tapCore(it.wrong)) E.push(w + ": wrong và answer giống nhau"); }
+  } else if (type === "multi"){
+    need(isStr(it.q), "thiếu q");
+    need(Array.isArray(it.options) && it.options.length >= 4 && it.options.length <= 7 && it.options.every(isStr), "multi cần options 4 đến 7 chuỗi");
+    need(Array.isArray(it.answers) && it.answers.length >= 2, "multi cần answers: mảng ít nhất 2 đáp án đúng (chuỗi trùng options). Số đáp án đúng tùy câu (2, 3, hoặc 4), web tự hiện \"Chọn N đáp án\"");
+    if (Array.isArray(it.options) && Array.isArray(it.answers)){
+      const idx = it.answers.map(a => typeof a === "number" ? a : optIndex(it.options, a));
+      need(idx.every(i => i >= 0 && i < it.options.length), "có đáp án trong answers không trùng options");
+      need(new Set(idx).size === idx.length, "answers bị trùng");
+      need(idx.length < it.options.length, "phải có ít nhất 1 lựa chọn sai (answers < options)");
+    }
+  } else if (type === "inline"){
+    need(isStr(it.text), "thiếu text");
+    if (isStr(it.text)){ const ps = inlineParse(it.text).filter(x => x.opts);
+      need(ps.length >= 1 && ps.length <= 4, "text cần 1 đến 4 ô dạng [*đúng|sai|sai], đang có " + ps.length);
+      ps.forEach((x, k) => { need(!x.bad, "ô " + (k+1) + " phải có đúng một đáp án đúng đánh dấu bằng dấu * ở đầu (ví dụ [*is|are])"); need(x.opts.length >= 2 && x.opts.length <= 4, "ô " + (k+1) + " cần 2 đến 4 lựa chọn"); }); }
+  } else if (type === "seqlisten"){
+    need(Array.isArray(it.lines) && it.lines.length >= 3 && it.lines.length <= 7 && it.lines.every(isStr), "seqlisten cần lines: 3 đến 7 câu, viết theo ĐÚNG thứ tự (web tự xáo)");
+    if (Array.isArray(it.lines) && new Set(it.lines.map(x => String(x).trim().toLowerCase())).size !== it.lines.length) E.push(w + ": lines có câu trùng nhau");
   } else if (type === "match"){ need(isStr(it.left) && isStr(it.right), "thiếu left hoặc right");
   } else if (type === "dictation" || type === "shadow"){ need(isStr(it.say), "thiếu say");
   } else if (type === "transform" || type === "translate" || type === "answer"){ need(isStr(it.prompt) && isStr(it.answer), "thiếu prompt hoặc answer");
@@ -1387,7 +1444,7 @@ function validateSet(raw, w, E, W, seen){
   raw.items.forEach((it, i) => {
     validateItem(type, it, w + " (" + type + ") câu " + (i+1), E, W);
     if (raw.ungraded || !it || typeof it !== "object") return;   // câu khởi động được phép lặp lại ở phần luyện tập
-    const base = norm([it.q, it.say, it.text, it.prompt, it.wrong, it.left, (it.words || []).join(" ")].filter(isStr).join(" "));
+    const base = norm([it.q, it.say, it.text, it.prompt, it.wrong, it.left, (it.words || []).join(" "), Array.isArray(it.lines) ? it.lines.join(" ") : ""].filter(isStr).join(" "));
     const ans = norm(String(typeof it.answer === "number" && it.options ? it.options[it.answer] : (it.answer != null ? it.answer : (it.right || ""))));
     const key = base + "|" + ans;
     if (isStr(it.why)){ const wk = it.why.trim(); const r = seen.why.get(wk) || { n:0, at:w + " câu " + (i+1) }; r.n++; seen.why.set(wk, r); }
@@ -1754,7 +1811,11 @@ const TYPES = {
   transform:{label:"Viết lại câu", icon:"🔄", desc:"Viết lại câu theo yêu cầu", how:"Viết lại câu theo yêu cầu."},
   translate:{label:"Dịch sang tiếng Anh", icon:"🌏", desc:"Tự dịch rồi so với đáp án mẫu", how:"Dịch câu tiếng Việt sang tiếng Anh rồi so với đáp án mẫu.", self:true},
   answer:{label:"Trả lời bằng tiếng Anh", icon:"🗣️", desc:"Tự trả lời rồi so với mẫu", how:"Trả lời bằng một câu tiếng Anh rồi so với đáp án mẫu.", self:true},
-  shadow:{label:"Nghe và đọc theo", icon:"🎤", desc:"Nghe rồi đọc to theo", how:"Nghe rồi đọc to theo, nghe lại để so sánh.", self:true}
+  shadow:{label:"Nghe và đọc theo", icon:"🎤", desc:"Nghe rồi đọc to theo", how:"Nghe rồi đọc to theo, nghe lại để so sánh.", self:true},
+  tap:{label:"Tìm lỗi sai", icon:"👆", desc:"Chạm vào từ sai trong câu", how:"Mỗi câu có một từ sai. Chạm vào từ sai đó."},
+  multi:{label:"Chọn nhiều đáp án", icon:"✅", desc:"Chọn tất cả đáp án đúng", how:"Mỗi câu có nhiều đáp án đúng. Số đáp án cần chọn ghi ngay dưới câu hỏi."},
+  inline:{label:"Chọn từ trong câu", icon:"🔽", desc:"Chọn từ đúng cho từng ô trong câu", how:"Chọn từ đúng cho từng ô trong câu."},
+  seqlisten:{label:"Nghe và xếp thứ tự", icon:"🎧", desc:"Nghe rồi kéo các câu về đúng thứ tự", how:"Bấm nghe cả đoạn, rồi kéo các câu về đúng thứ tự (hoặc dùng mũi tên ▲ ▼)."}
 };
 const SELF_TYPES = new Set(["translate","answer","shadow"]);
 const TYPE_LABEL = Object.assign({}, ...Object.keys(TYPES).map(k => ({[k]:TYPES[k].label})), {notice:"Tìm ngữ pháp"});
@@ -2039,10 +2100,79 @@ function shadowItem(it, onChange){
   return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, it.say, it.vi ? h("span",{class:"qvi"}, it.vi) : null), ab, fbSlot), fbSlot,
     isAnswered:() => done, check(){ return { ok:true, self:true, correct: it.say, why: it.why, prompt: it.say }; } };
 }
+
+/* ---- dạng mới: tap, multi, inline, seqlisten ---- */
+function tapItem(it, onChange){
+  let sel = -1, locked = false; const fbSlot = h("div"), tk = it._tk, wbtn = [];
+  const line = h("p",{class:"taptxt"}, tk.map((w, i) => { const b = h("button",{class:"tw",type:"button",onClick:() => {
+    if (locked) return; sel = i; wbtn.forEach((x, j) => { x.classList.toggle("sel", j === i); x.classList.remove("wrong"); }); onChange(); }}, w); wbtn.push(b); return [b, " "]; }));
+  const fixedText = tk.map((w, i) => i === it._err ? w.replace(new RegExp(it.wrong.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"), it.answer) : w).join(" ");
+  return { el:h("div",{class:"q"}, line, fbSlot), fbSlot, retry:true, isAnswered:() => sel >= 0,
+    lock(){ locked = true; wbtn[it._err].classList.add("right"); },
+    check(){ const ok = sel === it._err;
+      if (ok){ locked = true; wbtn[sel].classList.add("right"); } else wbtn[sel].classList.add("wrong");
+      return { ok, retry:!ok, correct:fixedText, why:it.why, prompt:it.text }; } };
+}
+function multiItem(it, onChange){
+  const need = it.answers.length, order = it.noShuffle ? it.options.map((_, i) => i) : shuffle(it.options.map((_, i) => i)), on = new Set(); let locked = false; const btns = [];
+  const cnt = h("span",{class:"mcnt"}), fbSlot = h("div");
+  const upd = () => { cnt.textContent = "Đã chọn " + on.size + "/" + need; };
+  const el = h("div",{class:"q"}, h("p",{class:"qtext"}, it.q), h("div",{class:"mneed"}, h("b",null,"Chọn " + need + " đáp án đúng"), " ", cnt),
+    h("div",{class:"opts"}, order.map(oi => { const b = h("button",{class:"opt multi",type:"button",onClick:() => {
+      if (locked) return; if (on.has(oi)) on.delete(oi); else if (on.size < need) on.add(oi); else return;
+      b.classList.toggle("sel", on.has(oi)); btns.forEach(x => x.classList.remove("wrong")); upd(); onChange(); }}, h("span",{class:"mbox"}), it.options[oi]); btns.push(b); return b; })), fbSlot);
+  upd();
+  return { el, fbSlot, retry:true, isAnswered:() => on.size === need,
+    lock(){ locked = true; btns.forEach((b, j) => { if (it.answers.includes(order[j])) b.classList.add("right"); }); },
+    check(){ const ok = on.size === need && [...on].every(i => it.answers.includes(i));
+      btns.forEach((b, j) => { b.classList.remove("right","wrong"); if (on.has(order[j])) b.classList.add(it.answers.includes(order[j]) ? "right" : "wrong"); });
+      if (ok) locked = true;
+      return { ok, retry:!ok, correct:it.answers.map(i => it.options[i]).join(" · "), why:it.why, prompt:it.q }; } };
+}
+function inlineItem(it, onChange){
+  const parts = inlineParse(it.text), fbSlot = h("div"), sels = []; let locked = false;
+  const nodes = parts.map(x => { if (!x.opts) return x.t;
+    const sl = h("select",{class:"isel",onChange:() => { sl.classList.remove("right","wrong"); onChange(); }}, h("option",{value:"-1"},"…"),
+      shuffle(x.opts.map((o, i) => ({o, i}))).map(z => h("option",{value:String(z.i)}, z.o))); sels.push({sl, x}); return sl; });
+  const filled = () => parts.map(x => x.opts ? x.opts[x.ans] : x.t).join("");
+  return { el:h("div",{class:"q gap"}, nodes, fbSlot), fbSlot, retry:true, isAnswered:() => sels.every(z => z.sl.value !== "-1"),
+    lock(){ locked = true; sels.forEach(z => { z.sl.disabled = true; z.sl.classList.add("right"); z.sl.value = String(z.x.ans); }); },
+    check(){ let ok = true; sels.forEach(z => { const g = Number(z.sl.value) === z.x.ans; if (!g) ok = false; z.sl.classList.remove("right","wrong"); z.sl.classList.add(g ? "right" : "wrong"); });
+      if (ok){ locked = true; sels.forEach(z => z.sl.disabled = true); }
+      return { ok, retry:!ok, correct:filled(), why:it.why, prompt:it.text.replace(/\[[^\]]+\]/g, "___") }; } };
+}
+function seqlistenItem(it, onChange){
+  const lines = it.lines; let locked = false, moved = false;
+  let init = shuffle(lines.slice()), tries = 0; while (init.join("|") === lines.join("|") && tries++ < 20) init = shuffle(lines.slice());
+  const list = h("div",{class:"sqlist"}), fbSlot = h("div");
+  const rows = () => [...list.children];
+  const num = () => rows().forEach((r, i) => { r.querySelector(".sqn").textContent = i + 1; });
+  const touched = () => { moved = true; num(); onChange(); };
+  const mk = line => { const r = h("div",{class:"sqrow"});
+    const hd = h("span",{class:"sqh",title:"Kéo để đổi chỗ"}, "☰"), up = h("button",{class:"sqb",type:"button","aria-label":"Lên",onClick:() => { if (locked) return; const p = r.previousElementSibling; if (p){ list.insertBefore(r, p); touched(); } }}, "▲"),
+      dn = h("button",{class:"sqb",type:"button","aria-label":"Xuống",onClick:() => { if (locked) return; const n = r.nextElementSibling; if (n){ list.insertBefore(n, r); touched(); } }}, "▼"),
+      pl = h("button",{class:"sqb",type:"button","aria-label":"Nghe câu này",onClick:() => { S.stats.plays++; playAudio({text:line, rate:1}); }}, "🔊");
+    r._line = line; r.append(h("span",{class:"sqn"}), hd, h("span",{class:"sqt"}, line), pl, up, dn);
+    hd.addEventListener("pointerdown", e => { if (locked || (e.button || 0) > 0) return; e.preventDefault(); r.classList.add("lifting");
+      const mv = ev => { const t = document.elementFromPoint(ev.clientX, ev.clientY), o = t && t.closest ? t.closest(".sqrow") : null;
+        if (o && o !== r && o.parentNode === list){ const rs = rows(), ri = rs.indexOf(r), oi = rs.indexOf(o); if (oi > ri) list.insertBefore(o, r); else list.insertBefore(o, r.nextSibling); touched(); } ev.preventDefault(); };
+      const end = () => { document.removeEventListener("pointermove", mv); document.removeEventListener("pointerup", end); document.removeEventListener("pointercancel", end); r.classList.remove("lifting"); };
+      document.addEventListener("pointermove", mv, {passive:false}); document.addEventListener("pointerup", end); document.addEventListener("pointercancel", end); });
+    return r; };
+  init.forEach(l => list.append(mk(l))); num();
+  const ab = audioBar(lines.join(" "), it.audioSrc);
+  return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, "🎧 Nghe cả đoạn, rồi xếp các câu theo đúng thứ tự bạn nghe."), ab, list, fbSlot), fbSlot, retry:true, isAnswered:() => moved,
+    lock(){ locked = true; lines.forEach(l => { const r = rows().find(x => x._line === l); list.append(r); r.classList.remove("wrong"); r.classList.add("right"); }); num(); },
+    check(){ const cur = rows().map(r => r._line); const ok = cur.every((l, i) => l === lines[i]);
+      rows().forEach((r, i) => { r.classList.remove("right","wrong"); r.classList.add(cur[i] === lines[i] ? "right" : "wrong"); });
+      if (ok) locked = true;
+      return { ok, retry:!ok, correct:lines.map((l, i) => (i + 1) + ". " + l).join("  "), why:it.why, prompt:lines.join(" / ") }; } };
+}
 const mapItems = (fn, pre) => (set, ch) => ({ head:[], items:set.items.map(it => fn(it, ch, pre ? pre(it) : null)) });
 const BUILD = {
   mcq:mapItems(mcqItem), truefalse:mapItems(mcqItem), oddone:mapItems(mcqItem),
-  listenpick:mapItems(listenpickItem), dialogue:mapItems(mcqItem, it => chatEl(it.lines)),
+  listenpick:mapItems(listenpickItem), dialogue:mapItems(mcqItem, it => it.scene ? h("div",null, h("p",{class:"scene"}, "📍 ", it.scene), chatEl(it.lines)) : chatEl(it.lines)),
+  tap:mapItems(tapItem), multi:mapItems(multiItem), inline:mapItems(inlineItem), seqlisten:mapItems(seqlistenItem),
   gap:buildGap, cloze:buildCloze, match:buildMatch,
   reorder:mapItems(reorderItem), fix:mapItems(fixItem), form:mapItems(formItem), dictation:mapItems(dictItem),
   transform:mapItems(textItem), translate:mapItems(textItem), answer:mapItems(textItem), shadow:mapItems(shadowItem)
@@ -2053,7 +2183,7 @@ function subView(set, items){
   if (set.type === "gap" || (set.type === "cloze" && set.mode !== "type")) v.bank = makeBank(items, set.distractors);
   return v;
 }
-const MANUAL = new Set(["form","fix","dictation","transform","translate","answer"]);
+const MANUAL = new Set(["form","fix","dictation","transform","translate","answer","multi","inline","seqlisten"]);
 function exerciseSet(set, onDone){
   const wrap = h("section",{class:"exset"});
   const coreN = set.type !== "cloze" && set.core && set.core > 0 && set.core < set.items.length ? set.core : set.items.length;   // đoạn cloze luôn làm trọn cả đoạn
@@ -2090,7 +2220,7 @@ function exerciseSet(set, onDone){
       const r = it.check();
       if (r.pending) return;
       if (r.retry){ tried[i] = true; lastR[i] = r;
-        const msg = /^(gap|cloze)$/.test(main.type) && main.mode !== "type" ? "Chưa đúng. Kéo từ khác vào để thay nhé." : MCQLIKE.includes(main.type) ? "Chưa đúng, bạn chọn lại nhé." : main.type === "reorder" ? "Chưa đúng, bạn xếp lại nhé." : "Chưa đúng, bạn sửa lại rồi kiểm tra lại nhé.";
+        const msg = /^(gap|cloze)$/.test(main.type) && main.mode !== "type" ? "Chưa đúng. Kéo từ khác vào để thay nhé." : MCQLIKE.includes(main.type) || main.type === "tap" ? "Chưa đúng, bạn chọn lại nhé." : /^(reorder|seqlisten)$/.test(main.type) ? "Chưa đúng, bạn xếp lại nhé." : main.type === "multi" ? "Chưa đúng, bạn đổi lại các đáp án đã chọn nhé." : main.type === "inline" ? "Chưa đúng, bạn đổi lại các ô sai nhé." : "Chưa đúng, bạn sửa lại rồi kiểm tra lại nhé.";
         if (!it.quietRetry) it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, msg + " ", it.lock ? h("button",{class:"linkbtn",type:"button",onClick:() => reveal(i)}, "Xem đáp án") : null)); return; }
       done[i] = true; if (tried[i]) r.ok = false; res[i] = r; cnt++;
       const quiet = it.quietOk && r.ok;
@@ -2780,8 +2910,8 @@ function practiceView(type){
   const p = type && TYPES[type] ? practiceSetFor(type) : null;
   if (!p){
     const tile = (href, icon, title, sub, cls) => h("a",{class:"ptile"+(cls ? " "+cls : ""),href}, h("span",{class:"pic"}, icon), h("b",null,title), h("span",{class:"small muted"}, sub));
-    const groups = [["🎯 Chọn đáp án",["mcq","truefalse","oddone","match","dialogue"]],["🎧 Nghe",["listenpick","dictation","shadow"]],
-      ["🧩 Điền và xếp câu",["gap","form","cloze","reorder"]],["✍️ Viết",["fix","transform","translate","answer"]]];
+    const groups = [["🎯 Chọn đáp án",["mcq","multi","truefalse","oddone","match","dialogue"]],["🎧 Nghe",["listenpick","seqlisten","dictation","shadow"]],
+      ["🧩 Điền và xếp câu",["gap","form","inline","cloze","reorder"]],["✍️ Viết và sửa lỗi",["tap","fix","transform","translate","answer"]]];
     return h("div",null, h("h1",null,"Bài tập"), h("p",{class:"muted"},"Làm lại từng dạng bài bất cứ lúc nào, câu được lấy từ các bài đã học."),
       h("div",{class:"pgrid"},
         S.mistakes.length ? tile("#/mistakes",SCH ? "#i:wrench" : "🩹","Ôn câu sai", S.mistakes.length+" câu chờ sửa","hot") : null,
@@ -2897,7 +3027,7 @@ function progressView(){
 /* =====================================================================
    BÀI TẬP LẺ (lấy từ kho câu của mọi tuần), CHALLENGE, TRANG NỘI DUNG CHO GV
    ===================================================================== */
-const PRACTICE_TYPES = ["mcq","truefalse","oddone","match","listenpick","dictation","dialogue","gap","form","cloze","reorder","fix","transform","translate","answer","shadow"];
+const PRACTICE_TYPES = ["mcq","truefalse","oddone","match","listenpick","dictation","dialogue","gap","form","cloze","reorder","fix","transform","translate","answer","shadow","tap","multi","inline","seqlisten"];
 const poolSets = type => Object.values(SET).filter(s => s.type === type && !s.ungraded && !s.ctx && s.items && s.items.length);
 function poolItems(type){
   const all = []; poolSets(type).forEach(s => s.items.forEach((it, i) => all.push(Object.assign({}, it, { _ref:it._ref || s.key + "#" + i }))));
@@ -3162,7 +3292,7 @@ if (SCH){
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 }
 if (SCH){
-  const TI = {mcq:"checksq",truefalse:"tf",oddone:"odd",match:"link",listenpick:"headphones",dictation:"wave",dialogue:"chat",gap:"brackets",form:"refresh",cloze:"lines",reorder:"sort",fix:"wrench",transform:"refresh",translate:"globe",answer:"chat",shadow:"mic"};
+  const TI = {mcq:"checksq",truefalse:"tf",oddone:"odd",match:"link",listenpick:"headphones",dictation:"wave",dialogue:"chat",gap:"brackets",form:"refresh",cloze:"lines",reorder:"sort",fix:"wrench",tap:"wrench",multi:"checksq",inline:"brackets",seqlisten:"sort",transform:"refresh",translate:"globe",answer:"chat",shadow:"mic"};
   const SI = {first:"spark",week1:"layers",challenger:"award",streak3:"chart",perfect:"check",listener:"headphones",words:"book",fixer:"wrench",writer:"pencil"};
   const SN = {words:"Vốn từ",fixer:"Chính xác",writer:"Người viết",first:"Khởi đầu",week1:"Trọn tuần",streak3:"Đều đặn 3 ngày",perfect:"Đúng hết",listener:"Nghe chủ động",challenger:"Thử thách"};
   Object.values(STEP_DEF).forEach(d => d.icon = "#i:pencil"); Object.entries(TYPES).forEach(([k,d]) => { d.icon = "#i:" + (TI[k] || "dot"); });
