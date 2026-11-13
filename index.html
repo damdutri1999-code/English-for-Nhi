@@ -2456,27 +2456,31 @@ function grammarBoxFrom(b){
     b.note ? h("p",{class:"muted small"},b.note) : null);
 }
 function noticeStep(step, ctx){
-  const tw = ((step.target && step.target.length) ? step.target : ["am","is","are"]).map(x => String(x).toLowerCase()), target = { test:w => tw.includes(w.toLowerCase()) }, sel = new Set(), spans = []; let id = 0, total = 0, locked = false;
-  const counter = h("div",{class:"muted small"}, "Đã chọn: 0 từ");
-  const btn = h("button",{class:"btn block",type:"button",disabled:true,style:"margin-top:12px"}, "Kiểm tra");
+  /* chạm là biết ngay đúng (xanh) hay sai (đỏ); tìm đủ thì hoàn thành, hoặc bấm "Hiện đáp án" */
+  const tw = ((step.target && step.target.length) ? step.target : ["am","is","are"]).map(x => String(x).toLowerCase()), target = { test:w => tw.includes(w.toLowerCase()) }, spans = []; let id = 0, total = 0, locked = false, right = 0, wrong = 0;
+  const counter = h("div",{class:"muted small"}, "");
+  const btn = h("button",{class:"btn soft block",type:"button",style:"margin-top:12px"}, "Hiện đáp án");
   const result = h("div");
-  const box = h("div",{class:"reading"}, step.text.map(p => h("p",null, tokenize(p).map(t => {
-    if (!t.word) return [t.pre + t.post, " "];
-    const me = id++, isT = target.test(t.word); if (isT) total++;
-    const sp = h("span",{class:"tok",role:"button",tabindex:"0"}, t.word);
-    const tg = () => { if (locked) return; if (sel.has(me)) sel.delete(me); else sel.add(me); sp.classList.toggle("sel", sel.has(me));
-      counter.textContent = "Đã chọn: "+sel.size+" từ"; btn.disabled = sel.size === 0; };
-    sp.addEventListener("click", tg); sp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); tg(); } });
-    spans.push({sp, isT, me}); return [t.pre, sp, t.post, " "]; }))));
-  btn.addEventListener("click", () => {
-    locked = true; btn.hidden = true; let right = 0, wrong = 0, miss = 0;
-    spans.forEach(({sp, isT, me}) => { sp.classList.remove("sel");
-      if (sel.has(me) && isT){ sp.classList.add("right"); right++; } else if (sel.has(me)){ sp.classList.add("wrong"); wrong++; } else if (isT){ sp.classList.add("miss"); miss++; } });
+  const upd = () => { counter.textContent = "Đã tìm: "+right+" / "+total+(wrong ? " · chạm nhầm: "+wrong : ""); };
+  function finish(){
+    if (locked) return; locked = true; btn.hidden = true; let miss = 0;
+    spans.forEach(o => { if (!o.hit && o.isT){ o.sp.classList.add("miss"); miss++; } });
     const r = S.results.notice || (S.results.notice = {right:0, total:0}); r.right += right; r.total += total; save();
     result.replaceChildren(h("div",{class:"score"}, mascot(wrong === 0 && miss === 0 ? "cheer" : "happy"),
-      h("div",null, "Tìm được "+right+" / "+total+" từ", h("div",{class:"small muted"}, (wrong ? wrong+" từ chọn nhầm (gạch đỏ). " : "") + (miss ? miss+" từ còn sót (viền vàng)." : "Không sót từ nào!")))),
+      h("div",null, "Tìm được "+right+" / "+total+" từ", h("div",{class:"small muted"}, (wrong ? wrong+" lần chạm nhầm. " : "") + (miss ? miss+" từ còn sót (viền vàng)." : "Không sót từ nào!")))),
       step.box ? grammarBoxFrom(step.box) : grammarBox());
-    ctx.done(); });
+    ctx.done();
+  }
+  const box = h("div",{class:"reading"}, step.text.map(p => h("p",null, tokenize(p).map(t => {
+    if (!t.word) return [t.pre + t.post, " "];
+    const isT = target.test(t.word); if (isT) total++;
+    const sp = h("span",{class:"tok",role:"button",tabindex:"0"}, t.word), o = { sp, isT, hit:false };
+    const tg = () => { if (locked || o.hit) return; o.hit = true;
+      if (isT){ sp.classList.add("right"); right++; } else { sp.classList.add("wrong"); wrong++; }
+      upd(); if (right >= total) finish(); };
+    sp.addEventListener("click", tg); sp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); tg(); } });
+    spans.push(o); return [t.pre, sp, t.post, " "]; }))));
+  upd(); btn.addEventListener("click", finish);
   return h("div",null, h("div",{class:"card"}, h("h2",null,"Tìm "+(step.find || "am, is, are")),
     h("p",{class:"muted"},"Đọc lại bài và chạm vào tất cả các từ "+(step.find || "am, is, are")+" mà bạn thấy."), box, counter, btn, result));
 }
