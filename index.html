@@ -2211,6 +2211,10 @@ function subView(set, items){
   return v;
 }
 const MANUAL = new Set(["form","fix","dictation","transform","translate","answer","multi","inline","seqlisten"]);
+/* hướng dẫn của set: bỏ nếu chỉ lặp lại tên loại bài (tránh "Chọn câu đáp lại" + "Chọn câu đáp lại phù hợp.") */
+const insWords = t => String(t || "").toLowerCase().normalize("NFC").replace(/[^\p{L}\s]/gu," ").split(/\s+/).filter(w => w && !["và","rồi","các","cho","the","a"].includes(w));
+const insDup = (ins, label) => { const L = insWords(label), I = insWords(ins); if (!L.length) return false; return L.filter(w => I.includes(w)).length / L.length >= .66 && I.length <= L.length + 3; };
+function insText(set, T){ const a = set.instruction, b = T.how; if (a && !insDup(a, T.label)) return a; if (b && !insDup(b, T.label)) return b; return ""; }
 function exerciseSet(set, onDone){
   const wrap = h("section",{class:"exset"});
   const coreN = set.type !== "cloze" && set.core && set.core > 0 && set.core < set.items.length ? set.core : set.items.length;   // đoạn cloze luôn làm trọn cả đoạn
@@ -2268,7 +2272,7 @@ function exerciseSet(set, onDone){
     });
     if (seq) built.items.forEach((it, i) => { if (i > 0 && it.el) it.el.hidden = true; });
     const T = TYPES[main.type] || { icon:"", label:"", how:"" };
-    return [h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), h("span",{class:"tins"}, set.instruction || T.how)),
+    return [h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), (() => { const ins = insText(set, T); return ins ? h("span",{class:"tins"}, ins) : null; })()),
       ...built.head, ...built.items.map(i => i.el).filter(Boolean), ...(built.foot || []), scoreBox, extraHost];
   }
   wrap.replaceChildren(...build());
