@@ -151,6 +151,11 @@ body.immersive .wrap{padding-bottom:140px}
 .gloss{min-height:56px; background:var(--p100); border:2px dashed var(--p300); border-radius:16px; padding:10px 14px; margin-bottom:14px; font-weight:700; display:flex; align-items:center; gap:10px}
 .say{border:0; background:var(--paper); border-radius:12px; width:38px; height:38px; font-size:1.1rem; border:2px solid var(--p200)}
 .plays{font-weight:800; color:var(--ink2)}
+.mplayer{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;background:var(--p50);border:2px solid var(--line)}
+.mpplay{flex:none;width:46px;height:46px;border-radius:50%;border:0;background:var(--p600);color:#fff;font-size:1.15rem;cursor:pointer;display:grid;place-items:center;padding:0}
+.mpmid{flex:1;min-width:0}.mpmid .abar{margin:0}.mpmid .small{display:block;margin-top:2px;font-size:.75rem}
+.mpspd{flex:none;border:2px solid var(--line);background:var(--paper);color:var(--ink2);font-weight:800;border-radius:999px;padding:5px 10px;cursor:pointer;font-size:.85rem}.mpspd.slow{background:var(--p200);color:var(--p700)}
+.mplayer .plays{flex:none;font-size:.85rem}
 
 /* exercises */
 .exset{margin-bottom:6px}
@@ -2407,25 +2412,27 @@ function listenStep(step, ctx){
   const info = h("div",{class:"plays"}, "Đã nghe: 0 / "+NEED+" lần");
   const kar = karaoke(step.text), prog = audioProg();
   const tBox = h("div",{class:"reading karaoke"}, kar.el);
-  const tip = h("div",{class:"taskbox"}, h("span",{class:"tbadge"},"🎧 Cách nghe"), h("span",{class:"tins"},"Bấm nghe: bài phát "+NEED+" lần liền. Vừa nghe vừa nhìn chữ sáng và đọc nhẩm theo trong đầu (hoặc nói nhỏ theo)."));
-  const finishCheck = () => { if (plays >= NEED && setsDone) ctx.done(); };
-  function run(b, label, rate, left){
-    cur = b; b.textContent = "⏹ Dừng"; kar.clear(); prog.start();
+  let rate = 1;
+  const pb = h("button",{class:"mpplay",type:"button","aria-label":"Phát"}, "▶");
+  const spd = h("button",{class:"mpspd",type:"button","aria-label":"Đổi tốc độ"}, "1×");
+  const setIdle = () => { pb.textContent = "▶"; pb.setAttribute("aria-label","Phát"); };
+  function run(left){
+    cur = pb; pb.textContent = "⏸"; pb.setAttribute("aria-label","Dừng"); kar.clear(); prog.start();
     playAudio({text:kar.plain, src:step.audioSrc, rate}, ok => {
-      if (cur !== b) return;
-      if (!ok){ cur = null; b.textContent = label; prog.reset(); kar.clear(); return; }
-      kar.done(); plays++; S.stats.plays++; save(); info.textContent = "Đã nghe: "+plays+" / "+NEED+" lần";
-      if (left > 1){ timer = setTimeout(() => { if (cur === b) run(b, label, rate, left - 1); }, 900); }
-      else { cur = null; b.textContent = label; finishCheck(); } },
+      if (cur !== pb) return;
+      if (!ok){ cur = null; setIdle(); prog.reset(); kar.clear(); return; }
+      kar.done(); plays++; S.stats.plays++; save(); info.textContent = Math.min(plays, NEED)+" / "+NEED;
+      if (left > 1){ timer = setTimeout(() => { if (cur === pb) run(left - 1); }, 900); }
+      else { cur = null; setIdle(); finishCheck(); } },
       (f, ci) => { prog.set(f); kar.set(ci); });
   }
-  const mk = (label, rate, times) => { const b = h("button",{class:"btn",type:"button"}, label);
-    b.addEventListener("click", () => {
-      if (cur === b){ clearTimeout(timer); stopAudio(); b.textContent = label; cur = null; prog.reset(); kar.clear(); return; }
-      clearTimeout(timer); stopAudio(); [b1,b2].forEach(x => x.textContent = x.dataset.l); run(b, label, rate, times); });
-    b.dataset.l = label; return b; };
-  const b1 = mk("▶ Nghe 2 lần và đọc nhẩm theo", 1, NEED), b2 = mk("🐢 Nghe chậm (1 lần)", .75, 1);
-  const lcard = h("div",{class:"card rleft"}, h("h2",null,"Nghe"), tip, h("div",{class:"row"}, b1, b2), prog.el, info, tBox);
+  const stop = () => { clearTimeout(timer); stopAudio(); cur = null; setIdle(); prog.reset(); kar.clear(); };
+  pb.addEventListener("click", () => { if (cur === pb){ stop(); return; } stop(); run(NEED); });
+  spd.addEventListener("click", () => { rate = rate === 1 ? .75 : 1; spd.textContent = rate === 1 ? "1×" : "0.75×"; spd.classList.toggle("slow", rate !== 1); if (cur === pb){ stop(); run(NEED); } });
+  info.textContent = "0 / "+NEED; info.title = "Số lần đã nghe";
+  const player = h("div",{class:"mplayer"}, pb, h("div",{class:"mpmid"}, prog.el), spd, info);
+  const lcard = h("div",{class:"card rleft"}, h("h2",null,"Nghe"), player,
+    h("p",{class:"small muted",style:"margin:6px 0 10px"},"Nghe đủ "+NEED+" lần, nhìn chữ sáng và đọc nhẩm theo."), tBox);
   const rr = h("div",{class:"rright"}), out = h("div",{class:step.sets.length ? "rsplit" : null}, lcard, rr);
   if (step.sets.length){
     let n = 0;
