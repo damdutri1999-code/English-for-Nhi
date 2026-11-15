@@ -961,7 +961,7 @@ function applyBrand(){
    TRẠNG THÁI & LƯU TRỮ (localStorage + Supabase tùy chọn)
    ===================================================================== */
 const defaultState = () => ({
-  v:2, updatedAt:0, sessions:{}, vocab:{}, mistakes:[], activeDays:[], writing:{}, results:{},
+  v:2, updatedAt:0, sessions:{}, vocab:{}, mine:{}, mistakes:[], activeDays:[], writing:{}, results:{},
   settings:{ name:"", mascot:LRN.mascot, theme:LRN.theme, startDate:null },
   teacherNote:null, feedback:{}, log:[], dayMin:{}, challenges:{},
   stats:{ plays:0, fixed:0, perfect:0, best:0 }, placement:null, lastUnlocked:[]
@@ -2335,6 +2335,123 @@ function dictGet(word){
   }).catch(() => { DICT.mem.delete(w); return null; });
   DICT.mem.set(w, p); return p;
 }
+/* =====================================================================
+   TỪ CỦA HỌC VIÊN (S.mine): sổ từ riêng, tách hẳn khỏi sổ từ của giáo án (S.vocab)
+   Tra bằng nguồn miễn phí: từ điển (IPA, đọc, định nghĩa, ví dụ), Datamuse (từ hay đi cùng), MyMemory (gợi ý nghĩa tiếng Việt)
+   ===================================================================== */
+const MY_NAME = () => LEARNERS[LRN.id].name;
+const mkey = w => String(w || "").toLowerCase().trim().replace(/[^a-z' -]/g, "").replace(/\s+/g, " ");
+const COLL_STOP = new Set("a an the of to in on at for with by from and or but if as is are was were be been am it its this that these those i you he she we they my your his her our their me him them us not no so do does did have has had will would can could may might must shall should than then there here very too also just about into over under up down out off more most much many some any all each every one two".split(" "));
+const mineSay = (w, src) => { let fell = false; playAudio({ text:w, src:src || undefined, rate:.85 }, ok => { if (!ok && src && !fell){ fell = true; playAudio({ text:w, rate:.85 }); } }); };
+const wcount = s => String(s || "").split(/\s+/).filter(Boolean).length;
+function mineCurated(key){
+  for (const n of Object.keys(WEEKS)){ const L = WEEKS[n].vocabList || []; const f = L.find(x => x && String(x.en).toLowerCase() === key); if (f) return f; }
+  return null;
+}
+async function collFetch(w){
+  const u = t => "https://api.datamuse.com/words?" + t + "=" + encodeURIComponent(w) + "&md=f&max=20";
+  const get = t => getJSON(u(t), 6000).then(r => Array.isArray(r) ? r : []).catch(() => []);
+  const [pre, post] = await Promise.all([get("rel_bgb"), get("rel_bga")]);
+  const freq = x => (x.tags || []).reduce((m, t) => /^f:/.test(t) ? Math.max(m, parseFloat(t.slice(2)) || 0) : m, 0);
+  const ok = x => /^[a-z]+$/.test(x.word) && !COLL_STOP.has(x.word) && freq(x) >= 2;
+  return pre.filter(ok).slice(0, 3).map(x => x.word + " " + w).concat(post.filter(ok).slice(0, 3).map(x => w + " " + x.word));
+}
+async function vnSuggest(w){
+  const d = await getJSON("https://api.mymemory.translated.net/get?q=" + encodeURIComponent(w) + "&langpair=" + encodeURIComponent("en|vi"), 7000);
+  if (!d || d._nf || (d.responseStatus && +d.responseStatus !== 200)) return [];
+  const out = [], add = t => { t = String(t || "").trim().toLowerCase(); if (t && t !== w && t.length < 40 && !/mymemory|[<>]|http/.test(t) && !out.includes(t)) out.push(t); };
+  add(d.responseData && d.responseData.translatedText); (d.matches || []).slice(0, 8).forEach(m => add(m.translation));
+  return out.slice(0, 4);
+}
+/* gom mọi thứ cần cho một từ; nguồn nào lỗi thì bỏ qua nguồn đó */
+async function mineLookup(key){
+  const single = !/ /.test(key);
+  const [dr, cr, vr] = await Promise.allSettled([single ? dictGet(key) : Promise.resolve(null), collFetch(key), vnSuggest(key)]);
+  const d = dr.status === "fulfilled" && dr.value && !dr.value._nf ? dr.value : null;
+  const defs = d ? d.mean.slice().sort((a, b) => a.def.length - b.def.length).slice(0, 2) : [];
+  let exs = d ? d.ex.slice() : []; const rx = vRegex(key);
+  exs = exs.filter(x => rx.test(x)).concat(exs.filter(x => !rx.test(x))).sort((a, b) => wcount(a) - wcount(b)).slice(0, 3);
+  return { ipa:d ? d.ipa : "", aud:d ? d.aud : "", pos:d && d.mean[0] ? d.mean[0].pos : "", defs, exs,
+    coll:cr.status === "fulfilled" ? cr.value : [], sug:vr.status === "fulfilled" ? vr.value : [], dictOk:!!d };
+}
+/* bổ sung phần còn thiếu (phiên âm, từ hay đi cùng, gợi ý) cho từ đã lưu */
+async function mineEnrich(key){
+  const v = (S.mine || {})[key]; if (!v) return;
+  const info = await mineLookup(key); const cur = S.mine[key]; if (!cur) return;
+  if (!cur.ipa && info.ipa) cur.ipa = info.ipa; if (!cur.aud && info.aud) cur.aud = info.aud; if (!cur.pos && info.pos) cur.pos = info.pos;
+  if (!cur.def && info.defs[0]) cur.def = info.defs[0].def; if (!(cur.coll || []).length && info.coll.length) cur.coll = info.coll;
+  if (!cur.ex && info.exs[0]) cur.ex = info.exs[0]; save();
+}
+function mineSave(key, f){
+  S.mine = S.mine || {};
+  S.mine[key] = Object.assign({ box:0, due:addDays(1), at:dkey(new Date()) }, f, { m:String(f.m || "").trim() }); save();
+}
+function mineAddEl(onSaved, prefill){
+  const wordIn = h("input",{class:"txt",type:"text",placeholder:"Gõ một từ hoặc cụm từ tiếng Anh",autocomplete:"off",autocapitalize:"none",spellcheck:"false",value:prefill || ""});
+  const goBtn = h("button",{class:"btn",type:"button"},"Tra từ"), res = h("div");
+  let info = null, key = "", chosenEx = "";
+  const note = (t, cls) => h("p",{class:"small "+(cls || "muted")}, t);
+  async function lookup(){
+    key = mkey(wordIn.value); if (!key){ res.replaceChildren(note("Hãy gõ một từ tiếng Anh nhé.")); return; }
+    if (S.vocab[key]){ res.replaceChildren(note("Từ “"+key+"” đã có trong sổ từ vựng của bài học rồi, không cần thêm.")); return; }
+    if ((S.mine || {})[key]){ res.replaceChildren(note("Từ “"+key+"” đã có trong Từ của "+MY_NAME()+" rồi.")); return; }
+    res.replaceChildren(note("Đang tra từ…")); goBtn.disabled = true;
+    try { info = await mineLookup(key); } catch(e){ info = { ipa:"", aud:"", pos:"", defs:[], exs:[], coll:[], sug:[], dictOk:false }; }
+    goBtn.disabled = false; if (!res.isConnected) return; chosenEx = ""; draw();
+  }
+  function draw(){
+    const cur = mineCurated(key);
+    const mean = h("input",{class:"txt",type:"text",placeholder:"Nghĩa tiếng Việt",autocomplete:"off",spellcheck:"false",value:cur ? cur.vi : "",onInput:() => { save1.disabled = !mean.value.trim(); }});
+    const myEx = h("input",{class:"txt",type:"text",placeholder:"Hoặc tự viết một câu ví dụ (không bắt buộc)",autocomplete:"off",autocapitalize:"none",spellcheck:"false"});
+    const save1 = h("button",{class:"btn block",type:"button",disabled:!mean.value.trim(),style:"margin-top:12px",onClick:() => {
+      const m = mean.value.trim(); if (!m){ toast("Gõ nghĩa tiếng Việt trước nhé"); return; }
+      mineSave(key, { m, ipa:info.ipa, aud:info.aud, pos:info.pos, def:info.defs[0] ? info.defs[0].def : "", coll:info.coll, ex:(myEx.value.trim() || chosenEx || ""), myEx:myEx.value.trim() });
+      toast("Đã thêm “"+key+"” vào Từ của "+MY_NAME()); onSaved && onSaved(); } }, "Lưu vào Từ của "+MY_NAME());
+    const exList = info.exs.map(x => { const b = h("button",{class:"opt",type:"button",style:"text-align:left",onClick:() => { chosenEx = chosenEx === x ? "" : x; exList.forEach(y => y.classList.toggle("sel", y.dataset.t === chosenEx)); }}, x); b.dataset.t = x; return b; });
+    res.replaceChildren(
+      h("div",{class:"row",style:"gap:8px;align-items:center;margin:8px 0"}, h("button",{class:"say",type:"button","aria-label":"Nghe",onClick:() => mineSay(key, info.aud)},"🔊"),
+        h("b",{style:"font-size:1.3rem"},key), info.ipa ? h("span",{class:"muted"},info.ipa) : null, info.pos ? h("span",{class:"pill"},info.pos) : null),
+      info.dictOk ? null : note("Chưa tra được từ điển (không có mạng hoặc từ điển chưa có từ này). Bạn vẫn có thể tự nhập nghĩa và lưu từ."),
+      cur ? note("📘 Từ này có trong giáo án: "+cur.vi) : null,
+      h("div",{style:"margin:8px 0 4px;font-weight:800"},"Nghĩa tiếng Việt (bạn tự tra rồi gõ vào)"), mean,
+      info.sug.length ? h("div",{style:"margin-top:6px"}, h("div",{class:"small muted"},"Web gợi ý (máy dịch, có thể chưa đúng, bấm để dùng):"),
+        h("div",{class:"chips"}, info.sug.map(t => h("button",{class:"pill",type:"button",onClick:() => { mean.value = t; save1.disabled = false; }}, t)))) : null,
+      info.defs.length ? h("details",{style:"margin-top:10px"}, h("summary",{class:"small muted"},"Định nghĩa tiếng Anh (có thể khó hơn trình độ của bạn)"), info.defs.map(d => h("div",{class:"small",style:"margin-top:4px"}, h("i",null,d.pos+" "), d.def))) : null,
+      info.coll.length ? h("div",{style:"margin-top:10px"}, h("div",{class:"small muted"},"Hay đi cùng nhau:"), h("div",{class:"chips"}, info.coll.map(t => h("span",{class:"pill"},t)))) : null,
+      exList.length ? h("div",{style:"margin-top:10px"}, h("div",{class:"small muted",style:"margin-bottom:4px"},"Ví dụ (chạm để chọn câu bạn muốn lưu):"), exList) : null,
+      h("div",{style:"margin-top:10px"}, myEx), save1);
+    setTimeout(() => mean.focus(), 60);
+  }
+  goBtn.addEventListener("click", lookup); wordIn.addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); lookup(); } });
+  const el = h("div",{class:"card"}, h("h3",{style:"margin-top:0"},"➕ Thêm từ mới"), h("div",{class:"row"}, wordIn, goBtn), res);
+  if (prefill) setTimeout(lookup, 50);
+  return el;
+}
+/* một dòng từ trong sổ riêng; teacher=true thì có thêm nút Thầy duyệt và sửa từ hay đi cùng */
+function mineRowEl(w, rerender, teacher){
+  const v = S.mine[w];
+  const det = h("div",{class:"small",style:"display:none;margin-top:6px"});
+  const fill = () => {
+    const mIn = h("input",{class:"txt",type:"text",value:v.m || "",placeholder:"Nghĩa tiếng Việt"});
+    const eIn = h("input",{class:"txt",type:"text",value:v.ex || "",placeholder:"Câu ví dụ",autocapitalize:"none",spellcheck:"false",style:"margin-top:6px"});
+    const cIn = teacher ? h("input",{class:"txt",type:"text",value:(v.coll || []).join(", "),placeholder:"Từ hay đi cùng, ngăn cách bằng dấu phẩy",style:"margin-top:6px"}) : null;
+    det.replaceChildren([v.pos, v.ipa].filter(Boolean).join("  ·  ") ? h("div",{class:"muted"},[v.pos, v.ipa].filter(Boolean).join("  ·  ")) : null,
+      v.def ? h("div",null, h("i",null,"EN: "), v.def) : null,
+      (v.coll || []).length && !teacher ? h("div",{class:"chips",style:"margin-top:4px"}, v.coll.map(t => h("span",{class:"pill"},t))) : null,
+      mIn, eIn, cIn,
+      h("div",{class:"row",style:"margin-top:8px"},
+        h("button",{class:"btn sm",type:"button",onClick:() => { const m = mIn.value.trim(); if (!m){ toast("Nghĩa không được để trống"); return; } v.m = m; v.ex = eIn.value.trim();
+          if (cIn) v.coll = cIn.value.split(",").map(x => x.trim()).filter(Boolean); if (teacher) v.ok = true; save(); toast("Đã lưu"); rerender(); }}, teacher ? "Lưu và duyệt" : "Lưu"),
+        (!v.ipa || !(v.coll || []).length) ? h("button",{class:"btn soft sm",type:"button",onClick:async () => { toast("Đang tra thêm…"); await mineEnrich(w); rerender(); }}, "Tra thêm") : null,
+        h("button",{class:"btn soft sm",type:"button",onClick:() => { if (confirm("Xóa từ “"+w+"” khỏi Từ của "+MY_NAME()+"?")){ delete S.mine[w]; save(); rerender(); } }}, "Xóa")));
+  };
+  const row = h("div",{class:"vrow",style:"cursor:pointer"}, h("button",{class:"say",type:"button","aria-label":"Nghe "+w,onClick:e => { e.stopPropagation(); mineSay(w, v.aud); }},"🔊"),
+    h("div",{class:"grow"}, h("b",null,w), v.ok ? h("span",{class:"pill ok",style:"margin-left:6px"},"✔ Thầy đã duyệt") : null, h("div",{class:"small muted"}, v.m || "(chưa có nghĩa)"), det),
+    h("span",{class:"boxdots",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""}))));
+  row.addEventListener("click", e => { if (e.target.closest("input,button,details")) return; if (det.style.display === "none"){ fill(); det.style.display = "block"; } else det.style.display = "none"; });
+  return row;
+}
+
 function wordCard(host, anchor, word, vi){
   host.querySelectorAll(".wcard").forEach(x => x.remove());
   const card = h("div",{class:"wcard",role:"dialog","aria-label":"Tra từ "+word});
@@ -2345,10 +2462,13 @@ function wordCard(host, anchor, word, vi){
     h("b",{class:"wword"}, word), h("span",{class:"wipa"}), close);
   const key = word.toLowerCase().replace(/[^a-z'-]/g, ""); let meaning = vi || "";
   const addBtn = h("button",{class:"btn sm wadd",type:"button"});
-  const drawAdd = () => { const has = !!S.vocab[key]; addBtn.textContent = has ? "✅ Đã có trong sổ từ vựng" : "➕ Thêm vào sổ từ vựng"; addBtn.classList.toggle("soft", has); addBtn.disabled = has; };
-  addBtn.addEventListener("click", () => { if (S.vocab[key]) return; S.vocab[key] = { m: meaning || "(từ bạn tự thêm)", box:0, due:addDays(1) }; save(); drawAdd(); toast("Đã thêm “"+word+"” vào sổ từ vựng"); });
+  const mIn = h("input",{class:"txt",type:"text",placeholder:"Nghĩa tiếng Việt (bạn tự tra)",value:vi || "",autocomplete:"off",spellcheck:"false",style:"margin:8px 0 4px"});
+  const has = () => !!S.vocab[key] || !!(S.mine && S.mine[key]);
+  const drawAdd = () => { const h0 = has(); addBtn.textContent = h0 ? "✅ Đã có trong sổ từ vựng" : "➕ Thêm vào Từ của "+MY_NAME(); addBtn.classList.toggle("soft", h0); addBtn.disabled = h0; mIn.hidden = h0; };
+  addBtn.addEventListener("click", () => { if (has()) return; const m = mIn.value.trim(); if (!m){ toast("Gõ nghĩa tiếng Việt trước nhé"); mIn.focus(); return; }
+    mineSave(key, { m, src:"read" }); mineEnrich(key); drawAdd(); toast("Đã thêm “"+word+"” vào Từ của "+MY_NAME()); });
   drawAdd();
-  card.append(head, vi ? h("div",{class:"wvi"}, "🇻🇳 ", h("b",null,vi)) : null, body, addBtn);
+  card.append(head, vi ? h("div",{class:"wvi"}, "🇻🇳 ", h("b",null,vi)) : null, body, mIn, addBtn);
   host.append(card);
   const hr = host.getBoundingClientRect(), ar = anchor.getBoundingClientRect();
   const wd = Math.min(hr.width, 360), left = Math.max(0, Math.min(ar.left - hr.left - 12, hr.width - wd));
@@ -2790,18 +2910,20 @@ function planView(){
         const d = h("details",{class:"card flat plan-w"}, head, body); if (n === cur) d.open = true; return d; }))));
 }
 const VCAP = 20;
+let vBank = null;
+const VS = () => vBank === "mine" ? (S.mine || (S.mine = {})) : S.vocab;
 let review = null, vtest = null;
-const vqueue = () => { const t = dkey(new Date()); return Object.keys(S.vocab).filter(w => S.vocab[w].due <= t).sort((a, b) => S.vocab[a].due < S.vocab[b].due ? -1 : S.vocab[a].due > S.vocab[b].due ? 1 : 0); };
+const vqueue = () => { const t = dkey(new Date()); return Object.keys(VS()).filter(w => VS()[w].due <= t && (vBank !== "mine" || VS()[w].m)).sort((a, b) => VS()[a].due < VS()[b].due ? -1 : VS()[a].due > VS()[b].due ? 1 : 0); };
 const VTYPE = { flip:"Nhìn từ, nhớ nghĩa", typevi:"Nhìn nghĩa, gõ từ", listen:"Nghe, gõ từ", blank:"Điền từ vào câu" };
 function vPickType(w){
-  const v = S.vocab[w], opts = v.box <= 1 ? ["flip","blank","listen"] : v.box === 2 ? ["blank","typevi","listen"] : ["typevi","listen","blank"];
+  const v = VS()[w], opts = v.box <= 1 ? ["flip","blank","listen"] : v.box === 2 ? ["blank","typevi","listen"] : ["typevi","listen","blank"];
   const ok = opts.filter(t => t !== "blank" || (v.ex && vRegex(w).test(v.ex)));
   const nl = ok.filter(t => t !== v.lt), pool = nl.length ? nl : ok;
   return pool[Math.floor(Math.random() * pool.length)];
 }
 /* một thẻ ôn: cb("ok" | "late" | "fail") khi học viên bấm Tiếp */
 function vCard(w, type, cb){
-  const v = S.vocab[w], card = h("div",{class:"card tint vq"});
+  const v = VS()[w], card = h("div",{class:"card tint vq"});
   const say = () => playAudio({text:w, rate:.8});
   const speak = h("button",{class:"say",type:"button","aria-label":"Nghe",onClick:say},"🔊");
   const meta = h("div",{class:"small muted"}, [v.pos, v.ipa].filter(Boolean).join("  ·  "));
@@ -2839,7 +2961,7 @@ function vCard(w, type, cb){
   return card;
 }
 function vApply(w, res, type){
-  const v = S.vocab[w]; if (!v) return;
+  const v = VS()[w]; if (!v) return;
   if (res === "ok"){ v.box = Math.min(v.box + 1, 4); v.due = addDays(INTERVALS[v.box]); }
   else if (res === "late"){ v.due = addDays(INTERVALS[v.box] || 1); }
   else { v.box = 0; v.due = addDays(1); }
@@ -2882,9 +3004,9 @@ function vTestCard(root, again){
   return card;
 }
 function vocabView(sub, arg){
-  const root = h("div");
+  const root = h("div"); vBank = sub === "mine" ? "mine" : null;
   const back = () => { review = null; vtest = null; location.hash = "#/vocab"; route(); };
-  function render(){ root.replaceChildren(...(vtest ? testEls() : review ? reviewEls() : listEls())); }
+  function render(){ root.replaceChildren(...(vtest ? testEls() : review ? reviewEls() : vBank === "mine" ? mineEls() : listEls())); }
   function reviewEls(){
     const r = review;
     if (r.i >= r.q.length){
@@ -2924,6 +3046,16 @@ function vocabView(sub, arg){
         if (v.ex || v.ipa){ row.style.cursor = "pointer"; row.addEventListener("click", () => { det.style.display = det.style.display === "none" ? "block" : "none"; }); }
         return row; })); });
   }
+  let adding = !!arg;
+  function mineEls(){
+    const M = S.mine || (S.mine = {}), words = Object.keys(M).sort(), due = vqueue();
+    return [h("a",{class:"btn soft",href:"#/vocab"},"← Sổ từ vựng"), h("h1",{style:"margin-top:16px"},"📒 Từ của "+MY_NAME()),
+      h("p",{class:"muted"},"Từ bạn tự thêm, riêng với từ của bài học. Từ được ôn lại sau 1, 3, 7, 14, 30 ngày nếu bạn nhớ."),
+      h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"}, due.length ? due.length+" từ cần ôn hôm nay" : "Hôm nay không có từ nào cần ôn"), h("div",{class:"small muted"}, words.length+" từ")),
+        h("button",{class:"btn",type:"button",disabled:!due.length,onClick:() => { startReview(); render(); }},"Ôn ngay"))),
+      adding ? mineAddEl(() => { adding = false; render(); }, arg) : h("button",{class:"btn block",type:"button",style:"margin-bottom:12px",onClick:() => { adding = true; arg = ""; render(); }},"➕ Thêm từ mới"),
+      words.length ? h("div",{class:"card"}, words.map(w => mineRowEl(w, render, false))) : h("div",{class:"card celebrate",style:"text-align:center"}, mascot("happy"), h("p",{class:"muted"},"Chưa có từ nào. Bấm “Thêm từ mới”, hoặc chạm vào một từ trong bài đọc rồi thêm vào đây."))];
+  }
   function listEls(){
     const words = Object.keys(S.vocab), due = vqueue(), cw = weekNo(), W = WEEKS[cw];
     const intro = W && W.vocabList ? W.vocabList.filter(x => S.vocab[x.en.toLowerCase()]).length : 0, tests = S.vtests || {};
@@ -2931,6 +3063,8 @@ function vocabView(sub, arg){
       h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"}, due.length ? due.length+" từ cần ôn hôm nay" : "Hôm nay không có từ nào cần ôn"),
         h("div",{class:"small muted"}, words.length+" từ trong sổ"+(due.length > VCAP ? ". Mỗi lần ôn "+VCAP+" từ, từ quá hạn lâu nhất ôn trước." : "")), due.length ? h("div",{class:"small muted"},"Có 4 kiểu thẻ: nhìn từ, nhìn nghĩa, nghe, điền câu.") : null),
         h("button",{class:"btn",type:"button",disabled:!due.length,onClick:() => { startReview(); render(); }},"Ôn ngay"))),
+      (() => { const M = S.mine || {}, mw = Object.keys(M), md = mw.filter(w => M[w].m && M[w].due <= dkey(new Date())).length;
+        return h("a",{class:"card day",href:"#/vocab/mine",style:"text-decoration:none"}, h("div",{class:"when",style:"font-size:1.7rem"},"📒"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Từ của "+MY_NAME()), h("div",{class:"small muted"}, mw.length ? mw.length+" từ"+(md ? ", "+md+" từ cần ôn" : "")+". Thêm và ôn từ bạn tự chọn." : "Tự thêm từ bạn gặp ở bài đọc hoặc ngoài đời, có phiên âm, ví dụ và cách đọc."))); })(),
       W && intro >= 6 ? h("div",{class:"card"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},"Kiểm tra nhanh tuần "+cw), h("div",{class:"small muted"},"10 từ ngẫu nhiên trong "+intro+" từ đã học"+(tests[cw] ? ". Lần gần nhất: "+tests[cw].score+" / "+tests[cw].total : ""))),
         h("button",{class:"btn soft",type:"button",onClick:() => { vTestStart(cw); render(); }},"Làm bài"))) : null,
       words.length ? weekRows() : h("div",{class:"card celebrate",style:"text-align:center"}, mascot("happy"), h("p",{class:"muted"},"Sổ còn trống. Học xong một buổi, các từ của buổi đó sẽ vào sổ."))];
@@ -3243,11 +3377,13 @@ function gvView(){
   return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"),
     h("h1",{style:"margin-top:16px"},"GV soạn bài · "+learnerName()),
     h("div",{class:"row",style:"margin-bottom:12px"}, h("a",{class:"btn",href:"#/content"},"📚 Tải bài học lên"), h("a",{class:"btn soft",href:"#/teacher"},"Nhận xét và lời nhắn"), h("button",{class:"btn soft",type:"button",onClick:switchLearner},"Đổi học viên")),
+    (() => { const M = S.mine || {}, mw = Object.keys(M).sort(); if (!mw.length) return null;
+      const d = h("details",{class:"card"}, h("summary",{style:"cursor:pointer;font-weight:800"},"📒 Từ "+MY_NAME()+" tự thêm ("+mw.length+")"), h("p",{class:"small muted"},"Bấm vào từ để sửa nghĩa, ví dụ, từ hay đi cùng, rồi bấm “Lưu và duyệt”."), mw.map(w => mineRowEl(w, () => { route(); }, true))); return d; })(),
     h("p",{class:"muted small"},"Có "+have.length+"/"+ROADMAP.length+" tuần đã có bài. Bấm vào một tuần để xem bài theo buổi và chỉnh lịch học."),
     rows.concat(extra).map(weekRow));
 }
 function route(){
-  stopAudio(); activeLesson = null; review = null; pgReset();
+  vBank = null; stopAudio(); activeLesson = null; review = null; pgReset();
   const parts = location.hash.replace(/^#\/?/,"").split("/"), page = parts[0] || "home";
   document.body.classList.toggle("immersive", page === "lesson");
   let view;
