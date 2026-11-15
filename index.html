@@ -3083,7 +3083,7 @@ function weekView(){
 function planView(){
   const cur = weekNo(), RMW = RM(), totalS = RMW.length * 6;
   let doneS = 0, haveW = 0;
-  RMW.forEach(([n]) => { const W = WEEKS[n] && !WEEKS[n].stub ? WEEKS[n] : null; if (W){ haveW++; doneS += W.sessions.filter(s => isDone(s.id)).length; } });
+  RMW.forEach(([n]) => { const W = WEEKS[n] && !WEEKS[n].stub && WEEKS[n].json ? WEEKS[n] : null; if (W){ haveW++; doneS += W.sessions.filter(s => isDone(s.id)).length; } });
   const phases = []; for (let i = 0; i < RMW.length; i += 3) phases.push(RMW.slice(i, i + 3));
   return h("div",null, h("a",{class:"btn soft",href:"#/week"},"← Tuần học"), h("h1",{style:"margin-top:16px"},"📚 Giáo án tổng"),
     h("div",{class:"card tint"}, h("div",{style:"font-weight:800"}, "Đã học "+doneS+" / "+totalS+" buổi"),
@@ -3092,7 +3092,7 @@ function planView(){
     phases.map((ph, pi) => h("div",{class:"plan-phase"},
       h("h3",{style:"margin:18px 0 8px"}, (IS_BW ? "Sách: "+((bookInfo(curBook()) || {}).title || "")+" · Tuần 1 đến 3" : "Chủ đề "+(pi+1)+": "+(TOPIC_NAMES[pi] || "")+" · Tuần "+ph[0][0]+" đến "+ph[ph.length-1][0])),
       ph.map(([n,t,g,lv,fc]) => {
-        const W = WEEKS[n] && !WEEKS[n].stub ? WEEKS[n] : null, isRev = t === "Ôn" || /^Ôn/.test(t), done = W ? W.sessions.filter(s => isDone(s.id)).length : 0;
+        const W = WEEKS[n] && !WEEKS[n].stub && WEEKS[n].json ? WEEKS[n] : null, isRev = t === "Ôn" || /^Ôn/.test(t), done = W ? W.sessions.filter(s => isDone(s.id)).length : 0;
         const status = !W ? h("span",{class:"pill lock"},"Chưa có bài") : done === W.sessions.length ? h("span",{class:"pill ok"},"✅ Xong") : done || n === cur ? h("span",{class:"pill"}, done+" / "+W.sessions.length+" buổi") : h("span",{class:"pill"},"Chưa học");
         const head = h("summary",{class:"plan-sum"}, h("span",{class:"pill"+(n === cur ? "" : " lock")},"Tuần "+wLbl(n)),
           h("div",{class:"grow"}, h("b",null, W ? W.title : t), h("div",{class:"small muted"}, (lv ? "Mức "+lv+" · " : "")+(isRev ? "Tuần ôn tổng, không dạy ngữ pháp mới. " : "")+"Ngữ pháp: "+(W ? W.grammar : g)), fc ? h("div",{class:"small muted"},"Viết và nói: "+fc) : null), status);
@@ -3599,7 +3599,7 @@ function studioCard(){
   draw(); return box;
 }
 function gvView(){
-  const rows = ROADMAP.map(r => r[0]), have = Object.keys(WEEKS).map(Number);
+  const rows = ROADMAP.map(r => r[0]), have = Object.keys(WEEKS).map(Number).filter(n => WEEKS[n] && WEEKS[n].json);
   const fmtD = k => { const d = parseKey(k); return d.getDate() + "/" + (d.getMonth()+1); };
   const setSched = (w, fn) => { S.settings.sched = S.settings.sched || {}; S.settings.sched[w] = S.settings.sched[w] || {}; fn(S.settings.sched[w]); const c = S.settings.sched[w]; if (!c.start && !(c.d && c.d.some(Boolean))) delete S.settings.sched[w]; save(); };
   const ti = todayInfo();
@@ -3613,9 +3613,9 @@ function gvView(){
     const stIn = h("input",{class:"txt",type:"date",value:schedStart(w),onChange:e => { if (e.target.value){ setSched(w, c2 => { c2.start = e.target.value; c2.d = null; }); route(); } }});
     const det = h("details",{class:"card gvw"}, h("summary",null, h("div",{class:"when",style:"min-width:44px"},"T"+w),
         h("div",{class:"grow"}, h("div",{style:"font-weight:800"},rm[1] ? rm[1] : wFull(w)), h("div",{class:"small muted"},(W ? wFull(w)+": "+W.title+" · " : wFull(w)+" · ")+fmtD(ds[0])+" – "+fmtD(ds[5]))),
-        h("span",{class:"pill"+(W ? " ok" : " lock")}, W ? "✅ Có bài" : "Chưa có"), schedCustom(w) ? h("span",{class:"pill"},"🗓 Tùy chỉnh") : null),
+        h("span",{class:"pill"+(W && W.json ? " ok" : " lock")}, W && W.json ? "✅ Có bài" : W ? "Chỉ có bản demo" : "Chưa có"), schedCustom(w) ? h("span",{class:"pill"},"🗓 Tùy chỉnh") : null),
       h("div",{class:"gvb"},
-        W ? h("p",{class:"small muted"},"Ngữ pháp: "+W.grammar+(src ? " · "+src : "")) : h("p",{class:"small muted"},(rm[2] ? "Dự kiến: "+rm[2]+". " : "")+"Chưa tải bài lên cho tuần này."),
+        W && !W.json ? h("p",{class:"small muted"},"Tuần này chưa có bài thật. Web đang hiện bản demo để màn hình học không bị trống; thả file bài lên là bản demo tự mất.") : W ? h("p",{class:"small muted"},"Ngữ pháp: "+W.grammar+(src ? " · "+src : "")) : h("p",{class:"small muted"},(rm[2] ? "Dự kiến: "+rm[2]+". " : "")+"Chưa tải bài lên cho tuần này."),
         sess,
         h("h4",{style:"margin:12px 0 4px"},"🗓 Lịch học tuần này"),
         h("div",{class:"gvsch"}, h("span",{class:"small"},"Bắt đầu từ"), stIn),
