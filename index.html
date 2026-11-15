@@ -3297,6 +3297,8 @@ function switchLearner(){
   try { sessionStorage.removeItem("a1-learner"); localStorage.removeItem("a1-learner-keep"); } catch(e){}
   location.href = location.pathname; location.reload();
 }
+(() => { const b = document.querySelector(".brand"); if (!b) return; b.style.cursor = "pointer"; b.setAttribute("role","button"); b.tabIndex = 0; b.setAttribute("aria-label","Về trang chọn học viên");
+  const go = () => switchLearner(); b.addEventListener("click", go); b.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); go(); } }); })();
 function coverView(){
   const keep = h("input",{type:"checkbox",id:"keepL"});
   const card = (id, kind, tag, desc) => h("button",{class:"cvc "+id,type:"button",onClick:() => chooseLearner(id, keep.checked)},
