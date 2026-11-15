@@ -1357,12 +1357,12 @@ if (LRN.id === "tri" || LRN.id === "bw"){   // Trí và chế độ Bookworms kh
 }
 const STEP_DEF = { sets:{icon:"✏️",title:"Luyện tập"}, read:{icon:"📖",title:"Đọc"}, listen:{icon:"🎧",title:"Nghe"},
   notice:{icon:"🔍",title:"Tìm ngữ pháp"}, output:{icon:"🌷",title:"Tự viết"}, report:{icon:"📊",title:"Báo cáo tuần"}, bookread:{icon:"📚",title:"Đọc sách"} };
-const EST_SEC = { mcq:25, truefalse:15, oddone:20, match:12, listenpick:30, dictation:60, dialogue:30, gap:25, form:30, cloze:30, reorder:40, fix:45, transform:60, translate:70, answer:70, shadow:40, tap:25, multi:35, inline:35, seqlisten:70 };
+const EST_SEC = { mcq:25, transmc:30, truefalse:15, oddone:20, match:12, listenpick:30, dictation:60, dialogue:30, gap:25, form:30, cloze:30, reorder:40, fix:45, transform:60, translate:70, answer:70, shadow:40, tap:25, multi:35, inline:35, seqlisten:70 };
 // WEEKS ở trên; số tuần -> {id,title,grammar,subs,sessions}
 const CH = {};         // id buổi -> challenge
 let CONTENT = {};      // số tuần -> {json, at, src}
 const CKEY = LRN.ckey;
-const MCQLIKE = ["mcq","oddone","listenpick","dialogue"];
+const MCQLIKE = ["mcq","oddone","listenpick","dialogue","transmc"];
 
 const tapTokens = t => String(t).trim().split(/\s+/);
 const tapCore = w => String(w).replace(/^[^\p{L}\p{N}']+|[^\p{L}\p{N}']+$/gu, "").toLowerCase();
@@ -1383,7 +1383,7 @@ function prepSet(raw, key, ctx){
   const set = Object.assign({}, raw); set.key = key;
   set.items = (raw.items || []).map((it, i) => Object.assign(prepItem(raw.type, it), { _ref:key + "#" + i }));
   if (ctx) set.ctx = true;
-  const techName = /^(mcq|multiple choice|truefalse|true false|true or false|oddone|odd one|odd one out|match|matching|listenpick|listen pick|dictation|dialogue|dialog|gap|gap fill|form|word form|cloze|reorder|fix|transform|translate|answer|shadow|shadowing|tap|multi|inline|seqlisten)$/i;
+  const techName = /^(mcq|transmc|multiple choice|truefalse|true false|true or false|oddone|odd one|odd one out|match|matching|listenpick|listen pick|dictation|dialogue|dialog|gap|gap fill|form|word form|cloze|reorder|fix|transform|translate|answer|shadow|shadowing|tap|multi|inline|seqlisten)$/i;
   if (!set.title || techName.test(String(set.title).trim())) set.title = TYPES[set.type].label;
   const genericIns = /^(hoàn thành( từng)? câu|làm( từng)? câu|làm bài|trả lời( các)? câu hỏi|chọn từ phù hợp để hoàn thành đoạn văn)\.?$/i;
   if (!set.instruction || genericIns.test(String(set.instruction).trim())) set.instruction = TYPES[set.type].how;
@@ -1451,7 +1451,7 @@ function validateItem(type, it, w, E, W){
       if (new Set(it.options.map(o => String(o).trim().toLowerCase())).size !== it.options.length) W.push(w + ": options bị trùng nhau (" + it.options.join(" / ") + "), web tự bỏ lựa chọn trùng");
       if (type === "oddone") need(it.options.length === 4, "oddone nên có đúng 4 lựa chọn");
     }
-    if (type === "mcq") need(isStr(it.q), "thiếu q");
+    if (type === "mcq" || type === "transmc") need(isStr(it.q), "thiếu q (câu cần dịch)");
     if (type === "listenpick") need(isStr(it.say), "thiếu say (câu sẽ được đọc)");
     if (type === "dialogue") need(Array.isArray(it.lines) && it.lines.length >= 1 && it.lines.every(isStr), "thiếu lines (mảng các lượt thoại)");
   } else if (type === "truefalse"){ need(isStr(it.q), "thiếu q"); need(typeof it.answer === "boolean", "answer phải là true hoặc false (không có dấu nháy)");
@@ -1936,6 +1936,7 @@ function karaoke(paras){
 const TYPES = {
   mcq:{label:"Chọn đáp án", icon:"☑️", desc:"Chọn một đáp án đúng", how:"Chọn một đáp án đúng cho mỗi câu."},
   truefalse:{label:"Đúng hay Sai", icon:"✔️", desc:"Đọc câu rồi chọn Đúng hoặc Sai", how:"Đọc từng câu rồi chọn Đúng hoặc Sai."},
+  transmc:{label:"Dịch: chọn đáp án", icon:"🌏", desc:"Chọn bản dịch đúng", how:"Chọn bản dịch đúng cho mỗi câu."},
   oddone:{label:"Tìm từ khác loại", icon:"🧐", desc:"Tìm từ không cùng nhóm", how:"Chọn từ không cùng nhóm với các từ còn lại."},
   match:{label:"Nối cặp", icon:"🔗", desc:"Nối từ với nghĩa", how:"Nối mỗi từ bên trái với nghĩa đúng bên phải."},
   listenpick:{label:"Nghe và chọn", icon:"🎧", desc:"Nghe rồi chọn đáp án", how:"Mỗi câu có 3 bước: nghe và chọn đáp án, nghe dò theo chữ 2 lần, rồi chép lại câu (chữ sẽ ẩn). Đúng mới sang câu sau."},
@@ -2308,7 +2309,7 @@ function seqlistenItem(it, onChange){
 }
 const mapItems = (fn, pre) => (set, ch) => ({ head:[], items:set.items.map(it => fn(it, ch, pre ? pre(it) : null)) });
 const BUILD = {
-  mcq:mapItems(mcqItem), truefalse:mapItems(mcqItem), oddone:mapItems(mcqItem),
+  mcq:mapItems(mcqItem), transmc:mapItems(mcqItem), truefalse:mapItems(mcqItem), oddone:mapItems(mcqItem),
   listenpick:mapItems(listenpickItem), dialogue:mapItems(mcqItem, it => it.scene ? h("div",null, h("p",{class:"scene"}, "📍 ", it.scene), chatEl(it.lines)) : chatEl(it.lines)),
   tap:mapItems(tapItem), multi:mapItems(multiItem), inline:mapItems(inlineItem), seqlisten:mapItems(seqlistenItem),
   gap:buildGap, cloze:buildCloze, match:buildMatch,
@@ -3247,7 +3248,7 @@ function practiceView(type){
   const p = type && TYPES[type] ? practiceSetFor(type) : null;
   if (!p){
     const tile = (href, icon, title, sub, cls) => h("a",{class:"ptile"+(cls ? " "+cls : ""),href}, h("span",{class:"pic"}, icon), h("b",null,title), h("span",{class:"small muted"}, sub));
-    const groups = [["🎯 Chọn đáp án",["mcq","multi","truefalse","oddone","match","dialogue"]],["🎧 Nghe",["listenpick","seqlisten","dictation","shadow"]],
+    const groups = [["🎯 Chọn đáp án",["mcq","transmc","multi","truefalse","oddone","match","dialogue"]],["🎧 Nghe",["listenpick","seqlisten","dictation","shadow"]],
       ["🧩 Điền và xếp câu",["gap","form","inline","cloze","reorder"]],["✍️ Viết và sửa lỗi",["tap","fix","transform","translate","answer"]]];
     return h("div",null, h("h1",null,"Bài tập"), h("p",{class:"muted"},"Làm lại từng dạng bài bất cứ lúc nào, câu được lấy từ các bài đã học."),
       h("div",{class:"pgrid"},
@@ -3366,7 +3367,7 @@ function progressView(){
 /* =====================================================================
    BÀI TẬP LẺ (lấy từ kho câu của mọi tuần), CHALLENGE, TRANG NỘI DUNG CHO GV
    ===================================================================== */
-const PRACTICE_TYPES = ["mcq","truefalse","oddone","match","listenpick","dictation","dialogue","gap","form","cloze","reorder","fix","transform","translate","answer","shadow","tap","multi","inline","seqlisten"];
+const PRACTICE_TYPES = ["mcq","transmc","truefalse","oddone","match","listenpick","dictation","dialogue","gap","form","cloze","reorder","fix","transform","translate","answer","shadow","tap","multi","inline","seqlisten"];
 const poolSets = type => Object.values(SET).filter(s => s.type === type && !s.ungraded && !s.ctx && s.items && s.items.length);
 function poolItems(type){
   const all = []; poolSets(type).forEach(s => s.items.forEach((it, i) => all.push(Object.assign({}, it, { _ref:it._ref || s.key + "#" + i }))));
@@ -3741,7 +3742,7 @@ if (SCH){
   if (document.body) start(); else document.addEventListener("DOMContentLoaded", start);
 }
 if (SCH){
-  const TI = {mcq:"checksq",truefalse:"tf",oddone:"odd",match:"link",listenpick:"headphones",dictation:"wave",dialogue:"chat",gap:"brackets",form:"refresh",cloze:"lines",reorder:"sort",fix:"wrench",tap:"wrench",multi:"checksq",inline:"brackets",seqlisten:"sort",transform:"refresh",translate:"globe",answer:"chat",shadow:"mic"};
+  const TI = {mcq:"checksq",transmc:"globe",truefalse:"tf",oddone:"odd",match:"link",listenpick:"headphones",dictation:"wave",dialogue:"chat",gap:"brackets",form:"refresh",cloze:"lines",reorder:"sort",fix:"wrench",tap:"wrench",multi:"checksq",inline:"brackets",seqlisten:"sort",transform:"refresh",translate:"globe",answer:"chat",shadow:"mic"};
   const SI = {first:"spark",week1:"layers",challenger:"award",streak3:"chart",perfect:"check",listener:"headphones",words:"book",fixer:"wrench",writer:"pencil"};
   const SN = {words:"Vốn từ",fixer:"Chính xác",writer:"Người viết",first:"Khởi đầu",week1:"Trọn tuần",streak3:"Đều đặn 3 ngày",perfect:"Đúng hết",listener:"Nghe chủ động",challenger:"Thử thách"};
   Object.values(STEP_DEF).forEach(d => d.icon = "#i:pencil"); Object.entries(TYPES).forEach(([k,d]) => { d.icon = "#i:" + (TI[k] || "dot"); });
