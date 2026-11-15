@@ -1826,6 +1826,28 @@ function todayInfo(){
    ===================================================================== */
 let voices = [], audioToken = 0, audioEl = null;
 if ("speechSynthesis" in window){ const lv = () => { voices = speechSynthesis.getVoices(); }; lv(); speechSynthesis.onvoiceschanged = lv; }
+/* Giọng đọc: lưu riêng trên từng thiết bị (mỗi máy có bộ giọng khác nhau) */
+const VKEY = "a1-voice", VSPD = "a1-voice-speed";
+const lsGet = k => { try { return localStorage.getItem(k); } catch(e){ return null; } };
+const lsSet = (k, v) => { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch(e){} };
+const voiceSpeed = () => { const x = parseFloat(lsGet(VSPD)); return x > 0.5 && x < 1.6 ? x : 1; };
+const enVoices = () => voices.filter(v => /^en/i.test(v.lang));
+function voiceScore(v){
+  const n = (v.name || "").toLowerCase(); let sc = 0;
+  if (/premium|enhanced|neural|natural/.test(n)) sc += 50;
+  if (v.localService) sc += 20;
+  if (/\b(ava|samantha|allison|susan|zoe|evan|nathan|serena|daniel|karen|moira|tessa|alex)\b/.test(n)) sc += 15;
+  if (/en[-_]US/i.test(v.lang)) sc += 10; else if (/en[-_]GB/i.test(v.lang)) sc += 6;
+  if (/google/.test(n)) sc -= 15;               /* giọng Google cần mạng và hay tự ngắt khi đọc lâu */
+  if (/novelty|bad news|bahh|bells|boing|bubbles|cellos|deranged|good news|hysterical|pipe organ|trinoids|whisper|zarvox|albert|fred|junior|kathy|ralph/.test(n)) sc -= 100;
+  return sc;
+}
+function pickVoice(){
+  const all = enVoices(); if (!all.length) return null;
+  const saved = (lsGet(VKEY) || "").toLowerCase(), want = (CONFIG.voiceName || "").toLowerCase();
+  return (saved && all.find(v => v.name.toLowerCase() === saved)) || (want && all.find(v => v.name.toLowerCase().includes(want)))
+    || all.slice().sort((a, b) => voiceScore(b) - voiceScore(a))[0];
+}
 function stopAudio(){
   audioToken++;
   if ("speechSynthesis" in window) speechSynthesis.cancel();
@@ -1890,10 +1912,11 @@ function playAudio({text, src, rate}, onend, onprog){
     audioEl.ontimeupdate = () => { if (my === audioToken && onprog && audioEl && audioEl.duration > 0 && isFinite(audioEl.duration)){ const f = audioEl.currentTime / audioEl.duration; onprog(f, Math.floor(f * L)); } };
     audioEl.play().catch(() => end(false)); return true; }
   if (!("speechSynthesis" in window)){ toast("Trình duyệt này chưa đọc được tiếng Anh"); return false; }
-  const want = (CONFIG.voiceName || "").toLowerCase();
-  const enV = (want && voices.find(x => (x.name || "").toLowerCase().includes(want)))   // giọng ưu tiên, ví dụ Sonia
-    || voices.find(x => /en[-_]US/i.test(x.lang)) || voices.find(x => /^en/i.test(x.lang));
-  const segs = [{ t:text || "", s:0 }];   // tên người Việt đọc theo giọng tiếng Anh, như người nước ngoài đọc
+  const enV = pickVoice();
+  /* đọc từng câu một: tránh lỗi Chrome tự dừng khi đọc cả đoạn dài; vẫn đọc tên người Việt theo giọng tiếng Anh */
+  const tx = text || "", segs = [];
+  if (tx.length > 90){ const re = /[^.!?…]+[.!?…]+["')\]]*\s*|[^.!?…]+$/g; let m; while ((m = re.exec(tx))){ if (m[0].trim()) segs.push({ t:m[0], s:m.index }); } }
+  if (!segs.length) segs.push({ t:tx, s:0 });
   let bChar = -1, t0 = performance.now(), failed = false;
   if (onprog && L) timer = setInterval(() => {
     if (my !== audioToken){ stopT(); return; }
@@ -1902,7 +1925,7 @@ function playAudio({text, src, rate}, onend, onprog){
   const speakSeg = k => {
     if (my !== audioToken) return;
     if (k >= segs.length){ end(true); return; }
-    const sg = segs[k], u = new SpeechSynthesisUtterance(sg.t); u.rate = rate || 1;
+    const sg = segs[k], u = new SpeechSynthesisUtterance(sg.t); u.rate = (rate || 1) * voiceSpeed();
     const v = enV; u.lang = v ? v.lang : "en-US"; if (v) u.voice = v;
     if (k === 0) u.onstart = () => { t0 = performance.now(); };
     u.onboundary = e => { if (typeof e.charIndex === "number") bChar = sg.s + e.charIndex; };
@@ -3286,6 +3309,24 @@ function placementView(){
     h("p",{class:"muted"},"Giúp quyết định nên bắt đầu từ tuần nào, nhất là với người đang ôn lại kiến thức cũ."),
     h("div",{class:"card"}, es), res);
 }
+function voiceCard(){
+  const box = h("div",{class:"card"});
+  const draw = () => {
+    const all = enVoices(), cur = pickVoice(), saved = lsGet(VKEY);
+    const sel = h("select",{class:"txt","aria-label":"Chọn giọng đọc"}, h("option",{value:""},"Tự chọn giọng tốt nhất của máy" + (cur && !saved ? " (đang dùng: " + cur.name + ")" : "")),
+      all.slice().sort((a, b) => voiceScore(b) - voiceScore(a)).map(v => h("option",{value:v.name,selected:saved === v.name}, v.name + " · " + v.lang + (v.localService ? "" : " · cần mạng"))));
+    sel.addEventListener("change", () => { lsSet(VKEY, sel.value || null); toast(sel.value ? "Đã chọn giọng " + sel.value : "Dùng giọng tự chọn"); draw(); });
+    const spd = h("select",{class:"txt","aria-label":"Tốc độ đọc"}, [["0.8","Chậm"],["0.9","Hơi chậm"],["1","Vừa (mặc định)"],["1.15","Nhanh"]].map(([v, t]) => h("option",{value:v,selected:String(voiceSpeed()) === v}, t)));
+    spd.addEventListener("change", () => { lsSet(VSPD, spd.value === "1" ? null : spd.value); });
+    const test = h("button",{class:"btn soft",type:"button",onClick:() => playAudio({ text:"Hello! My name is Anna. I live in a small apartment near the park. Do you like coffee?", rate:.9 })}, "🔊 Nghe thử");
+    box.replaceChildren(h("h3",null,"Giọng đọc tiếng Anh"),
+      h("p",{class:"muted small"}, "Lưu riêng trên thiết bị này. Mỗi máy có bộ giọng khác nhau." + (all.length ? "" : " Máy này chưa báo giọng tiếng Anh nào, hãy thử tải lại trang.")),
+      all.length ? sel : null, h("label",{class:"small muted",style:"display:block;margin-top:10px"},"Tốc độ"), spd, h("div",{style:"margin-top:10px"}, test),
+      h("p",{class:"muted small",style:"margin-top:10px"},"Trên Mac muốn giọng tự nhiên hơn: Cài đặt hệ thống, Trợ năng, Nội dung được đọc, Giọng hệ thống, rồi tải giọng tiếng Anh loại Enhanced hoặc Premium (ví dụ Ava, Samantha). Sau đó mở lại trang này và chọn."));
+  };
+  draw(); if ("speechSynthesis" in window) { const prev = speechSynthesis.onvoiceschanged; speechSynthesis.onvoiceschanged = () => { try { prev && prev(); } catch(e){} if (box.isConnected) draw(); }; }
+  return box;
+}
 function settingsView(){
   const nameIn = h("input",{class:"txt",type:"text",value:S.settings.name || "",placeholder:"Tên học viên",maxlength:"30",onInput:e => { S.settings.name = e.target.value; save(); }});
   const mk = k => h("button",{class:"mchoice"+(mascotKind()===k?" on":""),type:"button",onClick:() => { S.settings.mascot = k; save(); applyBrand(); route(); }}, h("span",{html:mascotSVG("happy",k)}), MASCOTS[k].name);
@@ -3297,6 +3338,7 @@ function settingsView(){
   return h("div",null, h("h1",null,"Cài đặt"),
     IS_BW ? h("div",{class:"card"}, h("h3",null,"📖 Sách đang học"), h("p",{class:"muted small"}, bwOn ? ((bookInfo(curBook()) || {}).title || "")+" · "+((bookInfo(curBook()) || {}).series || "") : "Chưa chọn sách."), h("a",{class:"btn soft",href:"#/books"},"📚 Chọn sách khác")) : null,
     h("div",{class:"card tint"}, h("h3",null,"📚 Tải bài học lên"), h("p",{class:"muted small"},"Dán JSON do GPT soạn, kiểm tra rồi dùng ngay."), h("a",{class:"btn",href:"#/content"},"Mở trang tải bài")),
+    voiceCard(),
     h("div",{class:"card"}, h("h3",null,"Toàn màn hình"), h("p",{class:"muted small"}, FS.app() ? "Bạn đang mở app ở chế độ toàn màn hình." : FS.can() ? "Ẩn thanh địa chỉ của trình duyệt để học cho tập trung." : "Trên iPhone: bấm nút Chia sẻ, chọn “Thêm vào MH chính”, rồi mở app từ biểu tượng trên màn hình, app sẽ chạy toàn màn hình."),
       FS.app() ? null : h("button",{class:"btn fsbtn",type:"button",onClick:FS.toggle,html:FS_TXT(FS.on())})),
     h("div",{class:"card"}, h("h3",null,"Học viên: "+LRN.name+" ("+LRN.level+")"), h("p",{class:"muted small"},"Tên hiện trong lời chào ở trang chủ."), nameIn,
