@@ -1843,6 +1843,24 @@ function audTake(files){ let n = 0; [...files].filter(audIsFile).forEach(f => { 
 /* ---- Văn bản sách do Thầy tự kéo thả (.txt): chỉ giữ trong phiên, không lưu, không đồng bộ, không nằm trong bài ---- */
 const TXT = { local:new Map() };
 async function txtTake(files, asKey){ let n = 0; for (const f of [...files]){ if (!/\.(txt|md)$/i.test(f.name) && !/^text\//.test(f.type)) continue; try { TXT.local.set(asKey || audName(f.name).toLowerCase(), await f.text()); n++; if (asKey) break; } catch(e){} } return n; }
+/* Cắt chữ của cả chương (file ten-sach-chN.txt) thành đoạn đọc của một bước: theo dòng đánh số trang nếu có (ví dụ [5] hoặc Page 5, đứng TRƯỚC nội dung trang đó),
+   nếu không có thì chia ước lượng theo tỉ lệ đoạn văn trên các trang của chương mà bài đã khai. */
+function pageRange(pages){ const m = /(\d+)\s*[–—-]\s*(\d+)|(\d+)/.exec(String(pages || "")); if (!m) return null; return m[3] ? [+m[3], +m[3]] : [+m[1], +m[2]]; }
+function chapterSlice(text, step){
+  const pr = pageRange(step.pages); if (!pr) return { text:"", exact:false };
+  const lines = text.split(/\r?\n/), mk = /^\s*[\[\(—–-]*\s*(?:page|trang|p\.?)?\s*(\d{1,3})\s*[\]\)—–-]*\s*$/i, marks = [];
+  lines.forEach((l, i) => { const m = mk.exec(l); if (m && l.trim()) marks.push([i, +m[1]]); });
+  if (marks.length >= 2){
+    const out = []; marks.forEach(([i, n], k) => { if (n >= pr[0] && n <= pr[1]) out.push(lines.slice(i + 1, k + 1 < marks.length ? marks[k + 1][0] : lines.length).join("\n")); });
+    return { text:out.join("\n\n"), exact:true };
+  }
+  const paras = text.split(/\r?\n\s*\r?\n/).map(x => x.trim()).filter(Boolean); if (!paras.length) return { text:"", exact:false };
+  const same = []; Object.keys(LESSONS).forEach(id => (LESSONS[id].steps || []).forEach(st => { if (st.type === "bookread" && st.book === step.book && st.chapter === step.chapter){ const r = pageRange(st.pages); if (r) same.push(r); } }));
+  if (!same.length) same.push(pr);
+  const lo = Math.min(...same.map(r => r[0])), hi = Math.max(...same.map(r => r[1])), span = hi - lo + 1;
+  const out = paras.filter((_, i) => { const pg = lo + Math.floor(i / paras.length * span); return pg >= pr[0] && pg <= pr[1]; });
+  return { text:out.join("\n\n"), exact:false };
+}
 function textDropzone(onAdded, asKey){
   const fileIn = h("input",{type:"file",accept:".txt,.md,text/plain",multiple:true,hidden:true});
   const drop = h("div",{class:"dropz",tabindex:"0",role:"button","aria-label":"Kéo file văn bản vào đây hoặc bấm để chọn"}, h("div",{style:"font-size:1.6rem"},"📄"), h("b",null,"Kéo thả file văn bản (.txt) vào đây"), h("div",{class:"small muted"},"hoặc bấm để chọn file"));
@@ -2802,8 +2820,9 @@ function bookreadStep(step, ctx){
       draw(); return box; })() : null,
     (() => { const box = h("div",{class:"bktext"}), nm = step.textSrc ? String(step.textSrc).replace(/^text:/, "").toLowerCase() : "step:" + key, label = step.textSrc ? nm : "chữ của đoạn này";
       const auto = String(step.book || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") + "-ch" + step.chapter + "-p" + String(step.pages || "").replace(/[–—]/g, "-").replace(/[^0-9-]/g, "") + ".txt";
-      const names = [nm, auto, "step:" + key], found = () => names.find(k => TXT.local.has(k));
-      const draw = () => { const fk = found(), t = fk ? TXT.local.get(fk) : null;
+      const chKey = auto.replace(/-p[0-9-]*\.txt$/, ".txt"), names = [nm, auto, "step:" + key, chKey], found = () => names.find(k => TXT.local.has(k));
+      const draw = () => { const fk = found(); let t = fk ? TXT.local.get(fk) : null, est = false;
+        if (fk === chKey && t != null){ const cs = chapterSlice(t, step); t = cs.text || null; est = !cs.exact; }
         if (t == null){ box.replaceChildren(h("div",{class:"small muted",style:"margin-bottom:4px"},"📄 Muốn đọc ngay trên web? Kéo file .txt "+(step.textSrc ? nm+" " : "")+"(chữ của sách, do bạn tự có) vào đây, hoặc thả sẵn ở trang GV soạn bài (đặt tên "+auto+" thì tự khớp). Web không lưu file; tải lại trang thì kéo lại. Không có file thì đọc trong sách giấy như bình thường."), textDropzone(draw, step.textSrc ? null : nm)); return; }
         const paras = t.split(/\r?\n\s*\r?\n/).map(x => x.replace(/\s*\r?\n\s*/g, " ").trim()).filter(Boolean);
         let picked = null;
@@ -2815,7 +2834,7 @@ function bookreadStep(step, ctx){
           return [tk.pre, sp, tk.post, " "]; }))));
         const hide = h("button",{class:"pill",type:"button"},"Ẩn chữ"); hide.addEventListener("click", () => { rd.hidden = !rd.hidden; hide.textContent = rd.hidden ? "Hiện chữ" : "Ẩn chữ"; });
         const swap = h("button",{class:"pill",type:"button"},"Đổi file"); swap.addEventListener("click", () => { TXT.local.delete(fk); draw(); });
-        box.replaceChildren(h("div",{class:"row",style:"gap:8px;margin-bottom:6px;align-items:center"}, h("span",{class:"small muted"},"📄 "+label+" · chạm vào từ để xem nghĩa"), hide, swap), rd); };
+        box.replaceChildren(h("div",{class:"row",style:"gap:8px;margin-bottom:6px;align-items:center"}, h("span",{class:"small muted"},"📄 "+(fk === chKey ? "trích từ cả chương, trang "+step.pages+(est ? " (ước lượng, có thể lệch vài đoạn)" : "") : label)+" · chạm vào từ để xem nghĩa"), hide, swap), rd); };
       draw(); return box; })(),
     h("div",{class:"row",style:"align-items:center;gap:12px;margin:10px 0"}, clock, go, h("span",{class:"small muted"},"Gợi ý khoảng "+Math.round(want/60)+" phút")),
     h("div",{class:"small muted"},"Đọc trong sách của bạn, đọc xong quay lại đây. Gặp từ lạ thì cứ đọc tiếp, đừng dừng lại tra từng từ."),
@@ -3511,7 +3530,7 @@ function studioCard(){
       const txtIn = h("input",{type:"file",multiple:true,accept:".txt,.md,text/plain",hidden:true});
       const keys = [...TXT.local.keys()].filter(k => !k.startsWith("step:"));
       parts.push(h("h3",{style:"margin:16px 0 6px"},"📄 Chữ của sách (reading text)"),
-        h("p",{class:"muted small",style:"margin:0 0 10px"},"Thả file .txt chữ của sách bạn tự có, mỗi đoạn đọc một file, đặt tên như red-roses-ch1-p1-4.txt (tên sách, chương, trang) thì bước Đọc sách tự khớp. Web không lưu file: chỉ giữ trong phiên này, tải lại trang thì thả lại."),
+        h("p",{class:"muted small",style:"margin:0 0 10px"},"Thả file .txt chữ của sách bạn tự có. Thả CẢ CHƯƠNG (đặt tên red-roses-ch1.txt) thì web tự chia vào từng bài đọc theo số trang (nên có dòng đánh số trang như [5] trước nội dung trang đó; không có thì web chia ước lượng). Hoặc thả từng đoạn, đặt tên red-roses-ch1-p1-4.txt. Web không lưu file: chỉ giữ trong phiên này, tải lại trang thì thả lại."),
         dz("📄","Thả file chữ sách (.txt) vào đây","hoặc bấm để chọn nhiều file", txtIn, async files => { const n = await txtTake(files); if (n){ toast("Đã nhận "+n+" file"); draw(); } else toast("Chỉ nhận file .txt"); }), txtIn,
         keys.length ? h("div",{style:"margin-top:8px"}, keys.sort().map(k => h("div",{class:"vrow"}, h("div",{class:"grow"}, h("b",null,k), h("div",{class:"small muted"}, Math.round(TXT.local.get(k).length/1000*10)/10+" nghìn ký tự")), h("button",{class:"pill lock",type:"button",onClick:() => { TXT.local.delete(k); draw(); }},"Xóa")))) : h("p",{class:"muted small",style:"margin-top:8px"},"Chưa có file nào."));
     }
