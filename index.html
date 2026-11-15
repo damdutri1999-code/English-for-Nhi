@@ -1842,7 +1842,7 @@ const audIsFile = f => /^audio\//.test(f.type) || /\.(mp3|m4a|wav|ogg|aac)$/i.te
 function audTake(files){ let n = 0; [...files].filter(audIsFile).forEach(f => { const k = audName(f.name); if (AUD.local.has(k)) URL.revokeObjectURL(AUD.local.get(k)); AUD.local.set(k, URL.createObjectURL(f)); n++; }); return n; }
 /* ---- Văn bản sách do Thầy tự kéo thả (.txt): chỉ giữ trong phiên, không lưu, không đồng bộ, không nằm trong bài ---- */
 const TXT = { local:new Map() };
-async function txtTake(files, asKey){ let n = 0; for (const f of [...files]){ if (!/\.(txt|md)$/i.test(f.name) && !/^text\//.test(f.type)) continue; try { TXT.local.set(asKey || audName(f.name), await f.text()); n++; if (asKey) break; } catch(e){} } return n; }
+async function txtTake(files, asKey){ let n = 0; for (const f of [...files]){ if (!/\.(txt|md)$/i.test(f.name) && !/^text\//.test(f.type)) continue; try { TXT.local.set(asKey || audName(f.name).toLowerCase(), await f.text()); n++; if (asKey) break; } catch(e){} } return n; }
 function textDropzone(onAdded, asKey){
   const fileIn = h("input",{type:"file",accept:".txt,.md,text/plain",multiple:true,hidden:true});
   const drop = h("div",{class:"dropz",tabindex:"0",role:"button","aria-label":"Kéo file văn bản vào đây hoặc bấm để chọn"}, h("div",{style:"font-size:1.6rem"},"📄"), h("b",null,"Kéo thả file văn bản (.txt) vào đây"), h("div",{class:"small muted"},"hoặc bấm để chọn file"));
@@ -2800,9 +2800,11 @@ function bookreadStep(step, ctx){
         spd.addEventListener("click", () => { a.playbackRate = a.playbackRate === 1 ? .75 : 1; spd.textContent = "Tốc độ " + (a.playbackRate === 1 ? "1×" : "0.75×"); });
         box.replaceChildren(h("div",{class:"small muted",style:"margin-bottom:4px"},"🎧 "+(step.audioNote || "Nghe đoạn này")+" (nghe trước hoặc nghe lúc đọc theo)"), a, spd); };
       draw(); return box; })() : null,
-    (() => { const box = h("div",{class:"bktext"}), nm = step.textSrc ? String(step.textSrc).replace(/^text:/, "") : "step:" + key, label = step.textSrc ? nm : "chữ của đoạn này";
-      const draw = () => { const t = TXT.local.get(nm);
-        if (t == null){ box.replaceChildren(h("div",{class:"small muted",style:"margin-bottom:4px"},"📄 Muốn đọc ngay trên web? Kéo file .txt "+(step.textSrc ? nm+" " : "")+"(chữ của sách, do bạn tự có) vào đây. Web không lưu file; tải lại trang thì kéo lại. Không có file thì đọc trong sách giấy như bình thường."), textDropzone(draw, step.textSrc ? null : nm)); return; }
+    (() => { const box = h("div",{class:"bktext"}), nm = step.textSrc ? String(step.textSrc).replace(/^text:/, "").toLowerCase() : "step:" + key, label = step.textSrc ? nm : "chữ của đoạn này";
+      const auto = String(step.book || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") + "-ch" + step.chapter + "-p" + String(step.pages || "").replace(/[–—]/g, "-").replace(/[^0-9-]/g, "") + ".txt";
+      const names = [nm, auto, "step:" + key], found = () => names.find(k => TXT.local.has(k));
+      const draw = () => { const fk = found(), t = fk ? TXT.local.get(fk) : null;
+        if (t == null){ box.replaceChildren(h("div",{class:"small muted",style:"margin-bottom:4px"},"📄 Muốn đọc ngay trên web? Kéo file .txt "+(step.textSrc ? nm+" " : "")+"(chữ của sách, do bạn tự có) vào đây, hoặc thả sẵn ở trang GV soạn bài (đặt tên "+auto+" thì tự khớp). Web không lưu file; tải lại trang thì kéo lại. Không có file thì đọc trong sách giấy như bình thường."), textDropzone(draw, step.textSrc ? null : nm)); return; }
         const paras = t.split(/\r?\n\s*\r?\n/).map(x => x.replace(/\s*\r?\n\s*/g, " ").trim()).filter(Boolean);
         let picked = null;
         const rd = h("div",{class:"reading rd"}, paras.map(p => h("p", null, tokenize(p).map(tk => {
@@ -2812,7 +2814,7 @@ function bookreadStep(step, ctx){
           sp.addEventListener("click", open); sp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); } });
           return [tk.pre, sp, tk.post, " "]; }))));
         const hide = h("button",{class:"pill",type:"button"},"Ẩn chữ"); hide.addEventListener("click", () => { rd.hidden = !rd.hidden; hide.textContent = rd.hidden ? "Hiện chữ" : "Ẩn chữ"; });
-        const swap = h("button",{class:"pill",type:"button"},"Đổi file"); swap.addEventListener("click", () => { TXT.local.delete(nm); draw(); });
+        const swap = h("button",{class:"pill",type:"button"},"Đổi file"); swap.addEventListener("click", () => { TXT.local.delete(fk); draw(); });
         box.replaceChildren(h("div",{class:"row",style:"gap:8px;margin-bottom:6px;align-items:center"}, h("span",{class:"small muted"},"📄 "+label+" · chạm vào từ để xem nghĩa"), hide, swap), rd); };
       draw(); return box; })(),
     h("div",{class:"row",style:"align-items:center;gap:12px;margin:10px 0"}, clock, go, h("span",{class:"small muted"},"Gợi ý khoảng "+Math.round(want/60)+" phút")),
@@ -3398,6 +3400,7 @@ function draftProgress(n){
   return { meta:!!d.meta, sessions:DAYK.filter(k => d.sessions[k]), challenges:DAYK.filter(k => d.challenges[k]),
     complete:!!d.meta && DAYK.every(k => d.sessions[k] && d.challenges[k]) };
 }
+let dropJSON = null;
 function contentView(){
   const ta = h("textarea",{class:"txt",rows:7,placeholder:"Kéo thả file .json vào đây, hoặc dán nội dung JSON do GPT xuất ra…",spellcheck:"false"});
   const out = h("div"); let pending = null;
@@ -3445,6 +3448,7 @@ function contentView(){
       v.stats.vocab ? h("p",{class:"muted small"},"Từ vựng trong các bài đọc: "+v.stats.vocab+" từ.") : null)),
       mkSave("margin-top:12px"));
   }
+  if (dropJSON){ ta.value = dropJSON; dropJSON = null; check(); }
   const rows = Object.keys(WEEKS).map(Number).sort((a, b) => a - b).map(n => { const w = WEEKS[n], c = CONTENT[n];
     const src = !w.json ? "Bản demo" : c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Từ repo";
     return h("div",{class:"vrow"}, h("div",{class:"grow"}, h("b",null,"Tuần "+n+": "+w.title), h("div",{class:"small muted"},w.grammar+" · "+src)),
@@ -3490,6 +3494,31 @@ const TABS = [["home","🏠","Trang chủ"],["week","📅","Tuần học"],["voc
 const TAB_OF = { plan:"week", challenge:"week", content:"settings", gv:"settings", lesson:"week", done:"week", placement:"week", mistakes:"practice", report:"progress" };
 const tabsEl = document.getElementById("tabs");
 tabsEl.replaceChildren(...TABS.map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, h("span",null, SCH ? "#i:" + ({home:"home",week:"calendar",vocab:"book",practice:"pencil",progress:"chart"}[p] || "dot") : ic), t)));
+function studioCard(){
+  const box = h("div",{class:"card tint"});
+  const draw = () => {
+    const jsonIn = h("input",{type:"file",multiple:true,accept:".json,application/json,text/plain",hidden:true});
+    const takeJSON = async files => { const list = [...files].filter(f => /\.(json|txt)$/i.test(f.name) || /json|text/.test(f.type)); if (!list.length){ toast("Hãy thả file .json"); return; }
+      const texts = []; for (const f of list) texts.push(await f.text());
+      dropJSON = texts.length === 1 ? texts[0] : texts.map(t => "```json\n" + t + "\n```").join("\n\n"); location.hash = "#/content"; };
+    const dz = (icon, title, sub, input, take) => { const d = h("div",{class:"dropz",tabindex:"0",role:"button"}, h("div",{style:"font-size:1.6rem"},icon), h("b",null,title), h("div",{class:"small muted"},sub));
+      d.addEventListener("click", () => input.click()); d.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); input.click(); } });
+      ["dragenter","dragover"].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.classList.add("on"); })); ["dragleave","drop"].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.classList.remove("on"); }));
+      d.addEventListener("drop", e => take(e.dataTransfer.files)); input.addEventListener("change", () => { take(input.files); input.value = ""; }); return d; };
+    const parts = [h("h3",{style:"margin:0 0 8px"},"✏️ Khu soạn bài"), h("p",{class:"muted small",style:"margin:0 0 10px"},"Thả file bài do trợ lý soạn (JSON) để kiểm tra và lưu."),
+      dz("📥","Thả file bài (.json) vào đây","hoặc bấm để chọn file", jsonIn, takeJSON), jsonIn];
+    if (IS_BW){
+      const txtIn = h("input",{type:"file",multiple:true,accept:".txt,.md,text/plain",hidden:true});
+      const keys = [...TXT.local.keys()].filter(k => !k.startsWith("step:"));
+      parts.push(h("h3",{style:"margin:16px 0 6px"},"📄 Chữ của sách (reading text)"),
+        h("p",{class:"muted small",style:"margin:0 0 10px"},"Thả file .txt chữ của sách bạn tự có, mỗi đoạn đọc một file, đặt tên như red-roses-ch1-p1-4.txt (tên sách, chương, trang) thì bước Đọc sách tự khớp. Web không lưu file: chỉ giữ trong phiên này, tải lại trang thì thả lại."),
+        dz("📄","Thả file chữ sách (.txt) vào đây","hoặc bấm để chọn nhiều file", txtIn, async files => { const n = await txtTake(files); if (n){ toast("Đã nhận "+n+" file"); draw(); } else toast("Chỉ nhận file .txt"); }), txtIn,
+        keys.length ? h("div",{style:"margin-top:8px"}, keys.sort().map(k => h("div",{class:"vrow"}, h("div",{class:"grow"}, h("b",null,k), h("div",{class:"small muted"}, Math.round(TXT.local.get(k).length/1000*10)/10+" nghìn ký tự")), h("button",{class:"pill lock",type:"button",onClick:() => { TXT.local.delete(k); draw(); }},"Xóa")))) : h("p",{class:"muted small",style:"margin-top:8px"},"Chưa có file nào."));
+    }
+    box.replaceChildren(...parts);
+  };
+  draw(); return box;
+}
 function gvView(){
   const rows = ROADMAP.map(r => r[0]), have = Object.keys(WEEKS).map(Number);
   const fmtD = k => { const d = parseKey(k); return d.getDate() + "/" + (d.getMonth()+1); };
@@ -3524,6 +3553,7 @@ function gvView(){
   return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"),
     h("h1",{style:"margin-top:16px"},"GV soạn bài · "+learnerName()+(LRN.id === "bw" ? " · Bookworms" : "")),
     h("div",{class:"row",style:"margin-bottom:12px"}, h("a",{class:"btn",href:"#/content"},"📚 Tải bài học lên"), h("a",{class:"btn soft",href:"#/teacher"},"Nhận xét và lời nhắn"), h("button",{class:"btn soft",type:"button",onClick:switchLearner},"Đổi học viên")),
+    studioCard(),
     (() => { const M = NB.mine, mw = Object.keys(M).sort(); if (!mw.length) return null;
       const d = h("details",{class:"card"}, h("summary",{style:"cursor:pointer;font-weight:800"},"📒 Từ "+MY_NAME()+" tự thêm ("+mw.length+")"), h("p",{class:"small muted"},"Bấm vào từ để sửa nghĩa, ví dụ, từ hay đi cùng, rồi bấm “Lưu và duyệt”."), mw.map(w => mineRowEl(w, () => { route(); }, true))); return d; })(),
     h("p",{class:"muted small"},"Có "+have.length+"/"+ROADMAP.length+" tuần đã có bài. Bấm vào một tuần để xem bài theo buổi và chỉnh lịch học."),
