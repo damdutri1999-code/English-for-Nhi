@@ -1672,19 +1672,24 @@ function parseWeekText(txt){
 }
 
 /* ---- Lưu, tải, đồng bộ ---- */
+/* Tuần đã xóa (kể cả tuần nằm sẵn trong kho mã): web nhớ để không nạp lại */
+const DELETED = new Set();
+function loadDeleted(){ try { (JSON.parse(localStorage.getItem(CKEY + "-del") || "[]")).forEach(n => DELETED.add(+n)); } catch(e){} }
+function saveDeleted(){ try { localStorage.setItem(CKEY + "-del", JSON.stringify([...DELETED])); } catch(e){} }
 function saveContentLocal(){ try { localStorage.setItem(CKEY, JSON.stringify(CONTENT)); } catch(e){} }
 function applyContent(n, json){ unloadWeek(n); compileWeek(json); if (n === 1 && !WEEKS[1]) restoreDemo(); }
 function loadContentLocal(){
+  loadDeleted();
   try { const o = JSON.parse(localStorage.getItem(CKEY) || "{}"); Object.keys(o).forEach(n => { const e = o[n];
     if (e && e.json && !validateWeek(e.json).E.length){ CONTENT[n] = e; applyContent(+n, e.json); } }); } catch(e){}
 }
 async function saveWeek(json){
-  const n = json.week; CONTENT[n] = { json, at:Date.now(), src:"local" }; saveContentLocal(); applyContent(n, json);
+  const n = json.week; DELETED.delete(n); saveDeleted(); CONTENT[n] = { json, at:Date.now(), src:"local" }; saveContentLocal(); applyContent(n, json);
   if (Cloud.ready){ try { await DB.set(LRN.cp+n, { json:JSON.stringify(json) }, CONTENT[n].at); } catch(e){ console.error(e); toast("Đã lưu trên máy, chưa lên được đám mây"); return false; } }
   return true;
 }
 async function deleteWeek(n){
-  delete CONTENT[n]; saveContentLocal(); unloadWeek(n); if (!WEEKS[1]) restoreDemo();
+  delete CONTENT[n]; DELETED.add(+n); saveDeleted(); saveContentLocal(); unloadWeek(n); if (!WEEKS[1]) restoreDemo();
   if (Cloud.ready){ try { await DB.set(LRN.cp+n, { json:"", deleted:true }, Date.now()); } catch(e){ console.error(e); } }
 }
 async function loadContentCloud(){
@@ -1693,7 +1698,8 @@ async function loadContentCloud(){
   rows.forEach(row => { try {
     const n = parseInt(String(row.id).slice(1), 10), d = row.data || {}, cur = CONTENT[n];
     if (cur && (cur.at || 0) >= (row.at || 0)) return;
-    if (d.deleted || !d.json){ if (cur){ delete CONTENT[n]; unloadWeek(n); } return; }
+    if (d.deleted || !d.json){ DELETED.add(n); saveDeleted(); if (cur){ delete CONTENT[n]; unloadWeek(n); } if (WEEKS[n] && WEEKS[n].src === "static") unloadWeek(n); return; }
+    DELETED.delete(n); saveDeleted();
     const json = JSON.parse(d.json); if (validateWeek(json).E.length) return;
     CONTENT[n] = { json, at:row.at || 0, src:"cloud" }; applyContent(n, json);
   } catch(e){} });
@@ -1706,7 +1712,7 @@ async function loadContentStatic(){
     const list = await r.json();
     await Promise.all((Array.isArray(list) ? list : []).map(async f => { try {
       const j = await (await fetch(LRN.dir + "/" + String(f).replace(/[^\w.\-]/g, ""), { cache:"no-cache" })).json();
-      if (!j || !Number.isInteger(j.week) || CONTENT[j.week] || validateWeek(j).E.length) return;
+      if (!j || !Number.isInteger(j.week) || CONTENT[j.week] || DELETED.has(j.week) || validateWeek(j).E.length) return;
       applyContent(j.week, j); WEEKS[j.week].src = "static"; } catch(e){} }));
   } catch(e){}
 }
@@ -3577,6 +3583,17 @@ function studioCard(){
         dz("📄","Thả file chữ sách (.txt) vào đây","hoặc bấm để chọn nhiều file", txtIn, async files => { const n = await txtTake(files); if (n){ toast("Đã nhận "+n+" file"); draw(); } else toast("Chỉ nhận file .txt"); }), txtIn,
         keys.length ? h("div",{style:"margin-top:8px"}, keys.sort().map(k => h("div",{class:"vrow"}, h("div",{class:"grow"}, h("b",null,k), h("div",{class:"small muted"}, Math.round(TXT.local.get(k).length/1000*10)/10+" nghìn ký tự")), h("button",{class:"pill lock",type:"button",onClick:() => { TXT.local.delete(k); draw(); }},"Xóa")))) : h("p",{class:"muted small",style:"margin-top:8px"},"Chưa có file nào."));
     }
+    const real = Object.keys(WEEKS).map(Number).filter(n => WEEKS[n] && WEEKS[n].json).sort((a, b) => a - b);
+    const picks = new Set(), delBtn = h("button",{class:"btn danger",type:"button",disabled:true,style:"margin-top:8px"},"Xóa các tuần đã chọn");
+    const refresh = () => { delBtn.disabled = !picks.size; delBtn.textContent = picks.size ? "Xóa " + picks.size + " tuần đã chọn" : "Xóa các tuần đã chọn"; };
+    delBtn.addEventListener("click", async () => { const ns = [...picks].sort((a, b) => a - b); if (!ns.length) return;
+      if (!confirm("Xóa nội dung " + ns.map(n => wFull(n).toLowerCase()).join(", ") + "?\nTiến độ của học viên vẫn được giữ. Bài sẽ biến mất khỏi web trên các máy đã đồng bộ; muốn có lại thì thả file bài lên.")) return;
+      for (const n of ns) await deleteWeek(n); toast("Đã xóa " + ns.length + " tuần"); route(); });
+    parts.push(h("h3",{style:"margin:16px 0 6px"},"🗑 Xóa bài cũ theo tuần"),
+      real.length ? h("div",null, real.map(n => { const W = WEEKS[n], c = CONTENT[n], cb = h("input",{type:"checkbox","aria-label":"Chọn "+wFull(n)});
+          cb.addEventListener("change", () => { if (cb.checked) picks.add(n); else picks.delete(n); refresh(); });
+          return h("label",{class:"vrow",style:"cursor:pointer"}, cb, h("div",{class:"grow"}, h("b",null, wFull(n)+": "+W.title), h("div",{class:"small muted"}, (c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Nằm sẵn trong kho mã (web sẽ ẩn, file gốc không bị xóa)")))); }), delBtn)
+        : h("p",{class:"muted small"},"Chưa có bài nào để xóa."));
     box.replaceChildren(...parts);
   };
   draw(); return box;
@@ -3607,7 +3624,7 @@ function gvView(){
           schedCustom(w) ? h("button",{class:"pill",type:"button",onClick:() => { if (S.settings.sched){ delete S.settings.sched[w]; save(); } route(); }},"Đặt lại lịch mặc định") : null,
           W ? h("a",{class:"pill",href:"#/week",onClick:() => { viewWeek = w; },style:"text-decoration:none"},"Mở như học viên") : null,
           c ? h("button",{class:"pill",type:"button",onClick:() => { const a = h("a",{href:URL.createObjectURL(new Blob([JSON.stringify(c.json,null,2)],{type:"application/json"})),download:"week-"+w+".json"}); document.body.append(a); a.click(); a.remove(); }},"Tải JSON") : null,
-          c ? h("button",{class:"pill lock",type:"button",onClick:async () => { if (confirm("Xóa nội dung tuần "+w+"? Tiến độ của học viên vẫn được giữ.")){ await deleteWeek(w); route(); } }},"Xóa bài") : null)));
+          W && W.json ? h("button",{class:"pill lock",type:"button",onClick:async () => { if (confirm("Xóa nội dung "+wFull(w).toLowerCase()+"? Tiến độ của học viên vẫn được giữ.")){ await deleteWeek(w); route(); } }},"Xóa bài") : null)));
     if (ti.week === w && ti.state !== "before") det.open = true;
     return det;
   };
