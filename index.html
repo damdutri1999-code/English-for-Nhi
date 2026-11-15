@@ -1135,111 +1135,8 @@ const wTxt = n => IS_BW ? "Tuần " + wLbl(n) + " / 3" : "Tuần " + n;
 const wFull = n => IS_BW ? "Sách " + Math.ceil(n / 3) + " · Tuần " + wLbl(n) : "Tuần " + n;
 const bookInfo = b => BW_BOOKS.find(x => x.id === b);
 const KIND = { new:"Bài mới", review:"Ôn và đọc trước", week:"Ôn cả tuần" };
-let WEEK1 = {
-  id:1, title:"Family", grammar:"to be (am / is / are)",
-  subs:["Family members","Describing family","Asking about family","Extended family (cầu nối)"],
-  sessions:[
-    {id:"w1-mon", day:"Thứ 2", kind:"new",    title:"Sub 1: Family members"},
-    {id:"w1-tue", day:"Thứ 3", kind:"review", title:"Ôn Sub 1, đọc trước Sub 2"},
-    {id:"w1-wed", day:"Thứ 4", kind:"new",    title:"Sub 2: Describing family"},
-    {id:"w1-thu", day:"Thứ 5", kind:"review", title:"Ôn Sub 1–2, đọc trước Sub 3"},
-    {id:"w1-fri", day:"Thứ 6", kind:"new",    title:"Sub 3: Asking about family"},
-    {id:"w1-sat", day:"Thứ 7", kind:"week",   title:"Ôn cả tuần, giới thiệu Sub 4"}
-  ]
-};
-const TEXT_MON = [
-  "Hello! My name is Mai. I am twelve years old. I am a student. This is my family.",
-  "My father is a driver. His name is Nam. He is forty years old.",
-  "My mother is a teacher. Her name is Lan. She is thirty-eight.",
-  "This is my brother. His name is Minh. He is ten.",
-  "This is my sister. Her name is Hoa. She is sixteen.",
-  "My parents are kind. We are a happy family!"
-];
-const VOC_MON = { family:"gia đình", father:"bố, ba", mother:"mẹ", parents:"bố mẹ", brother:"anh / em trai", sister:"chị / em gái",
-  student:"học sinh", teacher:"giáo viên", driver:"tài xế", kind:"tốt bụng", happy:"vui vẻ, hạnh phúc", old:"tuổi (twelve years old = 12 tuổi)" };
-const TEXT_TUE = [
-  "Hi, I am Tom. My family is not big.",
-  "My father is a doctor. He is not a teacher.",
-  "My mother is not a doctor. She is a nurse.",
-  "We are not rich, but we are happy."
-];
-const VOC_TUE = { doctor:"bác sĩ", nurse:"y tá", big:"to, đông người", rich:"giàu", not:"không (is not = isn't)", but:"nhưng" };
-const TEXT_THU = [
-  "Who is she? She is my sister. Her name is Hoa.",
-  "How old is she? She is sixteen.",
-  "Is he a teacher? No, he is not. He is a driver."
-];
-const VOC_THU = { who:"ai", how:"như thế nào, bao nhiêu (How old = bao nhiêu tuổi)", yes:"có, vâng", no:"không, không phải" };
-const TEXT_SAT = [
-  "Linh is my friend. Her father is a teacher.",
-  "Her mother is a nurse. Her brother is a student.",
-  "They are a kind family."
-];
-const VOC_SAT = { friend:"bạn bè" };
-const TEXT_EXT = [
-  "This is my grandmother. She is sixty-five.",
-  "This is my uncle. He is a doctor.",
-  "This is my cousin. She is a student."
-];
-const VOC_EXT = { grandmother:"bà", uncle:"chú, bác, cậu", cousin:"anh, chị, em họ" };
-
-const SET = {
-  warm1:{ type:"mcq", ungraded:true, title:"Khởi động: đoán thử nào", instruction:"Chưa biết cũng không sao, cứ đoán thử. Phần này không tính điểm.", items:[
-    {q:"\"mother\" nghĩa là gì?", options:["bố","mẹ","chị gái"], answer:1, why:"mother = mẹ."},
-    {q:"\"brother\" nghĩa là gì?", options:["anh / em trai","chị / em gái","ông"], answer:0, why:"brother = anh hoặc em trai."},
-    {q:"\"teacher\" nghĩa là gì?", options:["giáo viên","học sinh","bác sĩ"], answer:0, why:"teacher = giáo viên."} ]},
-  comp1:{ type:"mcq", title:"Hiểu bài đọc", instruction:"Chọn đáp án đúng theo bài đọc.", items:[
-    {q:"Mai is a ___.", options:["student","teacher","driver"], answer:0, why:"Trong bài: \"I am a student.\""},
-    {q:"Mai's father is a ___.", options:["teacher","driver","student"], answer:1, why:"Trong bài: \"My father is a driver.\""} ]},
-  comp2:{ type:"mcq", title:"Hiểu bài đọc", instruction:"Chọn đáp án đúng theo bài đọc.", items:[
-    {q:"Tom's mother is a ___.", options:["doctor","nurse","teacher"], answer:1, why:"Trong bài: \"She is a nurse.\""},
-    {q:"Tom's father is a teacher.", options:["Đúng","Sai"], answer:1, why:"Trong bài: \"He is not a teacher.\" (không phải giáo viên)"} ]},
-  comp3:{ type:"mcq", title:"Hiểu bài đọc", instruction:"Chọn đáp án đúng theo bài đọc.", items:[
-    {q:"Hoa is sixteen.", options:["Đúng","Sai"], answer:0, why:"Trong bài: \"She is sixteen.\""},
-    {q:"The man is a ___.", options:["teacher","driver","doctor"], answer:1, why:"Trong bài: \"He is a driver.\""} ]},
-  comp4:{ type:"mcq", title:"Hiểu bài đọc mới", instruction:"Bài đọc này mới hoàn toàn. Thử trả lời mà không tra từ nhé.", items:[
-    {q:"Linh's mother is a ___.", options:["nurse","teacher","driver"], answer:0, why:"Trong bài: \"Her mother is a nurse.\""},
-    {q:"Linh's brother is a ___.", options:["driver","student","doctor"], answer:1, why:"Trong bài: \"Her brother is a student.\""} ]},
-  listen1:{ type:"mcq", title:"Nghe và trả lời", instruction:"Nghe lần 1 rồi trả lời câu 1. Nghe lần 2 rồi trả lời câu 2.", items:[
-    {q:"1. Bài nghe nói về ai?", options:["Gia đình của Mai","Trường của Mai","Bạn bè của Mai"], answer:0, why:"Bài giới thiệu từng người trong gia đình Mai."},
-    {q:"2. Mẹ của Mai bao nhiêu tuổi?", options:["36","38","40"], answer:1, why:"\"She is thirty-eight.\" (thirty-eight = 38)"} ]},
-  listen2:{ type:"mcq", title:"Nghe và trả lời", instruction:"Nghe xong rồi chọn đáp án.", items:[
-    {q:"Tom's father is a ___.", options:["doctor","teacher","driver"], answer:0, why:"\"My father is a doctor.\" Bố của Tom là bác sĩ."} ]},
-  listen3:{ type:"mcq", title:"Nghe và trả lời", instruction:"Nghe xong rồi chọn đáp án.", items:[
-    {q:"Hoa bao nhiêu tuổi?", options:["10","16","18"], answer:1, why:"\"She is sixteen.\""} ]},
-  mcq1:{ type:"mcq", title:"Trắc nghiệm", instruction:"Chọn am, is hoặc are.", items:[
-    {q:"This is Tom. He ___ my brother.", options:["am","is","are"], answer:1, why:"He là một người nên dùng is. \"am\" chỉ đi với I, \"are\" dùng cho nhiều người hoặc you."},
-    {q:"My name is Anna. I ___ ten years old.", options:["is","are","am"], answer:2, why:"Chủ ngữ I luôn đi với am."},
-    {q:"Peter and Anna ___ my parents.", options:["is","am","are"], answer:2, why:"Peter and Anna là hai người (they) nên dùng are."},
-    {q:"My sister ___ a driver.", options:["is","are","am"], answer:0, why:"My sister = she (một người) nên dùng is."} ]},
-  gap1:{ type:"gap", title:"Điền từ", instruction:"Chạm vào từ trong khung để điền vào chỗ trống. Chạm vào ô đã điền để gỡ ra.", bank:["am","is","is","are","are"], items:[
-    {text:"My father ___ a teacher.", answer:"is", why:"My father = he, dùng is."},
-    {text:"We ___ a happy family.", answer:"are", why:"We (chúng tôi) đi với are."},
-    {text:"I ___ happy today.", answer:"am", why:"I đi với am."},
-    {text:"Lan ___ my sister.", answer:"is", why:"Lan là một người (she), dùng is."},
-    {text:"Tom and Nam ___ brothers.", answer:"are", why:"Tom and Nam là hai người (they), dùng are."} ]},
-  recall1:{ type:"mcq", title:"Nhớ lại, không nhìn bài hôm qua", instruction:"Thử trả lời trước, đừng mở bài cũ nhé.", items:[
-    {q:"My sister ___ sixteen.", options:["am","is","are"], answer:1, why:"My sister = she, dùng is."},
-    {q:"\"parents\" nghĩa là gì?", options:["bố mẹ","anh em","giáo viên"], answer:0, why:"parents = bố mẹ."},
-    {q:"We ___ a happy family.", options:["is","am","are"], answer:2, why:"We đi với are."} ]},
-  reorder1:{ type:"reorder", title:"Sắp xếp câu", instruction:"Ghép các từ thành câu đúng.", items:[
-    {words:["is","a","teacher","father","My"], answer:"My father is a teacher.", why:"Thứ tự: chủ ngữ, to be, phần còn lại."},
-    {words:["are","happy","We","a","family"], answer:"We are a happy family.", why:"We are + a happy family."},
-    {words:["name","is","Her","Hoa"], answer:"Her name is Hoa.", why:"Her name (tên của cô ấy) là chủ ngữ, theo sau là is."},
-    {words:["am","I","student","a"], answer:"I am a student.", why:"I am + a student."} ]},
-  fix1:{ type:"fix", title:"Sửa lỗi sai", instruction:"Mỗi câu có một lỗi. Sửa trực tiếp trong ô (viết hoa và dấu chấm không ảnh hưởng).", items:[
-    {wrong:"My mother a teacher.", answer:"My mother is a teacher.", why:"Thiếu động từ to be. Tiếng Việt có thể nói \"Mẹ tôi giáo viên\", nhưng tiếng Anh bắt buộc có is."},
-    {wrong:"I is a student.", answer:"I am a student.", why:"I đi với am, không phải is."},
-    {wrong:"They is my brothers.", answer:"They are my brothers.", why:"They (nhiều người) đi với are."},
-    {wrong:"My sister are ten years old.", answer:"My sister is ten years old.", why:"My sister là một người (she), dùng is."} ]},
-  form1:{ type:"form", title:"Đổi dạng từ", instruction:"Điền dạng đúng của từ trong ngoặc.", items:[
-    {text:"My sister ___ (be) sixteen.", answer:"is", why:"be đổi thành is với she, he, it."},
-    {text:"I ___ (be) a student.", answer:"am", why:"be đổi thành am với I."},
-    {text:"___ (he) name is Nam.", answer:"His", why:"he thành his (của anh ấy)."},
-    {text:"___ (she) name is Lan.", answer:"Her", why:"she thành her (của cô ấy)."},
-    {text:"Nam and Lan ___ (be) my parents.", answer:"are", why:"Hai người (they) dùng are."} ]}
-};
-Object.keys(SET).forEach(k => { SET[k].key = k; if (/^(warm|comp|listen)/.test(k)) SET[k].ctx = true; });
+let WEEK1 = null;   // dựng ở phần "chưa có bài" bên dưới
+const SET = {};
 
 const PLACEMENT = { type:"mcq", ungraded:true, showScore:true, key:"placement", title:"Test đầu vào",
   instruction:"8 câu từ dễ đến khó. Cứ chọn đáp án bạn thấy đúng, không cần đoán may.", items:[
@@ -1252,10 +1149,6 @@ const PLACEMENT = { type:"mcq", ungraded:true, showScore:true, key:"placement", 
   {week:13, topic:"can / can't", q:"I ___ swim very well.", options:["can","cans","am can"], answer:0, why:"can không thêm -s và không đi với am."},
   {week:16, topic:"quá khứ của to be", q:"We ___ at home yesterday.", options:["are","was","were"], answer:2, why:"yesterday là quá khứ, we đi với were."} ]};
 
-function recallWeekSet(){
-  const pool = [...refItems("mcq1",[0,1,2,3]), ...refItems("recall1",[0,1,2]), ...refItems("comp1",[0,1])];
-  return { type:"mcq", title:"Quiz cả tuần", instruction:"Không nhìn bài, trả lời nhanh nhé.", items:shuffle(pool).slice(0,6) };
-}
 function refItems(key, idxs){ return idxs.map(i => Object.assign({}, SET[key].items[i], {_ref:key+"#"+i})); }
 function subsetOf(key, n){ const idx = shuffle(SET[key].items.map((_,i) => i)).slice(0,n); return refItems(key, idx); }
 function mixSets(){
@@ -1278,82 +1171,20 @@ function buildMistakeSets(){
     return set; });
 }
 
-const DEMO_NOTE = "Nội dung demo: buổi này dùng lại bài của Thứ 2 và Thứ 3 để bạn thử luồng học. Khi soạn bài thật, chỉ cần thay dữ liệu.";
-const OUTPUT_MON = { key:"output", type:"output", icon:"🌷", title:"Tự viết", min:"26–30′",
-  prompt:"Viết 2 hoặc 3 câu giới thiệu một người trong gia đình bạn (hoặc một người tưởng tượng).",
-  hint:"This is my ___. His / Her name is ___. He / She is ___.",
-  sample:"This is my father. His name is Nam. He is a driver. He is forty years old.",
-  model:"This is my mother. Her name is Hoa. She is a teacher." };
-const LESSONS = {
-  "w1-mon": { steps:[
-    {key:"warmup", type:"sets", icon:"☀️", title:"Khởi động", min:"0–3′", sets:[SET.warm1]},
-    {key:"read", type:"read", icon:"📖", title:"Đọc", min:"3–9′", heading:"My family", purpose:"Đọc để tìm: Mai có những ai trong gia đình?", text:TEXT_MON, vocab:VOC_MON, sets:[SET.comp1]},
-    {key:"listen", type:"listen", icon:"🎧", title:"Nghe", min:"9–13′", text:TEXT_MON, sets:[SET.listen1]},
-    {key:"notice", type:"notice", icon:"🔍", title:"Tìm ngữ pháp", min:"13–15′", text:TEXT_MON},
-    {key:"practice", type:"sets", icon:"✏️", title:"Luyện tập", min:"15–26′", sets:[SET.mcq1, SET.gap1]},
-    OUTPUT_MON
-  ]},
-  "w1-tue": { steps:[
-    {key:"warmup", type:"sets", icon:"☀️", title:"Nhớ lại", min:"0–3′", sets:[SET.recall1]},
-    {key:"review", type:"sets", icon:"✏️", title:"Ôn dạng bài khác", min:"3–20′", sets:[SET.reorder1, SET.fix1, SET.form1]},
-    {key:"read", type:"read", icon:"📖", title:"Đọc trước Sub 2", min:"20–25′", heading:"Tom's family", purpose:"Đọc để tìm: ai là ai trong gia đình Tom?", text:TEXT_TUE, vocab:VOC_TUE, sets:[],
-      note:"Hôm nay chỉ đọc để làm quen. Bài tập của phần này sẽ có vào ngày mai."},
-    {key:"listen", type:"listen", icon:"🎧", title:"Nghe", min:"25–30′", text:TEXT_TUE, sets:[SET.listen2]}
-  ]},
-  "w1-wed": { demo:true, steps:[
-    {key:"warmup", type:"sets", icon:"☀️", title:"Nhớ lại", min:"0–3′", sets:[SET.recall1]},
-    {key:"read", type:"read", icon:"📖", title:"Đọc", min:"3–9′", heading:"Tom's family", purpose:"Đọc để tìm: ai là ai trong gia đình Tom?", text:TEXT_TUE, vocab:VOC_TUE, sets:[SET.comp2]},
-    {key:"listen", type:"listen", icon:"🎧", title:"Nghe", min:"9–13′", text:TEXT_TUE, sets:[SET.listen2]},
-    {key:"notice", type:"notice", icon:"🔍", title:"Tìm ngữ pháp", min:"13–15′", text:TEXT_TUE},
-    {key:"practice", type:"sets", icon:"✏️", title:"Luyện tập", min:"15–26′", sets:[SET.gap1, SET.form1]},
-    OUTPUT_MON
-  ]},
-  "w1-thu": { demo:true, steps:[
-    {key:"warmup", type:"sets", icon:"☀️", title:"Nhớ lại", min:"0–3′", sets:[SET.recall1]},
-    {key:"review", type:"sets", icon:"✏️", title:"Ôn dạng bài khác", min:"3–20′", sets:[SET.mcq1, SET.reorder1]},
-    {key:"read", type:"read", icon:"📖", title:"Đọc trước Sub 3", min:"20–25′", heading:"Who is she?", purpose:"Đọc để tìm: người trong ảnh là ai?", text:TEXT_THU, vocab:VOC_THU, sets:[],
-      note:"Hôm nay chỉ đọc để làm quen với câu hỏi. Bài tập của phần này sẽ có vào ngày mai."},
-    {key:"listen", type:"listen", icon:"🎧", title:"Nghe", min:"25–30′", text:TEXT_THU, sets:[SET.listen3]}
-  ]},
-  "w1-fri": { demo:true, steps:[
-    {key:"warmup", type:"sets", icon:"☀️", title:"Nhớ lại", min:"0–3′", sets:[SET.recall1]},
-    {key:"read", type:"read", icon:"📖", title:"Đọc", min:"3–9′", heading:"Who is she?", purpose:"Đọc để tìm: người trong ảnh là ai?", text:TEXT_THU, vocab:VOC_THU, sets:[SET.comp3]},
-    {key:"listen", type:"listen", icon:"🎧", title:"Nghe", min:"9–13′", text:TEXT_THU, sets:[SET.listen3]},
-    {key:"notice", type:"notice", icon:"🔍", title:"Tìm ngữ pháp", min:"13–15′", text:TEXT_THU},
-    {key:"practice", type:"sets", icon:"✏️", title:"Luyện tập", min:"15–26′", sets:[SET.reorder1, SET.form1]},
-    {key:"output", type:"output", icon:"🌷", title:"Tự viết", min:"26–30′",
-      prompt:"Viết 1 câu hỏi và 1 câu trả lời về một người trong gia đình.",
-      hint:"Who is he? He is my ___. / Is she a ___? Yes, she is.",
-      sample:"Who is she? She is my sister. Is she a student? Yes, she is.",
-      model:"Who is he? He is my father. Is he a driver? Yes, he is."}
-  ]},
-  "w1-sat": { demo:true, steps:[
-    {key:"quiz", type:"sets", icon:"🧠", title:"Quiz cả tuần", min:"0–5′", gen:() => [recallWeekSet()]},
-    {key:"transfer", type:"read", icon:"📖", title:"Bài đọc mới", min:"5–12′", heading:"Linh's family", purpose:"Đọc để so với gia đình mình: gia đình Linh có gì giống gia đình bạn?", text:TEXT_SAT, vocab:VOC_SAT, sets:[SET.comp4],
-      note:"Bài đọc mới dùng lại từ và ngữ pháp đã học, để xem bạn đọc hiểu được mà không cần tra."},
-    {key:"mix", type:"sets", icon:"✏️", title:"Tổng hợp 5 dạng", min:"12–22′", gen:mixSets},
-    {key:"preview", type:"read", icon:"👀", title:"Làm quen Sub 4", min:"22–28′", heading:"Extended family", purpose:"Đọc để làm quen: tìm các từ chỉ họ hàng mà bạn đã biết.", text:TEXT_EXT, vocab:VOC_EXT, sets:[],
-      note:"Chỉ đọc để làm quen, tuần sau mình sẽ học kỹ."},
-    {key:"report", type:"report", icon:"📊", title:"Báo cáo tuần", min:"28–30′"}
-  ]}
-};
+const LESSONS = {};
 const WEEKS = {};
-WEEKS[1] = WEEK1;
-let DEMO_LESSONS = Object.assign({}, LESSONS);
-function restoreDemo(){ if (!WEEKS[1]){ WEEKS[1] = WEEK1; Object.assign(LESSONS, DEMO_LESSONS); } }
+let STUB_LESSONS = {};
+function restoreStub(){ if (!WEEKS[1]){ WEEKS[1] = WEEK1; Object.assign(LESSONS, STUB_LESSONS); } }
 /* =====================================================================
    NỘI DUNG TỪ FILE JSON (GPT soạn, giáo viên tải lên)
    ===================================================================== */
 const SCHEMA = "a1-week/1";
 const DAYK = ["mon","tue","wed","thu","fri","sat"], DAYN = ["Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7"];
 const DEFAULT_KIND = ["new","review","new","review","new","week"];
-if (LRN.id === "tri" || LRN.id === "bw"){   // Trí và chế độ Bookworms không dùng bài demo của Nhi: nếu chưa có bài thì hiện trang "chưa có bài"
-  Object.keys(LESSONS).forEach(k => delete LESSONS[k]); Object.keys(SET).forEach(k => delete SET[k]);
-  const stubTitle = ["Chưa có bài","Chưa có bài","Chưa có bài","Chưa có bài","Chưa có bài","Chưa có bài"];
-  WEEK1 = { id:1, stub:true, title:"Chưa có bài", grammar:"Thầy chưa tải bài lên", subs:[], sessions:DAYK.map((k, i) => ({ id:"w1-"+k, day:DAYN[i], kind:DEFAULT_KIND[i], title:stubTitle[i] })) };
-  DAYK.forEach(k => { LESSONS["w1-"+k] = { demo:true, steps:[{ key:"empty", type:"read", icon:"📖", title:"Chưa có bài", min:"", heading:"Chưa có bài học", purpose:"Chờ thầy tải nội dung tuần này lên.",
-    text:["Thầy chưa tải nội dung lên. Vào Cài đặt, mở trang tải bài, rồi dán file JSON tuần 1."], vocab:{}, sets:[] }] }; });
-  WEEKS[1] = WEEK1; DEMO_LESSONS = Object.assign({}, LESSONS);
+{   // Chưa có bài thật thì chỉ hiện trang "Chưa có bài", không có bài mẫu nào
+  WEEK1 = { id:1, stub:true, title:"Chưa có bài", grammar:"Thầy chưa tải bài lên", subs:[], sessions:DAYK.map((k, i) => ({ id:"w1-"+k, day:DAYN[i], kind:DEFAULT_KIND[i], title:"Chưa có bài" })) };
+  DAYK.forEach(k => { LESSONS["w1-"+k] = { stub:true, steps:[{ key:"empty", type:"read", icon:"📖", title:"Chưa có bài", min:"", heading:"Chưa có bài học", purpose:"Chờ thầy tải nội dung tuần này lên.", text:[], vocab:{}, sets:[] }] }; });
+  WEEKS[1] = WEEK1; STUB_LESSONS = Object.assign({}, LESSONS);
 }
 const STEP_DEF = { sets:{icon:"✏️",title:"Luyện tập"}, read:{icon:"📖",title:"Đọc"}, listen:{icon:"🎧",title:"Nghe"},
   notice:{icon:"🔍",title:"Tìm ngữ pháp"}, output:{icon:"🌷",title:"Tự viết"}, report:{icon:"📊",title:"Báo cáo tuần"}, bookread:{icon:"📚",title:"Đọc sách"} };
@@ -1677,7 +1508,7 @@ const DELETED = new Set();
 function loadDeleted(){ try { (JSON.parse(localStorage.getItem(CKEY + "-del") || "[]")).forEach(n => DELETED.add(+n)); } catch(e){} }
 function saveDeleted(){ try { localStorage.setItem(CKEY + "-del", JSON.stringify([...DELETED])); } catch(e){} }
 function saveContentLocal(){ try { localStorage.setItem(CKEY, JSON.stringify(CONTENT)); } catch(e){} }
-function applyContent(n, json){ unloadWeek(n); compileWeek(json); if (n === 1 && !WEEKS[1]) restoreDemo(); }
+function applyContent(n, json){ unloadWeek(n); compileWeek(json); if (n === 1 && !WEEKS[1]) restoreStub(); }
 function loadContentLocal(){
   loadDeleted();
   try { const o = JSON.parse(localStorage.getItem(CKEY) || "{}"); Object.keys(o).forEach(n => { const e = o[n];
@@ -1689,7 +1520,7 @@ async function saveWeek(json){
   return true;
 }
 async function deleteWeek(n){
-  delete CONTENT[n]; DELETED.add(+n); saveDeleted(); saveContentLocal(); unloadWeek(n); if (!WEEKS[1]) restoreDemo();
+  delete CONTENT[n]; DELETED.add(+n); saveDeleted(); saveContentLocal(); unloadWeek(n); if (!WEEKS[1]) restoreStub();
   if (Cloud.ready){ try { await DB.set(LRN.cp+n, { json:"", deleted:true }, Date.now()); } catch(e){ console.error(e); } }
 }
 async function loadContentCloud(){
@@ -1703,7 +1534,7 @@ async function loadContentCloud(){
     const json = JSON.parse(d.json); if (validateWeek(json).E.length) return;
     CONTENT[n] = { json, at:row.at || 0, src:"cloud" }; applyContent(n, json);
   } catch(e){} });
-  saveContentLocal(); if (!WEEKS[1]) restoreDemo();
+  saveContentLocal(); if (!WEEKS[1]) restoreStub();
 }
 async function loadContentStatic(){
   try {
@@ -2942,6 +2773,10 @@ function lessonView(id, idx){
     return h("div",null, h("a",{class:"btn soft",href:"#/week"},"Về lịch tuần"),
       h("div",{class:"card",style:"margin-top:16px"}, h("div",{style:"text-align:center"}, mascot("happy")), h("h2",null,"Buổi này chưa có")));
   }
+  if (lesson.stub){
+    return h("div",null, h("a",{class:"btn soft",href:"#/home"},"← Trang chủ"),
+      h("div",{class:"card",style:"margin-top:16px;text-align:center"}, mascot("happy"), h("h2",null,"Chưa có bài học"), h("p",{class:"muted"},"Thầy chưa tải bài cho tuần này. Khi có bài, buổi học sẽ hiện ở đây.")));
+  }
   const sess = ensureSession(id); activeLesson = id;
   const steps = lesson.steps; idx = Math.max(0, Math.min(steps.length-1, isNaN(idx) ? 0 : idx));
   const step = steps[idx], last = idx === steps.length-1;
@@ -2965,7 +2800,6 @@ function lessonView(id, idx){
   return h("div",null,
     h("div",{class:"lhead"}, h("a",{class:"back",href:"#/week","aria-label":"Quay lại"},"←"), h("div",{class:"grow"}, h("h1",null,meta.title), h("div",{class:"small muted"}, meta.day+", "+KIND[meta.kind])),
       h("div",{class:"clock",id:"clock"},"⏱ "+fmt(sess.seconds || 0)), fsBtn()),
-    lesson.demo ? h("div",{class:"card tint flat small"}, "🧪 "+DEMO_NOTE) : null,
     nav, body, skip,
     h("div",{class:"lbar"}, idx > 0 ? h("button",{class:"btn soft",type:"button","aria-label":"Bước trước",onClick:() => go(idx-1)},"←") : null, next));
 }
@@ -3012,7 +2846,8 @@ function homeView(){
         st && st.seconds && !st.done ? h("span",{class:"pill"},"Đã học "+Math.round(st.seconds/60)+" phút") : null),
       h("a",{class:"btn block",href:"#/lesson/"+s.id+"/0"}, st && !st.done ? "Học tiếp" : "Bắt đầu học")); };
   let main;
-  if (ti.state === "day" && !isDone(ti.session.id)) main = startCard(ti.session, "Hôm nay");
+  if (WEEKS[weekNo()] && WEEKS[weekNo()].stub) main = h("div",{class:"card tint"}, h("h2",null,"Chưa có bài học"), h("p",{class:"muted"},"Thầy chưa tải bài lên. Khi có bài, buổi học hôm nay sẽ hiện ở đây."));
+  else if (ti.state === "day" && !isDone(ti.session.id)) main = startCard(ti.session, "Hôm nay");
   else if (ti.state === "day") main = h("div",{class:"card tint"}, h("h2",null,SCH ? "Đã hoàn thành buổi hôm nay" : "Hôm nay bạn đã học xong rồi"), h("p",{class:"muted"},SCH ? "Có thể làm thêm buổi kế tiếp nếu còn thời gian." : "Giỏi lắm! Muốn học thêm thì cứ làm tiếp buổi sau."),
       nextUndone ? h("a",{class:"btn soft",href:"#/lesson/"+nextUndone.id+"/0"},"Học thêm: "+nextUndone.day) : null);
   else if (ti.state === "rest") main = h("div",{class:"card tint"}, h("h2",null,"Hôm nay là Chủ nhật, ngày nghỉ"), h("p",{class:"muted"},"Nghỉ ngơi nhé. Nếu muốn, ôn 10 phút từ vựng cho vui."),
@@ -3022,7 +2857,8 @@ function homeView(){
   else if (ti.state === "before") main = nextUndone ? startCard(nextUndone, "Khóa học bắt đầu sau "+ti.days+" ngày, bạn có thể học trước")
       : h("div",{class:"card tint"}, h("h2",null,"Khóa học bắt đầu sau "+ti.days+" ngày"), h("p",{class:"muted"},"Tuần này đã học xong hết rồi. Trong lúc chờ, bạn có thể ôn từ vựng và câu sai."));
   else main = nextUndone ? startCard(nextUndone, "Chưa có bài cho "+wTxt(ti.week).toLowerCase()+", mình ôn lại "+wTxt(weekNo()).toLowerCase()+" nhé") : h("div",{class:"card tint"}, h("h2",null,wTxt(weekNo())+" đã xong hết rồi"));
-  const missed = ti.state === "day" ? list.filter((s,i) => i < ti.wd && !isDone(s.id)) : (ti.state === "rest" || ti.state === "beyond" || ti.state === "finished") ? list.filter(s => !isDone(s.id)) : [];
+  const stubW = !!(WEEKS[weekNo()] && WEEKS[weekNo()].stub);
+  const missed = stubW ? [] : ti.state === "day" ? list.filter((s,i) => i < ti.wd && !isDone(s.id)) : (ti.state === "rest" || ti.state === "beyond" || ti.state === "finished") ? list.filter(s => !isDone(s.id)) : [];
   const sleepy = ti.state === "rest" || (ti.state === "day" && missed.length >= 2);
   const say2 = SCH ? (ti.state === "rest" ? "Chủ nhật là ngày nghỉ." : sleepy ? "Còn "+missed.length+" buổi chưa hoàn thành trong tuần này." : say)
     : ti.state === "rest" ? "Chủ nhật rồi, mình nghỉ ngơi cho khỏe nhé!" : sleepy ? "Mình hơi buồn ngủ, học bù một chút cho tỉnh nhé?" : say;
@@ -3036,8 +2872,7 @@ function homeView(){
     missed.length ? h("div",{class:"card flat"}, h("h3",null,"Học bù"), h("div",{class:"chips"}, missed.map(s => h("a",{class:"pill",href:"#/lesson/"+s.id+"/0",style:"text-decoration:none"}, s.day+": "+s.title)))) : null,
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,sk),h("span",null,"ngày liên tiếp")), h("div",{class:"stat"},h("b",null,doneN),h("span",null,"sao đã sáng")), h("div",{class:"stat"},h("b",null,due),h("span",null,"từ cần ôn"))),
     due ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},due+" từ đang chờ ôn"), h("div",{class:"small muted"},"Hôm nay ôn "+Math.min(due, VCAP)+" từ, khoảng "+Math.max(2, Math.round(Math.min(due, VCAP) * .25))+" phút")), h("a",{class:"btn soft",href:"#/vocab"},"Ôn ngay"))) : null,
-    S.mistakes.length ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},S.mistakes.length+" câu cần ôn lại"), h("div",{class:"small muted"},"Làm đúng thì câu sẽ biến mất")), h("a",{class:"btn soft",href:"#/mistakes"},"Ôn câu sai"))) : null,
-    WEEKS[weekNo()] && !WEEKS[weekNo()].json ? h("p",{class:"muted small",style:"text-align:center"},"Đây là bản demo để xem các chức năng. Vào Cài đặt để nạp dữ liệu mẫu hoặc đổi linh vật.") : null);
+    S.mistakes.length ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},S.mistakes.length+" câu cần ôn lại"), h("div",{class:"small muted"},"Làm đúng thì câu sẽ biến mất")), h("a",{class:"btn soft",href:"#/mistakes"},"Ôn câu sai"))) : null);
 }
 function vlistCard(W){
   const L = W.vocabList; if (!L || !L.length) return null;
@@ -3063,14 +2898,14 @@ function weekView(){
     vlistCard(W),
     h("div",{class:"chips",style:"margin-bottom:16px"}, (W.subs || []).map((t,i) => h("span",{class:"pill"}, "Sub "+(i+1)+": "+t))),
     list.map((s,i) => {
-      const done = isDone(s.id), started = !!S.sessions[s.id], demo = !!LESSONS[s.id].demo;
+      const done = isDone(s.id), started = !!S.sessions[s.id];
       const isToday = ti.state === "day" && ti.week === vw && ti.wd === i;
       const missed = !done && (ti.week > vw || (ti.week === vw && ((ti.state === "day" && i < ti.wd) || ti.state === "rest")) || ti.state === "beyond");
       const card = h("a",{class:"card day"+(done?" is-done":""),href:"#/lesson/"+s.id+"/0"},
         h("div",{class:"when"}, s.day.replace("Thứ ","T"), h("small",null,DAYMIN+"′")),
         h("div",{class:"grow"}, h("div",{style:"font-weight:800"},s.title), h("div",{class:"small muted",style:"margin:2px 0 6px"},KIND[s.kind]),
           h("div",{class:"chips"}, done ? h("span",{class:"pill ok"},"✅ Xong") : started ? h("span",{class:"pill"},"Đang học") : h("span",{class:"pill"},"Chưa học"),
-            isToday ? h("span",{class:"pill"},"📍 Hôm nay") : null, missed ? h("span",{class:"pill lock"},"Chưa học bù") : null, demo ? h("span",{class:"pill lock"},"🧪 Demo") : null)));
+            isToday ? h("span",{class:"pill"},"📍 Hôm nay") : null, missed ? h("span",{class:"pill lock"},"Chưa học bù") : null)));
       return CH[s.id] ? [card, h("a",{class:"pill",href:"#/challenge/"+s.id,style:"text-decoration:none;margin:-8px 0 14px 8px"}, "🏆 Challenge"+(S.challenges[s.id] ? " ✅" : ""))] : card; }),
     h("div",{class:"card day is-lock"}, h("div",{class:"when",style:"background:#f4eef1; border-color:#e6dde2"},"CN",h("small",null,"nghỉ")),
       h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Chủ nhật: nghỉ ngơi"), h("div",{class:"small muted",style:"margin-bottom:8px"},"Tùy chọn: 10 phút ôn từ vựng. Ngày nghỉ không làm đứt chuỗi ngày học."),
@@ -3355,8 +3190,8 @@ function settingsView(){
       notMon ? h("p",{class:"err small"},"Ngày này không phải thứ Hai, nhãn Thứ 2 đến Thứ 7 sẽ lệch.") : null),
     h("div",{class:"card"}, h("h3",null,"Đồng bộ"), h("p",{class:"muted small",style:"margin:0"}, Cloud.ready ? "Đang đồng bộ qua Supabase." : "Chưa đồng bộ được, tiến độ đang lưu trong trình duyệt này. Kiểm tra mạng hoặc cấu hình Supabase.")),
     h("div",{class:"card"}, h("h3",null,"Khu dành cho người hướng dẫn"), h("p",{class:"muted small"},"Xem tiến độ, đọc bài viết, nhận xét và để lại lời nhắn."), h("a",{class:"btn soft",href:"#/teacher"},"Mở khu người hướng dẫn")),
-    h("div",{class:"card tint"}, h("h3",null,"Dữ liệu demo"), h("p",{class:"muted small"},"Nạp tiến độ mẫu (3 buổi đã xong, chuỗi 4 ngày, vài câu sai, từ vựng đến hạn ôn) để xem báo cáo, lịch, sticker khi có dữ liệu."),
-      h("div",{class:"row"}, h("button",{class:"btn",type:"button",onClick:() => { if (confirm("Thay toàn bộ tiến độ hiện tại bằng dữ liệu demo?")){ S = demoState(); save(); applyBrand(); toast("Đã nạp dữ liệu demo"); location.hash = "#/home"; route(); } }},"Nạp dữ liệu demo"),
+    h("div",{class:"card tint"}, h("h3",null,"Tiến độ học"), h("p",{class:"muted small"},"Xóa toàn bộ tiến độ của học viên trên thiết bị này."),
+      h("div",{class:"row"},
         h("button",{class:"btn danger",type:"button",onClick:() => { if (confirm("Xóa toàn bộ tiến độ? Không thể hoàn tác.")){ const keep = S.settings; S = defaultState(); S.settings = Object.assign(S.settings, keep); save(); toast("Đã xóa tiến độ"); route(); } }},"Xóa tiến độ"))));
 }
 function teacherView(){
@@ -3365,7 +3200,6 @@ function teacherView(){
   const ta = h("textarea",{class:"txt",rows:3,placeholder:"Ví dụ: Tuần này em làm tốt phần am/is/are, nhớ đọc to các câu nhé!"}); ta.value = S.teacherNote ? S.teacherNote.text : "";
   const writings = Object.entries(S.writing);
   return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"), h("h1",{style:"margin-top:16px"},"Khu người hướng dẫn"),
-    h("div",{class:"card tint flat small"},"🧪 Đây là bản demo. Khi dùng thật, nên bảo vệ trang này bằng một tài khoản đăng nhập riêng để học viên không vào nhầm."),
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneCount()+"/"+allSessions().length),h("span",null,"buổi xong")), h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút học")), h("div",{class:"stat"},h("b",null,streak()),h("span",null,"ngày liên tiếp"))),
     h("p",{class:"muted"}, lastDay ? "Lần học gần nhất: "+lastDay+"." : "Chưa có buổi học nào."),
     h("div",{class:"card"}, h("h3",null,"Lịch sử buổi học"),
@@ -3518,7 +3352,7 @@ function contentView(){
   }
   if (dropJSON){ ta.value = dropJSON; dropJSON = null; check(); }
   const rows = Object.keys(WEEKS).map(Number).sort((a, b) => a - b).map(n => { const w = WEEKS[n], c = CONTENT[n];
-    const src = !w.json ? "Bản demo" : c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Từ repo";
+    const src = !w.json ? "Chưa có bài" : c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Từ repo";
     return h("div",{class:"vrow"}, h("div",{class:"grow"}, h("b",null,"Tuần "+n+": "+w.title), h("div",{class:"small muted"},w.grammar+" · "+src)),
       h("a",{class:"pill",href:"#/lesson/w"+n+"-mon/0",style:"text-decoration:none"},"Xem thử"),
       c ? h("button",{class:"pill",type:"button",onClick:() => { const a = h("a",{href:URL.createObjectURL(new Blob([JSON.stringify(c.json,null,2)],{type:"application/json"})),download:"week-"+n+".json"}); document.body.append(a); a.click(); a.remove(); }},"Tải JSON") : null,
@@ -3529,30 +3363,6 @@ function contentView(){
       h("div",{class:"row",style:"margin-top:10px"}, h("button",{class:"btn",type:"button",onClick:check},"Kiểm tra"), h("button",{class:"btn soft",type:"button",onClick:() => fileIn.click()},"Chọn file…"), fileIn)),
     out, h("div",{class:"card"}, h("h3",null,"Các tuần đang có"), rows.length ? rows : h("p",{class:"muted"},"Chưa có tuần nào.")),
     h("div",{class:"card flat small muted"}, Cloud.ready ? "Nội dung đang được lưu trên đám mây, mọi thiết bị của học viên sẽ thấy." : "Chưa kết nối đám mây: nội dung chỉ lưu trong trình duyệt này. Muốn mọi thiết bị thấy, hãy kiểm tra kết nối hoặc đưa file vào thư mục weeks/ của repo (xem README)."));
-}
-
-/* =====================================================================
-   DỮ LIỆU DEMO
-   ===================================================================== */
-function demoState(){
-  const s = defaultState(); s.settings = Object.assign({}, S.settings);
-  const fillSteps = id => { const o = {}; LESSONS[id].steps.forEach(x => { o[x.key] = true; }); return o; };
-  [["w1-mon",1740,3],["w1-tue",1620,2],["w1-wed",1800,1]].forEach(([id, sec, ago]) => {
-    s.sessions[id] = { steps:fillSteps(id), seconds:sec, startedAt:Date.now()-ago*86400000, done:true, doneAt:Date.now()-ago*86400000 };
-    s.log.push({ d:addDays(-ago), id, sec });
-  });
-  s.sessions["w1-thu"] = { steps:{warmup:true, review:true}, seconds:660, startedAt:Date.now(), done:false };
-  [1,2,3,4].forEach(n => { s.activeDays.push(addDays(-n)); s.dayMin[addDays(-n)] = 1500 + n*60; });
-  s.dayMin[addDays(0)] = 660;
-  s.results = { mcq:{right:21,total:26}, gap:{right:9,total:10}, reorder:{right:6,total:8}, fix:{right:5,total:9}, form:{right:8,total:10}, notice:{right:36,total:36} };
-  ["fix1#0","fix1#3","reorder1#2","mcq1#2","form1#2"].forEach(ref => { const r = resolveRef(ref); if (!r) return; const it = r.item;
-    s.mistakes.push({ ref, t:r.type, q:it.q || it.text || it.wrong || (it.words||[]).join(" / "), a:it.options ? it.options[it.answer] : it.answer, why:it.why, at:addDays(-1) }); });
-  const words = Object.assign({}, VOC_MON, VOC_TUE); let i = 0;
-  Object.keys(words).forEach(w => { const box = i % 4; s.vocab[w] = { m:words[w], box, due: i < 6 ? addDays(0) : addDays(box + 1) }; i++; });
-  s.writing = { "w1-mon":"This is my mother. Her name is Hoa. She is a teacher.", "w1-wed":"This is my father. He is not a teacher. He is a driver." };
-  s.feedback = { "w1-mon":"Câu rất tốt! Nhớ viết hoa chữ Hoa nhé." };
-  s.stats = { plays:12, fixed:3, perfect:2, best:4 };
-  return s;
 }
 
 /* =====================================================================
@@ -3605,7 +3415,7 @@ function gvView(){
   const ti = todayInfo();
   const weekRow = w => {
     const W = WEEKS[w], c = CONTENT[w], rm = ROADMAP.find(x => x[0] === w) || [], ds = schedDates(w);
-    const src = !W ? "" : !W.json ? "Bản demo" : c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Từ repo";
+    const src = !W ? "" : !W.json ? "Chưa có bài" : c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Từ repo";
     const sess = W ? W.sessions.map((s, i) => { const L = LESSONS[s.id], n = L && L.steps ? L.steps.length : 0;
       const dIn = h("input",{class:"txt",type:"date",value:ds[i],onChange:e => { if (e.target.value){ setSched(w, c2 => { c2.d = c2.d || []; c2.d[i] = e.target.value; }); route(); } }});
       return h("div",{class:"gvs"}, h("span",{class:"gvd"},s.day.replace("Thứ ","T")), h("div",{class:"grow"}, h("div",{style:"font-weight:700"},s.title), h("div",{class:"small muted"},KIND[s.kind]+" · "+n+" bước"+(CH[s.id] ? " · 🏆 Challenge" : ""))),
@@ -3613,9 +3423,9 @@ function gvView(){
     const stIn = h("input",{class:"txt",type:"date",value:schedStart(w),onChange:e => { if (e.target.value){ setSched(w, c2 => { c2.start = e.target.value; c2.d = null; }); route(); } }});
     const det = h("details",{class:"card gvw"}, h("summary",null, h("div",{class:"when",style:"min-width:44px"},"T"+w),
         h("div",{class:"grow"}, h("div",{style:"font-weight:800"},rm[1] ? rm[1] : wFull(w)), h("div",{class:"small muted"},(W ? wFull(w)+": "+W.title+" · " : wFull(w)+" · ")+fmtD(ds[0])+" – "+fmtD(ds[5]))),
-        h("span",{class:"pill"+(W && W.json ? " ok" : " lock")}, W && W.json ? "✅ Có bài" : W ? "Chỉ có bản demo" : "Chưa có"), schedCustom(w) ? h("span",{class:"pill"},"🗓 Tùy chỉnh") : null),
+        h("span",{class:"pill"+(W && W.json ? " ok" : " lock")}, W && W.json ? "✅ Có bài" : "Chưa có"), schedCustom(w) ? h("span",{class:"pill"},"🗓 Tùy chỉnh") : null),
       h("div",{class:"gvb"},
-        W && !W.json ? h("p",{class:"small muted"},"Tuần này chưa có bài thật. Web đang hiện bản demo để màn hình học không bị trống; thả file bài lên là bản demo tự mất.") : W ? h("p",{class:"small muted"},"Ngữ pháp: "+W.grammar+(src ? " · "+src : "")) : h("p",{class:"small muted"},(rm[2] ? "Dự kiến: "+rm[2]+". " : "")+"Chưa tải bài lên cho tuần này."),
+        W && !W.json ? h("p",{class:"small muted"},"Tuần này chưa có bài. Thả file bài lên để Nhi bắt đầu học.") : W ? h("p",{class:"small muted"},"Ngữ pháp: "+W.grammar+(src ? " · "+src : "")) : h("p",{class:"small muted"},(rm[2] ? "Dự kiến: "+rm[2]+". " : "")+"Chưa tải bài lên cho tuần này."),
         sess,
         h("h4",{style:"margin:12px 0 4px"},"🗓 Lịch học tuần này"),
         h("div",{class:"gvsch"}, h("span",{class:"small"},"Bắt đầu từ"), stIn),
