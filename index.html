@@ -1597,6 +1597,7 @@ function validateWeek(j){
         if (!isStr(st.book)) E.push(sw + ": thiếu book (tên sách)."); if (!isStr(st.pages)) E.push(sw + ": thiếu pages (ví dụ \"1–5\")."); if (!isStr(st.goal)) W.push(sw + ": thiếu goal (mục tiêu đọc, ví dụ \"Đọc để tìm: Anna đang làm gì?\").");
         if (st.minutes != null && !(Number.isFinite(st.minutes) && st.minutes > 0 && st.minutes <= 30)) E.push(sw + ": minutes phải là số phút từ 1 đến 30.");
         if (st.text != null) W.push(sw + ": bước Đọc sách không được chứa văn bản sách, hãy bỏ trường text.");
+        if (st.textSrc != null && !(isStr(st.textSrc) && /^text:[\w.\-]+$/.test(st.textSrc))) E.push(sw + ": textSrc phải có dạng \"text:ten-file.txt\" (file chữ của sách Thầy tự kéo thả vào web, không nằm trong JSON).");
         if (st.audioSrc != null && !(isStr(st.audioSrc) && /^audio:[\w.\-]+$/.test(st.audioSrc))) E.push(sw + ": audioSrc phải có dạng \"audio:ten-file.mp3\" (tên file đã tải lên ở GV soạn bài).");
       }
       if (st.type === "notice"){
@@ -1839,6 +1840,19 @@ const audName = n => String(n || "").normalize("NFD").replace(/[\u0300-\u036f]/g
 function resolveAudio(src){ const m = /^audio:(.+)$/.exec(src || ""); if (!m) return src; return AUD.local.get(m[1]) || ""; }
 const audIsFile = f => /^audio\//.test(f.type) || /\.(mp3|m4a|wav|ogg|aac)$/i.test(f.name);
 function audTake(files){ let n = 0; [...files].filter(audIsFile).forEach(f => { const k = audName(f.name); if (AUD.local.has(k)) URL.revokeObjectURL(AUD.local.get(k)); AUD.local.set(k, URL.createObjectURL(f)); n++; }); return n; }
+/* ---- Văn bản sách do Thầy tự kéo thả (.txt): chỉ giữ trong phiên, không lưu, không đồng bộ, không nằm trong bài ---- */
+const TXT = { local:new Map() };
+async function txtTake(files){ let n = 0; for (const f of [...files]){ if (!/\.(txt|md)$/i.test(f.name) && !/^text\//.test(f.type)) continue; try { TXT.local.set(audName(f.name), await f.text()); n++; } catch(e){} } return n; }
+function textDropzone(onAdded){
+  const fileIn = h("input",{type:"file",accept:".txt,.md,text/plain",multiple:true,hidden:true});
+  const drop = h("div",{class:"dropz",tabindex:"0",role:"button","aria-label":"Kéo file văn bản vào đây hoặc bấm để chọn"}, h("div",{style:"font-size:1.6rem"},"📄"), h("b",null,"Kéo thả file văn bản (.txt) vào đây"), h("div",{class:"small muted"},"hoặc bấm để chọn file"));
+  const take = async files => { const n = await txtTake(files); if (n) onAdded(n); else toast("Chỉ nhận file .txt"); };
+  drop.addEventListener("click", () => fileIn.click()); drop.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); fileIn.click(); } });
+  ["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("on"); }));
+  ["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("on"); }));
+  drop.addEventListener("drop", e => take(e.dataTransfer.files)); fileIn.addEventListener("change", () => { take(fileIn.files); fileIn.value = ""; });
+  return h("div", null, drop, fileIn);
+}
 function audDropzone(onAdded, small){
   const fileIn = h("input",{type:"file",accept:"audio/*,.mp3,.m4a,.wav,.ogg",multiple:true,hidden:true});
   const drop = h("div",{class:"dropz",tabindex:"0",role:"button","aria-label":"Kéo file âm thanh vào đây hoặc bấm để chọn"}, h("div",{style:"font-size:1.6rem"},"🎧"), h("b",null,"Kéo thả file âm thanh vào đây"), h("div",{class:"small muted"},"hoặc bấm để chọn file" + (small ? "" : " (mp3, m4a, wav). Web không lưu file, chỉ để nghe lúc này.")));
@@ -2785,6 +2799,21 @@ function bookreadStep(step, ctx){
         const a = h("audio",{controls:true,preload:"none",style:"width:100%"}), spd = h("button",{class:"pill",type:"button"},"Tốc độ 1×"); a.src = url;
         spd.addEventListener("click", () => { a.playbackRate = a.playbackRate === 1 ? .75 : 1; spd.textContent = "Tốc độ " + (a.playbackRate === 1 ? "1×" : "0.75×"); });
         box.replaceChildren(h("div",{class:"small muted",style:"margin-bottom:4px"},"🎧 "+(step.audioNote || "Nghe đoạn này")+" (nghe trước hoặc nghe lúc đọc theo)"), a, spd); };
+      draw(); return box; })() : null,
+    step.textSrc ? (() => { const box = h("div",{class:"bktext"}), nm = String(step.textSrc).replace(/^text:/, "");
+      const draw = () => { const t = TXT.local.get(nm);
+        if (t == null){ box.replaceChildren(h("div",{class:"small muted",style:"margin-bottom:4px"},"📄 Kéo file "+nm+" (chữ của sách, do bạn tự có) vào đây để đọc ngay trên web. Web không lưu file; tải lại trang thì kéo lại. Không có file thì đọc trong sách giấy như bình thường."), textDropzone(draw)); return; }
+        const paras = t.split(/\r?\n\s*\r?\n/).map(x => x.replace(/\s*\r?\n\s*/g, " ").trim()).filter(Boolean);
+        let picked = null;
+        const rd = h("div",{class:"reading rd"}, paras.map(p => h("p", null, tokenize(p).map(tk => {
+          if (!tk.word) return [tk.pre + tk.post, " "];
+          const sp = h("span",{class:"tok",role:"button",tabindex:"0"}, tk.word);
+          const open = () => { if (picked) picked.classList.remove("pick"); if (picked === sp){ picked = null; rd.querySelectorAll(".wcard").forEach(x => x.remove()); return; } picked = sp; sp.classList.add("pick"); wordCard(rd, sp, tk.word, ""); };
+          sp.addEventListener("click", open); sp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); } });
+          return [tk.pre, sp, tk.post, " "]; }))));
+        const hide = h("button",{class:"pill",type:"button"},"Ẩn chữ"); hide.addEventListener("click", () => { rd.hidden = !rd.hidden; hide.textContent = rd.hidden ? "Hiện chữ" : "Ẩn chữ"; });
+        const swap = h("button",{class:"pill",type:"button"},"Đổi file"); swap.addEventListener("click", () => { TXT.local.delete(nm); draw(); });
+        box.replaceChildren(h("div",{class:"row",style:"gap:8px;margin-bottom:6px;align-items:center"}, h("span",{class:"small muted"},"📄 "+nm+" · chạm vào từ để xem nghĩa"), hide, swap), rd); };
       draw(); return box; })() : null,
     h("div",{class:"row",style:"align-items:center;gap:12px;margin:10px 0"}, clock, go, h("span",{class:"small muted"},"Gợi ý khoảng "+Math.round(want/60)+" phút")),
     h("div",{class:"small muted"},"Đọc trong sách của bạn, đọc xong quay lại đây. Gặp từ lạ thì cứ đọc tiếp, đừng dừng lại tra từng từ."),
