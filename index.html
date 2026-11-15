@@ -492,6 +492,7 @@ html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index
 .cloze{line-height:2.5;font-weight:600;margin:6px 0 10px}
 .errlist{padding-left:20px}
 .weeknav{display:flex;align-items:center;gap:8px}
+.dropz{border:2px dashed var(--p300);background:var(--p50);border-radius:18px;padding:22px 14px;text-align:center;cursor:pointer;margin:8px 0}.dropz.on,.dropz:hover{background:var(--p100);border-color:var(--p500)}
 .bkbox{background:var(--p50);border:2px dashed var(--p300);border-radius:16px;padding:12px 14px}.bkpages{font-family:"Baloo 2",sans-serif;font-size:1.6rem;color:var(--p600);line-height:1.2}
 .bkclock{font-family:"Baloo 2",sans-serif;font-size:1.8rem;min-width:70px}.bkclock.okc{color:#2e7d52}
 .cvgv{margin-top:18px;text-align:center}.gvpick{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:10px}.gvpick[hidden]{display:none}
@@ -1555,6 +1556,7 @@ function validateWeek(j){
         if (!isStr(st.book)) E.push(sw + ": thiếu book (tên sách)."); if (!isStr(st.pages)) E.push(sw + ": thiếu pages (ví dụ \"1–5\")."); if (!isStr(st.goal)) W.push(sw + ": thiếu goal (mục tiêu đọc, ví dụ \"Đọc để tìm: Anna đang làm gì?\").");
         if (st.minutes != null && !(Number.isFinite(st.minutes) && st.minutes > 0 && st.minutes <= 30)) E.push(sw + ": minutes phải là số phút từ 1 đến 30.");
         if (st.text != null) W.push(sw + ": bước Đọc sách không được chứa văn bản sách, hãy bỏ trường text.");
+        if (st.audioSrc != null && !(isStr(st.audioSrc) && /^audio:[\w.\-]+$/.test(st.audioSrc))) E.push(sw + ": audioSrc phải có dạng \"audio:ten-file.mp3\" (tên file đã tải lên ở GV soạn bài).");
       }
       if (st.type === "notice"){
         if (!Array.isArray(st.text) || !st.text.length) E.push(sw + ": thiếu text (bài đọc để tìm ngữ pháp)."); if (!Array.isArray(st.target) || !st.target.length) E.push(sw + ": thiếu target (mảng các từ cần tìm).");
@@ -1786,8 +1788,76 @@ function stopAudio(){
   if ("speechSynthesis" in window) speechSynthesis.cancel();
   if (audioEl){ audioEl.pause(); audioEl = null; }
 }
+/* =====================================================================
+   FILE ÂM THANH DO GV TẢI LÊN (kéo thả ở trang GV soạn bài)
+   Lưu trên Supabase Storage (bucket "audio", mọi học viên nghe được); nếu chưa kết nối được thì lưu trong trình duyệt này (IndexedDB).
+   Trong JSON bài, ghi audioSrc: "audio:ten-file.mp3"
+   ===================================================================== */
+const AUD = { local:new Map(), keys:new Map() };
+const audName = n => String(n || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || "audio";
+const audPath = n => LRN.id + "/" + n;
+const audCloudUrl = n => CONFIG.supabase.url + "/storage/v1/object/public/audio/" + audPath(n).split("/").map(encodeURIComponent).join("/");
+function resolveAudio(src){ const m = /^audio:(.+)$/.exec(src || ""); if (!m) return src; return AUD.local.get(m[1]) || (CONFIG.supabase ? audCloudUrl(m[1]) : ""); }
+const idbOpen = () => new Promise((res, rej) => { const r = indexedDB.open("a1-audio", 1); r.onupgradeneeded = () => r.result.createObjectStore("f"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+const idbRun = (mode, fn) => idbOpen().then(db => new Promise((res, rej) => { const tx = db.transaction("f", mode), rq = fn(tx.objectStore("f")); tx.oncomplete = () => res(rq && rq.result); tx.onerror = () => rej(tx.error); }));
+async function loadLocalAudio(){
+  try { const keys = await idbRun("readonly", st => st.getAllKeys()), vals = await idbRun("readonly", st => st.getAll());
+    keys.forEach((k, i) => { if (String(k).startsWith(LRN.id + "/")){ const n = String(k).slice(LRN.id.length + 1); AUD.local.set(n, URL.createObjectURL(vals[i])); AUD.keys.set(n, vals[i].size); } }); } catch(e){}
+}
+const sbH = extra => Object.assign({ apikey:CONFIG.supabase.key, Authorization:"Bearer " + CONFIG.supabase.key }, extra || {});
+async function audUpload(file){
+  const n = audName(file.name);
+  if (CONFIG.supabase){ try {
+    const r = await fetch(CONFIG.supabase.url + "/storage/v1/object/audio/" + audPath(n).split("/").map(encodeURIComponent).join("/"), { method:"POST", headers:sbH({ "x-upsert":"true", "Content-Type":file.type || "audio/mpeg" }), body:file });
+    if (r.ok) return { name:n, where:"cloud" };
+    console.error("upload", r.status, await r.text()); } catch(e){ console.error(e); } }
+  try { await idbRun("readwrite", st => st.put(file, audPath(n))); AUD.local.set(n, URL.createObjectURL(file)); AUD.keys.set(n, file.size); return { name:n, where:"local" }; } catch(e){ return { name:n, where:"fail" }; }
+}
+async function audList(){
+  const out = new Map();
+  if (CONFIG.supabase){ try { const r = await fetch(CONFIG.supabase.url + "/storage/v1/object/list/audio", { method:"POST", headers:sbH({ "Content-Type":"application/json" }), body:JSON.stringify({ prefix:LRN.id + "/", limit:300, sortBy:{ column:"name", order:"asc" } }) });
+    if (r.ok) (await r.json()).forEach(o => { if (o && o.name && o.id !== null) out.set(o.name, { name:o.name, size:(o.metadata || {}).size || 0, cloud:true }); }); } catch(e){} }
+  AUD.keys.forEach((size, n) => { const c = out.get(n); if (c) c.local = true; else out.set(n, { name:n, size, local:true }); });
+  return [...out.values()].sort((a, b) => a.name.localeCompare(b.name));
+}
+async function audDelete(n){
+  if (CONFIG.supabase){ try { await fetch(CONFIG.supabase.url + "/storage/v1/object/audio/" + audPath(n).split("/").map(encodeURIComponent).join("/"), { method:"DELETE", headers:sbH() }); } catch(e){} }
+  try { await idbRun("readwrite", st => st.delete(audPath(n))); } catch(e){} AUD.local.delete(n); AUD.keys.delete(n);
+}
+function audioCard(){
+  const list = h("div"), msg = h("div",{class:"small muted"}), fileIn = h("input",{type:"file",accept:"audio/*,.mp3,.m4a,.wav,.ogg",multiple:true,hidden:true});
+  const fmtSize = b => b > 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB";
+  let playing = null;
+  async function refresh(){
+    list.replaceChildren(h("span",{class:"small muted"},"Đang tải danh sách…"));
+    const L = await audList();
+    list.replaceChildren(...(L.length ? L.map(f => h("div",{class:"vrow"},
+      h("button",{class:"say",type:"button","aria-label":"Nghe thử "+f.name,onClick:() => { if (playing){ playing.pause(); playing = null; } const a = new Audio(resolveAudio("audio:" + f.name)); playing = a; a.play().catch(() => toast("Chưa phát được file này")); }},"▶"),
+      h("div",{class:"grow"}, h("b",null,f.name), h("div",{class:"small muted"}, fmtSize(f.size) + (f.cloud ? " · trên đám mây" : "") + (f.local && !f.cloud ? " · chỉ trên máy này" : ""))),
+      h("button",{class:"pill",type:"button",onClick:() => { const t = "audio:" + f.name; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("Đã chép: " + t), () => toast(t)); }},"Chép tên"),
+      h("button",{class:"pill lock",type:"button",onClick:async () => { if (confirm("Xóa file " + f.name + "?")){ await audDelete(f.name); refresh(); } }},"Xóa")))
+      : [h("p",{class:"muted small"},"Chưa có file âm thanh nào.")]));
+  }
+  async function take(files){
+    const fs = [...files].filter(f => /^audio\//.test(f.type) || /\.(mp3|m4a|wav|ogg|aac)$/i.test(f.name)); if (!fs.length){ msg.textContent = "Chỉ nhận file âm thanh (mp3, m4a, wav, ogg)."; return; }
+    let local = 0, fail = 0;
+    for (let i = 0; i < fs.length; i++){ msg.textContent = "Đang tải lên " + (i + 1) + " / " + fs.length + ": " + fs[i].name + "…"; const r = await audUpload(fs[i]); if (r.where === "local") local++; else if (r.where === "fail") fail++; }
+    msg.textContent = "Xong " + (fs.length - fail) + " file." + (local ? " " + local + " file mới chỉ lưu trong trình duyệt này vì chưa tải lên đám mây được (cần chạy lại supabase-setup.sql)." : "") + (fail ? " " + fail + " file lỗi." : "");
+    refresh();
+  }
+  const drop = h("div",{class:"dropz",tabindex:"0",role:"button","aria-label":"Kéo file âm thanh vào đây hoặc bấm để chọn"}, h("div",{style:"font-size:1.6rem"},"🎧"), h("b",null,"Kéo thả file âm thanh vào đây"), h("div",{class:"small muted"},"hoặc bấm để chọn file (mp3, m4a, wav)"));
+  drop.addEventListener("click", () => fileIn.click()); drop.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); fileIn.click(); } });
+  ["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("on"); }));
+  ["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("on"); }));
+  drop.addEventListener("drop", e => take(e.dataTransfer.files)); fileIn.addEventListener("change", () => { take(fileIn.files); fileIn.value = ""; });
+  const card = h("details",{class:"card"}, h("summary",{style:"cursor:pointer;font-weight:800"},"🎧 File âm thanh"),
+    h("p",{class:"small muted"},"Tải file nghe của sách hoặc bài lên đây. Trong JSON bài, ghi tên file ở trường audioSrc, ví dụ: audio:red-roses-ch1.mp3 (bấm “Chép tên” để lấy)."),
+    drop, fileIn, msg, list);
+  card.addEventListener("toggle", () => { if (card.open) refresh(); });
+  return card;
+}
 function playAudio({text, src, rate}, onend, onprog){
-  stopAudio(); const my = audioToken; let timer = null; const L = (text || "").length;
+  src = resolveAudio(src); stopAudio(); const my = audioToken; let timer = null; const L = (text || "").length;
   const stopT = () => { if (timer){ clearInterval(timer); timer = null; } };
   const end = ok => { stopT(); if (my === audioToken){ if (ok && onprog) onprog(1, L); onend && onend(ok); } };
   if (src){ audioEl = new Audio(src); audioEl.playbackRate = rate || 1; audioEl.onended = () => end(true); audioEl.onerror = () => end(false);
@@ -2712,6 +2782,9 @@ function bookreadStep(step, ctx){
     h("div",{class:"bkbox"}, h("div",{class:"small muted"},step.book + (step.chapter ? "  ·  Chương " + step.chapter : "")), h("div",{class:"bkpages"}, "Trang " + step.pages),
       step.goal ? h("div",{style:"margin-top:6px"}, step.goal) : null),
     step.tip ? h("p",{class:"muted small"}, step.tip) : null,
+    step.audioSrc ? (() => { const a = h("audio",{controls:true,preload:"none",style:"width:100%"}), spd = h("button",{class:"pill",type:"button"},"Tốc độ 1×"); a.src = resolveAudio(step.audioSrc) || "";
+      spd.addEventListener("click", () => { a.playbackRate = a.playbackRate === 1 ? .75 : 1; spd.textContent = "Tốc độ " + (a.playbackRate === 1 ? "1×" : "0.75×"); });
+      return h("div",{style:"margin:8px 0"}, h("div",{class:"small muted",style:"margin-bottom:4px"},"🎧 "+(step.audioNote || "Nghe đoạn này")+" (nghe trước hoặc nghe lúc đọc theo)"), a, spd); })() : null,
     h("div",{class:"row",style:"align-items:center;gap:12px;margin:10px 0"}, clock, go, h("span",{class:"small muted"},"Gợi ý khoảng "+Math.round(want/60)+" phút")),
     h("div",{class:"small muted"},"Đọc trong sách của bạn, đọc xong quay lại đây. Gặp từ lạ thì cứ đọc tiếp, đừng dừng lại tra từng từ."),
     h("div",{style:"margin-top:10px;font-weight:800"},"Bạn hiểu đoạn này thế nào?"), level, doneBtn,
@@ -3415,6 +3488,7 @@ function gvView(){
   return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"),
     h("h1",{style:"margin-top:16px"},"GV soạn bài · "+learnerName()+(LRN.id === "bw" ? " · Bookworms" : "")),
     h("div",{class:"row",style:"margin-bottom:12px"}, h("a",{class:"btn",href:"#/content"},"📚 Tải bài học lên"), h("a",{class:"btn soft",href:"#/teacher"},"Nhận xét và lời nhắn"), h("button",{class:"btn soft",type:"button",onClick:switchLearner},"Đổi học viên")),
+    audioCard(),
     (() => { const M = S.mine || {}, mw = Object.keys(M).sort(); if (!mw.length) return null;
       const d = h("details",{class:"card"}, h("summary",{style:"cursor:pointer;font-weight:800"},"📒 Từ "+MY_NAME()+" tự thêm ("+mw.length+")"), h("p",{class:"small muted"},"Bấm vào từ để sửa nghĩa, ví dụ, từ hay đi cùng, rồi bấm “Lưu và duyệt”."), mw.map(w => mineRowEl(w, () => { route(); }, true))); return d; })(),
     h("p",{class:"muted small"},"Có "+have.length+"/"+ROADMAP.length+" tuần đã có bài. Bấm vào một tuần để xem bài theo buổi và chỉnh lịch học."),
@@ -3562,7 +3636,7 @@ async function boot(){
     S.settings.theme = themeKind() === "night" ? "light" : "night"; save(); applyBrand();
     if (location.hash.startsWith("#/settings")) route();
   });
-  await initCloud(); applyBrand(); await loadContentCloud(); await loadContentStatic();
+  await loadLocalAudio(); await initCloud(); applyBrand(); await loadContentCloud(); await loadContentStatic();
   window.addEventListener("hashchange", route);
   route();
 }
