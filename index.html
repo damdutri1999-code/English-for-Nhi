@@ -730,7 +730,7 @@ body.immersive .bank.stick{bottom:calc(88px + env(safe-area-inset-bottom))}
 </defs></svg>
 <header class="top">
   <div class="brand"><span id="logo"></span><div><b>Học tiếng Anh</b><small id="mname">cùng Thỏ ngọc</small></div></div>
-  <div class="hr"><span class="sync" id="sync" role="status">💾 Lưu trên máy</span><button class="gear fsbtn" id="fsbtn" type="button" aria-label="Toàn màn hình">⛶</button><button class="gear themebtn" id="themebtn" type="button" aria-label="Đổi giao diện sáng hoặc đêm"></button><a class="gear" href="#/settings" aria-label="Cài đặt">⚙️</a></div>
+  <div class="hr"><span class="sync" id="sync" role="status">💾 Lưu trên máy</span><a class="gear" id="nbbtn" href="#/vocab/mine" aria-label="Từ của Nhi" title="Từ của Nhi">📒</a><button class="gear fsbtn" id="fsbtn" type="button" aria-label="Toàn màn hình">⛶</button><button class="gear themebtn" id="themebtn" type="button" aria-label="Đổi giao diện sáng hoặc đêm"></button><a class="gear" href="#/settings" aria-label="Cài đặt">⚙️</a></div>
 </header>
 <main id="app" class="wrap"></main>
 <nav class="tabs" id="tabs" aria-label="Điều hướng"></nav>
@@ -1005,6 +1005,31 @@ function save(){
   S.updatedAt = Date.now();
   try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){}
   scheduleCloud();
+}
+/* ---- Sổ "Từ của Nhi": một cuốn chung cho mọi chế độ (Nhi, Bookworms, Trí), nằm ngoài từng học viên ---- */
+const NB_KEY = "notebook-nhi-v1", NB_DOC = "notebook-nhi-3r6p8d1z";
+let NB = { v:1, updatedAt:0, mine:{} }, nbTimer = null;
+function nbLoad(){ try { const o = JSON.parse(localStorage.getItem(NB_KEY) || "null"); if (o && typeof o === "object") NB = { v:1, updatedAt:o.updatedAt || 0, mine:(o.mine && typeof o.mine === "object") ? o.mine : {} }; } catch(e){} }
+function nbSave(){
+  NB.updatedAt = Date.now();
+  try { localStorage.setItem(NB_KEY, JSON.stringify(NB)); } catch(e){}
+  if (!Cloud.ready) return;
+  clearTimeout(nbTimer); nbTimer = setTimeout(async () => { try { await DB.set(NB_DOC, JSON.parse(JSON.stringify(NB)), NB.updatedAt); } catch(e){ console.error(e); } }, 1200);
+}
+async function nbCloud(){
+  if (!CONFIG.supabase) return;
+  try {
+    const rows = await DB.get(NB_DOC), row = rows[0];
+    if (row && row.data && (row.at || 0) > (NB.updatedAt || 0)){ NB = { v:1, updatedAt:row.at, mine:(row.data.mine && typeof row.data.mine === "object") ? row.data.mine : {} }; try { localStorage.setItem(NB_KEY, JSON.stringify(NB)); } catch(e){} }
+    Cloud.ready = true;
+    await DB.set(NB_DOC, JSON.parse(JSON.stringify(NB)), NB.updatedAt || Date.now());
+  } catch(e){ console.error(e); }
+}
+/* từ đã thêm riêng trong từng chế độ (bản cũ) được gộp vào sổ chung một lần */
+function nbMigrate(){
+  const M = S.mine || {}, ks = Object.keys(M); if (!ks.length) return;
+  ks.forEach(k => { if (!NB.mine[k]) NB.mine[k] = M[k]; });
+  S.mine = {}; nbSave(); save();
 }
 function scheduleCloud(){
   if (!Cloud.ready) return;
@@ -1789,73 +1814,25 @@ function stopAudio(){
   if (audioEl){ audioEl.pause(); audioEl = null; }
 }
 /* =====================================================================
-   FILE ÂM THANH DO GV TẢI LÊN (kéo thả ở trang GV soạn bài)
-   Lưu trên Supabase Storage (bucket "audio", mọi học viên nghe được); nếu chưa kết nối được thì lưu trong trình duyệt này (IndexedDB).
+   FILE ÂM THANH: kéo thả vào web để nghe, web KHÔNG lưu file (chỉ giữ trong phiên, đóng/tải lại trang thì kéo lại).
    Trong JSON bài, ghi audioSrc: "audio:ten-file.mp3"
    ===================================================================== */
-const AUD = { local:new Map(), keys:new Map() };
+const AUD = { local:new Map() };
 const audName = n => String(n || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z0-9._-]+/g, "-").replace(/^-+|-+$/g, "") || "audio";
-const audPath = n => LRN.id + "/" + n;
-const audCloudUrl = n => CONFIG.supabase.url + "/storage/v1/object/public/audio/" + audPath(n).split("/").map(encodeURIComponent).join("/");
-function resolveAudio(src){ const m = /^audio:(.+)$/.exec(src || ""); if (!m) return src; return AUD.local.get(m[1]) || (CONFIG.supabase ? audCloudUrl(m[1]) : ""); }
-const idbOpen = () => new Promise((res, rej) => { const r = indexedDB.open("a1-audio", 1); r.onupgradeneeded = () => r.result.createObjectStore("f"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
-const idbRun = (mode, fn) => idbOpen().then(db => new Promise((res, rej) => { const tx = db.transaction("f", mode), rq = fn(tx.objectStore("f")); tx.oncomplete = () => res(rq && rq.result); tx.onerror = () => rej(tx.error); }));
-async function loadLocalAudio(){
-  try { const keys = await idbRun("readonly", st => st.getAllKeys()), vals = await idbRun("readonly", st => st.getAll());
-    keys.forEach((k, i) => { if (String(k).startsWith(LRN.id + "/")){ const n = String(k).slice(LRN.id.length + 1); AUD.local.set(n, URL.createObjectURL(vals[i])); AUD.keys.set(n, vals[i].size); } }); } catch(e){}
-}
-const sbH = extra => Object.assign({ apikey:CONFIG.supabase.key, Authorization:"Bearer " + CONFIG.supabase.key }, extra || {});
-async function audUpload(file){
-  const n = audName(file.name);
-  if (CONFIG.supabase){ try {
-    const r = await fetch(CONFIG.supabase.url + "/storage/v1/object/audio/" + audPath(n).split("/").map(encodeURIComponent).join("/"), { method:"POST", headers:sbH({ "x-upsert":"true", "Content-Type":file.type || "audio/mpeg" }), body:file });
-    if (r.ok) return { name:n, where:"cloud" };
-    console.error("upload", r.status, await r.text()); } catch(e){ console.error(e); } }
-  try { await idbRun("readwrite", st => st.put(file, audPath(n))); AUD.local.set(n, URL.createObjectURL(file)); AUD.keys.set(n, file.size); return { name:n, where:"local" }; } catch(e){ return { name:n, where:"fail" }; }
-}
-async function audList(){
-  const out = new Map();
-  if (CONFIG.supabase){ try { const r = await fetch(CONFIG.supabase.url + "/storage/v1/object/list/audio", { method:"POST", headers:sbH({ "Content-Type":"application/json" }), body:JSON.stringify({ prefix:LRN.id + "/", limit:300, sortBy:{ column:"name", order:"asc" } }) });
-    if (r.ok) (await r.json()).forEach(o => { if (o && o.name && o.id !== null) out.set(o.name, { name:o.name, size:(o.metadata || {}).size || 0, cloud:true }); }); } catch(e){} }
-  AUD.keys.forEach((size, n) => { const c = out.get(n); if (c) c.local = true; else out.set(n, { name:n, size, local:true }); });
-  return [...out.values()].sort((a, b) => a.name.localeCompare(b.name));
-}
-async function audDelete(n){
-  if (CONFIG.supabase){ try { await fetch(CONFIG.supabase.url + "/storage/v1/object/audio/" + audPath(n).split("/").map(encodeURIComponent).join("/"), { method:"DELETE", headers:sbH() }); } catch(e){} }
-  try { await idbRun("readwrite", st => st.delete(audPath(n))); } catch(e){} AUD.local.delete(n); AUD.keys.delete(n);
-}
-function audioCard(){
-  const list = h("div"), msg = h("div",{class:"small muted"}), fileIn = h("input",{type:"file",accept:"audio/*,.mp3,.m4a,.wav,.ogg",multiple:true,hidden:true});
-  const fmtSize = b => b > 1048576 ? (b / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(b / 1024)) + " KB";
-  let playing = null;
-  async function refresh(){
-    list.replaceChildren(h("span",{class:"small muted"},"Đang tải danh sách…"));
-    const L = await audList();
-    list.replaceChildren(...(L.length ? L.map(f => h("div",{class:"vrow"},
-      h("button",{class:"say",type:"button","aria-label":"Nghe thử "+f.name,onClick:() => { if (playing){ playing.pause(); playing = null; } const a = new Audio(resolveAudio("audio:" + f.name)); playing = a; a.play().catch(() => toast("Chưa phát được file này")); }},"▶"),
-      h("div",{class:"grow"}, h("b",null,f.name), h("div",{class:"small muted"}, fmtSize(f.size) + (f.cloud ? " · trên đám mây" : "") + (f.local && !f.cloud ? " · chỉ trên máy này" : ""))),
-      h("button",{class:"pill",type:"button",onClick:() => { const t = "audio:" + f.name; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast("Đã chép: " + t), () => toast(t)); }},"Chép tên"),
-      h("button",{class:"pill lock",type:"button",onClick:async () => { if (confirm("Xóa file " + f.name + "?")){ await audDelete(f.name); refresh(); } }},"Xóa")))
-      : [h("p",{class:"muted small"},"Chưa có file âm thanh nào.")]));
-  }
-  async function take(files){
-    const fs = [...files].filter(f => /^audio\//.test(f.type) || /\.(mp3|m4a|wav|ogg|aac)$/i.test(f.name)); if (!fs.length){ msg.textContent = "Chỉ nhận file âm thanh (mp3, m4a, wav, ogg)."; return; }
-    let local = 0, fail = 0;
-    for (let i = 0; i < fs.length; i++){ msg.textContent = "Đang tải lên " + (i + 1) + " / " + fs.length + ": " + fs[i].name + "…"; const r = await audUpload(fs[i]); if (r.where === "local") local++; else if (r.where === "fail") fail++; }
-    msg.textContent = "Xong " + (fs.length - fail) + " file." + (local ? " " + local + " file mới chỉ lưu trong trình duyệt này vì chưa tải lên đám mây được (cần chạy lại supabase-setup.sql)." : "") + (fail ? " " + fail + " file lỗi." : "");
-    refresh();
-  }
-  const drop = h("div",{class:"dropz",tabindex:"0",role:"button","aria-label":"Kéo file âm thanh vào đây hoặc bấm để chọn"}, h("div",{style:"font-size:1.6rem"},"🎧"), h("b",null,"Kéo thả file âm thanh vào đây"), h("div",{class:"small muted"},"hoặc bấm để chọn file (mp3, m4a, wav)"));
+function resolveAudio(src){ const m = /^audio:(.+)$/.exec(src || ""); if (!m) return src; return AUD.local.get(m[1]) || ""; }
+const audIsFile = f => /^audio\//.test(f.type) || /\.(mp3|m4a|wav|ogg|aac)$/i.test(f.name);
+function audTake(files){ let n = 0; [...files].filter(audIsFile).forEach(f => { const k = audName(f.name); if (AUD.local.has(k)) URL.revokeObjectURL(AUD.local.get(k)); AUD.local.set(k, URL.createObjectURL(f)); n++; }); return n; }
+function audDropzone(onAdded, small){
+  const fileIn = h("input",{type:"file",accept:"audio/*,.mp3,.m4a,.wav,.ogg",multiple:true,hidden:true});
+  const drop = h("div",{class:"dropz",tabindex:"0",role:"button","aria-label":"Kéo file âm thanh vào đây hoặc bấm để chọn"}, h("div",{style:"font-size:1.6rem"},"🎧"), h("b",null,"Kéo thả file âm thanh vào đây"), h("div",{class:"small muted"},"hoặc bấm để chọn file" + (small ? "" : " (mp3, m4a, wav). Web không lưu file, chỉ để nghe lúc này.")));
+  const take = files => { const n = audTake(files); if (n) onAdded(n); else toast("Chỉ nhận file âm thanh (mp3, m4a, wav, ogg)"); };
   drop.addEventListener("click", () => fileIn.click()); drop.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); fileIn.click(); } });
   ["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("on"); }));
   ["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("on"); }));
   drop.addEventListener("drop", e => take(e.dataTransfer.files)); fileIn.addEventListener("change", () => { take(fileIn.files); fileIn.value = ""; });
-  const card = h("details",{class:"card"}, h("summary",{style:"cursor:pointer;font-weight:800"},"🎧 File âm thanh"),
-    h("p",{class:"small muted"},"Tải file nghe của sách hoặc bài lên đây. Trong JSON bài, ghi tên file ở trường audioSrc, ví dụ: audio:red-roses-ch1.mp3 (bấm “Chép tên” để lấy)."),
-    drop, fileIn, msg, list);
-  card.addEventListener("toggle", () => { if (card.open) refresh(); });
-  return card;
+  return h("div", null, drop, fileIn);
 }
+
 function playAudio({text, src, rate}, onend, onprog){
   src = resolveAudio(src); stopAudio(); const my = audioToken; let timer = null; const L = (text || "").length;
   const stopT = () => { if (timer){ clearInterval(timer); timer = null; } };
@@ -2421,10 +2398,10 @@ function dictGet(word){
   DICT.mem.set(w, p); return p;
 }
 /* =====================================================================
-   TỪ CỦA HỌC VIÊN (S.mine): sổ từ riêng, tách hẳn khỏi sổ từ của giáo án (S.vocab)
+   TỪ CỦA NHI (NB.mine, chung cho mọi chế độ): sổ từ riêng, tách hẳn khỏi sổ từ của giáo án (S.vocab)
    Tra bằng nguồn miễn phí: từ điển (IPA, đọc, định nghĩa, ví dụ), Datamuse (từ hay đi cùng), MyMemory (gợi ý nghĩa tiếng Việt)
    ===================================================================== */
-const MY_NAME = () => LEARNERS[LRN.id].name;
+const MY_NAME = () => "Nhi";
 const mkey = w => String(w || "").toLowerCase().trim().replace(/[^a-z' -]/g, "").replace(/\s+/g, " ");
 const COLL_STOP = new Set("a an the of to in on at for with by from and or but if as is are was were be been am it its this that these those i you he she we they my your his her our their me him them us not no so do does did have has had will would can could may might must shall should than then there here very too also just about into over under up down out off more most much many some any all each every one two".split(" "));
 const mineSay = (w, src) => { let fell = false; playAudio({ text:w, src:src || undefined, rate:.85 }, ok => { if (!ok && src && !fell){ fell = true; playAudio({ text:w, rate:.85 }); } }); };
@@ -2461,15 +2438,14 @@ async function mineLookup(key){
 }
 /* bổ sung phần còn thiếu (phiên âm, từ hay đi cùng, gợi ý) cho từ đã lưu */
 async function mineEnrich(key){
-  const v = (S.mine || {})[key]; if (!v) return;
-  const info = await mineLookup(key); const cur = S.mine[key]; if (!cur) return;
+  const v = NB.mine[key]; if (!v) return;
+  const info = await mineLookup(key); const cur = NB.mine[key]; if (!cur) return;
   if (!cur.ipa && info.ipa) cur.ipa = info.ipa; if (!cur.aud && info.aud) cur.aud = info.aud; if (!cur.pos && info.pos) cur.pos = info.pos;
   if (!cur.def && info.defs[0]) cur.def = info.defs[0].def; if (!(cur.coll || []).length && info.coll.length) cur.coll = info.coll;
-  if (!cur.ex && info.exs[0]) cur.ex = info.exs[0]; save();
+  if (!cur.ex && info.exs[0]) cur.ex = info.exs[0]; nbSave();
 }
 function mineSave(key, f){
-  S.mine = S.mine || {};
-  S.mine[key] = Object.assign({ box:0, due:addDays(1), at:dkey(new Date()) }, f, { m:String(f.m || "").trim() }); save();
+  NB.mine[key] = Object.assign({ box:0, due:addDays(1), at:dkey(new Date()) }, f, { m:String(f.m || "").trim() }); nbSave();
 }
 function mineAddEl(onSaved, prefill){
   const wordIn = h("input",{class:"txt",type:"text",placeholder:"Gõ một từ hoặc cụm từ tiếng Anh",autocomplete:"off",autocapitalize:"none",spellcheck:"false",value:prefill || ""});
@@ -2479,7 +2455,7 @@ function mineAddEl(onSaved, prefill){
   async function lookup(){
     key = mkey(wordIn.value); if (!key){ res.replaceChildren(note("Hãy gõ một từ tiếng Anh nhé.")); return; }
     if (S.vocab[key]){ res.replaceChildren(note("Từ “"+key+"” đã có trong sổ từ vựng của bài học rồi, không cần thêm.")); return; }
-    if ((S.mine || {})[key]){ res.replaceChildren(note("Từ “"+key+"” đã có trong Từ của "+MY_NAME()+" rồi.")); return; }
+    if (NB.mine[key]){ res.replaceChildren(note("Từ “"+key+"” đã có trong Từ của "+MY_NAME()+" rồi.")); return; }
     res.replaceChildren(note("Đang tra từ…")); goBtn.disabled = true;
     try { info = await mineLookup(key); } catch(e){ info = { ipa:"", aud:"", pos:"", defs:[], exs:[], coll:[], sug:[], dictOk:false }; }
     goBtn.disabled = false; if (!res.isConnected) return; chosenEx = ""; draw();
@@ -2514,7 +2490,7 @@ function mineAddEl(onSaved, prefill){
 }
 /* một dòng từ trong sổ riêng; teacher=true thì có thêm nút Thầy duyệt và sửa từ hay đi cùng */
 function mineRowEl(w, rerender, teacher){
-  const v = S.mine[w];
+  const v = NB.mine[w];
   const det = h("div",{class:"small",style:"display:none;margin-top:6px"});
   const fill = () => {
     const mIn = h("input",{class:"txt",type:"text",value:v.m || "",placeholder:"Nghĩa tiếng Việt"});
@@ -2526,9 +2502,9 @@ function mineRowEl(w, rerender, teacher){
       mIn, eIn, cIn,
       h("div",{class:"row",style:"margin-top:8px"},
         h("button",{class:"btn sm",type:"button",onClick:() => { const m = mIn.value.trim(); if (!m){ toast("Nghĩa không được để trống"); return; } v.m = m; v.ex = eIn.value.trim();
-          if (cIn) v.coll = cIn.value.split(",").map(x => x.trim()).filter(Boolean); if (teacher) v.ok = true; save(); toast("Đã lưu"); rerender(); }}, teacher ? "Lưu và duyệt" : "Lưu"),
+          if (cIn) v.coll = cIn.value.split(",").map(x => x.trim()).filter(Boolean); if (teacher) v.ok = true; nbSave(); toast("Đã lưu"); rerender(); }}, teacher ? "Lưu và duyệt" : "Lưu"),
         (!v.ipa || !(v.coll || []).length) ? h("button",{class:"btn soft sm",type:"button",onClick:async () => { toast("Đang tra thêm…"); await mineEnrich(w); rerender(); }}, "Tra thêm") : null,
-        h("button",{class:"btn soft sm",type:"button",onClick:() => { if (confirm("Xóa từ “"+w+"” khỏi Từ của "+MY_NAME()+"?")){ delete S.mine[w]; save(); rerender(); } }}, "Xóa")));
+        h("button",{class:"btn soft sm",type:"button",onClick:() => { if (confirm("Xóa từ “"+w+"” khỏi Từ của "+MY_NAME()+"?")){ delete NB.mine[w]; nbSave(); rerender(); } }}, "Xóa")));
   };
   const row = h("div",{class:"vrow",style:"cursor:pointer"}, h("button",{class:"say",type:"button","aria-label":"Nghe "+w,onClick:e => { e.stopPropagation(); mineSay(w, v.aud); }},"🔊"),
     h("div",{class:"grow"}, h("b",null,w), v.ok ? h("span",{class:"pill ok",style:"margin-left:6px"},"✔ Thầy đã duyệt") : null, h("div",{class:"small muted"}, v.m || "(chưa có nghĩa)"), det),
@@ -2548,7 +2524,7 @@ function wordCard(host, anchor, word, vi){
   const key = word.toLowerCase().replace(/[^a-z'-]/g, ""); let meaning = vi || "";
   const addBtn = h("button",{class:"btn sm wadd",type:"button"});
   const mIn = h("input",{class:"txt",type:"text",placeholder:"Nghĩa tiếng Việt (bạn tự tra)",value:vi || "",autocomplete:"off",spellcheck:"false",style:"margin:8px 0 4px"});
-  const has = () => !!S.vocab[key] || !!(S.mine && S.mine[key]);
+  const has = () => !!S.vocab[key] || !!NB.mine[key];
   const drawAdd = () => { const h0 = has(); addBtn.textContent = h0 ? "✅ Đã có trong sổ từ vựng" : "➕ Thêm vào Từ của "+MY_NAME(); addBtn.classList.toggle("soft", h0); addBtn.disabled = h0; mIn.hidden = h0; };
   addBtn.addEventListener("click", () => { if (has()) return; const m = mIn.value.trim(); if (!m){ toast("Gõ nghĩa tiếng Việt trước nhé"); mIn.focus(); return; }
     mineSave(key, { m, src:"read" }); mineEnrich(key); drawAdd(); toast("Đã thêm “"+word+"” vào Từ của "+MY_NAME()); });
@@ -2782,9 +2758,13 @@ function bookreadStep(step, ctx){
     h("div",{class:"bkbox"}, h("div",{class:"small muted"},step.book + (step.chapter ? "  ·  Chương " + step.chapter : "")), h("div",{class:"bkpages"}, "Trang " + step.pages),
       step.goal ? h("div",{style:"margin-top:6px"}, step.goal) : null),
     step.tip ? h("p",{class:"muted small"}, step.tip) : null,
-    step.audioSrc ? (() => { const a = h("audio",{controls:true,preload:"none",style:"width:100%"}), spd = h("button",{class:"pill",type:"button"},"Tốc độ 1×"); a.src = resolveAudio(step.audioSrc) || "";
-      spd.addEventListener("click", () => { a.playbackRate = a.playbackRate === 1 ? .75 : 1; spd.textContent = "Tốc độ " + (a.playbackRate === 1 ? "1×" : "0.75×"); });
-      return h("div",{style:"margin:8px 0"}, h("div",{class:"small muted",style:"margin-bottom:4px"},"🎧 "+(step.audioNote || "Nghe đoạn này")+" (nghe trước hoặc nghe lúc đọc theo)"), a, spd); })() : null,
+    step.audioSrc ? (() => { const box = h("div",{style:"margin:8px 0"});
+      const draw = () => { const url = resolveAudio(step.audioSrc);
+        if (!url){ box.replaceChildren(h("div",{class:"small muted",style:"margin-bottom:4px"},"🎧 "+(step.audioNote || "Nghe đoạn này")+". Kéo file "+String(step.audioSrc).replace(/^audio:/,"")+" vào đây để nghe."), audDropzone(() => draw(), true)); return; }
+        const a = h("audio",{controls:true,preload:"none",style:"width:100%"}), spd = h("button",{class:"pill",type:"button"},"Tốc độ 1×"); a.src = url;
+        spd.addEventListener("click", () => { a.playbackRate = a.playbackRate === 1 ? .75 : 1; spd.textContent = "Tốc độ " + (a.playbackRate === 1 ? "1×" : "0.75×"); });
+        box.replaceChildren(h("div",{class:"small muted",style:"margin-bottom:4px"},"🎧 "+(step.audioNote || "Nghe đoạn này")+" (nghe trước hoặc nghe lúc đọc theo)"), a, spd); };
+      draw(); return box; })() : null,
     h("div",{class:"row",style:"align-items:center;gap:12px;margin:10px 0"}, clock, go, h("span",{class:"small muted"},"Gợi ý khoảng "+Math.round(want/60)+" phút")),
     h("div",{class:"small muted"},"Đọc trong sách của bạn, đọc xong quay lại đây. Gặp từ lạ thì cứ đọc tiếp, đừng dừng lại tra từng từ."),
     h("div",{style:"margin-top:10px;font-weight:800"},"Bạn hiểu đoạn này thế nào?"), level, doneBtn,
@@ -3022,7 +3002,7 @@ function planView(){
 }
 const VCAP = 20;
 let vBank = null;
-const VS = () => vBank === "mine" ? (S.mine || (S.mine = {})) : S.vocab;
+const VS = () => vBank === "mine" ? NB.mine : S.vocab;
 let review = null, vtest = null;
 const vqueue = () => { const t = dkey(new Date()); return Object.keys(VS()).filter(w => VS()[w].due <= t && (vBank !== "mine" || VS()[w].m)).sort((a, b) => VS()[a].due < VS()[b].due ? -1 : VS()[a].due > VS()[b].due ? 1 : 0); };
 const VTYPE = { flip:"Nhìn từ, nhớ nghĩa", typevi:"Nhìn nghĩa, gõ từ", listen:"Nghe, gõ từ", blank:"Điền từ vào câu" };
@@ -3076,7 +3056,7 @@ function vApply(w, res, type){
   if (res === "ok"){ v.box = Math.min(v.box + 1, 4); v.due = addDays(INTERVALS[v.box]); }
   else if (res === "late"){ v.due = addDays(INTERVALS[v.box] || 1); }
   else { v.box = 0; v.due = addDays(1); }
-  v.lt = type; save();
+  v.lt = type; if (vBank === "mine") nbSave(); else save();
 }
 function startReview(n){
   const q = vqueue().slice(0, n || VCAP);
@@ -3114,9 +3094,10 @@ function vTestCard(root, again){
   }
   return card;
 }
+const VHOME = COVER ? "#/" : "#/vocab";
 function vocabView(sub, arg){
   const root = h("div"); vBank = sub === "mine" ? "mine" : null;
-  const back = () => { review = null; vtest = null; location.hash = "#/vocab"; route(); };
+  const back = () => { review = null; vtest = null; if (vBank === "mine"){ render(); return; } location.hash = VHOME; if (!COVER) route(); };
   function render(){ root.replaceChildren(...(vtest ? testEls() : review ? reviewEls() : vBank === "mine" ? mineEls() : listEls())); }
   function reviewEls(){
     const r = review;
@@ -3126,7 +3107,7 @@ function vocabView(sub, arg){
         h("p",{class:"muted"}, r.total+" từ đã ôn: "+r.ok+" nhớ tốt, "+r.bad+" cần ôn lại sớm."),
         rest ? h("p",{class:"muted small"},"Còn "+rest+" từ đến hạn, mình để mai ôn tiếp nhé.") : null,
         h("div",{class:"row",style:"justify-content:center"}, rest ? h("button",{class:"btn soft",type:"button",onClick:() => { startReview(10); render(); }},"Ôn thêm 10 từ") : null,
-          h("button",{class:"btn",type:"button",onClick:() => route()},"Quay lại sổ từ")))];
+          h("button",{class:"btn",type:"button",onClick:() => { if (COVER) render(); else route(); }},"Quay lại sổ từ")))];
     }
     const it = r.q[r.i], type = it.again ? "flip" : vPickType(it.w);
     const bar = h("div",{class:"bar",style:"margin-bottom:10px"}, h("i",{style:"width:"+Math.round(r.i / r.q.length * 100)+"%"}));
@@ -3143,7 +3124,7 @@ function vocabView(sub, arg){
       return [h("div",{class:"card",style:"text-align:center"}, mascot(t.ok >= t.q.length * .8 ? "cheer" : "happy"), h("h2",null,"Kết quả: "+sc),
         h("p",{class:"muted"}, t.bad.length ? t.bad.length+" từ chưa nhớ đã được xếp ôn lại vào ngày mai." : "Bạn nhớ hết các từ trong bài kiểm tra!"),
         t.bad.length ? h("div",{class:"chips",style:"justify-content:center"}, t.bad.map(w => h("span",{class:"pill"}, w))) : null,
-        h("button",{class:"btn",type:"button",style:"margin-top:12px",onClick:() => { location.hash = "#/vocab"; route(); }},"Quay lại sổ từ"))];
+        h("button",{class:"btn",type:"button",style:"margin-top:12px",onClick:() => { location.hash = VHOME; if (!COVER) route(); }},"Quay lại sổ từ"))];
     }
     return [h("h2",{style:"margin-top:0"},"Kiểm tra nhanh từ vựng tuần "+t.n), vTestCard(root, render)];
   }
@@ -3159,8 +3140,8 @@ function vocabView(sub, arg){
   }
   let adding = !!arg;
   function mineEls(){
-    const M = S.mine || (S.mine = {}), words = Object.keys(M).sort(), due = vqueue();
-    return [h("a",{class:"btn soft",href:"#/vocab"},"← Sổ từ vựng"), h("h1",{style:"margin-top:16px"},"📒 Từ của "+MY_NAME()),
+    const M = NB.mine, words = Object.keys(M).sort(), due = vqueue();
+    return [h("a",{class:"btn soft",href:VHOME},COVER ? "← Chọn học viên" : "← Sổ từ vựng"), h("h1",{style:"margin-top:16px"},"📒 Từ của "+MY_NAME()),
       h("p",{class:"muted"},"Từ bạn tự thêm, riêng với từ của bài học. Từ được ôn lại sau 1, 3, 7, 14, 30 ngày nếu bạn nhớ."),
       h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"}, due.length ? due.length+" từ cần ôn hôm nay" : "Hôm nay không có từ nào cần ôn"), h("div",{class:"small muted"}, words.length+" từ")),
         h("button",{class:"btn",type:"button",disabled:!due.length,onClick:() => { startReview(); render(); }},"Ôn ngay"))),
@@ -3174,7 +3155,7 @@ function vocabView(sub, arg){
       h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"}, due.length ? due.length+" từ cần ôn hôm nay" : "Hôm nay không có từ nào cần ôn"),
         h("div",{class:"small muted"}, words.length+" từ trong sổ"+(due.length > VCAP ? ". Mỗi lần ôn "+VCAP+" từ, từ quá hạn lâu nhất ôn trước." : "")), due.length ? h("div",{class:"small muted"},"Có 4 kiểu thẻ: nhìn từ, nhìn nghĩa, nghe, điền câu.") : null),
         h("button",{class:"btn",type:"button",disabled:!due.length,onClick:() => { startReview(); render(); }},"Ôn ngay"))),
-      (() => { const M = S.mine || {}, mw = Object.keys(M), md = mw.filter(w => M[w].m && M[w].due <= dkey(new Date())).length;
+      (() => { const M = NB.mine, mw = Object.keys(M), md = mw.filter(w => M[w].m && M[w].due <= dkey(new Date())).length;
         return h("a",{class:"card day",href:"#/vocab/mine",style:"text-decoration:none"}, h("div",{class:"when",style:"font-size:1.7rem"},"📒"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Từ của "+MY_NAME()), h("div",{class:"small muted"}, mw.length ? mw.length+" từ"+(md ? ", "+md+" từ cần ôn" : "")+". Thêm và ôn từ bạn tự chọn." : "Tự thêm từ bạn gặp ở bài đọc hoặc ngoài đời, có phiên âm, ví dụ và cách đọc."))); })(),
       W && intro >= 6 ? h("div",{class:"card"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},"Kiểm tra nhanh tuần "+cw), h("div",{class:"small muted"},"10 từ ngẫu nhiên trong "+intro+" từ đã học"+(tests[cw] ? ". Lần gần nhất: "+tests[cw].score+" / "+tests[cw].total : ""))),
         h("button",{class:"btn soft",type:"button",onClick:() => { vTestStart(cw); render(); }},"Làm bài"))) : null,
@@ -3488,8 +3469,7 @@ function gvView(){
   return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"),
     h("h1",{style:"margin-top:16px"},"GV soạn bài · "+learnerName()+(LRN.id === "bw" ? " · Bookworms" : "")),
     h("div",{class:"row",style:"margin-bottom:12px"}, h("a",{class:"btn",href:"#/content"},"📚 Tải bài học lên"), h("a",{class:"btn soft",href:"#/teacher"},"Nhận xét và lời nhắn"), h("button",{class:"btn soft",type:"button",onClick:switchLearner},"Đổi học viên")),
-    audioCard(),
-    (() => { const M = S.mine || {}, mw = Object.keys(M).sort(); if (!mw.length) return null;
+    (() => { const M = NB.mine, mw = Object.keys(M).sort(); if (!mw.length) return null;
       const d = h("details",{class:"card"}, h("summary",{style:"cursor:pointer;font-weight:800"},"📒 Từ "+MY_NAME()+" tự thêm ("+mw.length+")"), h("p",{class:"small muted"},"Bấm vào từ để sửa nghĩa, ví dụ, từ hay đi cùng, rồi bấm “Lưu và duyệt”."), mw.map(w => mineRowEl(w, () => { route(); }, true))); return d; })(),
     h("p",{class:"muted small"},"Có "+have.length+"/"+ROADMAP.length+" tuần đã có bài. Bấm vào một tuần để xem bài theo buổi và chỉnh lịch học."),
     rows.concat(extra).map(weekRow));
@@ -3557,6 +3537,7 @@ function coverView(){
       card("nhi","bunny","A1–A2 · Nền tảng","Mỗi ngày 30 phút: đọc, nghe, luyện từng bước nhỏ, có linh vật Thỏ ngọc đồng hành."),
       card("bw","bunny","Đọc sách · Starter","Đọc truyện Red Roses trong sách thật, 30 phút mỗi ngày, 3 tuần: hai tuần theo truyện, một tuần mở rộng nâng cao."),
       card("tri","moon","C1–C2 · Nâng cao","Mỗi ngày 60 phút: viết luận, tranh biện, báo cáo số liệu, ngữ pháp C1–C2, ôn lặp lại.")),
+    h("div",{class:"cvgv"}, h("a",{class:"btn",href:"#/notebook",style:"text-decoration:none"},"📒 Từ của Nhi"), h("div",{class:"small muted",style:"margin-top:4px"},"Sổ từ riêng của Nhi, dùng chung cho mọi chế độ")),
     h("label",{class:"cvk"}, keep, " Nhớ lựa chọn trên máy này (lần sau vào thẳng)"),
     (() => { const pick = h("div",{class:"gvpick",hidden:true}, h("span",{class:"small muted"},"Soạn bài cho:"),
         Object.keys(LEARNERS).map(id => h("button",{class:"pill",type:"button",onClick:() => chooseLearner(id, false, "gv")}, id === "bw" ? "Nhi · Bookworms" : LEARNERS[id].name)));
@@ -3603,7 +3584,7 @@ if (SCH){
     chat:P('<path d="M4 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H11l-4 4v-4H6a2 2 0 01-2-2z"/>'),
     layers:P('<path d="M12 4l9 5-9 5-9-5z"/><path d="M3 14l9 5 9-5"/>')
   };
-  const EMAP = {"✅":"check","✔":"check","☑":"check","❌":"cross","✖":"cross","❎":"cross","🔊":"speaker","🔈":"speaker","🔉":"speaker","🎙":"mic","🎤":"mic","⏹":"stop","⏱":"clock","⏰":"clock","🕐":"clock","⚠":"warn","⚙":"gear","🏆":"award","🥇":"award","🏅":"award","💌":"mail","✉":"mail","📖":"book","📚":"book","📕":"book","🎧":"headphones","✏":"pencil","📝":"pencil","📅":"calendar","📆":"calendar","⭐":"spark","🌟":"spark","✨":"spark","🔍":"","🎯":"","📊":""};
+  const EMAP = {"✅":"check","✔":"check","☑":"check","❌":"cross","✖":"cross","❎":"cross","📒":"book","🔊":"speaker","🔈":"speaker","🔉":"speaker","🎙":"mic","🎤":"mic","⏹":"stop","⏱":"clock","⏰":"clock","🕐":"clock","⚠":"warn","⚙":"gear","🏆":"award","🥇":"award","🏅":"award","💌":"mail","✉":"mail","📖":"book","📚":"book","📕":"book","🎧":"headphones","✏":"pencil","📝":"pencil","📅":"calendar","📆":"calendar","⭐":"spark","🌟":"spark","✨":"spark","🔍":"","🎯":"","📊":""};
   const EMO = /#i:[a-z]+|(?:\p{Extended_Pictographic}️?(?:‍\p{Extended_Pictographic}️?)*)/gu;
   let busy = false;
   const mkIco = key => { const sp = document.createElement("span"); sp.className = "ico"; sp.innerHTML = ICONS[key] || ""; return sp; };
@@ -3629,14 +3610,22 @@ if (SCH){
 }
 const STEP_ICON = { warmup:"bolt", bookread:"book", read:"book", listen:"headphones", notice:"search", practice:"pencil", review:"refresh", preview:"eye", output:"pencil", quiz:"checksq", transfer:"swap", mix:"shuffle", report:"chart", challenge:"award" };
 async function boot(){
-  if (COVER){ document.body.classList.add("cover"); document.title = "Học tiếng Anh · Chọn học viên"; app.replaceChildren(coverView()); return; }
+  nbLoad();
+  if (COVER){
+    document.body.classList.add("cover");
+    const show = () => { const nb = location.hash.startsWith("#/notebook"); vBank = null; review = null; stopAudio();
+      document.title = nb ? "Từ của Nhi" : "Học tiếng Anh · Chọn học viên"; app.replaceChildren(nb ? vocabView("mine") : coverView()); window.scrollTo(0,0); };
+    window.addEventListener("hashchange", show); show();
+    const t0 = NB.updatedAt; nbCloud().then(() => { if (NB.updatedAt !== t0 && location.hash.startsWith("#/notebook")) show(); });
+    return;
+  }
   S = loadLocal(); ensureStart(); applyBrand(); loadContentLocal();
   document.getElementById("fsbtn").addEventListener("click", FS.toggle); FS.sync();
   document.getElementById("themebtn").addEventListener("click", () => {
     S.settings.theme = themeKind() === "night" ? "light" : "night"; save(); applyBrand();
     if (location.hash.startsWith("#/settings")) route();
   });
-  await loadLocalAudio(); await initCloud(); applyBrand(); await loadContentCloud(); await loadContentStatic();
+  await initCloud(); await nbCloud(); nbMigrate(); applyBrand(); await loadContentCloud(); await loadContentStatic();
   window.addEventListener("hashchange", route);
   route();
 }
