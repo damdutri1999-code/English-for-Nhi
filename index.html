@@ -332,6 +332,9 @@ body.cover .wrap{max-width:860px; padding-top:calc(34px + env(safe-area-inset-to
 .cover .cvh{text-align:center; margin-bottom:22px}
 .cover .cvh h1{font-size:2.1rem; margin:0 0 4px; color:#3b2a55}
 .cover .cvh p{color:#6b5d82; margin:0; font-weight:700}
+.reading .vi{display:none; margin:-4px 0 12px; padding:8px 12px; border-left:3px solid currentColor; background:rgba(0,0,0,.04); border-radius:8px; opacity:.85; font-size:.95em}
+.reading.showvi .vi{display:block}
+.vitog{margin:0 0 10px; cursor:pointer}
 .cvgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px}
 @media (max-width:640px){ .cvgrid{grid-template-columns:1fr} }
 .cvc{display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; border:0; border-radius:30px; padding:22px 18px 20px; cursor:pointer; transition:transform .12s}
@@ -950,7 +953,7 @@ function constellationEl(list){
     + (rest ? '<path d="'+rest+'" stroke="'+PCOL().dash+'" stroke-width="2.2" stroke-dasharray="1 7" stroke-linecap="round" fill="none"/>' : "")
     + (lit ? '<path d="'+lit+'" stroke="#ffe27a" stroke-width="7" fill="none" stroke-linecap="round" opacity=".45" filter="url(#cgl)"/><path d="'+lit+'" stroke="#ffe27a" stroke-width="3" fill="none" stroke-linecap="round"/>' : "")
     + stars + '<g font-family="Nunito,sans-serif" font-weight="800" font-size="12" text-anchor="middle">'+labels+'</g></svg>'
-    + '<div class="ct">Tuần '+weekNo()+' · '+((WEEKS[weekNo()]||WEEK1).title)+'</div><div class="cp">'+nDone+' / 6'+(SCH ? " buổi" : " sao")+'</div>'
+    + '<div class="ct">'+wTxt(weekNo())+' · '+((WEEKS[weekNo()]||WEEK1).title)+'</div><div class="cp">'+nDone+' / 6'+(SCH ? " buổi" : " sao")+'</div>'
     + '<div class="cb"><i style="width:'+Math.round(nDone/6*100)+'%"></i></div>'+(SCH ? "" : '<div class="corner">'+mascotSVG(nDone >= 6 ? "cheer" : "happy", other)+'</div>');
   return el;
 }
@@ -1112,14 +1115,25 @@ const ROADMAP_TRI = [
   [24,"Ôn tổng kết","Ôn toàn khóa mức C2","C2","Essay 350 từ trong 40 phút và bài nói thuyết phục 3 phút"]
 ];
 const TOPIC_NAMES_TRI = ["Work and automation","Technology and privacy","Environment and responsibility","Education and inequality","Health and the state","Media and persuasion","Economy and fairness","Culture and identity"];
-const ROADMAP_BW = [
-  [1,"Red Roses (Oxford Bookworms Starter)","Hiện tại tiếp diễn (is playing, are you listening?), can / can't với see, hear, smell, sở hữu 's","A1-A2","Đọc chương 1 và nửa đầu chương 2; theo dõi nhân vật và diễn biến; kể lại bằng câu đơn"],
+/* Danh mục sách Bookworms. Mỗi sách đi 3 tuần; sách thứ b chiếm các tuần 3(b-1)+1 đến 3b (tuần 4, 5, 6 cho sách 2...).
+   Thêm sách mới = thêm một mục vào đây (rows: 3 dòng lộ trình, đánh số tuần liên tục) rồi nạp bài vào weeks-bw/. */
+const BW_BOOKS = [
+  { id:1, title:"Red Roses", series:"Oxford Bookworms Starter", level:"A1-A2", blurb:"Truyện đời thường ngắn, 3 chương, khoảng 1.700 từ. Hai tuần đọc theo truyện, tuần thứ ba mở rộng nâng cao.", rows:[[1,"Red Roses (Oxford Bookworms Starter)","Hiện tại tiếp diễn (is playing, are you listening?), can / can't với see, hear, smell, sở hữu 's","A1-A2","Đọc chương 1 và nửa đầu chương 2; theo dõi nhân vật và diễn biến; kể lại bằng câu đơn"],
   [2,"Red Roses (Oxford Bookworms Starter)","Hiện tại đơn và tiếp diễn, lời mời và lời đề nghị (Can I…, Would you like…), lời khuyên và mệnh lệnh","A2","Đọc nửa sau chương 2 và chương 3; hội thoại; ôn cả cuốn và kể lại"],
-  [3,"Mở rộng: thế giới của Red Roses","Kể lại bằng quá khứ đơn; might, could, must để đoán; từ nối nâng cao","A2-B1","Nội dung mở rộng từ truyện: nhật ký, thư, email, ý kiến; từ vựng B1; viết và nói nâng cao"]
+  [3,"Mở rộng: thế giới của Red Roses","Kể lại bằng quá khứ đơn; might, could, must để đoán; từ nối nâng cao","A2-B1","Nội dung mở rộng từ truyện: nhật ký, thư, email, ý kiến; từ vựng B1; viết và nói nâng cao"]]}
 ];
-const TOPIC_NAMES_BW = ["Red Roses (Oxford Bookworms Starter)"];
+const ROADMAP_BW = BW_BOOKS.flatMap(b => b.rows);
+const TOPIC_NAMES_BW = BW_BOOKS.map(b => b.title + " (" + b.series + ")");
 const ROADMAP = LRN.id === "tri" ? ROADMAP_TRI : LRN.id === "bw" ? ROADMAP_BW : ROADMAP_NHI;
 const TOPIC_NAMES = LRN.id === "tri" ? TOPIC_NAMES_TRI : LRN.id === "bw" ? TOPIC_NAMES_BW : TOPIC_NAMES_NHI;
+const IS_BW = LRN.id === "bw";
+const curBook = () => IS_BW ? ((S.settings || {}).book || 0) : 0;
+const bookRange = () => { const b = curBook(); return b ? [3*(b-1)+1, 3*b] : [1, ROADMAP.length]; };
+const RM = () => { const [lo, hi] = bookRange(); return ROADMAP.filter(r => r[0] >= lo && r[0] <= hi); };
+const wLbl = n => IS_BW ? ((n - 1) % 3 + 1) : n;                               /* số tuần hiện cho học viên (Bookworms: 1 đến 3 trong cuốn) */
+const wTxt = n => IS_BW ? "Tuần " + wLbl(n) + " / 3" : "Tuần " + n;
+const wFull = n => IS_BW ? "Sách " + Math.ceil(n / 3) + " · Tuần " + wLbl(n) : "Tuần " + n;
+const bookInfo = b => BW_BOOKS.find(x => x.id === b);
 const KIND = { new:"Bài mới", review:"Ôn và đọc trước", week:"Ôn cả tuần" };
 let WEEK1 = {
   id:1, title:"Family", grammar:"to be (am / is / are)",
@@ -1571,6 +1585,8 @@ function validateWeek(j){
       const key = st.key || (st.type + si); if (keys.has(key)) E.push(sw + ": key \"" + key + "\" bị trùng trong buổi."); keys.add(key);
       if (st.type === "read"){
         if (!isStr(st.heading)) E.push(sw + ": thiếu heading."); if (!Array.isArray(st.text) || !st.text.length || !st.text.every(isStr)) E.push(sw + ": text phải là mảng các đoạn.");
+        if (st.textVi !== undefined){ if (!Array.isArray(st.textVi) || !st.textVi.every(isStr) || (Array.isArray(st.text) && st.textVi.length !== st.text.length)) E.push(sw + ": textVi (bản dịch tiếng Việt) phải là mảng chuỗi, MỖI ĐOẠN text có đúng một đoạn dịch cùng thứ tự (cùng số đoạn)."); }
+        else if (LRN.id === "bw") W.push(sw + ": thiếu textVi (bản dịch tiếng Việt từng đoạn). Bài đọc của Bookworms phải song ngữ; web có nút bấm để Nhi mở bản dịch, không hiện sẵn.");
         if (!isStr(st.purpose)) W.push(sw + ": thiếu purpose (mục tiêu đọc, ví dụ \"Đọc để tìm: Mai có mấy anh chị em?\"). Đọc không có mục tiêu thì chỉ là đọc suông.");
         if ((st.sets || []).length && !(st.sets || []).some(x => x && x.role === "apply")) W.push(sw + ": chưa có bộ vận dụng (role:\"apply\"). Bài đọc phải được dùng vào việc có ý nghĩa, không chỉ hỏi hiểu bài.");
         if (!st.vocab || typeof st.vocab !== "object" || Array.isArray(st.vocab)) E.push(sw + ": vocab phải là object {\"word\":\"nghĩa\"}.");
@@ -1699,9 +1715,9 @@ async function loadContentStatic(){
    PHIÊN HỌC, TỪ VỰNG, CHUỖI NGÀY, STICKER
    ===================================================================== */
 function weekNo(){
-  const ti = todayInfo(), have = Object.keys(WEEKS).map(Number).sort((a, b) => a - b);
-  if (!have.length) return 1;
-  const w = ti.state === "before" ? have[0] : (ti.week || 1);
+  const ti = todayInfo(), [lo, hi] = bookRange(), have = Object.keys(WEEKS).map(Number).filter(x => x >= lo && x <= hi).sort((a, b) => a - b);
+  if (!have.length) return lo;
+  const w = ti.state === "before" ? have[0] : (ti.week || lo);
   if (WEEKS[w]) return w;
   const lower = have.filter(x => x <= w); return lower.length ? lower[lower.length-1] : have[0];
 }
@@ -1793,10 +1809,11 @@ function schedDates(w){
 }
 const schedCustom = w => { const c = (S.settings.sched || {})[w]; return !!(c && (c.start || (c.d && c.d.some(Boolean)))); };
 function todayInfo(){
-  const t = dkey(new Date()), N = Math.max(ROADMAP.length, 30);
-  const first = schedStart(1);
+  const t = dkey(new Date()), N = Math.max(ROADMAP.length, 30), [lo, hi] = bookRange();
+  const first = schedStart(lo);
   if (t < first) return { state:"before", days:Math.round((parseKey(first) - parseKey(t)) / 86400000) };
-  let week = 1; for (let w = 1; w <= N; w++) if (schedStart(w) <= t) week = w;
+  let week = lo; for (let w = lo; w <= (curBook() ? hi : N); w++) if (schedStart(w) <= t) week = w;
+  if (curBook() && t > schedDates(hi)[5] && week === hi) return { state:"finished", week };
   const ds = schedDates(week), wd = ds.indexOf(t);
   if (!WEEKS[week]) return { state:"beyond", week };
   if (wd < 0) return { state:"rest", week };
@@ -2554,14 +2571,18 @@ function wordCard(host, anchor, word, vi){
 function readStep(step, ctx){
   const gloss = h("div",{class:"muted small",style:"margin:0 0 8px"}, "Chạm vào bất kỳ từ nào để xem nghĩa, phiên âm, cách đọc và ví dụ.");
   const mkBox = () => { let picked = null;
-    const box = h("div",{class:"reading rd"}, step.text.map(p => h("p", null, tokenize(p).map(t => {
+    const hasVi = Array.isArray(step.textVi) && step.textVi.length === step.text.length && step.textVi.every(x => typeof x === "string" && x.trim());
+    const box = h("div",{class:"reading rd"}, step.text.flatMap((p, pi) => [h("p", null, tokenize(p).map(t => {
       if (!t.word) return [t.pre + t.post, " "];
       const key = t.word.toLowerCase(), m = step.vocab[key];
       const sp = h("span",{class:"tok"+(m ? " vocab" : ""),role:"button",tabindex:"0"}, t.word);
       const open = () => { if (picked) picked.classList.remove("pick"); if (picked === sp){ picked = null; box.querySelectorAll(".wcard").forEach(x => x.remove()); return; }
         picked = sp; sp.classList.add("pick"); wordCard(box, sp, t.word, m || ""); };
       sp.addEventListener("click", open); sp.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); open(); } });
-      return [t.pre, sp, t.post, " "]; }))));
+      return [t.pre, sp, t.post, " "]; })), hasVi ? h("p",{class:"vi"}, step.textVi[pi]) : null]));
+    if (hasVi){ const tg = h("button",{class:"pill vitog",type:"button","aria-pressed":"false"},"🇻🇳 Xem bản dịch tiếng Việt");
+      tg.addEventListener("click", () => { const on = box.classList.toggle("showvi"); tg.textContent = on ? "🇻🇳 Ẩn bản dịch" : "🇻🇳 Xem bản dịch tiếng Việt"; tg.setAttribute("aria-pressed", on ? "true" : "false"); });
+      box.prepend(tg); }
     document.addEventListener("keydown", function esc(e){ if (!box.isConnected){ document.removeEventListener("keydown", esc); return; } if (e.key === "Escape") box.querySelectorAll(".wcard").forEach(x => x.remove()); });
     return box; };
   const box = mkBox();
@@ -2793,9 +2814,9 @@ function reportEl(){
   let advice;
   if (!rated.length) advice = "Làm thêm vài bài tập để có nhận xét chi tiết.";
   else if (acc(worst) < 0.7) advice = "Tuần sau nên luyện thêm dạng \""+TYPE_LABEL[worst]+"\". Bạn làm tốt nhất ở dạng \""+TYPE_LABEL[best]+"\".";
-  else { const nx = ROADMAP.find(x => x[0] === weekNo()+1); advice = "Bạn nắm khá chắc cả tuần." + (nx ? " Sẵn sàng sang tuần "+nx[0]+": "+nx[2]+"." : ""); }
+  else { const nx = RM().find(x => x[0] === weekNo()+1); advice = "Bạn nắm khá chắc cả tuần." + (nx ? " Sẵn sàng sang tuần "+wLbl(nx[0])+": "+nx[2]+"." : (IS_BW ? " Bạn đã đi gần hết cuốn sách này rồi." : "")); }
   return h("div",null,
-    h("div",{class:"hello"}, mascot(doneN >= 4 ? "cheer" : "happy"), h("div",{class:"bubble"}, "Tuần "+weekNo()+" của "+learnerName()+": "+doneN+" / "+list.length+" buổi hoàn thành"+(SCH ? "." : "!"))),
+    h("div",{class:"hello"}, mascot(doneN >= 4 ? "cheer" : "happy"), h("div",{class:"bubble"}, wTxt(weekNo())+" của "+learnerName()+": "+doneN+" / "+list.length+" buổi hoàn thành"+(SCH ? "." : "!"))),
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneN+"/"+list.length),h("span",null,"buổi xong")),
       h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút học")),
       h("div",{class:"stat"},h("b",null,tt ? Math.round(tr/tt*100)+"%" : "–"),h("span",null,"làm đúng"))),
@@ -2916,14 +2937,17 @@ function homeView(){
       nextUndone ? h("a",{class:"btn soft",href:"#/lesson/"+nextUndone.id+"/0"},"Học thêm: "+nextUndone.day) : null);
   else if (ti.state === "rest") main = h("div",{class:"card tint"}, h("h2",null,"Hôm nay là Chủ nhật, ngày nghỉ"), h("p",{class:"muted"},"Nghỉ ngơi nhé. Nếu muốn, ôn 10 phút từ vựng cho vui."),
       h("a",{class:"btn soft",href:"#/vocab"},"Ôn từ vựng"));
+  else if (ti.state === "finished") main = h("div",{class:"card tint"}, h("h2",null,"Bạn đã đi hết 3 tuần của cuốn "+((bookInfo(curBook()) || {}).title || "này")), h("p",{class:"muted"},nextUndone ? "Còn buổi chưa học, bạn có thể học nốt hoặc chọn cuốn tiếp theo." : "Giỏi lắm! Chọn cuốn sách tiếp theo nhé."),
+      nextUndone ? h("a",{class:"btn soft",href:"#/lesson/"+nextUndone.id+"/0",style:"margin-right:8px"},"Học nốt: "+nextUndone.day) : null, h("a",{class:"btn",href:"#/books"},"📚 Chọn sách khác"));
   else if (ti.state === "before") main = nextUndone ? startCard(nextUndone, "Khóa học bắt đầu sau "+ti.days+" ngày, bạn có thể học trước")
       : h("div",{class:"card tint"}, h("h2",null,"Khóa học bắt đầu sau "+ti.days+" ngày"), h("p",{class:"muted"},"Tuần này đã học xong hết rồi. Trong lúc chờ, bạn có thể ôn từ vựng và câu sai."));
-  else main = nextUndone ? startCard(nextUndone, "Chưa có bài cho tuần "+ti.week+", mình ôn lại tuần "+weekNo()+" nhé") : h("div",{class:"card tint"}, h("h2",null,"Tuần "+weekNo()+" đã xong hết rồi"));
-  const missed = ti.state === "day" ? list.filter((s,i) => i < ti.wd && !isDone(s.id)) : (ti.state === "rest" || ti.state === "beyond") ? list.filter(s => !isDone(s.id)) : [];
+  else main = nextUndone ? startCard(nextUndone, "Chưa có bài cho "+wTxt(ti.week).toLowerCase()+", mình ôn lại "+wTxt(weekNo()).toLowerCase()+" nhé") : h("div",{class:"card tint"}, h("h2",null,wTxt(weekNo())+" đã xong hết rồi"));
+  const missed = ti.state === "day" ? list.filter((s,i) => i < ti.wd && !isDone(s.id)) : (ti.state === "rest" || ti.state === "beyond" || ti.state === "finished") ? list.filter(s => !isDone(s.id)) : [];
   const sleepy = ti.state === "rest" || (ti.state === "day" && missed.length >= 2);
   const say2 = SCH ? (ti.state === "rest" ? "Chủ nhật là ngày nghỉ." : sleepy ? "Còn "+missed.length+" buổi chưa hoàn thành trong tuần này." : say)
     : ti.state === "rest" ? "Chủ nhật rồi, mình nghỉ ngơi cho khỏe nhé!" : sleepy ? "Mình hơi buồn ngủ, học bù một chút cho tỉnh nhé?" : say;
   return h("div",null,
+    IS_BW && curBook() ? h("div",{class:"row",style:"margin-bottom:10px;align-items:center"}, h("span",{class:"pill"},"📖 "+((bookInfo(curBook()) || {}).title || "")+" · "+((bookInfo(curBook()) || {}).level || "")), h("a",{class:"small",href:"#/books",style:"margin-left:auto"},"Đổi sách")) : null,
     h("div",{class:"hello"}, mascot(sleepy ? "sleepy" : sk > 1 ? "cheer" : "happy"), h("div",{class:"bubble"}, SCH ? nm+". "+say2 : "Chào "+nm+"! "+say2)),
     constellationEl(list),
     note ? h("div",{class:"card sticky"}, h("div",{class:"small muted"},"💌 Lời nhắn cho "+nm), h("p",{style:"margin:6px 0 10px;font-weight:700"}, note.text),
@@ -2950,10 +2974,10 @@ function vlistCard(W){
     h("div",{class:"plan-body"}, groups.map(([i, list]) => h("div",null, h("h4",{style:"margin:12px 0 2px"}, i === "up" ? "Từ nâng cấp" : "Sub "+i+(subName(i) ? ": "+subName(i) : "")), list.map(row)))));
 }
 function weekView(){
-  const have = Object.keys(WEEKS).map(Number).sort((a, b) => a - b), vw = viewWeek && WEEKS[viewWeek] ? viewWeek : weekNo(), W = WEEKS[vw] || WEEK1, list = W.sessions, ti = todayInfo();
+  const have = Object.keys(WEEKS).map(Number).filter(x => x >= bookRange()[0] && x <= bookRange()[1]).sort((a, b) => a - b), vw = viewWeek && WEEKS[viewWeek] && have.includes(viewWeek) ? viewWeek : weekNo(), W = WEEKS[vw] || WEEK1, list = W.sessions, ti = todayInfo();
   const mv = d => { const i = have.indexOf(vw) + d; if (i >= 0 && i < have.length){ viewWeek = have[i]; route(); } };
   return h("div",null, h("div",{class:"weeknav"}, have.length > 1 ? h("button",{class:"say",type:"button","aria-label":"Tuần trước",onClick:() => mv(-1)},"‹") : null,
-      h("h1",{style:"margin:0"},"Tuần "+vw+": "+W.title), have.length > 1 ? h("button",{class:"say",type:"button","aria-label":"Tuần sau",onClick:() => mv(1)},"›") : null),
+      h("h1",{style:"margin:0"},wTxt(vw)+": "+W.title), have.length > 1 ? h("button",{class:"say",type:"button","aria-label":"Tuần sau",onClick:() => mv(1)},"›") : null),
     h("p",{class:"muted"},"Ngữ pháp: "+W.grammar, W.level ? "  ·  Mức "+W.level : "", " ", h("a",{class:"pill",href:"#/plan",style:"text-decoration:none"},"📚 Giáo án tổng")),
     (() => { const f = W.focus || ((ROADMAP.find(x => x[0] === vw) || [])[4] || ""); return f ? h("p",{class:"muted small",style:"margin-top:-6px"},"Kỹ năng trọng tâm: "+f) : null; })(),
     vlistCard(W),
@@ -2974,29 +2998,29 @@ function weekView(){
     h("div",{class:"row",style:"margin-bottom:16px"}, h("a",{class:"btn soft",href:"#/report"},"📊 Báo cáo tuần"), LRN.id === "nhi" ? h("a",{class:"btn soft",href:"#/placement"},"🧭 Test đầu vào") : null),
     S.placement ? h("p",{class:"muted small"},"Test đầu vào gần nhất: gợi ý bắt đầu từ tuần "+S.placement.startWeek+".") : null,
     h("a",{class:"card day",href:"#/plan",style:"margin-top:4px"}, h("div",{class:"when",style:"font-size:1.7rem"},"📚"),
-      h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Giáo án tổng"), h("div",{class:"small muted"},"Xem cả lộ trình "+ROADMAP.length+" tuần: học gì, đã học đến đâu, mở lại bài cũ"))));
+      h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Giáo án tổng"), h("div",{class:"small muted"},(IS_BW ? "Xem 3 tuần của cuốn sách" : "Xem cả lộ trình "+ROADMAP.length+" tuần")+": học gì, đã học đến đâu, mở lại bài cũ"))));
 }
 function planView(){
-  const cur = weekNo(), totalS = ROADMAP.length * 6;
+  const cur = weekNo(), RMW = RM(), totalS = RMW.length * 6;
   let doneS = 0, haveW = 0;
-  ROADMAP.forEach(([n]) => { const W = WEEKS[n] && !WEEKS[n].stub ? WEEKS[n] : null; if (W){ haveW++; doneS += W.sessions.filter(s => isDone(s.id)).length; } });
-  const phases = []; for (let i = 0; i < ROADMAP.length; i += 3) phases.push(ROADMAP.slice(i, i + 3));
+  RMW.forEach(([n]) => { const W = WEEKS[n] && !WEEKS[n].stub ? WEEKS[n] : null; if (W){ haveW++; doneS += W.sessions.filter(s => isDone(s.id)).length; } });
+  const phases = []; for (let i = 0; i < RMW.length; i += 3) phases.push(RMW.slice(i, i + 3));
   return h("div",null, h("a",{class:"btn soft",href:"#/week"},"← Tuần học"), h("h1",{style:"margin-top:16px"},"📚 Giáo án tổng"),
     h("div",{class:"card tint"}, h("div",{style:"font-weight:800"}, "Đã học "+doneS+" / "+totalS+" buổi"),
       h("div",{class:"bar",style:"margin:8px 0 4px"}, h("i",{style:"width:"+Math.round(doneS/totalS*100)+"%"})),
-      h("div",{class:"small muted"}, haveW+" / "+ROADMAP.length+" tuần đã có bài. Chạm vào một tuần để xem chi tiết và mở lại bài cũ.")),
+      h("div",{class:"small muted"}, haveW+" / "+RMW.length+" tuần đã có bài. Chạm vào một tuần để xem chi tiết và mở lại bài cũ.")),
     phases.map((ph, pi) => h("div",{class:"plan-phase"},
-      h("h3",{style:"margin:18px 0 8px"}, "Chủ đề "+(pi+1)+": "+(TOPIC_NAMES[pi] || "")+" · Tuần "+ph[0][0]+" đến "+ph[ph.length-1][0]),
+      h("h3",{style:"margin:18px 0 8px"}, (IS_BW ? "Sách: "+((bookInfo(curBook()) || {}).title || "")+" · Tuần 1 đến 3" : "Chủ đề "+(pi+1)+": "+(TOPIC_NAMES[pi] || "")+" · Tuần "+ph[0][0]+" đến "+ph[ph.length-1][0])),
       ph.map(([n,t,g,lv,fc]) => {
         const W = WEEKS[n] && !WEEKS[n].stub ? WEEKS[n] : null, isRev = t === "Ôn" || /^Ôn/.test(t), done = W ? W.sessions.filter(s => isDone(s.id)).length : 0;
         const status = !W ? h("span",{class:"pill lock"},"Chưa có bài") : done === W.sessions.length ? h("span",{class:"pill ok"},"✅ Xong") : done || n === cur ? h("span",{class:"pill"}, done+" / "+W.sessions.length+" buổi") : h("span",{class:"pill"},"Chưa học");
-        const head = h("summary",{class:"plan-sum"}, h("span",{class:"pill"+(n === cur ? "" : " lock")},"Tuần "+n),
+        const head = h("summary",{class:"plan-sum"}, h("span",{class:"pill"+(n === cur ? "" : " lock")},"Tuần "+wLbl(n)),
           h("div",{class:"grow"}, h("b",null, W ? W.title : t), h("div",{class:"small muted"}, (lv ? "Mức "+lv+" · " : "")+(isRev ? "Tuần ôn tổng, không dạy ngữ pháp mới. " : "")+"Ngữ pháp: "+(W ? W.grammar : g)), fc ? h("div",{class:"small muted"},"Viết và nói: "+fc) : null), status);
         const body = W ? h("div",{class:"plan-body"},
           (W.subs || []).length ? h("div",{class:"chips",style:"margin:6px 0 8px"}, W.subs.map((x,i) => h("span",{class:"pill"},"Sub "+(i+1)+": "+x))) : null,
           W.sessions.map(s => h("a",{class:"plan-s"+(isDone(s.id)?" is-done":""),href:"#/lesson/"+s.id+"/0"},
             h("span",{class:"pd"}, s.day.replace("Thứ ","T")), h("span",{class:"grow"}, s.title, h("span",{class:"small muted"}," · "+KIND[s.kind])), isDone(s.id) ? h("span",null,"✅") : h("span",{class:"muted"},"›"))),
-          h("div",{style:"margin-top:8px"}, h("button",{class:"btn soft sm",type:"button",onClick:() => { viewWeek = n; location.hash = "#/week"; }}, "Mở lịch tuần "+n))) :
+          h("div",{style:"margin-top:8px"}, h("button",{class:"btn soft sm",type:"button",onClick:() => { viewWeek = n; location.hash = "#/week"; }}, "Mở lịch tuần "+wLbl(n)))) :
           h("div",{class:"plan-body small muted"}, "Tuần này chưa có bài. Sẽ có khi thầy tải nội dung lên.");
         const d = h("details",{class:"card flat plan-w"}, head, body); if (n === cur) d.open = true; return d; }))));
 }
@@ -3131,7 +3155,7 @@ function vocabView(sub, arg){
   function weekRows(){
     const groups = {}; Object.keys(S.vocab).forEach(w => { const k = S.vocab[w].w || 0; (groups[k] || (groups[k] = [])).push(w); });
     return Object.keys(groups).map(Number).sort((a, b) => a - b).map(k => {
-      const ws = groups[k].sort(), W = WEEKS[k], title = k ? "Tuần "+k+(W ? ": "+W.title : "") : "Từ thêm vào từ các bài đọc";
+      const ws = groups[k].sort(), W = WEEKS[k], title = k ? (IS_BW ? ((bookInfo(Math.ceil(k/3)) || {}).title || "Sách")+" · " : "")+wTxt(k)+(W ? ": "+W.title : "") : "Từ thêm vào từ các bài đọc";
       return h("div",{class:"card"}, h("h3",{style:"margin:0 0 6px"}, title+"  ·  "+ws.length+" từ"), ws.map(w => { const v = S.vocab[w], det = h("div",{class:"small",style:"display:none;margin-top:4px"}, [v.pos, v.ipa].filter(Boolean).join("  ·  "), v.ex ? h("div",{style:"font-style:italic"}, v.ex + (v.exVi ? "  ("+v.exVi+")" : "")) : null);
         const row = h("div",{class:"vrow"}, h("button",{class:"say",type:"button","aria-label":"Nghe "+w,onClick:e => { e.stopPropagation(); playAudio({text:w,rate:.8}); }},"🔊"),
           h("div",{class:"grow"}, h("b",null,w), h("div",{class:"small muted"},v.m), det), h("span",{class:"boxdots",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""}))));
@@ -3215,10 +3239,12 @@ function settingsView(){
   const nameIn = h("input",{class:"txt",type:"text",value:S.settings.name || "",placeholder:"Tên học viên",maxlength:"30",onInput:e => { S.settings.name = e.target.value; save(); }});
   const mk = k => h("button",{class:"mchoice"+(mascotKind()===k?" on":""),type:"button",onClick:() => { S.settings.mascot = k; save(); applyBrand(); route(); }}, h("span",{html:mascotSVG("happy",k)}), MASCOTS[k].name);
   const tk = k => h("button",{class:"mchoice"+(themeKind()===k?" on":""),type:"button",onClick:() => { S.settings.theme = k; save(); applyBrand(); route(); }}, h("span",{class:"swatch "+k}), THEMES[k].name);
-  const startVal = S.settings.startDate || dkey(mondayOf(new Date()));
+  const lo0 = bookRange()[0], bwOn = IS_BW && curBook();
+  const startVal = bwOn ? schedStart(lo0) : (S.settings.startDate || dkey(mondayOf(new Date())));
   const notMon = parseKey(startVal).getDay() !== 1;
-  const dateIn = h("input",{class:"txt",type:"date",value:startVal,onChange:e => { if (e.target.value){ S.settings.startDate = e.target.value; save(); toast("Đã lưu ngày bắt đầu"); route(); } }});
+  const dateIn = h("input",{class:"txt",type:"date",value:startVal,onChange:e => { if (e.target.value){ if (bwOn){ S.settings.sched = S.settings.sched || {}; (S.settings.sched[lo0] = S.settings.sched[lo0] || {}).start = e.target.value; (S.settings.books = S.settings.books || {})[curBook()] = e.target.value; } else S.settings.startDate = e.target.value; save(); toast("Đã lưu ngày bắt đầu"); route(); } }});
   return h("div",null, h("h1",null,"Cài đặt"),
+    IS_BW ? h("div",{class:"card"}, h("h3",null,"📖 Sách đang học"), h("p",{class:"muted small"}, bwOn ? ((bookInfo(curBook()) || {}).title || "")+" · "+((bookInfo(curBook()) || {}).series || "") : "Chưa chọn sách."), h("a",{class:"btn soft",href:"#/books"},"📚 Chọn sách khác")) : null,
     h("div",{class:"card tint"}, h("h3",null,"📚 Tải bài học lên"), h("p",{class:"muted small"},"Dán JSON do GPT soạn, kiểm tra rồi dùng ngay."), h("a",{class:"btn",href:"#/content"},"Mở trang tải bài")),
     h("div",{class:"card"}, h("h3",null,"Toàn màn hình"), h("p",{class:"muted small"}, FS.app() ? "Bạn đang mở app ở chế độ toàn màn hình." : FS.can() ? "Ẩn thanh địa chỉ của trình duyệt để học cho tập trung." : "Trên iPhone: bấm nút Chia sẻ, chọn “Thêm vào MH chính”, rồi mở app từ biểu tượng trên màn hình, app sẽ chạy toàn màn hình."),
       FS.app() ? null : h("button",{class:"btn fsbtn",type:"button",onClick:FS.toggle,html:FS_TXT(FS.on())})),
@@ -3226,7 +3252,7 @@ function settingsView(){
       h("button",{class:"btn soft sm",type:"button",style:"margin-top:12px",onClick:switchLearner},"↩ Đổi học viên")),
     LRN.id !== "tri" ? h("div",{class:"card"}, h("h3",null,"Giao diện"), h("div",{class:"row",style:"flex-wrap:nowrap"}, tk("light"), tk("night"))) : null,
     LRN.id !== "tri" ? h("div",{class:"card"}, h("h3",null,"Linh vật"), h("div",{class:"row",style:"flex-wrap:nowrap"}, mk("bunny"), mk("hang"))) : null,
-    h("div",{class:"card"}, h("h3",null,"Ngày bắt đầu khóa học"), h("p",{class:"muted small"},"Chọn ngày thứ Hai đầu tuần 1. Trang chủ dựa vào ngày này để biết hôm nay học buổi nào."), dateIn,
+    h("div",{class:"card"}, h("h3",null,bwOn ? "Ngày bắt đầu cuốn sách" : "Ngày bắt đầu khóa học"), h("p",{class:"muted small"},"Chọn ngày thứ Hai đầu tuần 1"+(bwOn ? " của cuốn này" : "")+". Trang chủ dựa vào ngày này để biết hôm nay học buổi nào."), dateIn,
       notMon ? h("p",{class:"err small"},"Ngày này không phải thứ Hai, nhãn Thứ 2 đến Thứ 7 sẽ lệch.") : null),
     h("div",{class:"card"}, h("h3",null,"Đồng bộ"), h("p",{class:"muted small",style:"margin:0"}, Cloud.ready ? "Đang đồng bộ qua Supabase." : "Chưa đồng bộ được, tiến độ đang lưu trong trình duyệt này. Kiểm tra mạng hoặc cấu hình Supabase.")),
     h("div",{class:"card"}, h("h3",null,"Khu dành cho người hướng dẫn"), h("p",{class:"muted small"},"Xem tiến độ, đọc bài viết, nhận xét và để lại lời nhắn."), h("a",{class:"btn soft",href:"#/teacher"},"Mở khu người hướng dẫn")),
@@ -3269,8 +3295,8 @@ function progressView(){
   const writings = Object.entries(S.writing);
   return h("div",null, h("h1",null,"Tiến độ"),
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneN),h("span",null,"buổi xong")), h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút đã học")), h("div",{class:"stat"},h("b",null,Object.keys(S.vocab).length),h("span",null,"từ đã gặp"))),
-    h("a",{class:"btn soft block",href:"#/report",style:"margin-bottom:16px"},"📊 Xem báo cáo tuần "+weekNo()),
-    h("div",{class:"card"}, h("h3",null,"Chòm sao tuần "+weekNo()), gardenEl(true)),
+    h("a",{class:"btn soft block",href:"#/report",style:"margin-bottom:16px"},"📊 Xem báo cáo "+wTxt(weekNo()).toLowerCase()),
+    h("div",{class:"card"}, h("h3",null,"Chòm sao "+wTxt(weekNo()).toLowerCase()), gardenEl(true)),
     h("div",{class:"card"}, h("h3",null,"Lịch học"), calendarEl()),
     h("div",{class:"card"}, h("h3",null,(SCH ? "Thành tích" : "Bộ sưu tập sticker")), stickersEl()),
     h("div",{class:"card"}, h("h3",null,"Độ chính xác theo dạng bài"), accuracyBars()),
@@ -3449,7 +3475,7 @@ function gvView(){
         dIn, h("a",{class:"pill",href:"#/lesson/"+s.id+"/0",style:"text-decoration:none"},"Xem")); }) : null;
     const stIn = h("input",{class:"txt",type:"date",value:schedStart(w),onChange:e => { if (e.target.value){ setSched(w, c2 => { c2.start = e.target.value; c2.d = null; }); route(); } }});
     const det = h("details",{class:"card gvw"}, h("summary",null, h("div",{class:"when",style:"min-width:44px"},"T"+w),
-        h("div",{class:"grow"}, h("div",{style:"font-weight:800"},rm[1] ? rm[1] : "Tuần "+w), h("div",{class:"small muted"},(W ? "Tuần "+w+": "+W.title+" · " : "Tuần "+w+" · ")+fmtD(ds[0])+" – "+fmtD(ds[5]))),
+        h("div",{class:"grow"}, h("div",{style:"font-weight:800"},rm[1] ? rm[1] : wFull(w)), h("div",{class:"small muted"},(W ? wFull(w)+": "+W.title+" · " : wFull(w)+" · ")+fmtD(ds[0])+" – "+fmtD(ds[5]))),
         h("span",{class:"pill"+(W ? " ok" : " lock")}, W ? "✅ Có bài" : "Chưa có"), schedCustom(w) ? h("span",{class:"pill"},"🗓 Tùy chỉnh") : null),
       h("div",{class:"gvb"},
         W ? h("p",{class:"small muted"},"Ngữ pháp: "+W.grammar+(src ? " · "+src : "")) : h("p",{class:"small muted"},(rm[2] ? "Dự kiến: "+rm[2]+". " : "")+"Chưa tải bài lên cho tuần này."),
@@ -3474,12 +3500,47 @@ function gvView(){
     h("p",{class:"muted small"},"Có "+have.length+"/"+ROADMAP.length+" tuần đã có bài. Bấm vào một tuần để xem bài theo buổi và chỉnh lịch học."),
     rows.concat(extra).map(weekRow));
 }
+/* ---- Bookworms: chọn sách (mỗi sách 3 tuần, tiến độ và lịch riêng từng sách) ---- */
+function bookProgress(b){
+  const lo = 3*(b-1)+1; let done = 0, have = 0;
+  for (let w = lo; w < lo + 3; w++){ const W = WEEKS[w]; if (W && !W.stub){ have++; done += W.sessions.filter(x => isDone(x.id)).length; } }
+  return { done, have };
+}
+function pickBook(id, start){
+  S.settings.books = S.settings.books || {}; S.settings.sched = S.settings.sched || {};
+  const lo = 3*(id-1)+1;
+  if (start){ S.settings.books[id] = start; (S.settings.sched[lo] = S.settings.sched[lo] || {}).start = start; }
+  S.settings.book = id; viewWeek = null; save(); location.hash = "#/home"; route();
+}
+function bookShelfView(){
+  const cur = curBook();
+  const card = bk => {
+    const p = bookProgress(bk.id), started = !!(S.settings.books || {})[bk.id];
+    const dIn = h("input",{class:"txt",type:"date",value:dkey(mondayOf(new Date()))});
+    const go = started
+      ? h("button",{class:"btn block",type:"button",onClick:() => pickBook(bk.id)}, bk.id === cur ? "Tiếp tục học cuốn này" : "Mở cuốn này")
+      : h("div",null, h("label",{class:"small muted"},"Ngày bắt đầu (thứ Hai đầu tuần 1 của cuốn)"), dIn, h("button",{class:"btn block",type:"button",style:"margin-top:8px",onClick:() => { if (!dIn.value){ toast("Chọn ngày bắt đầu nhé"); return; } pickBook(bk.id, dIn.value); }},"Bắt đầu cuốn này"));
+    return h("div",{class:"card"+(bk.id === cur ? " tint" : "")},
+      h("div",{class:"row",style:"align-items:center;gap:8px"}, h("h2",{style:"margin:0"},"📖 "+bk.title), bk.id === cur ? h("span",{class:"pill ok"},"Đang học") : null),
+      h("div",{class:"small muted"}, bk.series+" · Mức "+bk.level+" · 3 tuần · 18 buổi · "+DAYMIN+" phút mỗi ngày"),
+      h("p",{class:"muted"}, bk.blurb),
+      h("div",{class:"bar",style:"margin:6px 0 4px"}, h("i",{style:"width:"+Math.round(p.done/18*100)+"%"})),
+      h("div",{class:"small muted",style:"margin-bottom:10px"}, p.done+" / 18 buổi đã học"+(p.have < 3 ? " · "+p.have+" / 3 tuần đã có bài" : "")), go);
+  };
+  return h("div",null, cur ? h("a",{class:"btn soft",href:"#/home"},"← Về trang chủ") : null,
+    h("h1",{style:"margin-top:16px"},"📚 Chọn sách"),
+    h("p",{class:"muted"},"Mỗi cuốn đi 3 tuần: tuần 1 và 2 học theo nội dung sách, tuần 3 mở rộng nâng cao. Tiến độ và lịch của từng cuốn được giữ riêng."),
+    BW_BOOKS.map(card),
+    h("p",{class:"muted small",style:"text-align:center"},"Sách mới sẽ xuất hiện ở đây khi thầy thêm vào."));
+}
 function route(){
   vBank = null; stopAudio(); activeLesson = null; review = null; pgReset();
-  const parts = location.hash.replace(/^#\/?/,"").split("/"), page = parts[0] || "home";
+  const parts = location.hash.replace(/^#\/?/,"").split("/"); let page = parts[0] || "home";
+  if (IS_BW && !curBook() && !["books","settings","gv","content","teacher","vocab"].includes(page)) page = "books";
   document.body.classList.toggle("immersive", page === "lesson");
   let view;
   switch (page){
+    case "books": view = bookShelfView(); break;
     case "week": view = weekView(); break;
     case "plan": view = planView(); break;
     case "lesson": view = lessonView(parts[1], parseInt(parts[2] || "0", 10)); break;
@@ -3490,7 +3551,7 @@ function route(){
     case "practice": view = practiceView(parts[1]); break;
     case "mistakes": view = mistakesView(); break;
     case "placement": view = placementView(); break;
-    case "report": view = h("div",null, h("h1",null,"Báo cáo tuần "+weekNo()), reportEl()); break;
+    case "report": view = h("div",null, h("h1",null,"Báo cáo "+wTxt(weekNo()).toLowerCase()), reportEl()); break;
     case "settings": view = settingsView(); break;
     case "teacher": view = teacherView(); break;
     case "gv": view = gvView(); break;
