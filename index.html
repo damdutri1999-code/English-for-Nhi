@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Học tiếng Anh cùng Thỏ ngọc</title>
 <meta name="theme-color" content="#f1cbc3">
-<script>try{var L=new URLSearchParams(location.search).get("l");if(L!=="nhi"&&L!=="tri")L=sessionStorage.getItem("a1-learner");if(L!=="nhi"&&L!=="tri")L=localStorage.getItem("a1-learner-keep");
+<script>try{var L=new URLSearchParams(location.search).get("l");if(L!=="nhi"&&L!=="tri"&&L!=="bw")L=sessionStorage.getItem("a1-learner");if(L!=="nhi"&&L!=="tri"&&L!=="bw")L=localStorage.getItem("a1-learner-keep");
 if(L==="tri"){document.documentElement.setAttribute("data-learner","tri");document.documentElement.setAttribute("data-theme","sea")}
-else{if(L==="nhi")document.documentElement.setAttribute("data-learner","nhi");var t=localStorage.getItem("a1-theme");if(t==="night"||t==="light")document.documentElement.setAttribute("data-theme",t)}}catch(e){}</script>
+else{if(L==="nhi"||L==="bw")document.documentElement.setAttribute("data-learner","nhi");var t=localStorage.getItem("a1-theme");if(t==="night"||t==="light")document.documentElement.setAttribute("data-theme",t)}}catch(e){}</script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Học Anh">
@@ -332,7 +332,7 @@ body.cover .wrap{max-width:860px; padding-top:calc(34px + env(safe-area-inset-to
 .cover .cvh{text-align:center; margin-bottom:22px}
 .cover .cvh h1{font-size:2.1rem; margin:0 0 4px; color:#3b2a55}
 .cover .cvh p{color:#6b5d82; margin:0; font-weight:700}
-.cvgrid{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+.cvgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px}
 @media (max-width:640px){ .cvgrid{grid-template-columns:1fr} }
 .cvc{display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; border:0; border-radius:30px; padding:22px 18px 20px; cursor:pointer; transition:transform .12s}
 .cvc:hover{transform:translateY(-3px)} .cvc:active{transform:translateY(1px)}
@@ -341,8 +341,8 @@ body.cover .wrap{max-width:860px; padding-top:calc(34px + env(safe-area-inset-to
 .cvc .cvt{font-weight:800; font-size:.9rem; padding:3px 14px; border-radius:999px}
 .cvc .cvd{font-size:.95rem; line-height:1.45; max-width:30ch}
 .cvc .cvgo{margin-top:8px; font-weight:800; padding:11px 24px; border-radius:18px}
-.cvc.nhi{background:#fff; box-shadow:0 6px 0 var(--p200),0 18px 34px rgba(var(--glow),.14); border:2px solid var(--p200); color:var(--ink)}
-.cvc.nhi .cvt{background:var(--p100); color:var(--p700)} .cvc.nhi .cvgo{background:var(--p600); color:#fff; box-shadow:0 5px 0 var(--p700)}
+.cvc.nhi,.cvc.bw{background:#fff; box-shadow:0 6px 0 var(--p200),0 18px 34px rgba(var(--glow),.14); border:2px solid var(--p200); color:var(--ink)}
+.cvc.nhi .cvt,.cvc.bw .cvt{background:var(--p100); color:var(--p700)} .cvc.nhi .cvgo,.cvc.bw .cvgo{background:var(--p600); color:#fff; box-shadow:0 5px 0 var(--p700)}
 .cvc.tri{background:linear-gradient(180deg,#0b1f47 0%,#133a73 100%); box-shadow:0 6px 0 #061330,0 18px 34px rgba(7,20,46,.3); border:2px solid rgba(246,184,78,.5); color:#fff}
 .cvc.tri .cvt{background:rgba(246,184,78,.18); color:#ffd27a} .cvc.tri .cvd{color:#c9d8f2} .cvc.tri .cvgo{background:linear-gradient(180deg,#f8c05a,#f29a2e); color:#0d2552; box-shadow:0 5px 0 #b8691a}
 .cvk{display:flex; align-items:center; justify-content:center; gap:8px; margin-top:20px; color:#6b5d82; font-weight:700; font-size:.92rem}
@@ -492,6 +492,8 @@ html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index
 .cloze{line-height:2.5;font-weight:600;margin:6px 0 10px}
 .errlist{padding-left:20px}
 .weeknav{display:flex;align-items:center;gap:8px}
+.bkbox{background:var(--p50);border:2px dashed var(--p300);border-radius:16px;padding:12px 14px}.bkpages{font-family:"Baloo 2",sans-serif;font-size:1.6rem;color:var(--p600);line-height:1.2}
+.bkclock{font-family:"Baloo 2",sans-serif;font-size:1.8rem;min-width:70px}.bkclock.okc{color:#2e7d52}
 .cvgv{margin-top:18px;text-align:center}.gvpick{display:flex;gap:8px;justify-content:center;align-items:center;margin-top:10px}.gvpick[hidden]{display:none}
 .gvw{padding:0;overflow:hidden}.gvw>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 14px}.gvw>summary::-webkit-details-marker{display:none}
 .gvw .gvb{padding:4px 14px 14px;border-top:2px dashed var(--line)}.gvs{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8px 0;border-top:1px solid var(--line)}.gvs .grow{flex:1 1 55%;min-width:0}.gvs .txt{flex:1 1 140px;max-width:170px}.gvs:first-child{border-top:0}
@@ -752,10 +754,12 @@ const CONFIG = {
   docId: "learner-nhi-7k3q9x2m"
 };
 /* ---- Hai học viên: Nhi (A1–A2) và Trí (B2–C1), mỗi người có dữ liệu riêng ---- */
-const DAYMIN_OF = {nhi:30, tri:60};
+const DAYMIN_OF = {nhi:30, tri:60, bw:30};
 const LEARNERS = {
   nhi:{ id:"nhi", name:"Nhi", level:"A1–A2", key:"a1-english-progress-v1", ckey:"a1-content-v1", dkey:"a1-draft-v1", docId:"learner-nhi-7k3q9x2m", cp:"w", dir:"weeks",
         mascot:"bunny", theme:"light", title:"Học tiếng Anh", sub:"cùng Thỏ ngọc", pageTitle:"Học tiếng Anh cùng Thỏ ngọc", themeColor:"#ffd0e1", levels:["A2","A2-B1","B1"] },
+  bw:{ id:"bw", name:"Nhi", level:"Starter · A1–A2", key:"bw-english-progress-v1", ckey:"bw-content-v1", dkey:"bw-draft-v1", docId:"learner-bw-4h8n2k6q", cp:"b", dir:"weeks-bw",
+        mascot:"bunny", theme:"light", title:"Oxford Bookworms", sub:"đọc truyện cùng Thỏ ngọc", pageTitle:"Oxford Bookworms cùng Thỏ ngọc", themeColor:"#ffd0e1", levels:["A1-A2","A2","A2-B1","B1"] },
   tri:{ id:"tri", name:"Trí", level:"B2–C1", key:"tri-english-progress-v1", ckey:"tri-content-v1", dkey:"tri-draft-v1", docId:"learner-tri-5m8w2c4h", cp:"t", dir:"weeks-tri",
         mascot:"moon", theme:"sea", title:"English for Trí", sub:"Academic English · C1–C2", pageTitle:"English for Trí · B2–C1", themeColor:"#07142e", levels:["B2-C1","C1","C1-C2","C2"] }
 };
@@ -1082,8 +1086,14 @@ const ROADMAP_TRI = [
   [24,"Ôn tổng kết","Ôn toàn khóa mức C2","C2","Essay 350 từ trong 40 phút và bài nói thuyết phục 3 phút"]
 ];
 const TOPIC_NAMES_TRI = ["Work and automation","Technology and privacy","Environment and responsibility","Education and inequality","Health and the state","Media and persuasion","Economy and fairness","Culture and identity"];
-const ROADMAP = LRN.id === "tri" ? ROADMAP_TRI : ROADMAP_NHI;
-const TOPIC_NAMES = LRN.id === "tri" ? TOPIC_NAMES_TRI : TOPIC_NAMES_NHI;
+const ROADMAP_BW = [
+  [1,"Red Roses (Oxford Bookworms Starter)","Hiện tại tiếp diễn (is playing, are you listening?), can / can't với see, hear, smell, sở hữu 's","A1-A2","Đọc chương 1 và nửa đầu chương 2; theo dõi nhân vật và diễn biến; kể lại bằng câu đơn"],
+  [2,"Red Roses (Oxford Bookworms Starter)","Hiện tại đơn và tiếp diễn, lời mời và lời đề nghị (Can I…, Would you like…), lời khuyên và mệnh lệnh","A2","Đọc nửa sau chương 2 và chương 3; hội thoại; ôn cả cuốn và kể lại"],
+  [3,"Mở rộng: thế giới của Red Roses","Kể lại bằng quá khứ đơn; might, could, must để đoán; từ nối nâng cao","A2-B1","Nội dung mở rộng từ truyện: nhật ký, thư, email, ý kiến; từ vựng B1; viết và nói nâng cao"]
+];
+const TOPIC_NAMES_BW = ["Red Roses (Oxford Bookworms Starter)"];
+const ROADMAP = LRN.id === "tri" ? ROADMAP_TRI : LRN.id === "bw" ? ROADMAP_BW : ROADMAP_NHI;
+const TOPIC_NAMES = LRN.id === "tri" ? TOPIC_NAMES_TRI : LRN.id === "bw" ? TOPIC_NAMES_BW : TOPIC_NAMES_NHI;
 const KIND = { new:"Bài mới", review:"Ôn và đọc trước", week:"Ôn cả tuần" };
 let WEEK1 = {
   id:1, title:"Family", grammar:"to be (am / is / are)",
@@ -1297,7 +1307,7 @@ function restoreDemo(){ if (!WEEKS[1]){ WEEKS[1] = WEEK1; Object.assign(LESSONS,
 const SCHEMA = "a1-week/1";
 const DAYK = ["mon","tue","wed","thu","fri","sat"], DAYN = ["Thứ 2","Thứ 3","Thứ 4","Thứ 5","Thứ 6","Thứ 7"];
 const DEFAULT_KIND = ["new","review","new","review","new","week"];
-if (LRN.id === "tri"){   // Trí không dùng bài demo của Nhi: nếu chưa có bài thì hiện trang "chưa có bài"
+if (LRN.id === "tri" || LRN.id === "bw"){   // Trí và chế độ Bookworms không dùng bài demo của Nhi: nếu chưa có bài thì hiện trang "chưa có bài"
   Object.keys(LESSONS).forEach(k => delete LESSONS[k]); Object.keys(SET).forEach(k => delete SET[k]);
   const stubTitle = ["Chưa có bài","Chưa có bài","Chưa có bài","Chưa có bài","Chưa có bài","Chưa có bài"];
   WEEK1 = { id:1, stub:true, title:"Chưa có bài", grammar:"Thầy chưa tải bài lên", subs:[], sessions:DAYK.map((k, i) => ({ id:"w1-"+k, day:DAYN[i], kind:DEFAULT_KIND[i], title:stubTitle[i] })) };
@@ -1306,7 +1316,7 @@ if (LRN.id === "tri"){   // Trí không dùng bài demo của Nhi: nếu chưa c
   WEEKS[1] = WEEK1; DEMO_LESSONS = Object.assign({}, LESSONS);
 }
 const STEP_DEF = { sets:{icon:"✏️",title:"Luyện tập"}, read:{icon:"📖",title:"Đọc"}, listen:{icon:"🎧",title:"Nghe"},
-  notice:{icon:"🔍",title:"Tìm ngữ pháp"}, output:{icon:"🌷",title:"Tự viết"}, report:{icon:"📊",title:"Báo cáo tuần"} };
+  notice:{icon:"🔍",title:"Tìm ngữ pháp"}, output:{icon:"🌷",title:"Tự viết"}, report:{icon:"📊",title:"Báo cáo tuần"}, bookread:{icon:"📚",title:"Đọc sách"} };
 const EST_SEC = { mcq:25, truefalse:15, oddone:20, match:12, listenpick:30, dictation:60, dialogue:30, gap:25, form:30, cloze:30, reorder:40, fix:45, transform:60, translate:70, answer:70, shadow:40, tap:25, multi:35, inline:35, seqlisten:70 };
 // WEEKS ở trên; số tuần -> {id,title,grammar,subs,sessions}
 const CH = {};         // id buổi -> challenge
@@ -1541,6 +1551,11 @@ function validateWeek(j){
         else Object.keys(st.vocab).forEach(x => { if (!isStr(st.vocab[x])) E.push(sw + ": vocab \"" + x + "\" thiếu nghĩa."); vocab.add(x.toLowerCase()); });
       }
       if (st.type === "listen" && (!Array.isArray(st.text) || !st.text.length || !st.text.every(isStr))) E.push(sw + ": text phải là mảng các đoạn.");
+      if (st.type === "bookread"){
+        if (!isStr(st.book)) E.push(sw + ": thiếu book (tên sách)."); if (!isStr(st.pages)) E.push(sw + ": thiếu pages (ví dụ \"1–5\")."); if (!isStr(st.goal)) W.push(sw + ": thiếu goal (mục tiêu đọc, ví dụ \"Đọc để tìm: Anna đang làm gì?\").");
+        if (st.minutes != null && !(Number.isFinite(st.minutes) && st.minutes > 0 && st.minutes <= 30)) E.push(sw + ": minutes phải là số phút từ 1 đến 30.");
+        if (st.text != null) W.push(sw + ": bước Đọc sách không được chứa văn bản sách, hãy bỏ trường text.");
+      }
       if (st.type === "notice"){
         if (!Array.isArray(st.text) || !st.text.length) E.push(sw + ": thiếu text (bài đọc để tìm ngữ pháp)."); if (!Array.isArray(st.target) || !st.target.length) E.push(sw + ": thiếu target (mảng các từ cần tìm).");
         if (!st.box || !Array.isArray(st.box.rows) || !st.box.rows.length) E.push(sw + ": thiếu box.rows (bảng ghi nhớ).");
@@ -1577,7 +1592,7 @@ function validateWeek(j){
   const VL = j.vocabList;
   if (!Array.isArray(VL) || !VL.length) W.push("Thiếu vocabList (danh sách từ cần học thuộc của tuần). Không có danh sách này thì web không ôn từ vựng cách quãng theo giáo án được.");
   else {
-    const seenW = new Set(); let rec = 0; const role = ((Number(j.week) || 1) - 1) % 3, target = (LRN.id === "tri" ? [[26,30],[28,32],[12,16]] : [[26,30],[28,32],[8,12]])[role];
+    const seenW = new Set(); let rec = 0; const role = ((Number(j.week) || 1) - 1) % 3, target = (LRN.id === "tri" ? [[26,30],[28,32],[12,16]] : LRN.id === "bw" ? [[22,26],[22,26],[22,26]] : [[50,54],[52,56],[8,12]])[role];
     VL.forEach((x, i) => { const wv = "vocabList[" + (i + 1) + "]";
       if (!x || !isStr(x.en) || !isStr(x.vi)){ E.push(wv + ": cần có en và vi (nghĩa tiếng Việt)."); return; }
       const k = x.en.trim().toLowerCase(); if (seenW.has(k)) W.push(wv + ": từ \"" + x.en + "\" bị trùng."); seenW.add(k);
@@ -1588,8 +1603,8 @@ function validateWeek(j){
       if (!Number.isInteger(x.sub) || x.sub < 1 || x.sub > 4) W.push(wv + " (" + x.en + "): sub phải là 1, 2, 3 hoặc 4.");
       if (x.recycled) rec++; });
     if (target && (VL.length < target[0] || VL.length > target[1])) W.push("vocabList có " + VL.length + " từ, mục tiêu cho tuần " + j.week + " là " + target[0] + " đến " + target[1] + " từ.");
-    if (role === 1 && rec < 10) W.push("Tuần " + j.week + " cần giữ khoảng 40% từ tuần trước (đánh dấu recycled:true), hiện mới có " + rec + " từ.");
-    if (role === 2 && !VL.every(x => x && x.upgrade)) W.push("Tuần ôn chỉ gồm từ nâng cấp: mỗi từ cần upgrade:true.");
+    if (LRN.id !== "bw" && role === 1 && rec < 10) W.push("Tuần " + j.week + " cần giữ khoảng 40% từ tuần trước (đánh dấu recycled:true), hiện mới có " + rec + " từ.");
+    if (LRN.id !== "bw" && role === 2 && !VL.every(x => x && x.upgrade)) W.push("Tuần ôn chỉ gồm từ nâng cấp: mỗi từ cần upgrade:true.");
     const hay = textOf([j.sessions, j.challenges], []).join(" \n ");
     const low = VL.filter(x => x && isStr(x.en) && (hay.match(new RegExp(vRegex(x.en).source, "gi")) || []).length < 2).map(x => x.en);
     if (low.length) W.push(low.length + " từ trong vocabList xuất hiện ít hơn 2 lần trong bài đọc, nghe và bài tập của tuần: " + low.slice(0, 10).join(", ") + (low.length > 10 ? "…" : "") + ". Từ cần học thuộc phải được dùng lại ít nhất 2 lần.");
@@ -2680,6 +2695,29 @@ function outputStep(step, ctx){
     speak ? [h("div",{class:"small muted",style:"margin-bottom:4px"},"Ghi dàn ý, rồi bấm nói. Bạn có "+(step.seconds || 90)+" giây."), ta, clock, h("div",{class:"row",style:"justify-content:center;margin-top:6px"}, goBtn), playback]
           : [step.hint ? h("p",{class:"muted small"},"Gợi ý: "+step.hint) : null, ta, wc], btn, model);
 }
+function bookreadStep(step, ctx){
+  /* đọc trong sách thật của học viên: web chỉ chỉ chương, trang, mục tiêu và đếm giờ; không chứa văn bản sách */
+  const want = Math.round((step.minutes || 8) * 60), key = ctx.sessionId + "." + step.key;
+  S.bookRead = S.bookRead || {}; const saved = S.bookRead[key] || {};
+  let secs = saved.secs || 0, timer = null;
+  const clock = h("div",{class:"bkclock"}, fmt(secs)), go = h("button",{class:"btn",type:"button"});
+  const draw = () => { go.textContent = timer ? "⏸ Tạm dừng" : secs ? "▶ Đọc tiếp" : "▶ Bắt đầu đọc"; };
+  const tick = () => { secs++; clock.textContent = fmt(secs); clock.classList.toggle("okc", secs >= want); if (secs % 10 === 0){ S.bookRead[key] = Object.assign(S.bookRead[key] || {}, { secs }); save(); } };
+  go.addEventListener("click", () => { if (timer){ clearInterval(timer); timer = null; } else { timer = setInterval(() => { if (!clock.isConnected){ clearInterval(timer); timer = null; return; } tick(); }, 1000); } draw(); });
+  draw();
+  const level = h("div",{class:"row",style:"margin:8px 0"}), rate = v => { S.bookRead[key] = Object.assign(S.bookRead[key] || {}, { secs, got:v }); save(); [...level.children].forEach(b => b.classList.toggle("soft", b.dataset.v !== v)); };
+  [["all","Hiểu hết"],["most","Hiểu phần lớn"],["some","Còn nhiều chỗ chưa hiểu"]].forEach(([v, t]) => { const b = h("button",{class:"btn sm"+(saved.got === v ? "" : " soft"),type:"button",onClick:() => rate(v)}, t); b.dataset.v = v; level.append(b); });
+  const doneBtn = h("button",{class:"btn block",type:"button",style:"margin-top:10px",onClick:() => { if (timer){ clearInterval(timer); timer = null; draw(); } S.bookRead[key] = Object.assign(S.bookRead[key] || {}, { secs, at:dkey(new Date()) }); save(); ctx.done(); toast("Giỏi lắm, mình đọc xong rồi!"); }}, sessDone(ctx) ? "✅ Đã đọc xong" : "Mình đọc xong rồi");
+  return h("div",{class:"card"}, h("h2",null,"📚 Đọc sách"),
+    h("div",{class:"bkbox"}, h("div",{class:"small muted"},step.book + (step.chapter ? "  ·  Chương " + step.chapter : "")), h("div",{class:"bkpages"}, "Trang " + step.pages),
+      step.goal ? h("div",{style:"margin-top:6px"}, step.goal) : null),
+    step.tip ? h("p",{class:"muted small"}, step.tip) : null,
+    h("div",{class:"row",style:"align-items:center;gap:12px;margin:10px 0"}, clock, go, h("span",{class:"small muted"},"Gợi ý khoảng "+Math.round(want/60)+" phút")),
+    h("div",{class:"small muted"},"Đọc trong sách của bạn, đọc xong quay lại đây. Gặp từ lạ thì cứ đọc tiếp, đừng dừng lại tra từng từ."),
+    h("div",{style:"margin-top:10px;font-weight:800"},"Bạn hiểu đoạn này thế nào?"), level, doneBtn,
+    h("a",{class:"small",href:"#/vocab/mine",style:"display:inline-block;margin-top:8px"},"📒 Thêm từ lạ vào Từ của "+MY_NAME()));
+}
+const sessDone = ctx => { const s = S.sessions[ctx.sessionId]; return !!(s && s.steps && s.steps.bookread); };
 function reportStep(step, ctx){ ctx.done(); return h("div",null, reportEl()); }
 
 /* =====================================================================
@@ -2768,7 +2806,7 @@ function lessonView(id, idx){
   Object.assign(PG, { on:true, base:steps.filter((s, i) => i !== idx && sess.steps[s.key]).length / steps.length, span:1 / steps.length, label:"Bước " + (idx+1) + "/" + steps.length, stepDone:() => !!sess.steps[step.key] });
   const ctx = { sessionId:id, done(){ if (!sess.steps[step.key]){ sess.steps[step.key] = true; save(); } refresh(); } };
   next.addEventListener("click", () => { if (last){ finish(id); } else go(idx+1); });
-  const body = { sets:setsStep, read:readStep, listen:listenStep, notice:noticeStep, output:outputStep, report:reportStep }[step.type](step, ctx);
+  const body = { sets:setsStep, read:readStep, listen:listenStep, notice:noticeStep, output:outputStep, report:reportStep, bookread:bookreadStep }[step.type](step, ctx);
   refresh();
   return h("div",null,
     h("div",{class:"lhead"}, h("a",{class:"back",href:"#/week","aria-label":"Quay lại"},"←"), h("div",{class:"grow"}, h("h1",null,meta.title), h("div",{class:"small muted"}, meta.day+", "+KIND[meta.kind])),
@@ -3132,8 +3170,8 @@ function settingsView(){
       FS.app() ? null : h("button",{class:"btn fsbtn",type:"button",onClick:FS.toggle,html:FS_TXT(FS.on())})),
     h("div",{class:"card"}, h("h3",null,"Học viên: "+LRN.name+" ("+LRN.level+")"), h("p",{class:"muted small"},"Tên hiện trong lời chào ở trang chủ."), nameIn,
       h("button",{class:"btn soft sm",type:"button",style:"margin-top:12px",onClick:switchLearner},"↩ Đổi học viên")),
-    LRN.id === "nhi" ? h("div",{class:"card"}, h("h3",null,"Giao diện"), h("div",{class:"row",style:"flex-wrap:nowrap"}, tk("light"), tk("night"))) : null,
-    LRN.id === "nhi" ? h("div",{class:"card"}, h("h3",null,"Linh vật"), h("div",{class:"row",style:"flex-wrap:nowrap"}, mk("bunny"), mk("hang"))) : null,
+    LRN.id !== "tri" ? h("div",{class:"card"}, h("h3",null,"Giao diện"), h("div",{class:"row",style:"flex-wrap:nowrap"}, tk("light"), tk("night"))) : null,
+    LRN.id !== "tri" ? h("div",{class:"card"}, h("h3",null,"Linh vật"), h("div",{class:"row",style:"flex-wrap:nowrap"}, mk("bunny"), mk("hang"))) : null,
     h("div",{class:"card"}, h("h3",null,"Ngày bắt đầu khóa học"), h("p",{class:"muted small"},"Chọn ngày thứ Hai đầu tuần 1. Trang chủ dựa vào ngày này để biết hôm nay học buổi nào."), dateIn,
       notMon ? h("p",{class:"err small"},"Ngày này không phải thứ Hai, nhãn Thứ 2 đến Thứ 7 sẽ lệch.") : null),
     h("div",{class:"card"}, h("h3",null,"Đồng bộ"), h("p",{class:"muted small",style:"margin:0"}, Cloud.ready ? "Đang đồng bộ qua Supabase." : "Chưa đồng bộ được, tiến độ đang lưu trong trình duyệt này. Kiểm tra mạng hoặc cấu hình Supabase.")),
@@ -3375,7 +3413,7 @@ function gvView(){
   };
   const extra = have.filter(n => !rows.includes(n)).sort((a, b) => a - b);
   return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"),
-    h("h1",{style:"margin-top:16px"},"GV soạn bài · "+learnerName()),
+    h("h1",{style:"margin-top:16px"},"GV soạn bài · "+learnerName()+(LRN.id === "bw" ? " · Bookworms" : "")),
     h("div",{class:"row",style:"margin-bottom:12px"}, h("a",{class:"btn",href:"#/content"},"📚 Tải bài học lên"), h("a",{class:"btn soft",href:"#/teacher"},"Nhận xét và lời nhắn"), h("button",{class:"btn soft",type:"button",onClick:switchLearner},"Đổi học viên")),
     (() => { const M = S.mine || {}, mw = Object.keys(M).sort(); if (!mw.length) return null;
       const d = h("details",{class:"card"}, h("summary",{style:"cursor:pointer;font-weight:800"},"📒 Từ "+MY_NAME()+" tự thêm ("+mw.length+")"), h("p",{class:"small muted"},"Bấm vào từ để sửa nghĩa, ví dụ, từ hay đi cùng, rồi bấm “Lưu và duyệt”."), mw.map(w => mineRowEl(w, () => { route(); }, true))); return d; })(),
@@ -3438,15 +3476,16 @@ function switchLearner(){
 function coverView(){
   const keep = h("input",{type:"checkbox",id:"keepL"});
   const card = (id, kind, tag, desc) => h("button",{class:"cvc "+id,type:"button",onClick:() => chooseLearner(id, keep.checked)},
-    h("span",{class:"cvm",html:mascotSVG("happy", kind)}), h("b",null,LEARNERS[id].name), h("span",{class:"cvt"},tag), h("span",{class:"cvd"},desc), h("span",{class:"cvgo"},"Vào học →"));
+    h("span",{class:"cvm",html:mascotSVG("happy", kind)}), h("b",null,id === "bw" ? LEARNERS[id].title : LEARNERS[id].name), h("span",{class:"cvt"},tag), h("span",{class:"cvd"},desc), h("span",{class:"cvgo"},"Vào học →"));
   return h("div",{class:"cover"},
     h("div",{class:"cvh"}, h("h1",null,"Học tiếng Anh"), h("p",null,"Chọn học viên để vào học")),
     h("div",{class:"cvgrid"},
       card("nhi","bunny","A1–A2 · Nền tảng","Mỗi ngày 30 phút: đọc, nghe, luyện từng bước nhỏ, có linh vật Thỏ ngọc đồng hành."),
+      card("bw","bunny","Đọc sách · Starter","Đọc truyện Red Roses trong sách thật, 30 phút mỗi ngày, 3 tuần: hai tuần theo truyện, một tuần mở rộng nâng cao."),
       card("tri","moon","C1–C2 · Nâng cao","Mỗi ngày 60 phút: viết luận, tranh biện, báo cáo số liệu, ngữ pháp C1–C2, ôn lặp lại.")),
     h("label",{class:"cvk"}, keep, " Nhớ lựa chọn trên máy này (lần sau vào thẳng)"),
     (() => { const pick = h("div",{class:"gvpick",hidden:true}, h("span",{class:"small muted"},"Soạn bài cho:"),
-        Object.keys(LEARNERS).map(id => h("button",{class:"pill",type:"button",onClick:() => chooseLearner(id, false, "gv")}, LEARNERS[id].name)));
+        Object.keys(LEARNERS).map(id => h("button",{class:"pill",type:"button",onClick:() => chooseLearner(id, false, "gv")}, id === "bw" ? "Nhi · Bookworms" : LEARNERS[id].name)));
       return h("div",{class:"cvgv"}, h("button",{class:"btn soft",type:"button",onClick:() => { pick.hidden = !pick.hidden; }},"✏️ GV soạn bài"), pick); })());
 }
 
@@ -3514,7 +3553,7 @@ if (SCH){
   Object.values(STEP_DEF).forEach(d => d.icon = "#i:pencil"); Object.entries(TYPES).forEach(([k,d]) => { d.icon = "#i:" + (TI[k] || "dot"); });
   STICKERS.forEach(x => { x.icon = "#i:" + (SI[x.id] || "spark"); if (SN[x.id]) x.name = SN[x.id]; });
 }
-const STEP_ICON = { warmup:"bolt", read:"book", listen:"headphones", notice:"search", practice:"pencil", review:"refresh", preview:"eye", output:"pencil", quiz:"checksq", transfer:"swap", mix:"shuffle", report:"chart", challenge:"award" };
+const STEP_ICON = { warmup:"bolt", bookread:"book", read:"book", listen:"headphones", notice:"search", practice:"pencil", review:"refresh", preview:"eye", output:"pencil", quiz:"checksq", transfer:"swap", mix:"shuffle", report:"chart", challenge:"award" };
 async function boot(){
   if (COVER){ document.body.classList.add("cover"); document.title = "Học tiếng Anh · Chọn học viên"; app.replaceChildren(coverView()); return; }
   S = loadLocal(); ensureStart(); applyBrand(); loadContentLocal();
