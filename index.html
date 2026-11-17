@@ -6,7 +6,7 @@
 <title>Học tiếng Anh cùng Thỏ ngọc</title>
 <meta name="theme-color" content="#f1cbc3">
 <script>try{var L=new URLSearchParams(location.search).get("l");if(L!=="nhi"&&L!=="tri"&&L!=="bw")L=sessionStorage.getItem("a1-learner");if(L!=="nhi"&&L!=="tri"&&L!=="bw")L=localStorage.getItem("a1-learner-keep");
-if(L==="tri"){document.documentElement.setAttribute("data-learner","tri");document.documentElement.setAttribute("data-theme","sea")}
+if(L==="tri"||location.hash.indexOf("#/admin")===0){document.documentElement.setAttribute("data-learner","tri");document.documentElement.setAttribute("data-theme","sea")}
 else{if(L==="nhi"||L==="bw")document.documentElement.setAttribute("data-learner","nhi");var t=localStorage.getItem("a1-theme");if(t==="night"||t==="light")document.documentElement.setAttribute("data-theme",t)}}catch(e){}</script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -721,6 +721,66 @@ body.immersive .bank.stick{bottom:calc(88px + env(safe-area-inset-bottom))}
 .sqb{flex:none; border:1.5px solid var(--p200); background:var(--paper); border-radius:10px; width:34px; height:34px; font-size:.9rem}
 .scene{margin:0 0 8px; padding:8px 12px; background:var(--doc,#fff8e6); border:1.5px solid var(--doc-line,#e8d9a8); border-radius:12px; font-weight:600}
 
+
+/* ===== Trang Quản lý (theme của Trí, dùng cho mọi học viên) ===== */
+body.admin .top,body.admin .tabs{display:none}
+body.admin .wrap{max-width:none; padding:0}
+.adm{display:grid; grid-template-columns:248px minmax(0,1fr); min-height:100vh; color:#fff}
+.adm-side{position:sticky; top:0; align-self:start; height:100vh; overflow:auto; display:flex; flex-direction:column; gap:14px; padding:20px 14px; background:#0b1f47; border-right:1px solid rgba(246,184,78,.28)}
+.adm-brand{display:flex; align-items:center; gap:10px; padding:0 6px 6px}
+.adm-brand .ai{width:36px; height:36px; padding:8px; border-radius:8px; background:#f6b84e; color:#0d2552}
+.adm-brand b{display:block; color:#fff; font-size:1.05rem; line-height:1.15} .adm-brand small{color:#f6c35f}
+.adm-lbl{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:#8da4d0; padding:0 8px}
+.adm-learners{display:flex; gap:6px; flex-wrap:wrap; padding:0 6px}
+.adl{border:1px solid rgba(255,255,255,.24); background:transparent; color:#c6d4ee; border-radius:6px; padding:6px 10px; font-weight:600; font-size:.88rem}
+.adl.on{background:#f6b84e; border-color:#f6b84e; color:#0d2552}
+.adm-nav{display:flex; flex-direction:column; gap:2px}
+.adm-nav a{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:6px; color:#c6d4ee; text-decoration:none; font-weight:600}
+.adm-nav a:hover{background:rgba(255,255,255,.07)}
+.adm-nav a.on{background:rgba(246,184,78,.16); color:#ffd27a; box-shadow:inset 3px 0 0 #f6b84e}
+.adm-foot{margin-top:auto; display:flex; flex-direction:column; gap:8px; padding:0 6px}
+.adm-sync{font-size:.8rem; color:#c6d4ee} .adm-sync.ok{color:#8fe0b2}
+.adm-out{display:flex; align-items:center; gap:8px; background:transparent; border:1px solid rgba(255,255,255,.24); color:#dbe6fb; border-radius:6px; padding:8px 10px; font-weight:600}
+.adm-main{padding:24px 28px 80px; min-width:0; max-width:1100px; width:100%}
+.ai{display:inline-flex; width:18px; height:18px; flex:none} .ai svg{width:100%; height:100%}
+.adm .btn{display:inline-flex; align-items:center; justify-content:center; gap:6px}
+.adm .btn:disabled{opacity:.45; cursor:not-allowed}
+.adm-head{display:flex; align-items:flex-end; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:16px}
+.adm-head h1{color:#fff; margin:0; font-size:1.6rem}
+.adm-sub{color:#c6d4ee; margin:4px 0 0}
+.adm-crumb{display:flex; align-items:center; flex-wrap:wrap; gap:4px; margin-bottom:10px; font-size:.9rem; color:#c6d4ee}
+.adm-crumb a{color:#ffd27a; text-decoration:none; font-weight:600} .adm-crumb .ai{width:14px; height:14px}
+.adm .card{color:var(--ink); margin-bottom:14px} .adm .card h3{color:var(--p700)} .adm .card .muted{color:var(--ink2)}
+.adm .err{color:var(--bad)} .adm .errlist{margin:6px 0; padding-left:20px}
+.adm-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-bottom:14px}
+.adm-kpi{background:rgba(255,255,255,.08); border:1px solid rgba(246,184,78,.35); border-radius:8px; padding:12px 14px}
+.adm-kpi b{display:block; font-size:1.6rem; color:#ffd27a; line-height:1.1} .adm-kpi span{color:#d6e2f7; font-size:.85rem}
+.adm-tabs{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px}
+.adm-tab{padding:7px 12px; border-radius:6px; border:1px solid rgba(255,255,255,.24); color:#dbe6fb; text-decoration:none; font-weight:600; font-size:.9rem}
+.adm-tab.on{background:#f6b84e; border-color:#f6b84e; color:#0d2552}
+.adm-row{display:flex; align-items:center; flex-wrap:wrap; gap:10px 12px; padding:12px 4px; border-top:1px solid var(--line); text-decoration:none; color:var(--ink)}
+.adm-row:first-of-type{border-top:0}
+a.adm-row:hover{background:var(--p50)}
+.adm-row .ai{color:var(--ink2); width:16px; height:16px}
+.adm-row .grow{flex:1 1 170px; min-width:0}
+.adm-row .txt{width:auto; padding:6px 8px; min-width:0}
+.adm-wno{min-width:56px; text-align:center; background:var(--p100); border-radius:6px; padding:4px 6px; color:var(--p700)} .adm-wno small{display:block; font-size:.7rem; line-height:1.1} .adm-wno b{font-size:1.15rem}
+.adm-st{display:flex; align-items:center; gap:10px; padding:10px 0; border-top:1px solid var(--line)}
+.adm-drop{display:flex; flex-direction:column; align-items:center; gap:6px; padding:30px 16px; border:2px dashed var(--p300); border-radius:10px; background:var(--p50); cursor:pointer; text-align:center; color:var(--ink)}
+.adm-drop .ai{width:34px; height:34px; color:var(--p600)}
+.adm-drop.on,.adm-drop:hover{background:var(--p100); border-color:var(--p500)}
+.adm-ov{position:fixed; inset:0; z-index:100; background:rgba(4,12,32,.66); display:flex; align-items:center; justify-content:center; padding:16px}
+.adm-dlg{background:#fff; color:var(--ink); border-radius:10px; padding:20px; max-width:480px; width:100%; box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.adm-dlg h3{margin:0 0 8px; color:var(--p700)}
+.adm-prev{position:sticky; top:0; z-index:40; display:flex; align-items:center; justify-content:space-between; gap:10px; background:#f6b84e; color:#0d2552; padding:8px 12px; font-weight:700; border-radius:6px; margin-bottom:10px}
+@media (max-width:860px){
+  .adm{grid-template-columns:1fr}
+  .adm-side{position:static; height:auto; padding:12px 12px 8px; gap:10px}
+  .adm-nav{flex-direction:row; overflow-x:auto}
+  .adm-nav a{white-space:nowrap}
+  .adm-foot{margin-top:0; flex-direction:row; align-items:center; justify-content:space-between}
+  .adm-main{padding:16px 14px 60px}
+}
 </style>
 </head>
 <body>
@@ -773,6 +833,7 @@ const pickedId = (() => { let L = null; try {
   if (!L){ const x = localStorage.getItem("a1-learner-keep"); if (LEARNERS[x]) L = x; } } catch(e){}
   return L; })();
 const COVER = !pickedId;
+const PREVIEW = (() => { try { return sessionStorage.getItem("a1-preview") === "1"; } catch(e){ return false; } })();   /* xem thử từ trang Quản lý: không ghi tiến độ */
 const LRN = LEARNERS[pickedId || "nhi"];
 const DAYMIN = DAYMIN_OF[LRN.id] || 30;
 const SCH = LRN.id === "tri"; /* giao diện học thuật: không linh vật, không emoji, giọng văn trung tính */
@@ -1005,6 +1066,7 @@ function setStatus(kind){
   el.setAttribute("aria-label", st);
 }
 function save(){
+  if (PREVIEW) return;
   S.updatedAt = Date.now();
   try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){}
   scheduleCloud();
@@ -1521,6 +1583,7 @@ async function saveWeek(json){
 }
 async function deleteWeek(n){
   delete CONTENT[n]; DELETED.add(+n); saveDeleted(); saveContentLocal(); unloadWeek(n); if (!WEEKS[1]) restoreStub();
+  clearProgress({week:n});
   if (Cloud.ready){ try { await DB.set(LRN.cp+n, { json:"", deleted:true }, Date.now()); } catch(e){ console.error(e); } }
 }
 async function loadContentCloud(){
@@ -3178,7 +3241,6 @@ function settingsView(){
   const dateIn = h("input",{class:"txt",type:"date",value:startVal,onChange:e => { if (e.target.value){ if (bwOn){ S.settings.sched = S.settings.sched || {}; (S.settings.sched[lo0] = S.settings.sched[lo0] || {}).start = e.target.value; (S.settings.books = S.settings.books || {})[curBook()] = e.target.value; } else S.settings.startDate = e.target.value; save(); toast("Đã lưu ngày bắt đầu"); route(); } }});
   return h("div",null, h("h1",null,"Cài đặt"),
     IS_BW ? h("div",{class:"card"}, h("h3",null,"📖 Sách đang học"), h("p",{class:"muted small"}, bwOn ? ((bookInfo(curBook()) || {}).title || "")+" · "+((bookInfo(curBook()) || {}).series || "") : "Chưa chọn sách."), h("a",{class:"btn soft",href:"#/books"},"📚 Chọn sách khác")) : null,
-    h("div",{class:"card tint"}, h("h3",null,"📚 Tải bài học lên"), h("p",{class:"muted small"},"Dán JSON do GPT soạn, kiểm tra rồi dùng ngay."), h("a",{class:"btn",href:"#/content"},"Mở trang tải bài")),
     voiceCard(),
     h("div",{class:"card"}, h("h3",null,"Toàn màn hình"), h("p",{class:"muted small"}, FS.app() ? "Bạn đang mở app ở chế độ toàn màn hình." : FS.can() ? "Ẩn thanh địa chỉ của trình duyệt để học cho tập trung." : "Trên iPhone: bấm nút Chia sẻ, chọn “Thêm vào MH chính”, rồi mở app từ biểu tượng trên màn hình, app sẽ chạy toàn màn hình."),
       FS.app() ? null : h("button",{class:"btn fsbtn",type:"button",onClick:FS.toggle,html:FS_TXT(FS.on())})),
@@ -3189,42 +3251,11 @@ function settingsView(){
     h("div",{class:"card"}, h("h3",null,bwOn ? "Ngày bắt đầu cuốn sách" : "Ngày bắt đầu khóa học"), h("p",{class:"muted small"},"Chọn ngày thứ Hai đầu tuần 1"+(bwOn ? " của cuốn này" : "")+". Trang chủ dựa vào ngày này để biết hôm nay học buổi nào."), dateIn,
       notMon ? h("p",{class:"err small"},"Ngày này không phải thứ Hai, nhãn Thứ 2 đến Thứ 7 sẽ lệch.") : null),
     h("div",{class:"card"}, h("h3",null,"Đồng bộ"), h("p",{class:"muted small",style:"margin:0"}, Cloud.ready ? "Đang đồng bộ qua Supabase." : "Chưa đồng bộ được, tiến độ đang lưu trong trình duyệt này. Kiểm tra mạng hoặc cấu hình Supabase.")),
-    h("div",{class:"card"}, h("h3",null,"Khu dành cho người hướng dẫn"), h("p",{class:"muted small"},"Xem tiến độ, đọc bài viết, nhận xét và để lại lời nhắn."), h("a",{class:"btn soft",href:"#/teacher"},"Mở khu người hướng dẫn")),
-    h("div",{class:"card tint"}, h("h3",null,"Tiến độ học"), h("p",{class:"muted small"},"Xóa toàn bộ tiến độ của học viên trên thiết bị này."),
-      h("div",{class:"row"},
-        h("button",{class:"btn danger",type:"button",onClick:() => { if (confirm("Xóa toàn bộ tiến độ? Không thể hoàn tác.")){ const keep = S.settings; S = defaultState(); S.settings = Object.assign(S.settings, keep); save(); toast("Đã xóa tiến độ"); route(); } }},"Xóa tiến độ"))));
-}
-function teacherView(){
-  const nm = learnerName(), mins = Math.round(Object.values(S.sessions).reduce((a,s) => a + (s.seconds||0), 0) / 60);
-  const days = [...activeSet()].sort(); const lastDay = days[days.length-1];
-  const ta = h("textarea",{class:"txt",rows:3,placeholder:"Ví dụ: Tuần này em làm tốt phần am/is/are, nhớ đọc to các câu nhé!"}); ta.value = S.teacherNote ? S.teacherNote.text : "";
-  const writings = Object.entries(S.writing);
-  return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"), h("h1",{style:"margin-top:16px"},"Khu người hướng dẫn"),
-    h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneCount()+"/"+allSessions().length),h("span",null,"buổi xong")), h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút học")), h("div",{class:"stat"},h("b",null,streak()),h("span",null,"ngày liên tiếp"))),
-    h("p",{class:"muted"}, lastDay ? "Lần học gần nhất: "+lastDay+"." : "Chưa có buổi học nào."),
-    h("div",{class:"card"}, h("h3",null,"Lịch sử buổi học"),
-      S.log.length ? S.log.slice(-8).reverse().map(l => { const m = findSession(l.id); return h("div",{class:"tl"}, h("span",{class:"pill"},l.d), h("div",{class:"grow"}, h("b",null,m ? m.title : l.id), h("div",{class:"small muted"},Math.max(1,Math.round(l.sec/60))+" phút"))); })
-        : h("p",{class:"muted"},"Chưa có buổi nào hoàn thành.")),
-    h("div",{class:"card"}, h("h3",null,"Độ chính xác theo dạng bài"), accuracyBars()),
-    h("div",{class:"card"}, h("h3",null,"Câu sai hay gặp"),
-      S.mistakes.length ? S.mistakes.slice(-5).reverse().map(m => h("div",{class:"mist"}, h("div",{class:"small muted"},TYPE_LABEL[m.t]), h("div",{style:"font-weight:700"},m.q), h("div",null,"Đáp án: ",h("b",null,m.a))))
-        : h("p",{class:"muted"},"Chưa có câu sai.")),
-    h("div",{class:"card"}, h("h3",null,"Bài tự viết của "+nm),
-      writings.length ? writings.map(([sid, text]) => { const m = findSession(sid);
-        const fb = h("textarea",{class:"txt",rows:2,placeholder:"Nhận xét cho học viên"}); fb.value = S.feedback[sid] || "";
-        return h("div",{class:"mist"}, h("div",{class:"small muted"},m ? m.day+": "+m.title : sid), h("div",{class:"model",style:"margin:6px 0 8px"},text), fb,
-          h("button",{class:"btn soft",type:"button",style:"margin-top:8px",onClick:() => { S.feedback[sid] = fb.value; save(); toast("Đã lưu nhận xét"); }},"Lưu nhận xét")); })
-        : h("p",{class:"muted"},"Chưa có bài viết nào.")),
-    h("div",{class:"card"}, h("h3",null,"Lời nhắn hiện ở trang chủ của học viên"), ta,
-      h("div",{class:"row",style:"margin-top:10px"}, h("button",{class:"btn",type:"button",onClick:() => { if (!ta.value.trim()){ toast("Hãy viết nội dung lời nhắn"); return; } S.teacherNote = { text:ta.value.trim(), at:dkey(new Date()), read:false }; save(); toast("Đã gửi lời nhắn"); }},"Gửi lời nhắn"),
-        h("button",{class:"btn danger",type:"button",onClick:() => { S.teacherNote = null; ta.value = ""; save(); toast("Đã xóa lời nhắn"); }},"Xóa"))));
+  );
 }
 function progressView(){
   const list = allSessions(), doneN = list.filter(s => isDone(s.id)).length;
   const mins = Math.round(Object.values(S.sessions).reduce((a,s) => a + (s.seconds||0), 0) / 60);
-  const fileIn = h("input",{type:"file",accept:"application/json",hidden:true,onChange:e => {
-    const f = e.target.files[0]; if (!f) return; const rd = new FileReader();
-    rd.onload = () => { try { S = normalize(JSON.parse(rd.result)); ensureStart(); save(); applyBrand(); toast("Đã khôi phục tiến độ"); route(); } catch(x){ toast("File không hợp lệ"); } }; rd.readAsText(f); }});
   const writings = Object.entries(S.writing);
   return h("div",null, h("h1",null,"Tiến độ"),
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneN),h("span",null,"buổi xong")), h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút đã học")), h("div",{class:"stat"},h("b",null,Object.keys(S.vocab).length),h("span",null,"từ đã gặp"))),
@@ -3240,10 +3271,7 @@ function progressView(){
     writings.length ? h("div",{class:"card"}, h("h3",null,"Bài viết của mình"), writings.map(([sid, text]) => { const m = findSession(sid);
       return h("div",{class:"mist"}, h("div",{class:"small muted"},m ? m.day+": "+m.title : sid), h("div",{style:"font-weight:600"},text),
         S.feedback[sid] ? h("div",{class:"model",style:"margin-top:8px"},h("div",{class:"small muted"},"💌 Nhận xét"),S.feedback[sid]) : null); })) : null,
-    h("div",{class:"card flat"}, h("h3",null,"Sao lưu"), h("p",{class:"muted small"},"Tải tiến độ về máy hoặc khôi phục từ file đã lưu."),
-      h("div",{class:"row"}, h("button",{class:"btn soft",type:"button",onClick:() => {
-          const a = h("a",{href:URL.createObjectURL(new Blob([JSON.stringify(S,null,2)],{type:"application/json"})),download:"tien-do-hoc.json"}); document.body.append(a); a.click(); a.remove(); }},"Tải về"),
-        h("button",{class:"btn soft",type:"button",onClick:() => fileIn.click()},"Khôi phục"), fileIn)));
+  );
 }
 
 /* =====================================================================
@@ -3302,152 +3330,333 @@ function draftProgress(n){
   return { meta:!!d.meta, sessions:DAYK.filter(k => d.sessions[k]), challenges:DAYK.filter(k => d.challenges[k]),
     complete:!!d.meta && DAYK.every(k => d.sessions[k] && d.challenges[k]) };
 }
-let dropJSON = null;
-function contentView(){
-  const ta = h("textarea",{class:"txt",rows:7,placeholder:"Kéo thả file .json vào đây, hoặc dán nội dung JSON do GPT xuất ra…",spellcheck:"false"});
-  const out = h("div"); let pending = null;
-  const readFiles = async files => { const list = [...files].filter(f => /\.(json|txt)$/i.test(f.name) || /json|text/.test(f.type));
-    if (!list.length){ toast("Hãy thả file .json"); return; }
-    const texts = []; for (const f of list) texts.push(await f.text());
-    ta.value = texts.length === 1 ? texts[0] : texts.map(t => "```json\n" + t + "\n```").join("\n\n"); check(); };
-  ["dragenter","dragover"].forEach(ev => ta.addEventListener(ev, e => { e.preventDefault(); ta.classList.add("over"); }));
-  ["dragleave","dragend"].forEach(ev => ta.addEventListener(ev, () => ta.classList.remove("over")));
-  ta.addEventListener("drop", e => { if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length){ e.preventDefault(); ta.classList.remove("over"); readFiles(e.dataTransfer.files); } else ta.classList.remove("over"); });
-  const fileIn = h("input",{type:"file",multiple:true,accept:".json,application/json,text/plain",hidden:true,onChange:async e => { const fs = e.target.files; if (!fs.length) return; await readFiles(fs); e.target.value = ""; }});
-  function check(){
-    pending = null;
-    if (!ta.value.trim()){ out.replaceChildren(h("p",{class:"muted"},"Hãy dán JSON hoặc chọn file trước.")); return; }
-    const p = parseWeekText(ta.value);
-    if (p.err){ out.replaceChildren(h("div",{class:"card",style:"border-color:var(--bad)"}, h("h3",{style:"color:var(--bad)"},"Chưa đọc được file"), h("p",null,p.err))); return; }
-    let arr = Array.isArray(p.v) ? p.v : [p.v]; const extra = [];
-    const parts = arr.filter(x => x && x.part), whole = arr.filter(x => !(x && x.part)), weeksTouched = new Set();
-    parts.forEach(x => { const e = mergePart(x); if (e) extra.push(e); else weeksTouched.add(x.week); });
-    if (extra.length){ out.replaceChildren(h("div",{class:"card",style:"border-color:var(--bad)"}, h("h3",{style:"color:var(--bad)"},"Phần này chưa dùng được"), h("ul",null, extra.map(x => h("li",null,x))))); return; }
-    const draftCards = [...weeksTouched].map(n => {
-      const pr = draftProgress(n), j = assembleDraft(n), v = validateWeek(j);
-      const E = v.E.filter(x => !/^Thiếu buổi|^Thiếu sessions/.test(x)), W = v.W.filter(x => !/chưa có challenge/.test(x));
-      const mark = (ok, t) => h("span",{class:"pill"+(ok ? " ok" : " lock")}, (ok ? "✓ " : "· ") + t);
-      const ready = pr.complete && !E.length;
-      if (ready) pending = (pending || []).concat([j]);
-      return h("div",{class:"card"}, h("h3",null,"Bản nháp tuần "+n+(ready ? ": đã đủ, hợp lệ ✅" : "")),
-        h("div",{class:"chips",style:"margin:6px 0"}, mark(pr.meta,"meta"), DAYK.map((k, i) => mark(pr.sessions.includes(k), DAYN[i])), DAYK.map((k, i) => mark(pr.challenges.includes(k), "CH " + DAYN[i].replace("Thứ ","T")))),
-        E.length ? h("ul",{class:"errlist"}, E.slice(0, 30).map(x => h("li",{style:"color:var(--bad)"}, x))) : h("p",{class:"muted small"}, ready ? "Bấm Lưu để dùng." : "Phần vừa dán không có lỗi. Tiếp tục dán các phần còn thiếu."),
-        W.length ? h("details",null, h("summary",{style:"font-weight:800;cursor:pointer"},"⚠️ "+W.length+" lưu ý"), h("ul",null, W.slice(0, 25).map(x => h("li",{class:"small"}, x)))) : null,
-        ready ? h("div",{style:"overflow-x:auto;margin-top:10px"}, h("table",{class:"gtable"}, h("thead",null,h("tr",null,["Buổi","Câu chính","Làm thêm","≈ phút","Challenge"].map(t => h("th",null,t)))),
-          h("tbody",null, v.stats.sessions.map(x => h("tr",null, h("td",null,x.day), h("td",null,String(x.core)), h("td",null,String(x.extra)), h("td",null,"~"+x.min), h("td",null,x.cn ? x.cn+" câu (~"+x.cmin+"′)" : "–")))))) : null,
-        h("button",{class:"btn danger",type:"button",style:"margin-top:10px",onClick:() => { if (confirm("Xóa bản nháp tuần "+n+"?")){ delete DRAFT[n]; saveDraft(); route(); } }},"Xóa bản nháp")); });
-    const results = whole.map(j => ({ j, v:validateWeek(j) })), ok = results.every(r => !r.v.E.length);
-    if (ok && results.length) pending = (pending || []).concat(results.map(r => r.j));
-    if (parts.length && !whole.length){ out.replaceChildren(...draftCards, pending ? h("button",{class:"btn block",type:"button",onClick:async () => { for (const j of pending){ await saveWeek(j); delete DRAFT[j.week]; } saveDraft(); toast("Đã lưu vào web"); ta.value = ""; out.replaceChildren(); route(); }},"Lưu vào web") : null); ta.value = ""; return; }
-    const mkSave = (st) => ok && pending ? h("button",{class:"btn block",type:"button",style:st,onClick:async () => { for (const j of pending) await saveWeek(j); toast("Đã lưu "+pending.length+" tuần"); ta.value = ""; out.replaceChildren(); route(); }}, "💾 Lưu vào web") : null;
-    out.replaceChildren(...draftCards, mkSave("position:sticky;top:8px;z-index:5;margin-bottom:12px"), ...results.map(({ j, v }) => h("div",{class:"card"},
-      h("h3",null, v.E.length ? "❌ Có "+v.E.length+" lỗi cần sửa" : "✅ Hợp lệ" + (j && j.week ? ": Tuần "+j.week+" · "+j.title : "")),
-      v.E.length ? h("ul",{class:"errlist"}, v.E.slice(0, 30).map(x => h("li",{style:"color:var(--bad)"}, x)), v.E.length > 30 ? h("li",null,"… và "+(v.E.length-30)+" lỗi nữa") : null) : null,
-      v.W.length ? h("details",null, h("summary",{style:"font-weight:800;cursor:pointer"},"⚠️ "+v.W.length+" lưu ý (không chặn lưu)"), h("ul",null, v.W.slice(0, 25).map(x => h("li",{class:"small"}, x)))) : null,
-      v.stats.sessions.length ? h("div",{style:"overflow-x:auto;margin-top:10px"}, h("table",{class:"gtable"},
-        h("thead",null,h("tr",null,["Buổi","Câu chính","Làm thêm","≈ phút","Challenge"].map(t => h("th",null,t)))),
-        h("tbody",null, v.stats.sessions.map(s => h("tr",null, h("td",null,s.day), h("td",null,String(s.core)), h("td",null,String(s.extra)), h("td",null,"~"+s.min), h("td",null,s.cn ? s.cn+" câu (~"+s.cmin+"′)" : "–")))))) : null,
-      v.stats.vocab ? h("p",{class:"muted small"},"Từ vựng trong các bài đọc: "+v.stats.vocab+" từ.") : null)),
-      mkSave("margin-top:12px"));
-  }
-  if (dropJSON){ ta.value = dropJSON; dropJSON = null; check(); }
-  const rows = Object.keys(WEEKS).map(Number).sort((a, b) => a - b).map(n => { const w = WEEKS[n], c = CONTENT[n];
-    const src = !w.json ? "Chưa có bài" : c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Từ repo";
-    return h("div",{class:"vrow"}, h("div",{class:"grow"}, h("b",null,"Tuần "+n+": "+w.title), h("div",{class:"small muted"},w.grammar+" · "+src)),
-      h("a",{class:"pill",href:"#/lesson/w"+n+"-mon/0",style:"text-decoration:none"},"Xem thử"),
-      c ? h("button",{class:"pill",type:"button",onClick:() => { const a = h("a",{href:URL.createObjectURL(new Blob([JSON.stringify(c.json,null,2)],{type:"application/json"})),download:"week-"+n+".json"}); document.body.append(a); a.click(); a.remove(); }},"Tải JSON") : null,
-      c ? h("button",{class:"pill lock",type:"button",onClick:async () => { if (confirm("Xóa nội dung tuần "+n+"? Tiến độ của học viên vẫn được giữ.")){ await deleteWeek(n); route(); } }},"Xóa") : null); });
-  return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"), h("h1",{style:"margin-top:16px"},"Tải bài học lên"),
-    h("div",{class:"card tint flat small"}, "1) Dùng prompt trong file PROMPT-soan-tuan-1-GPT.md để GPT soạn bài. 2) Dán JSON hoặc chọn file ở dưới. 3) Xem kết quả kiểm tra rồi bấm Lưu. Tuần có sẵn sẽ được thay bằng bản mới."),
-    h("div",{class:"card"}, h("h3",null,"Dán hoặc chọn file JSON"), ta,
-      h("div",{class:"row",style:"margin-top:10px"}, h("button",{class:"btn",type:"button",onClick:check},"Kiểm tra"), h("button",{class:"btn soft",type:"button",onClick:() => fileIn.click()},"Chọn file…"), fileIn)),
-    out, h("div",{class:"card"}, h("h3",null,"Các tuần đang có"), rows.length ? rows : h("p",{class:"muted"},"Chưa có tuần nào.")),
-    h("div",{class:"card flat small muted"}, Cloud.ready ? "Nội dung đang được lưu trên đám mây, mọi thiết bị của học viên sẽ thấy." : "Chưa kết nối đám mây: nội dung chỉ lưu trong trình duyệt này. Muốn mọi thiết bị thấy, hãy kiểm tra kết nối hoặc đưa file vào thư mục weeks/ của repo (xem README)."));
-}
-
 /* =====================================================================
    ĐIỀU HƯỚNG
    ===================================================================== */
 const TABS = [["home","🏠","Trang chủ"],["week","📅","Tuần học"],["vocab","📖","Từ vựng"],["practice","✏️","Bài tập"],["progress","⭐","Tiến độ"]];
-const TAB_OF = { plan:"week", challenge:"week", content:"settings", gv:"settings", lesson:"week", done:"week", placement:"week", mistakes:"practice", report:"progress" };
+const TAB_OF = { plan:"week", challenge:"week", lesson:"week", done:"week", placement:"week", mistakes:"practice", report:"progress" };
 const tabsEl = document.getElementById("tabs");
 tabsEl.replaceChildren(...TABS.map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, h("span",null, SCH ? "#i:" + ({home:"home",week:"calendar",vocab:"book",practice:"pencil",progress:"chart"}[p] || "dot") : ic), t)));
-function studioCard(){
-  const box = h("div",{class:"card tint"});
-  const draw = () => {
-    const jsonIn = h("input",{type:"file",multiple:true,accept:".json,application/json,text/plain",hidden:true});
-    const takeJSON = async files => { const list = [...files].filter(f => /\.(json|txt)$/i.test(f.name) || /json|text/.test(f.type)); if (!list.length){ toast("Hãy thả file .json"); return; }
-      const texts = []; for (const f of list) texts.push(await f.text());
-      dropJSON = texts.length === 1 ? texts[0] : texts.map(t => "```json\n" + t + "\n```").join("\n\n"); location.hash = "#/content"; };
-    const dz = (icon, title, sub, input, take) => { const d = h("div",{class:"dropz",tabindex:"0",role:"button"}, h("div",{style:"font-size:1.6rem"},icon), h("b",null,title), h("div",{class:"small muted"},sub));
-      d.addEventListener("click", () => input.click()); d.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); input.click(); } });
-      ["dragenter","dragover"].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.classList.add("on"); })); ["dragleave","drop"].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.classList.remove("on"); }));
-      d.addEventListener("drop", e => take(e.dataTransfer.files)); input.addEventListener("change", () => { take(input.files); input.value = ""; }); return d; };
-    const parts = [h("h3",{style:"margin:0 0 8px"},"✏️ Khu soạn bài"), h("p",{class:"muted small",style:"margin:0 0 10px"},"Thả file bài do trợ lý soạn (JSON) để kiểm tra và lưu."),
-      dz("📥","Thả file bài (.json) vào đây","hoặc bấm để chọn file", jsonIn, takeJSON), jsonIn];
-    if (IS_BW){
-      const txtIn = h("input",{type:"file",multiple:true,accept:".txt,.md,text/plain",hidden:true});
-      const keys = [...TXT.local.keys()].filter(k => !k.startsWith("step:"));
-      parts.push(h("h3",{style:"margin:16px 0 6px"},"📄 Chữ của sách (reading text)"),
-        h("p",{class:"muted small",style:"margin:0 0 10px"},"Thả file .txt chữ của sách bạn tự có. Thả CẢ CHƯƠNG (đặt tên red-roses-ch1.txt) thì web tự chia vào từng bài đọc theo số trang (nên có dòng đánh số trang như [5] trước nội dung trang đó; không có thì web chia ước lượng). Hoặc thả từng đoạn, đặt tên red-roses-ch1-p1-4.txt. Web không lưu file: chỉ giữ trong phiên này, tải lại trang thì thả lại."),
-        dz("📄","Thả file chữ sách (.txt) vào đây","hoặc bấm để chọn nhiều file", txtIn, async files => { const n = await txtTake(files); if (n){ toast("Đã nhận "+n+" file"); draw(); } else toast("Chỉ nhận file .txt"); }), txtIn,
-        keys.length ? h("div",{style:"margin-top:8px"}, keys.sort().map(k => h("div",{class:"vrow"}, h("div",{class:"grow"}, h("b",null,k), h("div",{class:"small muted"}, Math.round(TXT.local.get(k).length/1000*10)/10+" nghìn ký tự")), h("button",{class:"pill lock",type:"button",onClick:() => { TXT.local.delete(k); draw(); }},"Xóa")))) : h("p",{class:"muted small",style:"margin-top:8px"},"Chưa có file nào."));
-    }
-    const real = Object.keys(WEEKS).map(Number).filter(n => WEEKS[n] && WEEKS[n].json).sort((a, b) => a - b);
-    const picks = new Set(), delBtn = h("button",{class:"btn danger",type:"button",disabled:true,style:"margin-top:8px"},"Xóa các tuần đã chọn");
-    const refresh = () => { delBtn.disabled = !picks.size; delBtn.textContent = picks.size ? "Xóa " + picks.size + " tuần đã chọn" : "Xóa các tuần đã chọn"; };
-    delBtn.addEventListener("click", async () => { const ns = [...picks].sort((a, b) => a - b); if (!ns.length) return;
-      if (!confirm("Xóa nội dung " + ns.map(n => wFull(n).toLowerCase()).join(", ") + "?\nTiến độ của học viên vẫn được giữ. Bài sẽ biến mất khỏi web trên các máy đã đồng bộ; muốn có lại thì thả file bài lên.")) return;
-      for (const n of ns) await deleteWeek(n); toast("Đã xóa " + ns.length + " tuần"); route(); });
-    parts.push(h("h3",{style:"margin:16px 0 6px"},"🗑 Xóa bài cũ theo tuần"),
-      real.length ? h("div",null, real.map(n => { const W = WEEKS[n], c = CONTENT[n], cb = h("input",{type:"checkbox","aria-label":"Chọn "+wFull(n)});
-          cb.addEventListener("change", () => { if (cb.checked) picks.add(n); else picks.delete(n); refresh(); });
-          return h("label",{class:"vrow",style:"cursor:pointer"}, cb, h("div",{class:"grow"}, h("b",null, wFull(n)+": "+W.title), h("div",{class:"small muted"}, (c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Nằm sẵn trong kho mã (web sẽ ẩn, file gốc không bị xóa)")))); }), delBtn)
-        : h("p",{class:"muted small"},"Chưa có bài nào để xóa."));
-    box.replaceChildren(...parts);
+/* =====================================================================
+   TRANG QUẢN LÝ: tách hẳn khỏi giao diện học, luôn dùng theme của Trí
+   Lối vào duy nhất: thẻ "Quản lý và soạn bài" ở trang chọn học viên (#/admin)
+   ===================================================================== */
+const AIC = {
+  home:'<path d="M4 11l8-6.5 8 6.5"/><path d="M6 10v9h12v-9"/><path d="M10 19v-5h4v5"/>',
+  calendar:'<rect x="4" y="5.5" width="16" height="14" rx="2"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/>',
+  upload:'<path d="M12 16V5M7.5 9.5L12 5l4.5 4.5"/><path d="M5 15v3.5h14V15"/>',
+  chart:'<path d="M5 19V9M12 19V5M19 19v-7"/>',
+  book:'<path d="M5 5.5h5.5A1.5 1.5 0 0112 7v12a1.5 1.5 0 00-1.5-1.5H5z"/><path d="M19 5.5h-5.5A1.5 1.5 0 0012 7v12a1.5 1.5 0 011.5-1.5H19z"/>',
+  mail:'<rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="M4 7l8 6 8-6"/>',
+  trash:'<path d="M5 7h14M10 7V5h4v2M7 7l.8 12h8.4L17 7"/><path d="M10.5 11v5M13.5 11v5"/>',
+  check:'<path d="M5 12.5l4.2 4.2L19 7"/>',
+  download:'<path d="M12 4v11M7.5 10.5L12 15l4.5-4.5"/><path d="M5 19h14"/>',
+  eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/>',
+  chev:'<path d="M9 5l7 7-7 7"/>',
+  clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  file:'<path d="M7 3.5h7l4 4V20.5H7z"/><path d="M14 3.5v4h4"/>',
+  refresh:'<path d="M19 8a7.5 7.5 0 00-13-1.5M5 4v3.5h3.5"/><path d="M5 16a7.5 7.5 0 0013 1.5M19 20v-3.5h-3.5"/>',
+  pencil:'<path d="M4.5 19.5l1-4L16 5l3 3L8.5 18.5z"/>',
+  logout:'<path d="M10 5H5.5v14H10M14 8l4 4-4 4M18 12H9"/>',
+  warn:'<path d="M12 4l9 16H3z"/><path d="M12 10v4.5M12 17.2v.1"/>',
+  dot:'<circle cx="12" cy="12" r="2.5"/>'
+};
+function aic(n){ return h("span",{class:"ai",html:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (AIC[n] || AIC.dot) + '</svg>'}); }
+const fmtDM = k => { const d = parseKey(k); return d.getDate() + "/" + (d.getMonth() + 1); };
+const monthLbl = m => "Tháng " + (+m.slice(5, 7)) + "/" + m.slice(0, 4);
+const sidsOf = w => DAYK.map(k => "w" + w + "-" + k);
+const hasWeek = n => !!(WEEKS[n] && WEEKS[n].json);
+const srcOf = n => !hasWeek(n) ? "Chưa có bài" : CONTENT[n] ? (CONTENT[n].src === "cloud" ? "Đám mây" : "Đã tải lên") : "Từ kho mã";
+
+/* ---- Tiến độ theo tuần / buổi ---- */
+function weekProg(w){
+  const ids = sidsOf(w), ss = ids.filter(id => S.sessions[id]);
+  return { ids, done: ids.filter(id => S.sessions[id] && S.sessions[id].done).length, started: ss.length,
+    min: Math.round(ss.reduce((a, id) => a + (S.sessions[id].seconds || 0), 0) / 60),
+    writing: ids.filter(id => S.writing[id]).length, ch: ids.filter(id => S.challenges[id]).length,
+    mist: S.mistakes.filter(m => m.ref && m.ref.startsWith("w" + w + "-")).length,
+    vocab: Object.keys(S.vocab).filter(k => +S.vocab[k].w === w).length };
+}
+const hasProg = p => !!(p.started || p.writing || p.ch || p.mist || p.vocab);
+const progText = p => [p.done + " buổi xong" + (p.started > p.done ? " (" + (p.started - p.done) + " đang học)" : ""), p.writing ? p.writing + " bài viết" : "", p.ch ? p.ch + " challenge" : "", p.mist ? p.mist + " câu sai" : "", p.vocab ? p.vocab + " từ vựng" : ""].filter(Boolean).join(", ");
+/* o = {all:true} | {week:n} | {sid:"w1-mon"} */
+function clearProgress(o){
+  if (o.all){ const keep = S.settings; S = defaultState(); S.settings = Object.assign(S.settings, keep); save(); return; }
+  const ids = o.sid ? [o.sid] : sidsOf(o.week);
+  ids.forEach(id => { delete S.sessions[id]; delete S.writing[id]; delete S.feedback[id]; delete S.challenges[id]; });
+  S.log = S.log.filter(l => !ids.includes(l.id));
+  const pre = o.sid ? o.sid + "." : "w" + o.week + "-";
+  S.mistakes = S.mistakes.filter(m => !(m.ref && m.ref.startsWith(pre)));
+  if (!o.sid) Object.keys(S.vocab).forEach(k => { if (+S.vocab[k].w === o.week) delete S.vocab[k]; });
+  save();
+}
+
+/* ---- Khung dùng chung ---- */
+function adDialog(title, body, buttons){
+  return new Promise(res => {
+    const ov = h("div",{class:"adm-ov",role:"dialog","aria-modal":"true","aria-label":title,tabindex:"-1"});
+    const done = v => { ov.remove(); res(v); };
+    ov.append(h("div",{class:"adm-dlg"}, h("h3",null,title), h("div",{class:"adm-dbody"}, body),
+      h("div",{class:"row",style:"justify-content:flex-end;margin-top:16px"}, buttons.map(b => h("button",{class:"btn " + (b.kind || "soft"),type:"button",onClick:() => done(b.value)}, b.label)))));
+    ov.addEventListener("click", e => { if (e.target === ov) done(null); });
+    ov.addEventListener("keydown", e => { if (e.key === "Escape") done(null); });
+    document.body.append(ov); const first = ov.querySelector("button"); if (first) first.focus();
+  });
+}
+function adHead(title, sub, actions){ return h("div",{class:"adm-head"}, h("div",null, h("h1",null,title), sub ? h("p",{class:"adm-sub"},sub) : null), actions && actions.length ? h("div",{class:"row"},actions) : null); }
+function adCrumb(items){ return h("nav",{class:"adm-crumb","aria-label":"Đường dẫn"}, items.map((it, i) => [i ? aic("chev") : null, it[1] ? h("a",{href:it[1]},it[0]) : h("span",null,it[0])])); }
+const adCard = (title, ...kids) => h("div",{class:"card"}, title ? h("h3",null,title) : null, ...kids);
+const adBtn = (icon, label, kind, fn, dis) => h("button",{class:"btn " + (kind === "main" ? "" : (kind || "soft")) + " sm",type:"button",disabled:!!dis,onClick:fn}, icon ? aic(icon) : null, label);
+function adDrop(icon, title, sub, input, take){
+  const d = h("div",{class:"adm-drop",tabindex:"0",role:"button"}, aic(icon), h("b",null,title), h("span",{class:"small muted"},sub));
+  d.addEventListener("click", () => input.click());
+  d.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); input.click(); } });
+  ["dragenter","dragover"].forEach(ev => d.addEventListener(ev, e => { e.preventDefault(); d.classList.add("on"); }));
+  d.addEventListener("dragleave", () => d.classList.remove("on"));
+  d.addEventListener("drop", e => { e.preventDefault(); d.classList.remove("on"); if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) take(e.dataTransfer.files); });
+  input.addEventListener("change", () => { if (input.files && input.files.length) take(input.files); input.value = ""; });
+  return h("div",null, d, input);
+}
+function adDownload(name, obj){ const a = h("a",{href:URL.createObjectURL(new Blob([JSON.stringify(obj,null,2)],{type:"application/json"})),download:name}); document.body.append(a); a.click(); a.remove(); }
+function adPreview(hash){ try { sessionStorage.setItem("a1-preview","1"); } catch(e){} location.href = location.pathname + "#/" + hash; location.reload(); }
+function exitPreview(){ try { sessionStorage.removeItem("a1-preview"); } catch(e){} location.href = location.pathname + "#/admin/plan"; location.reload(); }
+function adminTheme(on){
+  const r = document.documentElement;
+  if (on){ r.setAttribute("data-learner","tri"); r.setAttribute("data-theme","sea"); }
+  else { r.setAttribute("data-learner", LRN.id === "tri" ? "tri" : "nhi"); applyTheme(themeKind()); }
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", on || LRN.id === "tri" ? "#07142e" : themeKind() === "night" ? "#3a1640" : "#f1cbc3");
+}
+
+const AD_NAV = [["overview","home","Tổng quan"],["plan","calendar","Giáo án"],["upload","upload","Nạp bài"],["progress","chart","Tiến độ học"],["vocab","book","Từ vựng"],["notes","mail","Nhận xét"]];
+function adminView(parts){
+  const sec = AD_NAV.some(x => x[0] === parts[1]) ? parts[1] : "overview";
+  try { localStorage.setItem("a1-admin-learner", LRN.id); } catch(e){}
+  const body = { overview:() => adOverview(), plan:() => adPlan(parts.slice(2)), upload:() => adUpload(), progress:() => adProgress(), vocab:() => adVocab(), notes:() => adNotes() }[sec]();
+  const learners = Object.keys(LEARNERS).map(id => h("button",{class:"adl" + (id === LRN.id ? " on" : ""),type:"button",onClick:() => { if (id !== LRN.id) chooseLearner(id, false, "admin/" + sec); }}, id === "bw" ? "Bookworms" : LEARNERS[id].name));
+  const side = h("aside",{class:"adm-side"},
+    h("div",{class:"adm-brand"}, aic("pencil"), h("div",null, h("b",null,"Quản lý"), h("small",null,"Soạn bài và theo dõi"))),
+    h("div",{class:"adm-lbl"},"Học viên"), h("div",{class:"adm-learners"}, learners),
+    h("nav",{class:"adm-nav","aria-label":"Mục quản lý"}, AD_NAV.map(([k, ic, t]) => h("a",{href:"#/admin/" + k,class:k === sec ? "on" : ""}, aic(ic), t))),
+    h("div",{class:"adm-foot"}, h("span",{class:"adm-sync" + (Cloud.ready ? " ok" : "")}, Cloud.ready ? "Đang đồng bộ đám mây" : "Chỉ lưu trên máy này"),
+      h("button",{class:"adm-out",type:"button",onClick:switchLearner}, aic("logout"), "Về trang chọn")));
+  return h("div",{class:"adm"}, side, h("div",{class:"adm-main"}, body));
+}
+
+/* ---- Tổng quan ---- */
+function adOverview(){
+  const nm = LRN.name, ti = todayInfo();
+  const real = Object.keys(WEEKS).map(Number).filter(hasWeek).length, total = ROADMAP.length;
+  const doneAll = Object.values(S.sessions).filter(s => s.done).length;
+  const mins = Math.round(Object.values(S.sessions).reduce((a, s) => a + (s.seconds || 0), 0) / 60);
+  const kpi = (b, t) => h("div",{class:"adm-kpi"}, h("b",null,String(b)), h("span",null,t));
+  let today;
+  if (ti.state === "day"){ const s = ti.session, done = isDone(s.id); today = [h("b",null, s.day + ": " + s.title), h("div",{class:"small muted"}, wFull(ti.week) + " · " + (done ? "học viên đã học xong" : S.sessions[s.id] ? "đang học" : "chưa học"))]; }
+  else if (ti.state === "before") today = [h("b",null,"Khóa học chưa bắt đầu"), h("div",{class:"small muted"},"Còn " + ti.days + " ngày nữa đến ngày bắt đầu.")];
+  else if (ti.state === "rest") today = [h("b",null,"Hôm nay là Chủ nhật, ngày nghỉ")];
+  else if (ti.state === "finished") today = [h("b",null,"Đã đi hết cuốn sách này")];
+  else today = [h("b",null,"Chưa có bài cho " + wFull(ti.week).toLowerCase()), h("div",{class:"small muted"},"Nạp bài để học viên có thể học.")];
+  const recent = S.log.slice(-8).reverse();
+  return h("div",null, adHead("Tổng quan · " + nm + (LRN.id === "bw" ? " · Bookworms" : ""), LRN.level + " · " + DAYMIN + " phút mỗi ngày"),
+    h("div",{class:"adm-grid"}, kpi(real + "/" + total, "tuần đã có bài"), kpi(doneAll, "buổi đã học"), kpi(mins, "phút đã học"), kpi(streak(), "ngày liên tiếp"), kpi(S.mistakes.length, "câu sai chờ ôn"), kpi(Object.keys(S.vocab).length, "từ trong sổ")),
+    adCard("Hôm nay", today, h("div",{class:"row",style:"margin-top:10px"}, adBtn("upload","Nạp bài mới","", () => { location.hash = "#/admin/upload"; }), adBtn("calendar","Xem giáo án","", () => { location.hash = "#/admin/plan"; }), adBtn("chart","Tiến độ học","", () => { location.hash = "#/admin/progress"; }))),
+    adCard("Hoạt động gần đây", recent.length ? recent.map(l => { const m = findSession(l.id); return h("div",{class:"adm-st"}, h("span",{class:"pill"},l.d), h("div",{class:"grow"}, h("b",null,m ? m.title : l.id), h("div",{class:"small muted"},Math.max(1, Math.round(l.sec / 60)) + " phút"))); }) : h("p",{class:"muted"},"Chưa có buổi nào hoàn thành.")));
+}
+
+/* ---- Giáo án: tháng, tuần, buổi ---- */
+function adWeeks(){
+  const set = new Set(ROADMAP.map(r => r[0])); Object.keys(WEEKS).map(Number).filter(hasWeek).forEach(n => set.add(n));
+  return [...set].sort((a, b) => a - b).map(w => { const ds = schedDates(w); return { w, ds, m:ds[0].slice(0, 7) }; });
+}
+function adPlan(a){
+  if (a[0] === "s" && /^w\d+-\w+$/.test(a[1] || "")) return adSession(a[1]);
+  if (a[0] === "w" && +a[1]) return adWeek(+a[1]);
+  return adMonth(a[0] === "m" ? a[1] : null);
+}
+function adMonth(mk){
+  const list = adWeeks(), months = [...new Set(list.map(x => x.m))], ti = todayInfo();
+  if (!mk || !months.includes(mk)){ const cw = list.find(x => x.w === ti.week); mk = cw ? cw.m : months[0]; }
+  const inM = list.filter(x => x.m === mk), real = inM.filter(x => hasWeek(x.w)).length, done = inM.reduce((s, x) => s + weekProg(x.w).done, 0);
+  const rows = inM.map(x => { const W = WEEKS[x.w], rm = ROADMAP.find(r => r[0] === x.w) || [], p = weekProg(x.w), has = hasWeek(x.w);
+    return h("a",{class:"adm-row",href:"#/admin/plan/w/" + x.w},
+      h("div",{class:"adm-wno"}, h("small",null,IS_BW ? "Sách " + Math.ceil(x.w / 3) : "Tuần"), h("b",null,String(IS_BW ? "T" + wLbl(x.w) : x.w))),
+      h("div",{class:"grow"}, h("b",null, has ? W.title : (rm[1] || "Chưa có bài")), h("div",{class:"small muted"}, fmtDM(x.ds[0]) + " – " + fmtDM(x.ds[5]) + (has ? " · " + W.grammar : rm[2] ? " · dự kiến: " + rm[2] : ""))),
+      h("span",{class:"pill" + (has ? " ok" : " lock")}, has ? "Có bài" : "Chưa có bài"), h("span",{class:"pill"}, p.done + "/6 buổi"), aic("chev")); });
+  return h("div",null, adCrumb([["Giáo án"],[monthLbl(mk)]]), adHead("Giáo án · " + LRN.name + (LRN.id === "bw" ? " · Bookworms" : ""), "Xem theo tháng, bấm vào một tuần để xem từng buổi."),
+    h("div",{class:"adm-tabs"}, months.map(m => h("a",{class:"adm-tab" + (m === mk ? " on" : ""),href:"#/admin/plan/m/" + m}, monthLbl(m)))),
+    adCard(monthLbl(mk), h("p",{class:"muted small",style:"margin:0 0 6px"}, inM.length + " tuần · " + real + " tuần có bài · " + done + " buổi đã học"), rows));
+}
+function adWeek(w){
+  const W = WEEKS[w], has = hasWeek(w), c = CONTENT[w], rm = ROADMAP.find(r => r[0] === w) || [], ds = schedDates(w), p = weekProg(w), mk = ds[0].slice(0, 7);
+  const setSched = fn => { S.settings.sched = S.settings.sched || {}; S.settings.sched[w] = S.settings.sched[w] || {}; fn(S.settings.sched[w]); const cc = S.settings.sched[w]; if (!cc.start && !(cc.d && cc.d.some(Boolean))) delete S.settings.sched[w]; save(); route(); };
+  const acts = [];
+  if (has){ acts.push(adBtn("eye","Xem thử","", () => adPreview("lesson/w" + w + "-mon/0"))); if (c) acts.push(adBtn("download","Tải JSON","", () => adDownload("week-" + w + ".json", c.json)));
+    acts.push(adBtn("trash","Xóa bài","danger", () => adDeleteWeek(w))); }
+  const sess = sidsOf(w).map((id, i) => { const meta = has ? findSession(id) : null, L = LESSONS[id], ss = S.sessions[id];
+    const dIn = h("input",{class:"txt",type:"date",value:ds[i],"aria-label":"Ngày học " + DAYN[i],onChange:e => { if (e.target.value) setSched(cc => { cc.d = cc.d || []; cc.d[i] = e.target.value; }); }});
+    return h("div",{class:"adm-row"},
+      h("div",{class:"adm-wno"}, h("small",null,DAYN[i]), h("b",null,DAYN[i].replace("Thứ ","T"))),
+      h("div",{class:"grow"}, h("b",null, meta ? meta.title : "Chưa có bài"), meta ? h("div",{class:"small muted"}, KIND[meta.kind] + " · " + (L && L.steps ? L.steps.length : 0) + " bước" + (CH[id] ? " · có Challenge" : "")) : null),
+      h("span",{class:"pill" + (ss && ss.done ? " ok" : "")}, ss && ss.done ? "Đã xong" : ss ? "Đang học" : "Chưa học"), dIn,
+      meta ? h("a",{class:"btn soft sm",href:"#/admin/plan/s/" + id,style:"text-decoration:none"},"Chi tiết") : null); });
+  const stIn = h("input",{class:"txt",type:"date",value:schedStart(w),"aria-label":"Ngày bắt đầu tuần",onChange:e => { if (e.target.value) setSched(cc => { cc.start = e.target.value; cc.d = null; }); }});
+  return h("div",null, adCrumb([["Giáo án","#/admin/plan"],[monthLbl(mk),"#/admin/plan/m/" + mk],[wFull(w)]]),
+    adHead(has ? wFull(w) + ": " + W.title : wFull(w), has ? "Ngữ pháp: " + W.grammar + (W.level ? " · Mức " + W.level : "") + " · " + srcOf(w) : (rm[1] ? rm[1] + (rm[2] ? " · dự kiến: " + rm[2] : "") : "Chưa có bài cho tuần này"), acts),
+    has ? null : adCard(null, h("p",null,"Tuần này chưa có bài. Nạp file bài để học viên bắt đầu học."), h("div",{class:"row"}, adBtn("upload","Nạp bài","main", () => { location.hash = "#/admin/upload"; }))),
+    adCard("Các buổi trong tuần", h("p",{class:"muted small",style:"margin:0 0 6px"}, fmtDM(ds[0]) + " – " + fmtDM(ds[5]) + (has && W.vocabList ? " · " + W.vocabList.length + " từ vựng" : "")), sess),
+    adCard("Lịch học tuần này", h("div",{class:"row",style:"align-items:center"}, h("span",{class:"small"},"Bắt đầu từ"), stIn,
+        schedCustom(w) ? adBtn("refresh","Đặt lại mặc định","", () => { if (S.settings.sched){ delete S.settings.sched[w]; save(); } route(); }) : null),
+      h("p",{class:"muted small",style:"margin:8px 0 0"},"Các buổi T2 đến T7 xếp liên tiếp từ ngày bắt đầu. Muốn lệch ngày thì chỉnh ngày ở từng buổi. Các tuần sau tự dời theo.")),
+    adCard("Tiến độ của học viên trong tuần này", hasProg(p) ? h("p",null,progText(p) + (p.min ? ", " + p.min + " phút học" : "") + ".") : h("p",{class:"muted"},"Chưa có tiến độ."),
+      h("div",{class:"row"}, adBtn("trash","Xóa tiến độ tuần này","danger", () => adClearProgress(wFull(w), { week:w }, p), !hasProg(p)))));
+}
+function adSession(id){
+  const m = /^w(\d+)-(\w+)$/.exec(id), w = +m[1], meta = findSession(id), L = LESSONS[id], ss = S.sessions[id], ds = schedDates(w), mk = ds[0].slice(0, 7);
+  const crumb = adCrumb([["Giáo án","#/admin/plan"],[monthLbl(mk),"#/admin/plan/m/" + mk],[wFull(w),"#/admin/plan/w/" + w],[meta ? meta.day : id]]);
+  if (!meta || !L || !hasWeek(w)) return h("div",null, crumb, adCard(null, h("p",null,"Buổi này chưa có bài."), h("a",{class:"btn soft sm",href:"#/admin/plan/w/" + w,style:"text-decoration:none"},"Về tuần")));
+  const p = { started:ss ? 1 : 0, done:ss && ss.done ? 1 : 0, writing:S.writing[id] ? 1 : 0, ch:S.challenges[id] ? 1 : 0, mist:S.mistakes.filter(x => x.ref && x.ref.startsWith(id + ".")).length, vocab:0 };
+  const stepRows = L.steps.map((st, i) => {
+    const sets = (st.sets || []).filter(Boolean), n = sets.reduce((a, s) => a + ((s.items || []).length), 0);
+    const what = st.gen ? "Tự sinh từ các bài đã học" : sets.length ? sets.map(s => (TYPES[s.type] ? TYPES[s.type].label : s.type) + " " + (s.items || []).length).join(", ") : st.type === "read" ? (st.heading || "Bài đọc") : st.type === "bookread" ? "Đọc trong sách" + (st.pages ? ", trang " + st.pages : "") : st.type === "output" ? "Tự viết" : "";
+    return h("tr",null, h("td",null,String(i + 1)), h("td",null,st.title + (st.min ? " (" + st.min + ")" : "")), h("td",null,what), h("td",null,n ? String(n) : "–"), h("td",null, ss && ss.steps && ss.steps[st.key] ? h("span",{class:"pill ok"},"Xong") : h("span",{class:"pill"},"–"))); });
+  const chN = CH[id] ? CH[id].stages.reduce((a, g) => a + g.sets.reduce((b, s) => b + (s.items || []).length, 0), 0) : 0;
+  return h("div",null, crumb, adHead(meta.day + ": " + meta.title, KIND[meta.kind] + " · " + L.steps.length + " bước" + (chN ? " · Challenge " + chN + " câu" : ""),
+      [adBtn("eye","Xem thử","", () => adPreview("lesson/" + id + "/0")), adBtn("trash","Xóa tiến độ buổi này","danger", () => adClearProgress(meta.day + ": " + meta.title, { sid:id }, p), !hasProg(p))]),
+    adCard("Học viên", h("p",{style:"margin:0"}, ss ? (ss.done ? "Đã học xong" : "Đang học") + ", " + Math.round((ss.seconds || 0) / 60) + " phút" + (ss.doneAt ? ", xong ngày " + dkey(new Date(ss.doneAt)) : "") : "Chưa học buổi này."),
+      S.writing[id] ? h("div",{class:"model",style:"margin-top:10px"}, h("div",{class:"small muted"},"Bài viết của học viên"), S.writing[id]) : null),
+    adCard("Các bước trong buổi", h("div",{style:"overflow-x:auto"}, h("table",{class:"gtable"}, h("thead",null,h("tr",null,["#","Bước","Nội dung","Số câu","Học viên"].map(t => h("th",null,t)))), h("tbody",null,stepRows)))));
+}
+function adDeleteWeek(w){
+  const p = weekProg(w);
+  adDialog("Xóa " + wFull(w).toLowerCase() + "?", h("div",null, h("p",null,"Nội dung bài của tuần này sẽ bị xóa và biến mất khỏi mọi máy đã đồng bộ. Muốn có lại thì nạp file bài lên."),
+    hasProg(p) ? h("p",null,"Tiến độ của học viên trong tuần này cũng bị xóa theo: " + progText(p) + ".") : h("p",{class:"muted small"},"Tuần này chưa có tiến độ.")),
+    [{label:"Hủy",value:false},{label:"Xóa bài và tiến độ",kind:"danger",value:true}]).then(async ok => { if (!ok) return; await deleteWeek(w); toast("Đã xóa " + wFull(w).toLowerCase()); location.hash = "#/admin/plan"; route(); });
+}
+function adClearProgress(label, scope, p){
+  adDialog("Xóa tiến độ: " + label + "?", h("div",null, h("p",null,"Sẽ xóa: " + progText(p) + "."), h("p",{class:"muted small"},"Chuỗi ngày học và thống kê độ chính xác chung được giữ lại. Không thể hoàn tác.")),
+    [{label:"Hủy",value:false},{label:"Xóa tiến độ",kind:"danger",value:true}]).then(ok => { if (!ok) return; clearProgress(scope); toast("Đã xóa tiến độ"); route(); });
+}
+
+/* ---- Nạp bài: MỘT luồng duy nhất (thả file hoặc dán JSON, kiểm tra, lưu) ---- */
+function adUpload(){
+  const ta = h("textarea",{class:"txt",rows:8,placeholder:"Hoặc dán nội dung JSON vào đây…",spellcheck:"false"});
+  const out = h("div"); let pending = null, busy = false;
+  const fileIn = h("input",{type:"file",multiple:true,accept:".json,application/json,text/plain",hidden:true});
+  const take = async files => { const list = [...files].filter(f => /\.(json|txt)$/i.test(f.name) || /json|text/.test(f.type));
+    if (!list.length){ toast("Hãy chọn file .json"); return; }
+    const texts = []; for (const f of list) texts.push(await f.text());
+    ta.value = texts.length === 1 ? texts[0] : texts.map(t => "```json\n" + t + "\n```").join("\n\n"); check(); };
+  const drop = adDrop("upload","Thả file bài (.json) vào đây","hoặc bấm để chọn file. Có thể chọn nhiều file một lần.", fileIn, take);
+  async function commit(list){
+    if (busy) return; busy = true;
+    try {
+      const saved = []; let cloudFail = false;
+      for (const j of list){
+        const p = weekProg(j.week); let clear = false;
+        if (hasProg(p)){
+          const ans = await adDialog("Thay bài " + wFull(j.week).toLowerCase() + "?", h("div",null, h("p",null,hasWeek(j.week) ? "Tuần này đang có bài, bản mới sẽ thay bản cũ." : "Tuần này đang còn tiến độ của bài cũ."), h("p",null,"Tiến độ hiện có: " + progText(p) + ".")),
+            [{label:"Hủy",value:null},{label:"Thay bài, giữ tiến độ",value:"keep"},{label:"Thay bài và xóa tiến độ",kind:"danger",value:"clear"}]);
+          if (!ans) return; clear = ans === "clear";
+        }
+        if (clear) clearProgress({week:j.week});
+        if (!(await saveWeek(j))) cloudFail = true;
+        delete DRAFT[j.week]; saved.push(j.week);
+      }
+      saveDraft(); ta.value = ""; pending = null;
+      out.replaceChildren(adCard("Đã lưu " + saved.length + " tuần", h("div",{class:"row"}, saved.map(n => h("a",{class:"btn soft sm",href:"#/admin/plan/w/" + n,style:"text-decoration:none"}, "Mở " + wFull(n).toLowerCase())))),
+        cloudFail ? h("p",{class:"err small"},"Đã lưu trên máy này nhưng chưa lên được đám mây.") : null);
+    } finally { busy = false; }
+  }
+  function check(){
+    pending = null;
+    if (!ta.value.trim()){ out.replaceChildren(h("p",{class:"adm-sub"},"Hãy thả file hoặc dán JSON trước.")); return; }
+    const p = parseWeekText(ta.value);
+    if (p.err){ out.replaceChildren(adCard("Chưa đọc được file", h("p",{class:"err"},p.err))); return; }
+    const arr = Array.isArray(p.v) ? p.v : [p.v], extra = [];
+    const parts = arr.filter(x => x && x.part), whole = arr.filter(x => !(x && x.part)), touched = new Set();
+    parts.forEach(x => { const e = mergePart(x); if (e) extra.push(e); else touched.add(x.week); });
+    if (extra.length){ out.replaceChildren(adCard("Phần này chưa dùng được", h("ul",null, extra.map(x => h("li",null,x))))); return; }
+    const mark = (ok, t) => h("span",{class:"pill" + (ok ? " ok" : "")}, t);
+    const draftCards = [...touched].map(n => {
+      const pr = draftProgress(n), j = assembleDraft(n), v = validateWeek(j);
+      const E = v.E.filter(x => !/^Thiếu buổi|^Thiếu sessions/.test(x)), W = v.W.filter(x => !/chưa có challenge/.test(x)), ready = pr.complete && !E.length;
+      if (ready) pending = (pending || []).concat([j]);
+      return adCard("Bản nháp tuần " + n + (ready ? ": đã đủ, hợp lệ" : ""),
+        h("div",{class:"row",style:"margin:6px 0"}, mark(pr.meta,"meta"), DAYK.map((k, i) => mark(pr.sessions.includes(k), DAYN[i])), DAYK.map((k, i) => mark(pr.challenges.includes(k), "CH " + DAYN[i].replace("Thứ ","T")))),
+        E.length ? h("ul",{class:"errlist"}, E.slice(0, 30).map(x => h("li",{class:"err"},x))) : h("p",{class:"muted small"}, ready ? "Bấm Lưu để dùng." : "Phần vừa dán không có lỗi. Tiếp tục dán các phần còn thiếu."),
+        W.length ? h("details",null, h("summary",{style:"font-weight:700;cursor:pointer"},W.length + " lưu ý"), h("ul",null, W.slice(0, 25).map(x => h("li",{class:"small"},x)))) : null,
+        h("div",{class:"row",style:"margin-top:8px"}, adBtn("trash","Xóa bản nháp","danger", () => { delete DRAFT[n]; saveDraft(); check(); }))); });
+    const results = whole.map(j => ({ j, v:validateWeek(j) })), ok = results.every(r => !r.v.E.length);
+    if (ok && results.length) pending = (pending || []).concat(results.map(r => r.j));
+    const saveBtn = pending && (ok || (parts.length && !whole.length)) ? h("div",{class:"row",style:"margin:12px 0"}, h("button",{class:"btn",type:"button",onClick:() => commit(pending)}, aic("check"), "Lưu vào web")) : null;
+    if (parts.length && !whole.length){ out.replaceChildren(draftCards, saveBtn); ta.value = ""; return; }
+    out.replaceChildren(draftCards, saveBtn, results.map(({ j, v }) => adCard(v.E.length ? v.E.length + " lỗi cần sửa" : "Hợp lệ" + (j && j.week ? ": " + wFull(j.week) + " · " + j.title : ""),
+      v.E.length ? h("ul",{class:"errlist"}, v.E.slice(0, 30).map(x => h("li",{class:"err"},x)), v.E.length > 30 ? h("li",null,"… và " + (v.E.length - 30) + " lỗi nữa") : null) : null,
+      v.W.length ? h("details",null, h("summary",{style:"font-weight:700;cursor:pointer"},v.W.length + " lưu ý (không chặn lưu)"), h("ul",null, v.W.slice(0, 25).map(x => h("li",{class:"small"},x)))) : null,
+      v.stats.sessions.length ? h("div",{style:"overflow-x:auto;margin-top:10px"}, h("table",{class:"gtable"}, h("thead",null,h("tr",null,["Buổi","Câu chính","Làm thêm","≈ phút","Challenge"].map(t => h("th",null,t)))),
+        h("tbody",null, v.stats.sessions.map(s => h("tr",null, h("td",null,s.day), h("td",null,String(s.core)), h("td",null,String(s.extra)), h("td",null,"~" + s.min), h("td",null,s.cn ? s.cn + " câu (~" + s.cmin + "′)" : "–")))))) : null,
+      v.stats.vocab ? h("p",{class:"muted small"},"Từ vựng trong các bài đọc: " + v.stats.vocab + " từ.") : null)), saveBtn);
+  }
+  const parts = [adHead("Nạp bài · " + LRN.name + (LRN.id === "bw" ? " · Bookworms" : ""), "Thả file JSON do trợ lý soạn để kiểm tra rồi lưu. Tuần đã có sẽ được thay bằng bản mới."),
+    adCard(null, drop, h("details",{style:"margin-top:10px"}, h("summary",{style:"cursor:pointer;font-weight:700"},"Dán JSON thay vì chọn file"), ta, h("div",{class:"row",style:"margin-top:8px"}, adBtn("check","Kiểm tra","", check)))), out];
+  if (IS_BW) parts.push(adTextDrop());
+  parts.push(h("p",{class:"adm-sub"}, Cloud.ready ? "Nội dung lưu trên đám mây, mọi thiết bị của học viên sẽ thấy." : "Chưa kết nối đám mây: nội dung chỉ lưu trong trình duyệt này."));
+  return h("div",null, parts);
+}
+function adTextDrop(){
+  const box = h("div"); const draw = () => {
+    const txtIn = h("input",{type:"file",multiple:true,accept:".txt,.md,text/plain",hidden:true});
+    const keys = [...TXT.local.keys()].filter(k => !k.startsWith("step:")).sort();
+    box.replaceChildren(adCard("Chữ của sách (reading text)",
+      h("p",{class:"muted small"},"Thả file .txt chữ của sách bạn tự có. Thả cả chương (đặt tên red-roses-ch1.txt) thì web tự chia vào từng bài đọc theo số trang; nên có dòng đánh số trang như [5] trước nội dung trang đó, không có thì web chia ước lượng. Hoặc thả từng đoạn, đặt tên red-roses-ch1-p1-4.txt. Web không lưu file: chỉ giữ trong phiên này, tải lại trang thì thả lại."),
+      adDrop("file","Thả file chữ sách (.txt) vào đây","hoặc bấm để chọn nhiều file", txtIn, async files => { const n = await txtTake(files); if (n){ toast("Đã nhận " + n + " file"); draw(); } else toast("Chỉ nhận file .txt"); }),
+      keys.length ? keys.map(k => h("div",{class:"adm-st"}, h("div",{class:"grow"}, h("b",null,k), h("div",{class:"small muted"}, Math.round(TXT.local.get(k).length / 1000 * 10) / 10 + " nghìn ký tự")), adBtn("trash","Bỏ","danger", () => { TXT.local.delete(k); draw(); }))) : h("p",{class:"muted small"},"Chưa có file nào.")));
   };
   draw(); return box;
 }
-function gvView(){
-  const rows = ROADMAP.map(r => r[0]), have = Object.keys(WEEKS).map(Number).filter(n => WEEKS[n] && WEEKS[n].json);
-  const fmtD = k => { const d = parseKey(k); return d.getDate() + "/" + (d.getMonth()+1); };
-  const setSched = (w, fn) => { S.settings.sched = S.settings.sched || {}; S.settings.sched[w] = S.settings.sched[w] || {}; fn(S.settings.sched[w]); const c = S.settings.sched[w]; if (!c.start && !(c.d && c.d.some(Boolean))) delete S.settings.sched[w]; save(); };
-  const ti = todayInfo();
-  const weekRow = w => {
-    const W = WEEKS[w], c = CONTENT[w], rm = ROADMAP.find(x => x[0] === w) || [], ds = schedDates(w);
-    const src = !W ? "" : !W.json ? "Chưa có bài" : c ? (c.src === "cloud" ? "Đám mây" : "Đã tải lên") : "Từ repo";
-    const sess = W ? W.sessions.map((s, i) => { const L = LESSONS[s.id], n = L && L.steps ? L.steps.length : 0;
-      const dIn = h("input",{class:"txt",type:"date",value:ds[i],onChange:e => { if (e.target.value){ setSched(w, c2 => { c2.d = c2.d || []; c2.d[i] = e.target.value; }); route(); } }});
-      return h("div",{class:"gvs"}, h("span",{class:"gvd"},s.day.replace("Thứ ","T")), h("div",{class:"grow"}, h("div",{style:"font-weight:700"},s.title), h("div",{class:"small muted"},KIND[s.kind]+" · "+n+" bước"+(CH[s.id] ? " · 🏆 Challenge" : ""))),
-        dIn, h("a",{class:"pill",href:"#/lesson/"+s.id+"/0",style:"text-decoration:none"},"Xem")); }) : null;
-    const stIn = h("input",{class:"txt",type:"date",value:schedStart(w),onChange:e => { if (e.target.value){ setSched(w, c2 => { c2.start = e.target.value; c2.d = null; }); route(); } }});
-    const det = h("details",{class:"card gvw"}, h("summary",null, h("div",{class:"when",style:"min-width:44px"},"T"+w),
-        h("div",{class:"grow"}, h("div",{style:"font-weight:800"},rm[1] ? rm[1] : wFull(w)), h("div",{class:"small muted"},(W ? wFull(w)+": "+W.title+" · " : wFull(w)+" · ")+fmtD(ds[0])+" – "+fmtD(ds[5]))),
-        h("span",{class:"pill"+(W && W.json ? " ok" : " lock")}, W && W.json ? "✅ Có bài" : "Chưa có"), schedCustom(w) ? h("span",{class:"pill"},"🗓 Tùy chỉnh") : null),
-      h("div",{class:"gvb"},
-        W && !W.json ? h("p",{class:"small muted"},"Tuần này chưa có bài. Thả file bài lên để Nhi bắt đầu học.") : W ? h("p",{class:"small muted"},"Ngữ pháp: "+W.grammar+(src ? " · "+src : "")) : h("p",{class:"small muted"},(rm[2] ? "Dự kiến: "+rm[2]+". " : "")+"Chưa tải bài lên cho tuần này."),
-        sess,
-        h("h4",{style:"margin:12px 0 4px"},"🗓 Lịch học tuần này"),
-        h("div",{class:"gvsch"}, h("span",{class:"small"},"Bắt đầu từ"), stIn),
-        h("p",{class:"small muted"},"Các buổi T2–T7 tự xếp liên tiếp từ ngày bắt đầu; muốn lệch ngày thì chỉnh ngày ngay ở từng buổi. Các tuần sau tự dời theo."),
-        h("div",{class:"row"},
-          schedCustom(w) ? h("button",{class:"pill",type:"button",onClick:() => { if (S.settings.sched){ delete S.settings.sched[w]; save(); } route(); }},"Đặt lại lịch mặc định") : null,
-          W ? h("a",{class:"pill",href:"#/week",onClick:() => { viewWeek = w; },style:"text-decoration:none"},"Mở như học viên") : null,
-          c ? h("button",{class:"pill",type:"button",onClick:() => { const a = h("a",{href:URL.createObjectURL(new Blob([JSON.stringify(c.json,null,2)],{type:"application/json"})),download:"week-"+w+".json"}); document.body.append(a); a.click(); a.remove(); }},"Tải JSON") : null,
-          W && W.json ? h("button",{class:"pill lock",type:"button",onClick:async () => { if (confirm("Xóa nội dung "+wFull(w).toLowerCase()+"? Tiến độ của học viên vẫn được giữ.")){ await deleteWeek(w); route(); } }},"Xóa bài") : null)));
-    if (ti.week === w && ti.state !== "before") det.open = true;
-    return det;
-  };
-  const extra = have.filter(n => !rows.includes(n)).sort((a, b) => a - b);
-  return h("div",null, h("a",{class:"btn soft",href:"#/settings"},"← Cài đặt"),
-    h("h1",{style:"margin-top:16px"},"GV soạn bài · "+learnerName()+(LRN.id === "bw" ? " · Bookworms" : "")),
-    h("div",{class:"row",style:"margin-bottom:12px"}, h("a",{class:"btn",href:"#/content"},"📚 Tải bài học lên"), h("a",{class:"btn soft",href:"#/teacher"},"Nhận xét và lời nhắn"), h("button",{class:"btn soft",type:"button",onClick:switchLearner},"Đổi học viên")),
-    studioCard(),
-    (() => { const M = NB.mine, mw = Object.keys(M).sort(); if (!mw.length) return null;
-      const d = h("details",{class:"card"}, h("summary",{style:"cursor:pointer;font-weight:800"},"📒 Từ "+MY_NAME()+" tự thêm ("+mw.length+")"), h("p",{class:"small muted"},"Bấm vào từ để sửa nghĩa, ví dụ, từ hay đi cùng, rồi bấm “Lưu và duyệt”."), mw.map(w => mineRowEl(w, () => { route(); }, true))); return d; })(),
-    h("p",{class:"muted small"},"Có "+have.length+"/"+ROADMAP.length+" tuần đã có bài. Bấm vào một tuần để xem bài theo buổi và chỉnh lịch học."),
-    rows.concat(extra).map(weekRow));
+
+/* ---- Tiến độ học ---- */
+function adProgress(){
+  const nm = LRN.name;
+  const ids = new Set(Object.keys(S.sessions).map(k => +((/^w(\d+)-/.exec(k) || [])[1])).filter(Boolean)); Object.keys(WEEKS).map(Number).filter(hasWeek).forEach(n => ids.add(n));
+  const ws = [...ids].sort((a, b) => a - b);
+  const doneAll = Object.values(S.sessions).filter(s => s.done).length, mins = Math.round(Object.values(S.sessions).reduce((a, s) => a + (s.seconds || 0), 0) / 60);
+  const kpi = (b, t) => h("div",{class:"adm-kpi"}, h("b",null,String(b)), h("span",null,t));
+  const fileIn = h("input",{type:"file",accept:"application/json",hidden:true,onChange:e => { const f = e.target.files[0]; if (!f) return; const rd = new FileReader();
+    rd.onload = () => { try { S = normalize(JSON.parse(rd.result)); ensureStart(); save(); toast("Đã khôi phục tiến độ"); route(); } catch(x){ toast("File không hợp lệ"); } }; rd.readAsText(f); }});
+  const all = { started:doneAll, done:doneAll, writing:Object.keys(S.writing).length, ch:Object.keys(S.challenges).length, mist:S.mistakes.length, vocab:Object.keys(S.vocab).length };
+  const weekRows = ws.map(w => { const p = weekProg(w);
+    return h("div",{class:"adm-row"}, h("div",{class:"adm-wno"}, h("small",null,IS_BW ? "Sách " + Math.ceil(w / 3) : "Tuần"), h("b",null,String(IS_BW ? "T" + wLbl(w) : w))),
+      h("div",{class:"grow"}, h("b",null, hasWeek(w) ? WEEKS[w].title : "Bài đã bị xóa"), h("div",{class:"small muted"}, hasProg(p) ? progText(p) + (p.min ? ", " + p.min + " phút" : "") : "Chưa có tiến độ")),
+      h("span",{class:"pill" + (p.done === 6 ? " ok" : "")}, p.done + "/6"),
+      adBtn("calendar","Xem","", () => { location.hash = "#/admin/plan/w/" + w; }), adBtn("trash","Xóa","danger", () => adClearProgress(wFull(w), { week:w }, p), !hasProg(p))); });
+  return h("div",null, adHead("Tiến độ học · " + nm + (LRN.id === "bw" ? " · Bookworms" : ""), "Xem và xóa tiến độ theo học viên, theo tuần hoặc theo buổi (vào Giáo án, chọn buổi)."),
+    h("div",{class:"adm-grid"}, kpi(doneAll, "buổi đã học"), kpi(mins, "phút đã học"), kpi(streak(), "ngày liên tiếp"), kpi(S.mistakes.length, "câu sai chờ ôn"), kpi(Object.keys(S.vocab).length, "từ trong sổ")),
+    adCard("Theo tuần", weekRows.length ? weekRows : h("p",{class:"muted"},"Chưa có tuần nào.")),
+    adCard("Độ chính xác theo dạng bài", accuracyBars()),
+    adCard("Sao lưu và khôi phục", h("p",{class:"muted small"},"Tải tiến độ về máy hoặc khôi phục từ file đã lưu."), h("div",{class:"row"}, adBtn("download","Tải về","", () => adDownload("tien-do-" + LRN.id + ".json", S)), adBtn("upload","Khôi phục từ file","", () => fileIn.click()), fileIn)),
+    adCard("Xóa toàn bộ tiến độ của " + nm, h("p",{class:"muted small"},"Xóa mọi buổi đã học, bài viết, câu sai, từ vựng và chuỗi ngày. Cài đặt và ngày bắt đầu được giữ. Không thể hoàn tác."),
+      h("div",{class:"row"}, adBtn("trash","Xóa toàn bộ tiến độ","danger", () => adDialog("Xóa toàn bộ tiến độ của " + nm + "?", h("p",null,"Mọi tiến độ học của " + nm + (LRN.id === "bw" ? " (Bookworms)" : "") + " sẽ bị xóa. Không thể hoàn tác."), [{label:"Hủy",value:false},{label:"Xóa toàn bộ",kind:"danger",value:true}]).then(ok => { if (ok){ clearProgress({all:true}); toast("Đã xóa toàn bộ tiến độ"); route(); } })))));
 }
+
+/* ---- Từ vựng của học viên và nhận xét ---- */
+function adVocab(){
+  const M = NB.mine, mw = Object.keys(M).sort();
+  return h("div",null, adHead("Từ vựng học viên tự thêm", "Sổ chung của Nhi cho mọi chế độ. Bấm vào từ để sửa nghĩa, ví dụ, từ hay đi cùng rồi lưu và duyệt."),
+    adCard(mw.length + " từ", mw.length ? mw.map(w => mineRowEl(w, () => { route(); }, true)) : h("p",{class:"muted"},"Chưa có từ nào.")));
+}
+function adNotes(){
+  const nm = LRN.name, writings = Object.entries(S.writing).sort((a, b) => a[0] < b[0] ? -1 : 1);
+  const ta = h("textarea",{class:"txt",rows:3,placeholder:"Ví dụ: Tuần này em làm tốt phần am/is/are, nhớ đọc to các câu nhé!"}); ta.value = S.teacherNote ? S.teacherNote.text : "";
+  return h("div",null, adHead("Nhận xét và lời nhắn · " + nm),
+    adCard("Lời nhắn hiện ở trang chủ của học viên", ta, h("div",{class:"row",style:"margin-top:10px"},
+      h("button",{class:"btn",type:"button",onClick:() => { if (!ta.value.trim()){ toast("Hãy viết nội dung lời nhắn"); return; } S.teacherNote = { text:ta.value.trim(), at:dkey(new Date()), read:false }; save(); toast("Đã gửi lời nhắn"); }}, aic("mail"), "Gửi lời nhắn"),
+      adBtn("trash","Xóa lời nhắn","danger", () => { S.teacherNote = null; ta.value = ""; save(); toast("Đã xóa lời nhắn"); }))),
+    adCard("Bài tự viết của " + nm, writings.length ? writings.map(([sid, text]) => { const m = findSession(sid);
+      const fb = h("textarea",{class:"txt",rows:2,placeholder:"Nhận xét cho học viên"}); fb.value = S.feedback[sid] || "";
+      return h("div",{class:"mist"}, h("div",{class:"small muted"}, m ? m.day + ": " + m.title : sid), h("div",{class:"model",style:"margin:6px 0 8px"},text), fb,
+        h("div",{class:"row",style:"margin-top:8px"}, adBtn("check","Lưu nhận xét","", () => { S.feedback[sid] = fb.value; save(); toast("Đã lưu nhận xét"); }))); }) : h("p",{class:"muted"},"Chưa có bài viết nào.")));
+}
+
 /* ---- Bookworms: chọn sách (mỗi sách 3 tuần, tiến độ và lịch riêng từng sách) ---- */
 function bookProgress(b){
   const lo = 3*(b-1)+1; let done = 0, have = 0;
@@ -3484,7 +3693,9 @@ function bookShelfView(){
 function route(){
   vBank = null; stopAudio(); activeLesson = null; review = null; pgReset();
   const parts = location.hash.replace(/^#\/?/,"").split("/"); let page = parts[0] || "home";
-  if (IS_BW && !curBook() && !["books","settings","gv","content","teacher","vocab"].includes(page)) page = "books";
+  if (["gv","content","teacher"].includes(page)){ location.replace("#/admin/" + ({gv:"plan",content:"upload",teacher:"notes"})[page]); return; }
+  if (IS_BW && !curBook() && !["books","settings","admin","vocab"].includes(page)) page = "books";
+  document.body.classList.toggle("admin", page === "admin"); adminTheme(page === "admin");
   document.body.classList.toggle("immersive", page === "lesson");
   let view;
   switch (page){
@@ -3494,19 +3705,18 @@ function route(){
     case "lesson": view = lessonView(parts[1], parseInt(parts[2] || "0", 10)); break;
     case "done": view = doneView(parts[1]); break;
     case "challenge": view = challengeView(parts[1]); break;
-    case "content": view = contentView(); break;
     case "vocab": view = vocabView(parts[1], parts[2]); break;
     case "practice": view = practiceView(parts[1]); break;
     case "mistakes": view = mistakesView(); break;
     case "placement": view = placementView(); break;
     case "report": view = h("div",null, h("h1",null,"Báo cáo "+wTxt(weekNo()).toLowerCase()), reportEl()); break;
     case "settings": view = settingsView(); break;
-    case "teacher": view = teacherView(); break;
-    case "gv": view = gvView(); break;
+    case "admin": view = adminView(parts); break;
     case "progress": view = progressView(); break;
     default: view = homeView();
   }
   app.replaceChildren(view); window.scrollTo(0,0);
+  if (PREVIEW && page !== "admin") app.prepend(h("div",{class:"adm-prev"}, h("span",null,"Đang xem thử: tiến độ không được lưu."), h("button",{class:"btn sm",type:"button",onClick:exitPreview},"Thoát xem thử")));
   const tab = TAB_OF[page] || page;
   tabsEl.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.dataset.p === tab));
 }
@@ -3527,10 +3737,12 @@ document.addEventListener("focusin", e => {
 document.addEventListener("focusout", () => setTimeout(() => { const a = document.activeElement; if (!(a && a.matches && a.matches("input.txt,textarea.txt"))) document.body.classList.remove("kb"); }, 60));
 if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
 function chooseLearner(id, keep, hash){
+  try { sessionStorage.removeItem("a1-preview"); } catch(e){}
   try { sessionStorage.setItem("a1-learner", id); if (keep) localStorage.setItem("a1-learner-keep", id); else localStorage.removeItem("a1-learner-keep"); } catch(e){}
   location.href = location.pathname + "#/" + (hash || "home"); location.reload();
 }
 function switchLearner(){
+  try { sessionStorage.removeItem("a1-preview"); } catch(e){}
   try { sessionStorage.removeItem("a1-learner"); localStorage.removeItem("a1-learner-keep"); } catch(e){}
   location.href = location.pathname; location.reload();
 }
@@ -3548,9 +3760,7 @@ function coverView(){
       card("tri","moon","C1–C2 · Nâng cao","Mỗi ngày 60 phút: viết luận, tranh biện, báo cáo số liệu, ngữ pháp C1–C2, ôn lặp lại.")),
     h("div",{class:"cvgv"}, h("a",{class:"btn",href:"#/notebook",style:"text-decoration:none"},"📒 Từ của Nhi"), h("div",{class:"small muted",style:"margin-top:4px"},"Sổ từ riêng của Nhi, dùng chung cho mọi chế độ")),
     h("label",{class:"cvk"}, keep, " Nhớ lựa chọn trên máy này (lần sau vào thẳng)"),
-    (() => { const pick = h("div",{class:"gvpick",hidden:true}, h("span",{class:"small muted"},"Soạn bài cho:"),
-        Object.keys(LEARNERS).map(id => h("button",{class:"pill",type:"button",onClick:() => chooseLearner(id, false, "gv")}, id === "bw" ? "Nhi · Bookworms" : LEARNERS[id].name)));
-      return h("div",{class:"cvgv"}, h("button",{class:"btn soft",type:"button",onClick:() => { pick.hidden = !pick.hidden; }},"✏️ GV soạn bài"), pick); })());
+    h("div",{class:"cvgv"}, h("button",{class:"btn soft",type:"button",onClick:() => { let l = "nhi"; try { const x = localStorage.getItem("a1-admin-learner"); if (LEARNERS[x]) l = x; } catch(e){} chooseLearner(l, false, "admin"); }}, aic("pencil"), " Quản lý và soạn bài")));
 }
 
 /* ---- Trí: thay mọi emoji bằng biểu tượng nét mảnh hợp theme (không dùng hình emoji của hệ điều hành) ---- */
