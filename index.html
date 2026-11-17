@@ -730,8 +730,8 @@ body.immersive .bank.stick{bottom:calc(88px + env(safe-area-inset-bottom))}
 
 /* ===== Trang Quản lý (theme của Trí, dùng cho mọi học viên) ===== */
 body.admin .top,body.admin .tabs{display:none}
-body.admin .wrap{max-width:none; padding:0}
-.adm{display:grid; grid-template-columns:248px minmax(0,1fr); min-height:100vh; color:#fff}
+body.admin .wrap{max-width:none; width:100%; margin:0; padding:0}
+.adm{display:grid; grid-template-columns:248px minmax(0,1fr); width:100%; min-height:100vh; color:#fff}
 .adm-side{position:sticky; top:0; align-self:start; height:100vh; overflow:auto; display:flex; flex-direction:column; gap:14px; padding:20px 14px; background:#0b1f47; border-right:1px solid rgba(246,184,78,.28)}
 .adm-brand{display:flex; align-items:center; gap:10px; padding:0 6px 6px}
 .adm-brand .ai{width:36px; height:36px; padding:8px; border-radius:8px; background:#f6b84e; color:#0d2552}
