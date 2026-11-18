@@ -2385,6 +2385,13 @@ const mkey = w => String(w || "").toLowerCase().trim().replace(/[^a-z' -]/g, "")
 const COLL_STOP = new Set("a an the of to in on at for with by from and or but if as is are was were be been am it its this that these those i you he she we they my your his her our their me him them us not no so do does did have has had will would can could may might must shall should than then there here very too also just about into over under up down out off more most much many some any all each every one two".split(" "));
 const mineSay = (w, src) => { let fell = false; playAudio({ text:w, src:src || undefined, rate:.85 }, ok => { if (!ok && src && !fell){ fell = true; playAudio({ text:w, rate:.85 }); } }); };
 const wcount = s => String(s || "").split(/\s+/).filter(Boolean).length;
+const vMeans = v => [v.m].concat((v.alt || []).map(a => a.m)).filter(Boolean).join(" / ");
+function mineAddSense(key, m, ex){
+  const v = NB.mine[key]; if (!v) return false; m = String(m || "").trim(); if (!m) return false;
+  const all = [v.m].concat((v.alt || []).map(a => a.m)).map(x => String(x || "").toLowerCase());
+  if (all.includes(m.toLowerCase())) return false;
+  (v.alt = v.alt || []).push({ m, ex:String(ex || "").trim() }); v.ok = false; nbSave(); return true;
+}
 function mineCurated(key){
   for (const n of Object.keys(WEEKS)){ const L = WEEKS[n].vocabList || []; const f = L.find(x => x && String(x.en).toLowerCase() === key); if (f) return f; }
   return null;
@@ -2433,27 +2440,27 @@ function mineAddEl(onSaved, prefill){
   const note = (t, cls) => h("p",{class:"small "+(cls || "muted")}, t);
   async function lookup(){
     key = mkey(wordIn.value); if (!key){ res.replaceChildren(note("Hãy gõ một từ tiếng Anh nhé.")); return; }
-    if (S.vocab[key]){ res.replaceChildren(note("Từ “"+key+"” đã có trong sổ từ vựng của bài học rồi, không cần thêm.")); return; }
-    if (NB.mine[key]){ res.replaceChildren(note("Từ “"+key+"” đã có trong Từ của "+MY_NAME()+" rồi.")); return; }
     res.replaceChildren(note("Đang tra từ…")); goBtn.disabled = true;
     try { info = await mineLookup(key); } catch(e){ info = { ipa:"", aud:"", pos:"", defs:[], exs:[], coll:[], sug:[], dictOk:false }; }
     goBtn.disabled = false; if (!res.isConnected) return; chosenEx = ""; draw();
   }
   function draw(){
-    const cur = mineCurated(key);
-    const mean = h("input",{class:"txt",type:"text",placeholder:"Nghĩa tiếng Việt",autocomplete:"off",spellcheck:"false",value:cur ? cur.vi : "",onInput:() => { save1.disabled = !mean.value.trim(); }});
+    const cur = mineCurated(key), mine = NB.mine[key], lesson = S.vocab[key];
+    const mean = h("input",{class:"txt",type:"text",placeholder:mine || lesson ? "Nghĩa khác của từ này" : "Nghĩa tiếng Việt",autocomplete:"off",spellcheck:"false",value:mine || lesson ? "" : (cur ? cur.vi : ""),onInput:() => { save1.disabled = !mean.value.trim(); }});
     const myEx = h("input",{class:"txt",type:"text",placeholder:"Hoặc tự viết một câu ví dụ (không bắt buộc)",autocomplete:"off",autocapitalize:"none",spellcheck:"false"});
     const save1 = h("button",{class:"btn block",type:"button",disabled:!mean.value.trim(),style:"margin-top:12px",onClick:() => {
       const m = mean.value.trim(); if (!m){ toast("Gõ nghĩa tiếng Việt trước nhé"); return; }
+      if (mine){ if (mineAddSense(key, m, myEx.value.trim() || chosenEx)){ toast("Đã thêm nghĩa mới cho “"+key+"”"); onSaved && onSaved(); } else toast("Nghĩa này đã có rồi"); return; }
       mineSave(key, { m, ipa:info.ipa, aud:info.aud, pos:info.pos, def:info.defs[0] ? info.defs[0].def : "", coll:info.coll, ex:(myEx.value.trim() || chosenEx || ""), myEx:myEx.value.trim() });
-      toast("Đã thêm “"+key+"” vào Từ của "+MY_NAME()); onSaved && onSaved(); } }, "Lưu vào Từ của "+MY_NAME());
+      toast("Đã thêm “"+key+"” vào Từ của "+MY_NAME()); onSaved && onSaved(); } }, mine ? "Thêm nghĩa này" : "Lưu vào Từ của "+MY_NAME());
     const exList = info.exs.map(x => { const b = h("button",{class:"opt",type:"button",style:"text-align:left",onClick:() => { chosenEx = chosenEx === x ? "" : x; exList.forEach(y => y.classList.toggle("sel", y.dataset.t === chosenEx)); }}, x); b.dataset.t = x; return b; });
     res.replaceChildren(
       h("div",{class:"row",style:"gap:8px;align-items:center;margin:8px 0"}, h("button",{class:"say",type:"button","aria-label":"Nghe",onClick:() => mineSay(key, info.aud)},"🔊"),
         h("b",{style:"font-size:1.3rem"},key), info.ipa ? h("span",{class:"muted"},info.ipa) : null, info.pos ? h("span",{class:"pill"},info.pos) : null),
       info.dictOk ? null : note("Chưa tra được từ điển (không có mạng hoặc từ điển chưa có từ này). Bạn vẫn có thể tự nhập nghĩa và lưu từ."),
       cur ? note("📘 Từ này có trong giáo án: "+cur.vi) : null,
-      h("div",{style:"margin:8px 0 4px;font-weight:800"},"Nghĩa tiếng Việt (bạn tự tra rồi gõ vào)"), mean,
+      mine || lesson ? note("Từ này đã có nghĩa: "+(mine ? vMeans(mine) : lesson.m)+". Thêm một nghĩa khác, khi ôn web sẽ hỏi cả hai nghĩa.", "ok") : null,
+      h("div",{style:"margin:8px 0 4px;font-weight:800"},mine || lesson ? "Nghĩa khác (bạn tự gõ)" : "Nghĩa tiếng Việt (bạn tự tra rồi gõ vào)"), mean,
       info.sug.length ? h("div",{style:"margin-top:6px"}, h("div",{class:"small muted"},"Web gợi ý (máy dịch, có thể chưa đúng, bấm để dùng):"),
         h("div",{class:"chips"}, info.sug.map(t => h("button",{class:"pill",type:"button",onClick:() => { mean.value = t; save1.disabled = false; }}, t)))) : null,
       info.defs.length ? h("details",{style:"margin-top:10px"}, h("summary",{class:"small muted"},"Định nghĩa tiếng Anh (có thể khó hơn trình độ của bạn)"), info.defs.map(d => h("div",{class:"small",style:"margin-top:4px"}, h("i",null,d.pos+" "), d.def))) : null,
@@ -2474,19 +2481,20 @@ function mineRowEl(w, rerender, teacher){
   const fill = () => {
     const mIn = h("input",{class:"txt",type:"text",value:v.m || "",placeholder:"Nghĩa tiếng Việt"});
     const eIn = h("input",{class:"txt",type:"text",value:v.ex || "",placeholder:"Câu ví dụ",autocapitalize:"none",spellcheck:"false",style:"margin-top:6px"});
+    const aIn = h("input",{class:"txt",type:"text",value:(v.alt || []).map(a => a.m).join("; "),placeholder:"Nghĩa khác, ngăn cách bằng dấu ;",style:"margin-top:6px"});
     const cIn = teacher ? h("input",{class:"txt",type:"text",value:(v.coll || []).join(", "),placeholder:"Từ hay đi cùng, ngăn cách bằng dấu phẩy",style:"margin-top:6px"}) : null;
     det.replaceChildren([v.pos, v.ipa].filter(Boolean).join("  ·  ") ? h("div",{class:"muted"},[v.pos, v.ipa].filter(Boolean).join("  ·  ")) : null,
       v.def ? h("div",null, h("i",null,"EN: "), v.def) : null,
       (v.coll || []).length && !teacher ? h("div",{class:"chips",style:"margin-top:4px"}, v.coll.map(t => h("span",{class:"pill"},t))) : null,
-      mIn, eIn, cIn,
+      mIn, aIn, eIn, cIn,
       h("div",{class:"row",style:"margin-top:8px"},
-        h("button",{class:"btn sm",type:"button",onClick:() => { const m = mIn.value.trim(); if (!m){ toast("Nghĩa không được để trống"); return; } v.m = m; v.ex = eIn.value.trim();
+        h("button",{class:"btn sm",type:"button",onClick:() => { const m = mIn.value.trim(); if (!m){ toast("Nghĩa không được để trống"); return; } v.m = m; v.ex = eIn.value.trim(); const old = v.alt || []; v.alt = aIn.value.split(";").map(x => x.trim()).filter(Boolean).map(x => ({ m:x, ex:(old.find(o => o.m === x) || {}).ex || "" }));
           if (cIn) v.coll = cIn.value.split(",").map(x => x.trim()).filter(Boolean); if (teacher) v.ok = true; nbSave(); toast("Đã lưu"); rerender(); }}, teacher ? "Lưu và duyệt" : "Lưu"),
         (!v.ipa || !(v.coll || []).length) ? h("button",{class:"btn soft sm",type:"button",onClick:async () => { toast("Đang tra thêm…"); await mineEnrich(w); rerender(); }}, "Tra thêm") : null,
         h("button",{class:"btn soft sm",type:"button",onClick:() => { if (confirm("Xóa từ “"+w+"” khỏi Từ của "+MY_NAME()+"?")){ delete NB.mine[w]; nbSave(); rerender(); } }}, "Xóa")));
   };
   const row = h("div",{class:"vrow",style:"cursor:pointer"}, h("button",{class:"say",type:"button","aria-label":"Nghe "+w,onClick:e => { e.stopPropagation(); mineSay(w, v.aud); }},"🔊"),
-    h("div",{class:"grow"}, h("b",null,w), v.ok ? h("span",{class:"pill ok",style:"margin-left:6px"},"✔ Thầy đã duyệt") : null, h("div",{class:"small muted"}, v.m || "(chưa có nghĩa)"), det),
+    h("div",{class:"grow"}, h("b",null,w), v.ok ? h("span",{class:"pill ok",style:"margin-left:6px"},"✔ Thầy đã duyệt") : null, h("div",{class:"small muted"}, vMeans(v) || "(chưa có nghĩa)"), det),
     h("span",{class:"boxdots",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""}))));
   row.addEventListener("click", e => { if (e.target.closest("input,button,details")) return; if (det.style.display === "none"){ fill(); det.style.display = "block"; } else det.style.display = "none"; });
   return row;
@@ -2503,10 +2511,11 @@ function wordCard(host, anchor, word, vi){
   const key = word.toLowerCase().replace(/[^a-z'-]/g, ""); let meaning = vi || "";
   const addBtn = h("button",{class:"btn sm wadd",type:"button"});
   const mIn = h("input",{class:"txt",type:"text",placeholder:"Nghĩa tiếng Việt (bạn tự tra)",value:vi || "",autocomplete:"off",spellcheck:"false",style:"margin:8px 0 4px"});
-  const has = () => !!S.vocab[key] || !!NB.mine[key];
-  const drawAdd = () => { const h0 = has(); addBtn.textContent = h0 ? "✅ Đã có trong sổ từ vựng" : "➕ Thêm vào Từ của "+MY_NAME(); addBtn.classList.toggle("soft", h0); addBtn.disabled = h0; mIn.hidden = h0; };
+  const has = () => false;
+  const drawAdd = () => { const h0 = has(), ex0 = !!NB.mine[key] || !!S.vocab[key]; addBtn.textContent = ex0 ? "➕ Thêm nghĩa khác cho từ này" : "➕ Thêm vào Từ của "+MY_NAME(); if (ex0) mIn.placeholder = "Nghĩa khác (bạn tự gõ)"; addBtn.classList.toggle("soft", h0); addBtn.disabled = h0; mIn.hidden = h0; };
   addBtn.addEventListener("click", () => { if (has()) return; const m = mIn.value.trim(); if (!m){ toast("Gõ nghĩa tiếng Việt trước nhé"); mIn.focus(); return; }
-    mineSave(key, { m, src:"read" }); mineEnrich(key); drawAdd(); toast("Đã thêm “"+word+"” vào Từ của "+MY_NAME()); });
+    if (NB.mine[key]){ toast(mineAddSense(key, m, "") ? "Đã thêm nghĩa mới cho “"+word+"”" : "Nghĩa này đã có rồi"); mIn.value = ""; return; }
+    mineSave(key, { m, src:"read" }); mineEnrich(key); drawAdd(); mIn.value = ""; toast("Đã thêm “"+word+"” vào Từ của "+MY_NAME()); });
   drawAdd();
   card.append(head, vi ? h("div",{class:"wvi"}, "🇻🇳 ", h("b",null,vi)) : null, body, mIn, addBtn);
   host.append(card);
@@ -3029,12 +3038,12 @@ function vCard(w, type, cb){
   const tag = h("div",{class:"vtag"}, VTYPE[type]);
   const reveal = (res, extra) => {
     const fb = h("div",{class:"fbtxt "+(res === "fail" ? "bad" : "ok")}, res === "ok" ? "Đúng rồi!" : res === "late" ? "Đúng rồi (lần 2), mình ôn lại sớm nhé." : "Chưa đúng. Đáp án: "+w);
-    card.append(fb, h("div",{class:"m"}, w+" = "+v.m), v.ex ? h("div",{class:"small",style:"font-style:italic"}, v.ex + (v.exVi ? "  (" + v.exVi + ")" : "")) : null,
+    card.append(fb, h("div",{class:"m"}, w+" = "+vMeans(v)), v.ex ? h("div",{class:"small",style:"font-style:italic"}, v.ex + (v.exVi ? "  (" + v.exVi + ")" : "")) : null,
       h("button",{class:"btn",type:"button",onClick:() => cb(res)}, "Tiếp"));
   };
   if (type === "flip"){
     const rate = ok => cb(ok ? "ok" : "fail");
-    const m = h("div",{class:"m"}, v.m), ex = v.ex ? h("div",{class:"small",style:"font-style:italic"}, v.ex + (v.exVi ? "  (" + v.exVi + ")" : "")) : null;
+    const m = h("div",{class:"m"}, vMeans(v)), ex = v.ex ? h("div",{class:"small",style:"font-style:italic"}, v.ex + (v.exVi ? "  (" + v.exVi + ")" : "")) : null;
     const act = h("div",{class:"row",style:"justify-content:center"}, h("button",{class:"btn danger",type:"button",onClick:() => rate(false)},"Chưa nhớ"), h("button",{class:"btn",type:"button",onClick:() => rate(true)},"Mình nhớ rồi"));
     const back = h("div",{class:"vq",style:"padding:0"}, m, ex, act); back.hidden = true;
     card.append(tag, h("div",{class:"w"}, w), speak, meta, h("div",{class:"small muted"},"Thử nhớ nghĩa trước khi lật thẻ."),
@@ -3053,9 +3062,9 @@ function vCard(w, type, cb){
     if (good(x)) return end(tries ? "late" : "ok");
     tries++; if (tries >= 2) return end("fail"); msg.hidden = false; inp.select(); };
   btn.addEventListener("click", check); inp.addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); check(); } });
-  if (type === "typevi") card.append(tag, h("div",{class:"vw"}, v.m), h("div",{class:"small muted"}, (v.pos ? v.pos + "  ·  " : "") + "Viết từ tiếng Anh nghĩa là vậy"), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
+  if (type === "typevi") card.append(tag, h("div",{class:"vw"}, vMeans(v)), h("div",{class:"small muted"}, (v.pos ? v.pos + "  ·  " : "") + "Viết từ tiếng Anh nghĩa là vậy"), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
   else if (type === "listen") card.append(tag, h("div",{class:"small muted"},"Nghe và gõ lại từ bạn nghe được"), h("button",{class:"btn bigsay",type:"button",onClick:say},"🔊 Nghe"), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
-  else card.append(tag, h("div",{class:"vblank"}, bl), h("div",{class:"small muted"}, "Nghĩa của từ cần điền: " + v.m), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
+  else card.append(tag, h("div",{class:"vblank"}, bl), h("div",{class:"small muted"}, "Nghĩa của từ cần điền: " + vMeans(v)), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
   setTimeout(() => { if (type === "listen") say(); inp.focus(); }, 60);
   return card;
 }
