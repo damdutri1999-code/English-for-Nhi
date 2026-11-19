@@ -19,7 +19,8 @@ else{if(L==="nhi"||L==="bw")document.documentElement.setAttribute("data-learner"
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Baloo 2 và Nunito đều có đủ dấu tiếng Việt -->
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{
   --p50:#fbf2ec; --p100:#f8e1da; --p200:#f1cbc3; --p300:#e8aaa6; --p400:#dd8590;
@@ -1605,7 +1606,13 @@ async function loadContentCloud(){
   } catch(e){} });
   saveContentLocal(); if (!WEEKS[1]) restoreStub();
 }
+const SKEY = () => CKEY + "-static";
+function loadStaticLocal(){
+  try { const o = JSON.parse(localStorage.getItem(SKEY()) || "{}"); Object.keys(o).forEach(n => { const j = o[n];
+    if (!j || CONTENT[n] || DELETED.has(+n) || validateWeek(j).E.length) return; applyContent(+n, j); WEEKS[n].src = "static"; }); } catch(e){}
+}
 async function loadContentStatic(){
+  const got = {}, saveS = () => { try { localStorage.setItem(SKEY(), JSON.stringify(got)); } catch(e){} };
   try {
     const ctl = new AbortController(), tm = setTimeout(() => ctl.abort(), 2500);
     const r = await fetch(LRN.dir + "/index.json", { cache:"no-cache", signal:ctl.signal }); clearTimeout(tm); if (!r.ok) return;
@@ -1613,7 +1620,10 @@ async function loadContentStatic(){
     await Promise.all((Array.isArray(list) ? list : []).map(async f => { try {
       const j = await (await fetch(LRN.dir + "/" + String(f).replace(/[^\w.\-]/g, ""), { cache:"no-cache" })).json();
       if (!j || !Number.isInteger(j.week) || CONTENT[j.week] || DELETED.has(j.week) || validateWeek(j).E.length) return;
-      applyContent(j.week, j); WEEKS[j.week].src = "static"; } catch(e){} }));
+      applyContent(j.week, j); WEEKS[j.week].src = "static"; got[j.week] = j; } catch(e){} }));
+    const ls = Array.isArray(list) ? list : [];
+    Object.keys(WEEKS).forEach(n => { if (WEEKS[n].src === "static" && !got[n] && ls.length === 0){ unloadWeek(+n); } });
+    saveS();
   } catch(e){}
 }
 
@@ -3879,15 +3889,27 @@ async function boot(){
     const t0 = NB.updatedAt; nbCloud().then(() => { if (NB.updatedAt !== t0 && location.hash.startsWith("#/notebook")) show(); });
     return;
   }
-  S = loadLocal(); ensureStart(); applyBrand(); loadContentLocal();
+  S = loadLocal(); ensureStart(); applyBrand(); loadContentLocal(); loadStaticLocal();
   document.getElementById("fsbtn").addEventListener("click", FS.toggle); FS.sync();
   document.getElementById("themebtn").addEventListener("click", () => {
     S.settings.theme = themeKind() === "night" ? "light" : "night"; save(); applyBrand();
     if (location.hash.startsWith("#/settings")) route();
   });
-  await initCloud(); await nbCloud(); nbMigrate(); applyBrand(); await loadContentCloud(); await loadContentStatic();
+  /* vẽ ngay từ dữ liệu trên máy, đồng bộ mạng chạy nền rồi chỉ vẽ lại khi có thay đổi */
   window.addEventListener("hashchange", route);
   route();
+  const sig = () => JSON.stringify([S.updatedAt, NB.updatedAt, Object.keys(WEEKS).map(n => n + ":" + (WEEKS[n].src || "") + ":" + (WEEKS[n].stub ? 1 : 0))]);
+  const before = sig();
+  await Promise.all([initCloud(), nbCloud()]); nbMigrate(); applyBrand();
+  await loadContentCloud(); await loadContentStatic();
+  if (sig() !== before){
+    const hs = location.hash, page = hs.replace(/^#\/?/,"").split("/")[0] || "home";
+    const adm = hs.replace(/^#\/?/,"").split("/")[1] || "overview";
+    const ok = ["home","week","plan","vocab","progress","books","mistakes"].includes(page) && !review && !vtest
+      || (page === "admin" && ["overview","plan","progress","vocab","notes"].includes(adm))
+      || (page === "lesson" && activeLesson === null);
+    if (ok) route();
+  }
 }
 boot();
 })();
