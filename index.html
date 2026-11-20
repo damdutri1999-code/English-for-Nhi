@@ -2007,7 +2007,7 @@ const chatEl = (lines, scene) => { const nxt = lines.length % 2 ? "B" : "A", las
     h("div",{class:"chat dchat"}, h("div",{class:"dlab"},"💬 Hội thoại"),
       lines.map((l,i) => { const who = i%2 ? "B" : "A";
         return h("div",{class:"bubrow "+(i%2?"r":"l")}, h("span",{class:"spk "+who.toLowerCase()}, who),
-          h("div",{class:"bubcol"}, i === last ? h("div",{class:"dtag"},"Câu cần đáp lại") : null, h("div",{class:"bub "+(i%2?"r":"l")+(i === last ? " target" : "")}, l))); }),
+          h("div",{class:"bubcol"}, i === last ? h("div",{class:"dtag"},"Câu cần đáp lại") : null, h("div",{class:"bub "+(i%2?"r":"l")+(i === last ? " target" : "")}, String(l).replace(/^\s*[AB]\s*:\s*/, "")))); }),
       h("div",{class:"bubrow "+(lines.length%2?"r":"l")}, h("span",{class:"spk ask "+nxt.toLowerCase()}, nxt), h("div",{class:"bub ask"}, "Câu "+nxt+" ở đây…"))),
     h("div",{class:"qlabel dq"}, "👇 Chọn câu "+nxt+" nên nói để đáp lại:")); };
 
