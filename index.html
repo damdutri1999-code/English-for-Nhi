@@ -619,6 +619,17 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 .setsep .ico:empty{display:none}
 .setsep > span{justify-content:center; text-align:center}
 .card[data-k]:has(> .exset.fin){--sc:var(--ok); --sb:var(--ok-bg); border-color:var(--ok)}
+.tseq{display:flex; flex-direction:column; gap:6px}
+.tsteps{display:flex; flex-wrap:wrap; align-items:center; gap:6px}
+.tstep{display:inline-flex; align-items:center; gap:7px; background:var(--paper); border:2px solid var(--task-line,var(--p200)); border-radius:12px; padding:4px 11px 4px 5px; color:var(--task-ink,var(--ink)); font-weight:800; font-size:.9rem; line-height:1.3}
+.tstep b{flex:none; width:22px; height:22px; border-radius:50%; background:var(--task-ink,var(--p600)); color:#fff; display:grid; place-items:center; font-size:.78rem}
+.tarr{font-weight:800; font-size:1.2rem; color:var(--task-ink,var(--p600)); line-height:1}
+.ttail{font-weight:700; font-size:.88rem; color:var(--task-ink,var(--ink2))}
+.tins-n.tseq,.tins-i.tseq{display:inline-flex; vertical-align:middle}
+.taskbox .tins.tseq{flex:1 1 100%}
+section.exset[data-type=oddone] .opts.opts.opts{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px}
+section.exset[data-type=oddone] .opts .opt{padding:8px 3px; text-align:center; min-height:48px; display:flex; align-items:center; justify-content:center; font-size:.82rem; line-height:1.25; word-break:normal; overflow-wrap:break-word; hyphens:none}
+@media (max-width:360px){section.exset[data-type=oddone] .opts.opts.opts{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .taskbox .tins{flex:1 1 160px; min-width:0; color:var(--task-ink); font-weight:700; font-size:.93rem; line-height:1.35}
 .q{padding:9px 0 10px}
 .q:not(.nocount){padding-left:34px}
@@ -2216,7 +2227,7 @@ function dictItem(it, onChange){
 }
 function textItem(it, onChange){
   const fbSlot = h("div"), input = h("input",{class:"txt",type:"text",placeholder:"Gõ câu của bạn",onInput:onChange});
-  return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, it.prompt), it.instruction ? h("p",{class:"muted small",style:"margin:-4px 0 8px"},"👉 "+it.instruction) : null,
+  return { el:h("div",{class:"q"}, h("p",{class:"qtext"}, it.prompt), it.instruction ? h("p",{class:"muted small",style:"margin:-4px 0 8px"}, "👉 ", insEl(it.instruction, "tins-i")) : null,
     it.keyword ? h("div",{style:"margin:0 0 8px"}, h("span",{class:"uchip on"},"Dùng từ: "+it.keyword+(it.words ? " ("+it.words+")" : ""))) : null, input, fbSlot), fbSlot,
     retry:!it.self, lock(){ input.readOnly = true; }, isAnswered:() => input.value.trim() !== "",
     check(){ if (it.self) input.readOnly = true;
@@ -2318,9 +2329,29 @@ const MANUAL = new Set(["form","fix","dictation","transform","translate","answer
 /* hướng dẫn của set: bỏ nếu chỉ lặp lại tên loại bài (tránh "Chọn câu đáp lại" + "Chọn câu đáp lại phù hợp.") */
 const insWords = t => String(t || "").toLowerCase().normalize("NFC").replace(/[^\p{L}\s]/gu," ").split(/\s+/).filter(w => w && !["và","rồi","các","cho","the","a"].includes(w));
 const insDup = (ins, label) => { const L = insWords(label), I = insWords(ins); if (!L.length) return false; return L.filter(w => I.includes(w)).length / L.length >= .66 && I.length <= L.length + 3; };
+/* hướng dẫn có nhiều bước: tách thành các ô nối nhau bằng mũi tên */
+function insSplit(text){
+  const t = String(text || "").trim(); if (!t) return null;
+  const sents = t.match(/[^.!?]+(?:\([^)]*\))?[^.!?]*[.!?]?/g) || [t];
+  const first = sents[0].trim(), rest = sents.slice(1).join(" ").trim();
+  const masked = first.replace(/\([^)]*\)/g, m => m.replace(/,/g, "\u0001").replace(/ rồi /g, " \u0002 "));
+  let body = masked.replace(/^[^:]{0,24}\d+\s*bước\s*:\s*/i, ""), n = 0;
+  const hasSeq = /\d+\s*bước\s*:/i.test(masked) || /(^|[\s,])rồi\s|sau đó|→/.test(masked);
+  if (!hasSeq) return null;
+  const parts = body.replace(/[.!?]+$/, "").split(/\s*(?:,\s*)?(?:rồi|sau đó|→)\s+|\s*,\s*/i).map(x => x.replace(/[\u0001]/g, ",").replace(/\u0002/g, "rồi").trim()).filter(Boolean);
+  if (parts.length < 2 || parts.length > 5) return null;
+  return { steps:parts.map(x => x.charAt(0).toUpperCase() + x.slice(1)), tail:rest };
+}
+function insEl(text, cls){
+  const sp = insSplit(text);
+  if (!sp) return h("span",{class:cls || "tins"}, text);
+  return h("span",{class:(cls || "tins")+" tseq"},
+    h("span",{class:"tsteps"}, sp.steps.flatMap((x, i) => [i ? h("span",{class:"tarr","aria-hidden":"true"},"→") : null, h("span",{class:"tstep"}, h("b",null,String(i+1)), x)])),
+    sp.tail ? h("span",{class:"ttail"}, sp.tail) : null);
+}
 function insText(set, T){ const a = set.instruction, b = T.how; if (a && !insDup(a, T.label)) return a; if (b && !insDup(b, T.label)) return b; return ""; }
 function exerciseSet(set, onDone, pos){
-  const wrap = h("section",{class:"exset"});
+  const wrap = h("section",{class:"exset","data-type":set.type});
   const coreN = set.type !== "cloze" && set.core && set.core > 0 && set.core < set.items.length ? set.core : set.items.length;   // đoạn cloze luôn làm trọn cả đoạn
   const main = subView(set, set.items.slice(0, coreN));
   const extra = coreN < set.items.length ? subView(set, set.items.slice(coreN)) : null;
@@ -2384,7 +2415,7 @@ function exerciseSet(set, onDone, pos){
     if (seq) built.items.forEach((it, i) => { if (i > 0 && it.el) it.el.hidden = true; });
     const T = TYPES[main.type] || { icon:"", label:"", how:"" };
     const sep = pos && pos.total > 1 ? h("div",{class:"setsep"}, h("span",null, wrap.classList.contains("fin") ? "#i:check" : T.icon, " Phần "+pos.i+"/"+pos.total+": "+T.label)) : null;
-    return [sep, h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), (() => { const ins = insText(set, T); return ins ? h("span",{class:"tins"}, ins) : null; })(), cntEl), meterBox,
+    return [sep, h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), (() => { const ins = insText(set, T); return ins ? insEl(ins, "tins") : null; })(), cntEl), meterBox,
       ...built.head, ...built.items.map(i => i.el).filter(Boolean), ...(built.foot || []), scoreBox, extraHost];
   }
   wrap.replaceChildren(...build());
@@ -2633,7 +2664,7 @@ function readStep(step, ctx){
   const finish = () => { if (!step.noAdd) addVocab(step.vocab); ctx.done(); };
   const purpose = h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, "🎯 Đọc để"), h("span",{class:"tins"}, step.purpose || "Hiểu ý chính của bài, rồi dùng bài này để làm các câu bên dưới."));
   const left = h("div",{class:"card rleft"}, h("h2",null,step.heading), purpose, gloss, box);
-  const note = step.note ? h("p",{class:"muted"}, step.note) : null;
+  const note = step.note ? h("p",{class:"muted"}, insEl(step.note, "tins-n")) : null;
   if (!step.sets.length){
     return h("div",null, left, note, h("button",{class:"btn block",type:"button",onClick:() => { finish(); if (!step.noAdd) toast("Đã thêm từ mới vào sổ từ vựng"); }}, "Mình đọc xong rồi"));
   }
