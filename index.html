@@ -332,6 +332,7 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .score svg{width:50px; height:61px}
 .mchoice svg{width:64px; height:78px}
 .celebrate svg.mascot{width:140px; height:171px}
+.mcard svg.mascot{width:130px; height:auto; max-width:60%}
 .mascot{filter:drop-shadow(0 5px 5px rgba(156,33,89,.25)); overflow:visible}
 .mascot.cheer{animation:hop .9s ease-in-out infinite}
 .mascot.sleepy{animation:bob 3.2s ease-in-out infinite}
@@ -3082,7 +3083,7 @@ function lessonView(id, idx){
   }
   if (lesson.stub){
     return h("div",null, h("a",{class:"btn soft",href:"#/home"},"← Trang chủ"),
-      h("div",{class:"card",style:"margin-top:16px;text-align:center"}, mascot("happy"), h("h2",null,"Chưa có bài học"), h("p",{class:"muted"},"Thầy chưa tải bài cho tuần này. Khi có bài, buổi học sẽ hiện ở đây.")));
+      h("div",{class:"card mcard",style:"margin-top:16px;text-align:center"}, mascot("happy"), h("h2",null,"Chưa có bài học"), h("p",{class:"muted"},"Thầy chưa tải bài cho tuần này. Khi có bài, buổi học sẽ hiện ở đây.")));
   }
   const sess = ensureSession(id); activeLesson = id;
   const steps = lesson.steps; idx = Math.max(0, Math.min(steps.length-1, isNaN(idx) ? 0 : idx));
@@ -3411,7 +3412,7 @@ function vocabView(sub, arg){
     const r = review;
     if (r.i >= r.q.length){
       const rest = vqueue().length; review = null;
-      return [h("div",{class:"card",style:"text-align:center"}, mascot("cheer"), h("h2",null,"Ôn xong rồi!"),
+      return [h("div",{class:"card mcard",style:"text-align:center"}, mascot("cheer"), h("h2",null,"Ôn xong rồi!"),
         h("p",{class:"muted"}, r.total+" từ đã ôn: "+r.ok+" nhớ tốt, "+r.bad+" cần ôn lại sớm."),
         rest ? h("p",{class:"muted small"},"Còn "+rest+" từ đến hạn, mình để mai ôn tiếp nhé.") : null,
         h("div",{class:"row",style:"justify-content:center"}, rest ? h("button",{class:"btn soft",type:"button",onClick:() => { startReview(10); render(); }},"Ôn thêm 10 từ") : null,
@@ -3429,7 +3430,7 @@ function vocabView(sub, arg){
       t.bad.forEach(w => { const v = S.vocab[w]; if (v){ v.box = 0; v.due = addDays(1); } });
       (S.vtests || (S.vtests = {}))[t.n] = { score:t.ok, total:t.q.length, at:dkey(new Date()) }; save();
       const sc = t.ok + " / " + t.q.length; vtest = null;
-      return [h("div",{class:"card",style:"text-align:center"}, mascot(t.ok >= t.q.length * .8 ? "cheer" : "happy"), h("h2",null,"Kết quả: "+sc),
+      return [h("div",{class:"card mcard",style:"text-align:center"}, mascot(t.ok >= t.q.length * .8 ? "cheer" : "happy"), h("h2",null,"Kết quả: "+sc),
         h("p",{class:"muted"}, t.bad.length ? t.bad.length+" từ chưa nhớ đã được xếp ôn lại vào ngày mai." : "Bạn nhớ hết các từ trong bài kiểm tra!"),
         t.bad.length ? h("div",{class:"chips",style:"justify-content:center"}, t.bad.map(w => h("span",{class:"pill"}, w))) : null,
         h("button",{class:"btn",type:"button",style:"margin-top:12px",onClick:() => { location.hash = VHOME; if (!COVER) route(); }},"Quay lại sổ từ"))];
@@ -3519,7 +3520,7 @@ function vocabView(sub, arg){
       r.words.forEach(w => vApply(w, r.res[w] || "ok", (r.ty || {})[w] || "flip"));
       const P = (S.vpass || (S.vpass = {})), t = dkey(new Date()), o = P[r.wk] || {}; const dn = (o.d === t ? o.dn || 0 : 0) + 1;
       P[r.wk] = { n:(o.n || 0) + 1, d:t, dn }; save(); review = null;
-      return [h("div",{class:"card",style:"text-align:center"}, mascot("cheer"), h("h2",null,"Xong lượt ôn!"),
+      return [h("div",{class:"card mcard",style:"text-align:center"}, mascot("cheer"), h("h2",null,"Xong lượt ôn!"),
         h("p",{class:"muted"}, n+" từ: "+(n - bad.length - late.length)+" nhớ tốt"+(late.length ? ", "+late.length+" nhớ sau lần thử 2" : "")+(bad.length ? ", "+bad.length+" cần ôn lại" : "")+"."),
         h("p",{class:"small muted"},"Đây là lượt ôn thứ "+P[r.wk].n+" của tuần này, hôm nay "+dn+" lượt."),
         bad.length ? h("div",{class:"chips",style:"justify-content:center"}, bad.map(w => h("span",{class:"pill"}, w))) : null,
@@ -3608,7 +3609,7 @@ function practiceView(type){
 function mistakesView(){
   const sets = buildMistakeSets();
   if (!sets.length) return h("div",null, h("a",{class:"btn soft",href:"#/practice"},"← Bài tập"),
-    h("div",{class:"card",style:"margin-top:16px;text-align:center"}, mascot("cheer"), h("h2",null,"Không còn câu sai nào!"), h("p",{class:"muted"},"Các câu bạn làm sai sẽ được gom ở đây để ôn lại.")));
+    h("div",{class:"card mcard",style:"margin-top:16px;text-align:center"}, mascot("cheer"), h("h2",null,"Không còn câu sai nào!"), h("p",{class:"muted"},"Các câu bạn làm sai sẽ được gom ở đây để ôn lại.")));
   const end = h("div"); let n = 0;
   return h("div",null, h("a",{class:"btn soft",href:"#/practice"},"← Bài tập"), h("h1",{style:"margin-top:16px"},"Ôn câu sai"),
     h("p",{class:"muted"},"Các câu bạn từng làm sai. Làm đúng thì câu đó biến khỏi danh sách."),
