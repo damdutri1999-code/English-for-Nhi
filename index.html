@@ -321,6 +321,31 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
   .hm-l{position:sticky; top:14px}
   .vgrid{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:20px; align-items:start}
 }
+@media (max-width:560px){
+  .sync{width:40px; height:40px; padding:0; border-radius:50%; overflow:hidden; white-space:nowrap; line-height:36px; text-align:center}
+  .sync .st{display:none}
+  #mname{display:none}
+  .lhead h1{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-size:1.02rem}
+  .lhead .grow,.lhead > div{min-width:0}
+  .steps{display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); gap:4px; overflow:visible}
+  .stepbtn{flex:none; min-width:0; padding:5px 2px; font-size:.64rem; line-height:1.15; overflow-wrap:anywhere}
+  .stepbtn small{display:none}
+  .plan-sum{flex-wrap:wrap}
+  .plan-sum .grow{flex:1 1 150px}
+}
+.vnarrow{max-width:720px; margin:0 auto}
+.cal-g{gap:3px 6px}
+.cal-c{aspect-ratio:auto; height:34px; border-radius:12px}
+.cal-c.today{outline-width:2px}
+body[data-pg=progress] .garden.big{grid-template-columns:repeat(6,1fr)}
+body[data-pg=progress] .garden.big .pot svg{max-width:60px}
+@media (min-width:900px){
+  .pgrid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+  html:not([data-learner=tri]) body[data-pg=progress] .wrap, html:not([data-learner=tri]) body[data-pg=settings] .wrap{max-width:1040px}
+  html:not([data-learner=tri]) body[data-pg=plan] .wrap{max-width:820px}
+  html:not([data-learner=tri]) body[data-pg=progress] .wrap > div, html:not([data-learner=tri]) body[data-pg=settings] .wrap > div{column-count:2; column-gap:20px}
+  html:not([data-learner=tri]) body[data-pg=progress] .wrap > div > *, html:not([data-learner=tri]) body[data-pg=settings] .wrap > div > *{break-inside:avoid}
+}
 .mcg{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
 .vw2{align-items:flex-start}
 .vw2 .vwl{flex:0 1 46%; min-width:0}
@@ -3488,7 +3513,7 @@ const VHOME = COVER ? "#/" : "#/vocab";
 function vocabView(sub, arg){
   const root = h("div"); vBank = sub === "mine" ? "mine" : NHINB ? "wk" : null;
   const back = () => { review = null; vtest = null; if (vBank === "mine"){ render(); return; } location.hash = VHOME; if (!COVER) route(); };
-  function render(){ root.replaceChildren(...(vtest ? testEls() : review && review.chain ? chainEls() : review ? reviewEls() : vBank === "mine" ? mineEls() : NHINB ? nhiEls() : listEls())); }
+  function render(){ root.className = vBank === "mine" || review || vtest ? "vnarrow" : ""; root.replaceChildren(...(vtest ? testEls() : review && review.chain ? chainEls() : review ? reviewEls() : vBank === "mine" ? mineEls() : NHINB ? nhiEls() : listEls())); }
   function reviewEls(){
     const r = review;
     if (r.i >= r.q.length){
@@ -3537,7 +3562,7 @@ function vocabView(sub, arg){
       h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"}, due.length ? due.length+" từ cần ôn hôm nay" : "Hôm nay không có từ nào cần ôn"), h("div",{class:"small muted"}, words.length+" từ")),
         h("button",{class:"btn",type:"button",disabled:!due.length,onClick:() => { startReview(); render(); }},"Ôn ngay"))),
       adding ? mineAddEl(() => { adding = false; render(); }, arg) : h("button",{class:"btn block",type:"button",style:"margin-bottom:12px",onClick:() => { adding = true; arg = ""; render(); }},"➕ Thêm từ mới"),
-      words.length ? h("div",{class:"card"}, words.map(w => mineRowEl(w, render, false))) : h("div",{class:"card celebrate",style:"text-align:center"}, mascot("happy"), h("p",{class:"muted"},"Chưa có từ nào. Bấm “Thêm từ mới”, hoặc chạm vào một từ trong bài đọc rồi thêm vào đây."))];
+      words.length ? h("div",{class:"card"}, words.map(w => mineRowEl(w, render, false))) : h("div",{class:"card celebrate mcard",style:"text-align:center"}, mascot("happy"), h("p",{class:"muted"},"Chưa có từ nào. Bấm “Thêm từ mới”, hoặc chạm vào một từ trong bài đọc rồi thêm vào đây."))];
   }
   function chainBar(r){
     return h("div",{class:"tsteps vch",style:"margin-bottom:12px"}, VCHAIN.map(([k, t], i) => [i ? h("span",{class:"tarr"},"→") : null,
