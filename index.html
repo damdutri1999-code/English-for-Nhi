@@ -612,6 +612,9 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 .card[data-k="3"]{--sc:#4f3d96; --sb:#f1eefc}
 .card[data-k="4"]{--sc:#8a5a0a; --sb:#fbf3dd}
 .card[data-k]{background:var(--sb); border-color:var(--sc)}
+.setpill{display:inline-flex; align-items:center; gap:6px; background:var(--sc); color:#fff; font-weight:800; font-size:.9rem; border-radius:99px; padding:3px 12px; white-space:nowrap}
+.setpill .ico{width:17px; height:17px; margin:0}
+.card[data-k] .taskbox{border-color:var(--sc)}
 .setsep{display:flex; align-items:center; gap:10px; margin:0 0 12px}
 .setsep::before,.setsep::after{content:""; flex:1; height:3px; border-radius:2px; background:var(--sc)}
 .setsep > span{display:inline-flex; align-items:center; gap:6px; background:var(--sc); color:#fff; font-weight:800; font-size:.95rem; letter-spacing:.01em; border-radius:99px; padding:5px 14px; white-space:nowrap; max-width:100%}
@@ -760,6 +763,15 @@ body.immersive .bank.stick{bottom:calc(88px + env(safe-area-inset-bottom))}
 .mbox{flex:none; width:20px; height:20px; border:2px solid var(--p500); border-radius:6px; background:var(--paper); display:inline-block; position:relative}
 .opt.multi.sel .mbox{background:var(--p500)} .opt.multi.sel .mbox::after{content:"✓"; color:#fff; position:absolute; inset:-2px 0 0; text-align:center; font-size:.85rem; font-weight:900}
 .opt.multi.right .mbox{background:var(--ok); border-color:var(--ok)} .opt.multi.wrong .mbox{background:var(--bad); border-color:var(--bad)}
+.dd{font:inherit; font-weight:800; color:var(--ink); display:inline-flex; align-items:center; gap:6px; border:2px solid var(--p300); background:var(--paper); border-radius:12px; padding:3px 8px 3px 10px; margin:0 3px; max-width:100%; min-height:36px; cursor:pointer; text-align:left; vertical-align:middle}
+.dd .ddc{font-size:.8em; color:var(--p600); flex:none}
+.dd:disabled{cursor:default; opacity:.9}
+.dd.txt{display:flex; width:100%; justify-content:space-between; margin:0; padding:10px 12px; min-height:46px; font-weight:700}
+.ddm{position:fixed; z-index:300; background:var(--paper); border:2px solid var(--p300); border-radius:14px; box-shadow:0 14px 32px rgba(60,20,40,.3); padding:5px; overflow:auto; display:flex; flex-direction:column; gap:2px}
+.ddm button{font:inherit; font-weight:700; text-align:left; border:0; background:transparent; color:var(--ink); padding:9px 12px; border-radius:10px; cursor:pointer; min-height:40px; display:flex; align-items:center; gap:10px}
+.ddm button:hover,.ddm button:focus-visible{background:var(--p100); outline:none}
+.ddm button.sel{background:var(--p200); color:var(--p700)}
+.ddm button.sel::after{content:"✓"; margin-left:auto; color:var(--ok); font-weight:800}
 .isel{font:inherit; font-weight:800; border:2px solid var(--p300); background:var(--paper); border-radius:12px; padding:3px 6px; margin:0 3px; max-width:100%}
 .isel.right{border-color:var(--ok); background:var(--ok-bg)} .isel.wrong{border-color:var(--bad); background:var(--bad-bg)}
 .sqlist{display:flex; flex-direction:column; gap:8px; margin:8px 0}
@@ -2272,11 +2284,40 @@ function multiItem(it, onChange){
       if (ok) locked = true;
       return { ok, retry:!ok, correct:it.answers.map(i => it.options[i]).join(" · "), why:it.why, prompt:it.q }; } };
 }
+/* ô chọn thả xuống theo phong cách của web (thay cho <select> mặc định của trình duyệt). Dùng như một nút: có .value, .disabled, .classList */
+function dd(list, o){
+  o = o || {}; let val = String(o.value != null ? o.value : list[0].v), menu = null;
+  const lab = () => (list.find(x => String(x.v) === val) || list[0]).t;
+  const attrs = { type:"button", class:"dd " + (o.cls || ""), "aria-haspopup":"listbox", "aria-expanded":"false" }; if (o.label) attrs["aria-label"] = o.label;
+  const txt = h("span",{class:"ddt"}, lab()), btn = h("button", attrs, txt, h("span",{class:"ddc","aria-hidden":"true"},"▾"));
+  Object.defineProperty(btn, "value", { get:() => val, set:v => { val = String(v); txt.textContent = lab(); } });
+  const away = e => { if (menu && !menu.contains(e.target) && !btn.contains(e.target)) close(); };
+  const esc = e => { if (e.key === "Escape"){ close(); btn.focus(); } };
+  const scr = e => { if (menu && !menu.contains(e.target)) close(); };
+  function close(){ if (!menu) return; menu.remove(); menu = null; btn.setAttribute("aria-expanded","false");
+    document.removeEventListener("pointerdown", away, true); document.removeEventListener("keydown", esc, true); window.removeEventListener("scroll", scr, true); window.removeEventListener("resize", close); }
+  function open(){
+    if (menu || btn.disabled) return;
+    menu = h("div",{class:"ddm",role:"listbox"}, list.map(x => { const b = h("button",{type:"button",role:"option",class:String(x.v) === val ? "sel" : "","aria-selected":String(String(x.v) === val),
+      onClick:() => { val = String(x.v); txt.textContent = lab(); close(); btn.focus(); o.onChange && o.onChange(val); }}, x.t); return b; }));
+    menu.addEventListener("keydown", e => { if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return; e.preventDefault();
+      const bs = [...menu.children], i = bs.indexOf(document.activeElement), n = e.key === "ArrowDown" ? Math.min(bs.length - 1, i + 1) : Math.max(0, i - 1); bs[n].focus(); });
+    document.body.append(menu); btn.setAttribute("aria-expanded","true");
+    const r = btn.getBoundingClientRect(), vh = window.innerHeight, vw = window.innerWidth; menu.style.minWidth = Math.max(r.width, 120) + "px"; menu.style.maxWidth = Math.min(vw - 16, 420) + "px";
+    const mh = Math.min(menu.scrollHeight, Math.round(vh * .5)), below = vh - r.bottom - 12, up = r.top - 12, goUp = below < mh && up > below;
+    menu.style.maxHeight = Math.max(120, Math.min(mh, goUp ? up : below)) + "px"; menu.style.top = (goUp ? Math.max(8, r.top - 4 - Math.min(mh, up)) : r.bottom + 4) + "px";
+    menu.style.left = Math.max(8, Math.min(r.left, vw - menu.offsetWidth - 8)) + "px";
+    document.addEventListener("pointerdown", away, true); document.addEventListener("keydown", esc, true); window.addEventListener("scroll", scr, true); window.addEventListener("resize", close);
+    const cur = menu.querySelector(".sel") || menu.firstChild; cur && cur.focus({ preventScroll:true }); if (cur && cur.scrollIntoView) cur.scrollIntoView({ block:"nearest" });
+  }
+  btn.addEventListener("click", () => menu ? close() : open());
+  btn.addEventListener("keydown", e => { if ((e.key === "ArrowDown" || e.key === "ArrowUp") && !menu){ e.preventDefault(); open(); } });
+  return btn;
+}
 function inlineItem(it, onChange){
   const parts = inlineParse(it.text), fbSlot = h("div"), sels = []; let locked = false;
   const nodes = parts.map(x => { if (!x.opts) return x.t;
-    const sl = h("select",{class:"isel",onChange:() => { sl.classList.remove("right","wrong"); onChange(); }}, h("option",{value:"-1"},"…"),
-      shuffle(x.opts.map((o, i) => ({o, i}))).map(z => h("option",{value:String(z.i)}, z.o))); sels.push({sl, x}); return sl; });
+    const sl = dd([{v:"-1",t:"…"}].concat(shuffle(x.opts.map((o, i) => ({o, i}))).map(z => ({v:String(z.i), t:z.o}))), { cls:"isel", value:"-1", onChange:() => { sl.classList.remove("right","wrong"); onChange(); } }); sels.push({sl, x}); return sl; });
   const filled = () => parts.map(x => x.opts ? x.opts[x.ans] : x.t).join("");
   return { el:h("div",{class:"q gap"}, nodes, fbSlot), fbSlot, retry:true, isAnswered:() => sels.every(z => z.sl.value !== "-1"),
     lock(){ locked = true; sels.forEach(z => { z.sl.disabled = true; z.sl.classList.add("right"); z.sl.value = String(z.x.ans); }); },
@@ -2365,7 +2406,7 @@ function exerciseSet(set, onDone, pos){
     const mark = () => { cntEl.textContent = cnt+"/"+N; meter.style.width = Math.round(cnt / N * 100)+"%"; };
     wrap.classList.remove("fin");
     const finishSet = () => {
-      wrap.classList.add("fin"); mark(); { const sp = wrap.querySelector(".setsep > span"); if (sp && pos) sp.replaceChildren("#i:check", " Xong phần "+pos.i+"/"+pos.total+": "+((TYPES[main.type] && TYPES[main.type].label) || "")); }
+      wrap.classList.add("fin"); mark(); { const sp = wrap.querySelector(".setpill"); if (sp && pos) sp.replaceChildren("#i:check", " Xong phần "+pos.i+"/"+pos.total+": "+((TYPES[main.type] && TYPES[main.type].label) || "")); }
       const lbl = (TYPES[main.type] && TYPES[main.type].label) || main.title || "";
       const okBar = h("div",{class:"setok"}, h("span",{class:"setok-t"}, "#i:check", " Xong phần "+lbl+(pos && pos.total > 1 ? " ("+pos.i+"/"+pos.total+")" : "")),
         pos && pos.go ? h("button",{class:"btn sm",type:"button",onClick:pos.go}, pos.next ? "Phần tiếp: "+pos.next+" ↓" : "Xuống tiếp ↓") : null);
@@ -2415,8 +2456,8 @@ function exerciseSet(set, onDone, pos){
     });
     if (seq) built.items.forEach((it, i) => { if (i > 0 && it.el) it.el.hidden = true; });
     const T = TYPES[main.type] || { icon:"", label:"", how:"" };
-    const sep = pos && pos.total > 1 ? h("div",{class:"setsep"}, h("span",null, wrap.classList.contains("fin") ? "#i:check" : T.icon, " Phần "+pos.i+"/"+pos.total+": "+T.label)) : null;
-    return [sep, h("div",{class:"taskbox"}, sep ? null : h("span",{class:"tbadge"}, T.icon + " " + T.label), (() => { const ins = insText(set, T); return ins ? insEl(ins, "tins") : null; })(), cntEl), meterBox,
+    const sep = pos && pos.total > 1 ? h("span",{class:"setpill"}, wrap.classList.contains("fin") ? "#i:check" : T.icon, " Phần "+pos.i+"/"+pos.total+": "+T.label) : null;
+    return [h("div",{class:"taskbox"}, sep || h("span",{class:"tbadge"}, T.icon + " " + T.label), (() => { const ins = insText(set, T); return ins ? insEl(ins, "tins") : null; })(), cntEl), meterBox,
       ...built.head, ...built.items.map(i => i.el).filter(Boolean), ...(built.foot || []), scoreBox, extraHost];
   }
   wrap.replaceChildren(...build());
@@ -3346,11 +3387,11 @@ function voiceCard(){
   const box = h("div",{class:"card"});
   const draw = () => {
     const all = enVoices(), cur = pickVoice(), saved = lsGet(VKEY);
-    const sel = h("select",{class:"txt","aria-label":"Chọn giọng đọc"}, h("option",{value:""},"Tự chọn giọng tốt nhất của máy" + (cur && !saved ? " (đang dùng: " + cur.name + ")" : "")),
-      all.slice().sort((a, b) => voiceScore(b) - voiceScore(a)).map(v => h("option",{value:v.name,selected:saved === v.name}, v.name + " · " + v.lang + (v.localService ? "" : " · cần mạng"))));
-    sel.addEventListener("change", () => { lsSet(VKEY, sel.value || null); toast(sel.value ? "Đã chọn giọng " + sel.value : "Dùng giọng tự chọn"); draw(); });
-    const spd = h("select",{class:"txt","aria-label":"Tốc độ đọc"}, [["0.8","Chậm"],["0.9","Hơi chậm"],["1","Vừa (mặc định)"],["1.15","Nhanh"]].map(([v, t]) => h("option",{value:v,selected:String(voiceSpeed()) === v}, t)));
-    spd.addEventListener("change", () => { lsSet(VSPD, spd.value === "1" ? null : spd.value); });
+    const sel = dd([{v:"",t:"Tự chọn giọng tốt nhất của máy" + (cur && !saved ? " (đang dùng: " + cur.name + ")" : "")}].concat(
+      all.slice().sort((a, b) => voiceScore(b) - voiceScore(a)).map(v => ({v:v.name, t:v.name + " · " + v.lang + (v.localService ? "" : " · cần mạng")}))), { cls:"txt", label:"Chọn giọng đọc", value:saved || "",
+      onChange:v => { lsSet(VKEY, v || null); toast(v ? "Đã chọn giọng " + v : "Dùng giọng tự chọn"); draw(); } });
+    const spd = dd([["0.8","Chậm"],["0.9","Hơi chậm"],["1","Vừa (mặc định)"],["1.15","Nhanh"]].map(([v, t]) => ({v, t})), { cls:"txt", label:"Tốc độ đọc", value:String(voiceSpeed()),
+      onChange:v => { lsSet(VSPD, v === "1" ? null : v); } });
     const test = h("button",{class:"btn soft",type:"button",onClick:() => playAudio({ text:"Hello! My name is Anna. I live in a small apartment near the park. Do you like coffee?", rate:.9 })}, "🔊 Nghe thử");
     box.replaceChildren(h("h3",null,"Giọng đọc tiếng Anh"),
       h("p",{class:"muted small"}, "Lưu riêng trên thiết bị này. Mỗi máy có bộ giọng khác nhau." + (all.length ? "" : " Máy này chưa báo giọng tiếng Anh nào, hãy thử tải lại trang.")),
