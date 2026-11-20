@@ -226,9 +226,23 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .boxdots i.f{background:var(--p500); border-color:var(--p500)}
 .vrow{display:flex; align-items:center; gap:10px; padding:9px 0; border-top:2px dashed var(--line)}
 .vrow:first-child{border-top:0}
-.vhint{display:flex; flex-wrap:wrap; justify-content:center; gap:6px 22px; font-size:1.5rem; font-weight:800; letter-spacing:.12em; color:var(--p600); margin:4px 0}
-.vplay{font-size:2rem; animation:vpl 3s ease-in-out infinite}
-@keyframes vpl{0%,12%{transform:scale(1.25)}30%,100%{transform:scale(1)}}
+.vhint{display:flex; flex-wrap:wrap; justify-content:center; gap:8px 22px; font-size:1.5rem; font-weight:800; color:var(--ink); margin:2px 0}
+.vhw{display:inline-flex; gap:4px}
+.vcrow{display:flex; align-items:center; justify-content:center; gap:10px}
+.vhwrap{position:relative; cursor:text; padding:6px 0}
+.vhid{position:absolute; left:0; top:0; width:100%; height:100%; opacity:0; border:0; padding:0; z-index:1; cursor:text}
+.vsl{display:inline-block; min-width:1.15em; padding:0 1px; border-bottom:3px solid var(--p500); text-align:center; letter-spacing:0; line-height:1.3}
+.vsl.hl{color:var(--p600); opacity:.75}
+.vsl.ok{color:#14663a; border-bottom-color:#2e9e57; background:#dcf5e3; border-radius:4px 4px 0 0}
+.vsl.bad{color:#a02a1e; border-bottom-color:#c0392b; background:#fde0e0; border-radius:4px 4px 0 0}
+.vsep{font-weight:800; margin:0 1px; color:var(--p600)}
+.vplay{font-size:1.5rem}
+.vplay.vpulse{animation:vpl .9s ease-out}
+@keyframes vpl{0%{transform:scale(1.4)}100%{transform:scale(1)}}
+.vcdwrap{width:70%; height:8px; border-radius:6px; background:var(--p100); border:1.5px solid var(--p300); overflow:hidden; margin:2px auto}
+.vcdwrap i{display:block; height:100%; width:100%; background:var(--p500); transform-origin:left; animation:vcd 3s linear forwards}
+@keyframes vcd{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.vcnt{font-weight:800; color:var(--p600); font-size:1rem}
 .gbank{display:flex; flex-wrap:wrap; gap:8px; padding:10px; background:var(--p100); border-radius:14px; border:2px dashed var(--p300); min-height:48px}
 .gchip{font:inherit; font-weight:800; font-size:1.05rem; padding:6px 12px; border-radius:999px; border:2px solid var(--p500); background:var(--paper); color:var(--ink); cursor:grab}
 .gchip.sel{background:var(--p500); color:#fff}
@@ -3259,6 +3273,8 @@ function vCard(w, type, cb){
     const fb = h("div",{class:"fbtxt "+(res === "fail" ? "bad" : "ok")}, res === "ok" ? "Đúng rồi!" : res === "late" ? "Đúng rồi (lần 2), mình ôn lại sớm nhé." : "Chưa đúng. Đáp án: "+w);
     card.append(fb, h("div",{class:"m"}, w+" = "+vMeans(v)), v.ex ? h("div",{class:"small",style:"font-style:italic"}, v.ex + (v.exVi ? "  (" + v.exVi + ")" : "")) : null,
       h("button",{class:"btn",type:"button",onClick:() => cb(res)}, "Tiếp"));
+    const onEnter = e => { if (!card.isConnected){ document.removeEventListener("keydown", onEnter); return; } if (e.key !== "Enter" || e.repeat) return; e.preventDefault(); document.removeEventListener("keydown", onEnter); cb(res); };
+    setTimeout(() => document.addEventListener("keydown", onEnter), 200);
   };
   if (type === "flip"){
     const rate = ok => cb(ok ? "ok" : "fail");
@@ -3283,14 +3299,26 @@ function vCard(w, type, cb){
   btn.addEventListener("click", check); inp.addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); check(); } });
   if (type === "typevi") card.append(tag, h("div",{class:"vw"}, vMeans(v)), h("div",{class:"small muted"}, (v.pos ? v.pos + "  ·  " : "") + "Viết từ tiếng Anh nghĩa là vậy"), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
   else if (type === "listen" && vBank === "wk"){
-    const hint = h("div",{class:"vhint"}, w.split(/\s+/).map(t => h("span",{class:"vhw"}, t.split("").map(ch => /[A-Za-z0-9]/.test(ch) ? "_" : ch).join(" "))));
-    card.append(tag, h("div",{class:"small muted"},"Nghe và gõ lại từ bạn nghe được. Từ được đọc lại mỗi 3 giây."), h("div",{class:"vplay"},"🔊"), hint,
-      h("div",{class:"small muted"}, w.replace(/[^A-Za-z0-9]/g,"").length+" chữ cái"+(/\s/.test(w) ? ", "+w.split(/\s+/).length+" từ" : "")), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
-    let seen = false; tm = setInterval(() => { if (fin) return clearInterval(tm); if (card.isConnected) seen = true; else if (seen) return clearInterval(tm); say(); }, 3000);
+    const lets = w.replace(/[^A-Za-z0-9]/g,"").split(""), total = lets.length;
+    let plays = 0, cd = 3, seen = false;
+    inp.classList.add("vhid"); inp.placeholder = "";
+    const hint = h("div",{class:"vhint"}), cnt = h("span",{class:"vcnt"}), note = h("div",{class:"small muted"}), bar = h("i"), icon = h("span",{class:"vplay"},"🔊");
+    const shown = () => Math.min(Math.floor(plays / 3), total - 1);
+    const drawHint = () => { const k = shown(), t = inp.value.replace(/[^A-Za-z0-9]/g,"").toLowerCase(); let idx = 0;
+      hint.replaceChildren(...w.split(/\s+/).map(tok => h("span",{class:"vhw"}, tok.split("").map(ch => { if (!/[A-Za-z0-9]/.test(ch)) return h("span",{class:"vsep"}, ch);
+        const i = idx++; if (i < t.length) return h("span",{class:"vsl "+(t[i] === lets[i].toLowerCase() ? "ok" : "bad")}, t[i]);
+        return h("span",{class:"vsl"+(i < k ? " hl" : "")}, i < k ? lets[i] : ""); })))); };
+    const restartBar = () => { bar.style.animation = "none"; void bar.offsetWidth; bar.style.animation = "vcd 3s linear forwards"; };
+    const upd = () => { cnt.textContent = "Lần nghe thứ "+plays+"  ·  nghe tiếp sau "+cd+" giây"; note.textContent = total+" chữ cái"+(/\s/.test(w) ? ", "+w.split(/\s+/).length+" từ" : "")+". Gõ thẳng vào các ô. Cứ 3 lần nghe hiện thêm 1 chữ gợi ý."; };
+    const playNow = () => { plays++; cd = 3; say(); icon.classList.remove("vpulse"); void icon.offsetWidth; icon.classList.add("vpulse"); restartBar(); drawHint(); upd(); };
+    const wrap = h("div",{class:"vhwrap"}, hint, inp); wrap.addEventListener("click", () => inp.focus()); inp.addEventListener("input", drawHint);
+    card.append(tag, h("div",{class:"vcrow"}, icon, cnt), h("div",{class:"vcdwrap"}, bar), wrap, note, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
+    drawHint(); setTimeout(playNow, 60);
+    tm = setInterval(() => { if (fin) return clearInterval(tm); if (card.isConnected) seen = true; else if (seen) return clearInterval(tm); cd--; if (cd <= 0) playNow(); else upd(); }, 1000);
   }
   else if (type === "listen") card.append(tag, h("div",{class:"small muted"},"Nghe và gõ lại từ bạn nghe được"), h("button",{class:"btn bigsay",type:"button",onClick:say},"🔊 Nghe"), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
   else card.append(tag, h("div",{class:"vblank"}, bl), h("div",{class:"small muted"}, "Nghĩa của từ cần điền: " + vMeans(v)), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
-  setTimeout(() => { if (type === "listen") say(); inp.focus(); }, 60);
+  setTimeout(() => { if (type === "listen" && vBank !== "wk") say(); inp.focus(); }, 60);
   return card;
 }
 function vApply(w, res, type){
