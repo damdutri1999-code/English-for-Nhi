@@ -587,6 +587,17 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 /* bố cục gọn: ít phải cuộn */
 .taskbox{display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; background:var(--task); border:2px solid var(--task-line); border-radius:14px; padding:7px 11px; margin:0 0 8px}
 .taskbox .tbadge{background:var(--paper); border-color:var(--task-line); padding:1px 10px; font-size:.82rem; white-space:nowrap}
+.taskbox .tcount{margin-left:auto; font-weight:800; font-size:.82rem; color:var(--task-ink); background:var(--paper); border:2px solid var(--task-line); border-radius:99px; padding:1px 10px; white-space:nowrap}
+.taskbox .tpos{font-weight:800; font-size:.78rem; color:var(--task-ink); opacity:.85; white-space:nowrap}
+.setmeter{height:7px; border-radius:6px; background:var(--line); overflow:hidden; margin:-2px 0 10px}
+.setmeter i{display:block; height:100%; width:0; background:var(--p500); transition:width .3s}
+.setok{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 12px; background:var(--ok-bg); border:2px solid var(--ok); color:var(--ok); border-radius:16px; padding:10px 14px; margin-top:14px; font-weight:800}
+.setok-t{display:inline-flex; align-items:center; gap:6px}
+.setok .btn{background:var(--ok); border-color:var(--ok); color:#fff}
+.card:has(> .exset.fin){border-color:var(--ok); background:linear-gradient(var(--ok-bg), var(--ok-bg) 0, var(--paper) 90px)}
+.exset.fin .setmeter i{background:var(--ok)}
+.exset.fin .taskbox{background:var(--ok-bg); border-color:var(--ok-line)}
+.exset.fin .taskbox .tcount{color:var(--ok); border-color:var(--ok-line)}
 .taskbox .tins{flex:1 1 160px; min-width:0; color:var(--task-ink); font-weight:700; font-size:.93rem; line-height:1.35}
 .q{padding:9px 0 10px}
 .q:not(.nocount){padding-left:34px}
@@ -2266,7 +2277,7 @@ const MANUAL = new Set(["form","fix","dictation","transform","translate","answer
 const insWords = t => String(t || "").toLowerCase().normalize("NFC").replace(/[^\p{L}\s]/gu," ").split(/\s+/).filter(w => w && !["và","rồi","các","cho","the","a"].includes(w));
 const insDup = (ins, label) => { const L = insWords(label), I = insWords(ins); if (!L.length) return false; return L.filter(w => I.includes(w)).length / L.length >= .66 && I.length <= L.length + 3; };
 function insText(set, T){ const a = set.instruction, b = T.how; if (a && !insDup(a, T.label)) return a; if (b && !insDup(b, T.label)) return b; return ""; }
-function exerciseSet(set, onDone){
+function exerciseSet(set, onDone, pos){
   const wrap = h("section",{class:"exset"});
   const coreN = set.type !== "cloze" && set.core && set.core > 0 && set.core < set.items.length ? set.core : set.items.length;   // đoạn cloze luôn làm trọn cả đoạn
   const main = subView(set, set.items.slice(0, coreN));
@@ -2276,17 +2287,24 @@ function exerciseSet(set, onDone){
     const manual = MANUAL.has(main.type) || (main.type === "cloze" && main.mode === "type"), counted = !main._np;
     if (counted){ PG.total += N; pgDraw(); }
     const scoreBox = h("div"), extraHost = h("div");
+    const cntEl = h("span",{class:"tcount"}, "0/"+N), meter = h("i"), meterBox = h("div",{class:"setmeter"}, meter);
+    const mark = () => { cntEl.textContent = cnt+"/"+N; meter.style.width = Math.round(cnt / N * 100)+"%"; };
+    wrap.classList.remove("fin");
     const finishSet = () => {
+      wrap.classList.add("fin"); mark();
+      const lbl = (TYPES[main.type] && TYPES[main.type].label) || main.title || "";
+      const okBar = h("div",{class:"setok"}, h("span",{class:"setok-t"}, "#i:check", " Xong phần "+lbl+(pos && pos.total > 1 ? " ("+pos.i+"/"+pos.total+")" : "")),
+        pos && pos.go ? h("button",{class:"btn sm",type:"button",onClick:pos.go}, pos.next ? "Phần tiếp: "+pos.next+" ↓" : "Xuống tiếp ↓") : null);
       const right = res.filter(r => r.ok).length, total = res.length;
       const quietScore = (main.ungraded && !main.showScore) || SELF_TYPES.has(main.type);
       const msg = main.doneMsg ? main.doneMsg : SELF_TYPES.has(main.type) ? "Bạn đã so với đáp án mẫu. Phần này không tính điểm." : quietScore ? "Đoán xong rồi, không tính điểm. Lát nữa mình sẽ gặp lại các từ này."
         : right === total ? "Tuyệt vời, đúng hết!" : right/total >= 0.6 ? "Khá lắm! Xem lại các câu sai nhé." : "Không sao, đọc phần giải thích rồi thử lại nhé.";
       const retry = h("button",{class:"btn soft",type:"button",style:"margin-left:auto",onClick:() => {
-        if (counted){ PG.total -= N; PG.done -= cnt; pgDraw(); } wrap.replaceChildren(...build()); }}, "Làm lại");
+        if (counted){ PG.total -= N; PG.done -= cnt; pgDraw(); } wrap.classList.remove("fin"); wrap.replaceChildren(...build()); }}, "Làm lại");
       const exBtn = extra ? h("button",{class:"btn soft block",type:"button",style:"margin-top:10px",onClick:() => {
         exBtn.hidden = true; extraHost.replaceChildren(h("div",{class:"card tint flat small",style:"margin-top:12px"},"Làm thêm "+extra.items.length+" câu để chắc hơn (không bắt buộc)."),
           exerciseSet(Object.assign({}, extra, {title:"Làm thêm: "+(TYPES[set.type] ? TYPES[set.type].label : set.title), core:null, _np:true}))); }}, "➕ Làm thêm "+extra.items.length+" câu") : null;
-      scoreBox.replaceChildren(h("div",{class:"score"}, mascot(right === total ? "cheer" : "happy"),
+      scoreBox.replaceChildren(okBar, h("div",{class:"score"}, mascot(right === total ? "cheer" : "happy"),
         h("div",null, quietScore || main.doneMsg ? "Xong rồi" : right+" / "+total+" câu đúng", h("div",{class:"small muted"}, msg)), retry), exBtn);
       recordResult(main, res); onDone && onDone(right, total, res);
     };
@@ -2296,7 +2314,7 @@ function exerciseSet(set, onDone){
     const reveal = i => { if (done[i]) return; const it = built.items[i]; it.lock && it.lock(); done[i] = true; cnt++;
       const r = Object.assign({}, lastR[i], { ok:false, retry:false }); res[i] = r;
       it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null));
-      if (cbs[i]) cbs[i].remove(); unlockNext(i); if (counted){ PG.done++; pgDraw(); } if (cnt === N) finishSet(); };
+      if (cbs[i]) cbs[i].remove(); unlockNext(i); mark(); if (counted){ PG.done++; pgDraw(); } if (cnt === N) finishSet(); };
     const checkOne = i => {
       if (done[i] || !built) return; const it = built.items[i]; if (!it.isAnswered()) return;
       const r = it.check();
@@ -2308,7 +2326,7 @@ function exerciseSet(set, onDone){
       const quiet = it.quietOk && r.ok;
       it.fbSlot.replaceChildren(quiet ? null : h("div",{class:"fbtxt "+(r.self && r.match === false ? "note" : r.ok ? "ok" : (!r.self && tried[i] && r.retry === false && it.retry) ? "ok late" : "bad")},
         r.self ? [r.match === true ? "Giống đáp án mẫu, giỏi lắm! " : r.match === false ? "Chưa giống đáp án mẫu, bạn so sánh nhé. " : "", "Đáp án mẫu: ", h("b",null,r.correct)] : r.ok ? "✅ Đúng rồi!" : tried[i] && r.retry === false && it.retry ? ["✅ Đúng rồi! ", h("span",{class:"latenote"},"Lần đầu chưa đúng nên câu này không được tính điểm.")] : ["Đáp án: ", h("b",null,r.correct)], r.why ? h("div",{class:"why"}, "💡 "+r.why) : null));
-      if (cbs[i]) cbs[i].remove(); unlockNext(i);
+      if (cbs[i]) cbs[i].remove(); unlockNext(i); mark();
       if (counted){ PG.done++; pgDraw(); }
       if (cnt === N) finishSet();
     };
@@ -2323,7 +2341,7 @@ function exerciseSet(set, onDone){
     });
     if (seq) built.items.forEach((it, i) => { if (i > 0 && it.el) it.el.hidden = true; });
     const T = TYPES[main.type] || { icon:"", label:"", how:"" };
-    return [h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), (() => { const ins = insText(set, T); return ins ? h("span",{class:"tins"}, ins) : null; })()),
+    return [h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), (() => { const ins = insText(set, T); return ins ? h("span",{class:"tins"}, ins) : null; })(), pos && pos.total > 1 ? h("span",{class:"tpos"},"Phần "+pos.i+"/"+pos.total) : null, cntEl), meterBox,
       ...built.head, ...built.items.map(i => i.el).filter(Boolean), ...(built.foot || []), scoreBox, extraHost];
   }
   wrap.replaceChildren(...build());
@@ -2331,7 +2349,9 @@ function exerciseSet(set, onDone){
 }
 function setsBlock(sets, onCoreDone){
   const core = sets.filter(s => !s.extra), extra = sets.filter(s => s.extra); let n = 0;
-  const out = core.map(s => h("div",{class:"card"}, exerciseSet(s, () => { if (++n >= core.length) onCoreDone(); })));
+  const lab = x => (TYPES[x.type] && TYPES[x.type].label) || x.title || "";
+  const out = core.map((s, i) => h("div",{class:"card"}, exerciseSet(s, () => { if (++n >= core.length) onCoreDone(); },
+    { i:i+1, total:core.length, next:core[i+1] ? lab(core[i+1]) : "", go:core[i+1] ? () => out[i+1].scrollIntoView({behavior:"smooth", block:"start"}) : null })));
   if (!core.length) onCoreDone();
   if (extra.length){
     const host = h("div"), cnt = extra.reduce((a, s) => a + s.items.length, 0);
@@ -2577,11 +2597,15 @@ function readStep(step, ctx){
   /* có câu hỏi: bài đọc luôn hiện bên cạnh (máy rộng: trái phải; điện thoại: nút nổi mở bài đọc) */
   const right = h("div",{class:"rright"}, note);
   let n = 0, sawApply = false, sawComp = false;
-  step.sets.forEach(s => {
+  const cards = [], tl = x => (TYPES[x.type] && TYPES[x.type].label) || x.title || "";
+  step.sets.forEach((s, si) => {
     const apply = s.role === "apply";
     const lab = apply ? (sawApply ? null : "✍️ Vận dụng: dùng bài đọc để tự làm") : (sawComp ? null : "🔎 Hiểu bài: tìm thông tin trong bài");
     if (apply) sawApply = true; else sawComp = true;
-    right.append(h("div",{class:"card"}, lab ? h("h3",{class:"readsec"}, lab) : null, exerciseSet(s, () => { if (++n >= step.sets.length) finish(); })));
+    const nx = step.sets[si+1];
+    const card = h("div",{class:"card"}, lab ? h("h3",{class:"readsec"}, lab) : null, exerciseSet(s, () => { if (++n >= step.sets.length) finish(); },
+      { i:si+1, total:step.sets.length, next:nx ? tl(nx) : "", go:nx ? () => cards[si+1].scrollIntoView({behavior:"smooth", block:"start"}) : null }));
+    cards.push(card); right.append(card);
   });
   const sheet = h("div",{class:"rsheet",hidden:true}, h("div",{class:"rshead"}, h("b",null,"📖 "+step.heading), h("button",{class:"wclose",type:"button","aria-label":"Đóng",onClick:() => { sheet.hidden = true; }}, "✕")), h("div",{class:"rsbody"}, mkBox()));
   const fab = h("button",{class:"fabread",type:"button",hidden:true,onClick:() => { sheet.hidden = !sheet.hidden; }}, "📖 Xem bài đọc");
@@ -2623,7 +2647,11 @@ function listenStep(step, ctx){
   const rr = h("div",{class:"rright"}), out = h("div",{class:step.sets.length ? "rsplit" : null}, lcard, rr);
   if (step.sets.length){
     let n = 0;
-    step.sets.forEach(s => rr.append(h("div",{class:"card"}, exerciseSet(s, () => { if (++n >= step.sets.length){ setsDone = true; if (plays >= NEED) ctx.done(); else toast("Nghe đủ "+NEED+" lần để hoàn thành bước này"); } }))));
+    const lcards = [], ltl = x => (TYPES[x.type] && TYPES[x.type].label) || x.title || "";
+    step.sets.forEach((s, si) => { const nx = step.sets[si+1];
+      const c = h("div",{class:"card"}, exerciseSet(s, () => { if (++n >= step.sets.length){ setsDone = true; if (plays >= NEED) ctx.done(); else toast("Nghe đủ "+NEED+" lần để hoàn thành bước này"); } },
+        { i:si+1, total:step.sets.length, next:nx ? ltl(nx) : "", go:nx ? () => lcards[si+1].scrollIntoView({behavior:"smooth", block:"start"}) : null }));
+      lcards.push(c); rr.append(c); });
   }
   return out;
 }
