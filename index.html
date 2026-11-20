@@ -511,7 +511,15 @@ html[data-theme=night] body::before{content:""; position:fixed; inset:0; z-index
 .gvs .txt{width:auto;padding:6px 8px;min-width:0}.gvd{font-weight:800;min-width:30px}.gvsch{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;margin:6px 0 8px}
 .txt.over{border-color:var(--p500);background:var(--p100);border-style:dashed}
 
-.topprog{position:fixed; top:0; left:0; right:0; height:20px; background:var(--p100); z-index:60; box-shadow:0 1px 0 var(--p200)}
+.pgring{position:relative; width:52px; height:52px; flex:none; border-radius:50%; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.pgring svg{width:100%; height:100%; transform:rotate(-90deg); display:block}
+.pgring circle{fill:none; stroke-width:6}
+.pgring .t{stroke:#d7ebe0}
+.pgring .f{stroke:#148a5a; stroke-linecap:round; transition:stroke-dashoffset .4s}
+.pgring b{position:absolute; inset:0; display:grid; place-items:center; font:800 .8rem "Nunito",system-ui,sans-serif; color:#0f5f40}
+.pgring.full{background:#148a5a}
+.pgring.full .t{stroke:#2fae7f} .pgring.full .f{stroke:#fff} .pgring.full b{color:#fff}
+.topprog{display:none!important; position:fixed; top:0; left:0; right:0; height:20px; background:var(--p100); z-index:60; box-shadow:0 1px 0 var(--p200)}
 .topprog i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--p300),var(--p400)); border-radius:0 99px 99px 0; transition:width .4s}
 body.hasprog{padding-top:20px}
 .topprog span{position:absolute; inset:0; display:grid; place-items:center; font-size:.72rem; font-weight:800; color:var(--p700); letter-spacing:.02em}
@@ -1958,13 +1966,18 @@ function mcqItem(it, onChange, pre){
 }
 /* thanh tiến độ cố định ở đầu trang khi làm bài */
 const PG = { on:false, total:0, done:0, base:0, span:1, label:"", stepDone:null };
+function pgRing(){
+  const NS = "http://www.w3.org/2000/svg", svg = document.createElementNS(NS, "svg"); svg.setAttribute("viewBox","0 0 54 54");
+  const mk = (cls, extra) => { const c = document.createElementNS(NS, "circle"); c.setAttribute("class", cls); c.setAttribute("cx","27"); c.setAttribute("cy","27"); c.setAttribute("r","21"); Object.keys(extra || {}).forEach(k => c.setAttribute(k, extra[k])); return c; };
+  svg.append(mk("t"), mk("f", { "stroke-dasharray":"131.9", "stroke-dashoffset":"131.9" }));
+  setTimeout(pgDraw, 0);
+  return h("div",{class:"pgring",id:"pgring",role:"img","aria-label":"Tiến độ buổi học"}, svg, h("b",null,"0%"));
+}
 function pgDraw(){
-  let el = document.getElementById("topprog");
-  if (!el){ el = h("div",{id:"topprog",class:"topprog",hidden:true}, h("i"), h("span")); document.body.append(el); }
-  el.hidden = !PG.on; document.body.classList.toggle("hasprog", PG.on); if (!PG.on) return;
-  const f = PG.stepDone && PG.stepDone() ? 1 : (PG.total ? Math.min(1, PG.done / PG.total) : 0);
-  el.firstChild.style.width = Math.round(Math.min(1, PG.base + PG.span * f) * 100) + "%";
-  el.lastChild.textContent = PG.label + (PG.total ? " · " + PG.done + "/" + PG.total + " câu" : "");
+  const el = document.getElementById("pgring"); if (!el || !PG.on) return;
+  const f = PG.stepDone && PG.stepDone() ? 1 : (PG.total ? Math.min(1, PG.done / PG.total) : 0), v = Math.min(1, PG.base + PG.span * f), pct = Math.round(v * 100);
+  el.querySelector(".f").setAttribute("stroke-dashoffset", String(131.9 * (1 - v))); el.lastChild.textContent = pct + "%"; el.classList.toggle("full", pct >= 100);
+  const t = PG.label + (PG.total ? " · " + PG.done + "/" + PG.total + " câu" : ""); el.title = t; el.setAttribute("aria-label", "Tiến độ buổi học " + pct + "%. " + t);
 }
 function pgReset(){ Object.assign(PG, { on:false, total:0, done:0, base:0, span:1, label:"", stepDone:null }); pgDraw(); }
 /* kéo thả bằng chuột và cảm ứng. Chạm nhẹ = chọn từ, rồi chạm vào ô để thả. */
@@ -2929,7 +2942,7 @@ function lessonView(id, idx){
   refresh();
   return h("div",null,
     h("div",{class:"lhead"}, h("a",{class:"back",href:"#/week","aria-label":"Quay lại"},"←"), h("div",{class:"grow"}, h("h1",null,meta.title), h("div",{class:"small muted"}, meta.day+", "+KIND[meta.kind])),
-      h("div",{class:"clock",id:"clock"},"⏱ "+fmt(sess.seconds || 0)), fsBtn()),
+      pgRing(), h("div",{class:"clock",id:"clock"},"⏱ "+fmt(sess.seconds || 0)), fsBtn()),
     nav, body, skip,
     h("div",{class:"lbar"}, idx > 0 ? h("button",{class:"btn soft",type:"button","aria-label":"Bước trước",onClick:() => go(idx-1)},"←") : null, next));
 }
