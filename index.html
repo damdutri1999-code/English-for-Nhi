@@ -595,9 +595,20 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 .setok-t{display:inline-flex; align-items:center; gap:6px}
 .setok .btn{background:var(--ok); border-color:var(--ok); color:#fff}
 .card:has(> .exset.fin){border-color:var(--ok); background:linear-gradient(var(--ok-bg), var(--ok-bg) 0, var(--paper) 90px)}
+.card[data-k]:has(> .exset.fin){background:var(--ok-bg)}
 .exset.fin .setmeter i{background:var(--ok)}
 .exset.fin .taskbox{background:var(--ok-bg); border-color:var(--ok-line)}
 .exset.fin .taskbox .tcount{color:var(--ok); border-color:var(--ok-line)}
+.card[data-k="1"]{--sc:#a3304f; --sb:#fff0f3}
+.card[data-k="2"]{--sc:#1f6384; --sb:#eaf5fb}
+.card[data-k="3"]{--sc:#4f3d96; --sb:#f1eefc}
+.card[data-k="4"]{--sc:#8a5a0a; --sb:#fbf3dd}
+.card[data-k]{background:var(--sb); border-color:var(--sc)}
+.setsep{display:flex; align-items:center; gap:10px; margin:0 0 12px}
+.setsep::before,.setsep::after{content:""; flex:1; height:3px; border-radius:2px; background:var(--sc)}
+.setsep span{display:inline-flex; align-items:center; gap:6px; background:var(--sc); color:#fff; font-weight:800; font-size:.95rem; letter-spacing:.01em; border-radius:99px; padding:5px 14px; white-space:nowrap; max-width:100%}
+.setsep .ico{width:18px; height:18px}
+.card[data-k]:has(> .exset.fin){--sc:var(--ok); --sb:var(--ok-bg); border-color:var(--ok)}
 .taskbox .tins{flex:1 1 160px; min-width:0; color:var(--task-ink); font-weight:700; font-size:.93rem; line-height:1.35}
 .q{padding:9px 0 10px}
 .q:not(.nocount){padding-left:34px}
@@ -2291,7 +2302,7 @@ function exerciseSet(set, onDone, pos){
     const mark = () => { cntEl.textContent = cnt+"/"+N; meter.style.width = Math.round(cnt / N * 100)+"%"; };
     wrap.classList.remove("fin");
     const finishSet = () => {
-      wrap.classList.add("fin"); mark();
+      wrap.classList.add("fin"); mark(); { const sp = wrap.querySelector(".setsep > span"); if (sp && pos) sp.replaceChildren("#i:check", " Xong phần "+pos.i+"/"+pos.total+": "+((TYPES[main.type] && TYPES[main.type].label) || "")); }
       const lbl = (TYPES[main.type] && TYPES[main.type].label) || main.title || "";
       const okBar = h("div",{class:"setok"}, h("span",{class:"setok-t"}, "#i:check", " Xong phần "+lbl+(pos && pos.total > 1 ? " ("+pos.i+"/"+pos.total+")" : "")),
         pos && pos.go ? h("button",{class:"btn sm",type:"button",onClick:pos.go}, pos.next ? "Phần tiếp: "+pos.next+" ↓" : "Xuống tiếp ↓") : null);
@@ -2341,7 +2352,8 @@ function exerciseSet(set, onDone, pos){
     });
     if (seq) built.items.forEach((it, i) => { if (i > 0 && it.el) it.el.hidden = true; });
     const T = TYPES[main.type] || { icon:"", label:"", how:"" };
-    return [h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), (() => { const ins = insText(set, T); return ins ? h("span",{class:"tins"}, ins) : null; })(), pos && pos.total > 1 ? h("span",{class:"tpos"},"Phần "+pos.i+"/"+pos.total) : null, cntEl), meterBox,
+    const sep = pos && pos.total > 1 ? h("div",{class:"setsep"}, h("span",null, wrap.classList.contains("fin") ? "#i:check" : T.icon, " Phần "+pos.i+"/"+pos.total+": "+T.label)) : null;
+    return [sep, h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), (() => { const ins = insText(set, T); return ins ? h("span",{class:"tins"}, ins) : null; })(), cntEl), meterBox,
       ...built.head, ...built.items.map(i => i.el).filter(Boolean), ...(built.foot || []), scoreBox, extraHost];
   }
   wrap.replaceChildren(...build());
@@ -2350,7 +2362,7 @@ function exerciseSet(set, onDone, pos){
 function setsBlock(sets, onCoreDone){
   const core = sets.filter(s => !s.extra), extra = sets.filter(s => s.extra); let n = 0;
   const lab = x => (TYPES[x.type] && TYPES[x.type].label) || x.title || "";
-  const out = core.map((s, i) => h("div",{class:"card"}, exerciseSet(s, () => { if (++n >= core.length) onCoreDone(); },
+  const out = core.map((s, i) => h("div",{class:"card","data-k":core.length > 1 ? String(i % 4 + 1) : null}, exerciseSet(s, () => { if (++n >= core.length) onCoreDone(); },
     { i:i+1, total:core.length, next:core[i+1] ? lab(core[i+1]) : "", go:core[i+1] ? () => out[i+1].scrollIntoView({behavior:"smooth", block:"start"}) : null })));
   if (!core.length) onCoreDone();
   if (extra.length){
@@ -2603,7 +2615,7 @@ function readStep(step, ctx){
     const lab = apply ? (sawApply ? null : "✍️ Vận dụng: dùng bài đọc để tự làm") : (sawComp ? null : "🔎 Hiểu bài: tìm thông tin trong bài");
     if (apply) sawApply = true; else sawComp = true;
     const nx = step.sets[si+1];
-    const card = h("div",{class:"card"}, lab ? h("h3",{class:"readsec"}, lab) : null, exerciseSet(s, () => { if (++n >= step.sets.length) finish(); },
+    const card = h("div",{class:"card","data-k":step.sets.length > 1 ? String(si % 4 + 1) : null}, lab ? h("h3",{class:"readsec"}, lab) : null, exerciseSet(s, () => { if (++n >= step.sets.length) finish(); },
       { i:si+1, total:step.sets.length, next:nx ? tl(nx) : "", go:nx ? () => cards[si+1].scrollIntoView({behavior:"smooth", block:"start"}) : null }));
     cards.push(card); right.append(card);
   });
@@ -2649,7 +2661,7 @@ function listenStep(step, ctx){
     let n = 0;
     const lcards = [], ltl = x => (TYPES[x.type] && TYPES[x.type].label) || x.title || "";
     step.sets.forEach((s, si) => { const nx = step.sets[si+1];
-      const c = h("div",{class:"card"}, exerciseSet(s, () => { if (++n >= step.sets.length){ setsDone = true; if (plays >= NEED) ctx.done(); else toast("Nghe đủ "+NEED+" lần để hoàn thành bước này"); } },
+      const c = h("div",{class:"card","data-k":step.sets.length > 1 ? String(si % 4 + 1) : null}, exerciseSet(s, () => { if (++n >= step.sets.length){ setsDone = true; if (plays >= NEED) ctx.done(); else toast("Nghe đủ "+NEED+" lần để hoàn thành bước này"); } },
         { i:si+1, total:step.sets.length, next:nx ? ltl(nx) : "", go:nx ? () => lcards[si+1].scrollIntoView({behavior:"smooth", block:"start"}) : null }));
       lcards.push(c); rr.append(c); });
   }
