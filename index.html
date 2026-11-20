@@ -226,6 +226,30 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .boxdots i.f{background:var(--p500); border-color:var(--p500)}
 .vrow{display:flex; align-items:center; gap:10px; padding:9px 0; border-top:2px dashed var(--line)}
 .vrow:first-child{border-top:0}
+.vhint{display:flex; flex-wrap:wrap; justify-content:center; gap:6px 22px; font-size:1.5rem; font-weight:800; letter-spacing:.12em; color:var(--p600); margin:4px 0}
+.vplay{font-size:2rem; animation:vpl 3s ease-in-out infinite}
+@keyframes vpl{0%,12%{transform:scale(1.25)}30%,100%{transform:scale(1)}}
+.gbank{display:flex; flex-wrap:wrap; gap:8px; padding:10px; background:var(--p100); border-radius:14px; border:2px dashed var(--p300); min-height:48px}
+.gchip{font:inherit; font-weight:800; font-size:1.05rem; padding:6px 12px; border-radius:999px; border:2px solid var(--p500); background:var(--paper); color:var(--ink); cursor:grab}
+.gchip.sel{background:var(--p500); color:#fff}
+.gs{padding:10px 0; border-top:2px dashed var(--line)}
+.gs:first-child{border-top:0}
+.gsent{font-size:1.1rem; line-height:2}
+.gap{display:inline-block; min-width:6.5em; padding:0 8px; margin:0 3px; border-bottom:3px dashed var(--p500); text-align:center; font-weight:800; vertical-align:baseline; min-height:1.5em; cursor:pointer}
+.gap.sel{background:var(--p100)}
+.gap.ok{background:#dcf5e3; border-bottom:3px solid #2e9e57; color:#14663a; border-radius:6px; cursor:default}
+.gap.bad{background:#fde0e0; border-bottom-color:#c0392b; color:#a02a1e; border-radius:6px}
+.mcg{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.mc{min-height:84px; border-radius:14px; border:2px solid var(--p300); background:var(--p100); color:var(--ink); font:inherit; font-weight:800; padding:6px; cursor:pointer; display:grid; place-items:center; text-align:center; line-height:1.2; overflow-wrap:anywhere}
+.mc .mq{font-size:1.6rem; color:var(--p500)}
+.mc .mf{display:none; font-size:.95rem}
+.mc.en .mf{font-size:1.1rem}
+.mc.up,.mc.ok{background:var(--paper)}
+.mc.up .mq,.mc.ok .mq{display:none}
+.mc.up .mf,.mc.ok .mf{display:block}
+.mc.vi.up{background:#fdf3d9; border-color:#d9a21b}
+.mc.en.up{border-color:var(--p500)}
+.mc.ok{background:#dcf5e3; border-color:#2e9e57; color:#14663a}
 .vw2{align-items:flex-start}
 .vw2 .vwl{flex:0 1 46%; min-width:0}
 .vw2 .vwr{flex:1 1 0; min-width:0; padding-top:4px}
@@ -3240,19 +3264,25 @@ function vCard(w, type, cb){
       h("button",{class:"btn",type:"button",onClick:e => { e.currentTarget.remove(); back.hidden = false; say(); }},"Lật thẻ"), back);
     return card;
   }
-  let tries = 0, fin = false;
+  let tries = 0, fin = false, tm = null;
   const inp = h("input",{class:"txt vin",type:"text",autocomplete:"off",autocapitalize:"none",spellcheck:"false",placeholder:"Gõ bằng tiếng Anh"});
   const bl = type === "blank" ? v.ex.replace(vRegex(w), "_____") : null, surf = type === "blank" ? (v.ex.match(vRegex(w)) || [w])[0] : w;
   const good = x => { const a = norm(x); return a !== "" && (a === norm(w) || a === norm(surf)); };
   const btn = h("button",{class:"btn",type:"button"},"Kiểm tra");
   const idk = h("button",{class:"btn soft sm",type:"button",onClick:() => end("fail")},"Mình không nhớ");
   const msg = h("div",{class:"fbtxt bad",hidden:true}, "Chưa đúng, thử lại nhé.");
-  const end = res => { if (fin) return; fin = true; inp.disabled = true; btn.remove(); idk.remove(); msg.remove(); reveal(res); };
+  const end = res => { if (fin) return; fin = true; clearInterval(tm); inp.disabled = true; btn.remove(); idk.remove(); msg.remove(); reveal(res); };
   const check = () => { if (fin) return; const x = inp.value; if (!x.trim()) return;
     if (good(x)) return end(tries ? "late" : "ok");
     tries++; if (tries >= 2) return end("fail"); msg.hidden = false; inp.select(); };
   btn.addEventListener("click", check); inp.addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); check(); } });
   if (type === "typevi") card.append(tag, h("div",{class:"vw"}, vMeans(v)), h("div",{class:"small muted"}, (v.pos ? v.pos + "  ·  " : "") + "Viết từ tiếng Anh nghĩa là vậy"), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
+  else if (type === "listen" && vBank === "wk"){
+    const hint = h("div",{class:"vhint"}, w.split(/\s+/).map(t => h("span",{class:"vhw"}, t.split("").map(ch => /[A-Za-z0-9]/.test(ch) ? "_" : ch).join(" "))));
+    card.append(tag, h("div",{class:"small muted"},"Nghe và gõ lại từ bạn nghe được. Từ được đọc lại mỗi 3 giây."), h("div",{class:"vplay"},"🔊"), hint,
+      h("div",{class:"small muted"}, w.replace(/[^A-Za-z0-9]/g,"").length+" chữ cái"+(/\s/.test(w) ? ", "+w.split(/\s+/).length+" từ" : "")), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
+    let seen = false; tm = setInterval(() => { if (fin) return clearInterval(tm); if (card.isConnected) seen = true; else if (seen) return clearInterval(tm); say(); }, 3000);
+  }
   else if (type === "listen") card.append(tag, h("div",{class:"small muted"},"Nghe và gõ lại từ bạn nghe được"), h("button",{class:"btn bigsay",type:"button",onClick:say},"🔊 Nghe"), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
   else card.append(tag, h("div",{class:"vblank"}, bl), h("div",{class:"small muted"}, "Nghĩa của từ cần điền: " + vMeans(v)), inp, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
   setTimeout(() => { if (type === "listen") say(); inp.focus(); }, 60);
@@ -3275,7 +3305,7 @@ function vWordRow(w, v){
     h("div",{class:"vwl"}, h("div",{class:"vwb"}, w), v.pos ? h("div",{class:"small muted"}, v.pos) : null, v.ipa ? h("div",{class:"vipa"}, v.ipa) : null, h("span",{class:"boxdots",style:"margin-top:6px",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""})))),
     h("div",{class:"vwr"}, h("div",{class:"vmean"}, vMeans(v)), v.ex ? h("div",{class:"small vex"}, v.ex) : null));
 }
-const VCHAIN = [["list","Xem"],["flip","Lật thẻ"],["listen","Nghe"],["blank","Điền câu"]];
+const VCHAIN = [["list","Xem"],["flip","Lật ghép"],["listen","Nghe"],["blank","Kéo thả"]];
 const vWeeks = () => Object.keys(WEEKS).map(Number).filter(n => (WEEKS[n].vocabList || []).length).sort((a, b) => a - b);
 let vwk = null;
 function vWeekSel(){ const ws = vWeeks(); if (vwk && ws.includes(vwk)) return vwk; const cw = weekNo(); return ws.includes(cw) ? cw : (ws.filter(n => n <= cw).pop() || ws[0] || 0); }
@@ -3296,7 +3326,9 @@ function startPass(wk, extra){
 }
 function vStage(si){
   const r = review; r.si = si; r.i = 0; const ty = VCHAIN[si] && VCHAIN[si][0];
-  r.q = ty === "list" ? [] : shuffle(r.words).map(w => ({ w, again:false, ty:ty === "blank" && !(vpool[w].ex && vRegex(w).test(vpool[w].ex)) ? "typevi" : ty }));
+  if (ty === "flip" || ty === "blank"){ const sz = ty === "flip" ? 6 : 5, ch = []; shuffle(r.words).forEach((w, i) => { if (i % sz === 0) ch.push([]); ch[ch.length - 1].push(w); });
+    if (ch.length > 1 && ch[ch.length - 1].length < 3) ch[ch.length - 2].push(...ch.pop()); r.rounds = ch; r.ri = 0; }
+  r.q = ty === "list" || ty === "flip" || ty === "blank" ? [] : shuffle(r.words).map(w => ({ w, again:false, ty:ty === "blank" && !(vpool[w].ex && vRegex(w).test(vpool[w].ex)) ? "typevi" : ty }));
 }
 function startReview(n){
   const q = vqueue().slice(0, n || VCAP);
@@ -3393,6 +3425,53 @@ function vocabView(sub, arg){
     return h("div",{class:"tsteps vch",style:"margin-bottom:12px"}, VCHAIN.map(([k, t], i) => [i ? h("span",{class:"tarr"},"→") : null,
       h("span",{class:"tstep"+(i === r.si ? " on" : i < r.si ? " dn" : "")}, h("b",null, i < r.si ? "✓" : String(i + 1)), t)]));
   }
+  function matchEls(r){
+    const ws = r.rounds[r.ri], miss = {}; let open = [], lock = false, done = 0;
+    const cards = []; ws.forEach(w => { const m = vMeans(vpool[w]); cards.push({ w, k:"en", t:w, m }, { w, k:"vi", t:m, m }); });
+    const grid = h("div",{class:"mcg"}), foot = h("div",{style:"text-align:center;margin-top:12px"}), cnt = h("span",null,"0 / "+ws.length+" cặp");
+    const fin = () => { ws.forEach(w => { const res = (miss[w] || 0) >= 3 ? "late" : "ok", cur = r.res[w]; if (cur == null || (res === "late" && cur === "ok")) r.res[w] = res; (r.ty || (r.ty = {}))[w] = "flip"; });
+      const last = r.ri + 1 >= r.rounds.length;
+      foot.append(h("div",{class:"fbtxt ok"},"Ghép xong cả "+ws.length+" cặp!"), h("button",{class:"btn",type:"button",onClick:() => { r.ri++; render(); window.scrollTo(0,0); }}, last ? "Sang bước Nghe" : "Vòng tiếp theo")); };
+    shuffle(cards).forEach(c => {
+      const b = h("button",{class:"mc "+c.k,type:"button","aria-label":"Thẻ"}, h("span",{class:"mq"},"?"), h("span",{class:"mf"}, c.t)); c.el = b;
+      b.addEventListener("click", () => {
+        if (lock || b.classList.contains("up") || b.classList.contains("ok")) return;
+        b.classList.add("up"); if (c.k === "en") playAudio({ text:c.w, rate:.8 });
+        open.push(c); if (open.length < 2) return;
+        const [a, d] = open; open = [];
+        if (a.k !== d.k && a.m === d.m){ [a, d].forEach(x => { x.el.classList.remove("up"); x.el.classList.add("ok"); }); done++; cnt.textContent = done+" / "+ws.length+" cặp"; if (done === ws.length) fin(); }
+        else { miss[a.w] = (miss[a.w] || 0) + 1; miss[d.w] = (miss[d.w] || 0) + 1; lock = true; setTimeout(() => { a.el.classList.remove("up"); d.el.classList.remove("up"); lock = false; }, 1000); }
+      });
+      grid.append(b); });
+    return h("div",{class:"card"}, h("div",{class:"small muted",style:"margin-bottom:6px"}, "Vòng "+(r.ri + 1)+" / "+r.rounds.length+"  ·  ", cnt),
+      h("p",{style:"margin:0 0 10px;font-weight:700"},"Lật 2 thẻ để ghép từ tiếng Anh với nghĩa tiếng Việt. Ghép đúng thì cặp thẻ chuyển xanh."), grid, foot);
+  }
+  function gapEls(r){
+    const ws = r.rounds[r.ri], miss = {}, n = ws.length; let selChip = null, selGap = null, drag = null, done = 0;
+    const bank = h("div",{class:"gbank"}), foot = h("div",{style:"text-align:center;margin-top:12px"}), cnt = h("span",null,"0 / "+n);
+    const fin = () => { ws.forEach(w => { const m = miss[w] || 0, res = m >= 4 ? "fail" : m >= 2 ? "late" : "ok", cur = r.res[w], rank = { ok:0, late:1, fail:2 };
+        if (cur == null || rank[res] > rank[cur]) r.res[w] = res; (r.ty || (r.ty = {}))[w] = "blank"; });
+      const last = r.ri + 1 >= r.rounds.length;
+      foot.append(h("div",{class:"fbtxt ok"},"Điền đúng cả "+n+" câu!"), h("button",{class:"btn",type:"button",onClick:() => { r.ri++; render(); window.scrollTo(0,0); }}, last ? "Xem kết quả" : "Vòng tiếp theo")); };
+    const place = (chip, gap) => {
+      if (!chip || !gap || gap.dataset.ok) return;
+      const cw = chip.dataset.w, tw = gap.dataset.w; selChip && selChip.classList.remove("sel"); selGap && selGap.classList.remove("sel"); selChip = selGap = null;
+      if (cw === tw){ gap.dataset.ok = "1"; gap.textContent = cw; gap.classList.add("ok"); chip.remove(); done++; cnt.textContent = done+" / "+n; if (done === n) fin(); }
+      else { miss[cw] = (miss[cw] || 0) + 1; miss[tw] = (miss[tw] || 0) + 1; gap.textContent = cw; gap.classList.add("bad"); setTimeout(() => { gap.classList.remove("bad"); gap.textContent = ""; }, 800); }
+    };
+    const rows = shuffle(ws).map(w => { const v = vpool[w], m = v.ex ? vRegex(w).exec(v.ex) : null;
+      const gap = h("span",{class:"gap",role:"button",tabindex:"0","data-w":w});
+      gap.addEventListener("click", () => { if (gap.dataset.ok) return; if (selChip) return place(selChip, gap); selGap && selGap.classList.remove("sel"); selGap = selGap === gap ? null : gap; selGap && selGap.classList.add("sel"); });
+      gap.addEventListener("dragover", e => e.preventDefault()); gap.addEventListener("drop", e => { e.preventDefault(); place(drag, gap); drag = null; });
+      const sent = m ? [v.ex.slice(0, m.index), gap, v.ex.slice(m.index + m[0].length)] : ["Từ cần điền: ", gap];
+      return h("div",{class:"gs"}, h("div",{class:"gsent"}, ...sent), h("div",{class:"small muted"}, "Nghĩa: "+vMeans(v))); });
+    shuffle(ws).forEach(w => { const c = h("button",{class:"gchip",type:"button",draggable:"true","data-w":w}, w);
+      c.addEventListener("dragstart", e => { drag = c; try { e.dataTransfer.setData("text/plain", w); } catch(x){} playAudio({ text:w, rate:.8 }); });
+      c.addEventListener("click", () => { playAudio({ text:w, rate:.8 }); if (selGap) return place(c, selGap); selChip && selChip.classList.remove("sel"); selChip = selChip === c ? null : c; selChip && selChip.classList.add("sel"); });
+      bank.append(c); });
+    return h("div",{class:"card"}, h("div",{class:"small muted",style:"margin-bottom:6px"}, "Vòng "+(r.ri + 1)+" / "+r.rounds.length+"  ·  ", cnt, " câu đúng"),
+      h("p",{style:"margin:0 0 10px;font-weight:700"},"Kéo từ vào chỗ trống cho đúng câu (hoặc chạm từ rồi chạm chỗ trống). Đúng thì chỗ trống chuyển xanh."), bank, h("div",{style:"margin-top:12px"}, rows), foot);
+  }
   function chainEls(){
     const r = review, n = r.words.length;
     if (r.si >= VCHAIN.length){
@@ -3412,6 +3491,14 @@ function vocabView(sub, arg){
       return [chainBar(r), h("div",{class:"card"}, h("h3",{style:"margin:0 0 4px"},"Lướt qua "+n+" từ của lượt này"), h("p",{class:"small muted",style:"margin:0 0 6px"},"Đọc, nghe thử vài từ chưa chắc. Xong thì bấm bắt đầu ôn."),
         r.words.map(w => vWordRow(w, vpool[w])),
         h("button",{class:"btn block",type:"button",style:"margin-top:12px",onClick:() => { vStage(r.si + 1); render(); window.scrollTo(0,0); }},"Bắt đầu ôn"))];
+    }
+    if (sk === "flip"){
+      if (r.ri >= r.rounds.length){ vStage(r.si + 1); return chainEls(); }
+      return [chainBar(r), matchEls(r)];
+    }
+    if (sk === "blank"){
+      if (r.ri >= r.rounds.length){ vStage(r.si + 1); return chainEls(); }
+      return [chainBar(r), gapEls(r)];
     }
     if (r.i >= r.q.length){ vStage(r.si + 1); return chainEls(); }
     const it = r.q[r.i], type = it.again ? "flip" : it.ty;
