@@ -3337,7 +3337,7 @@ function planView(){
   let doneS = 0, haveW = 0;
   RMW.forEach(([n]) => { const W = WEEKS[n] && !WEEKS[n].stub && WEEKS[n].json ? WEEKS[n] : null; if (W){ haveW++; doneS += W.sessions.filter(s => isDone(s.id)).length; } });
   const phases = []; for (let i = 0; i < RMW.length; i += 3) phases.push(RMW.slice(i, i + 3));
-  return h("div",null, h("a",{class:"btn soft",href:"#/week"},"← Tuần học"), h("h1",{style:"margin-top:16px"},"📚 Giáo án tổng"),
+  return h("div",null, h("a",{class:"btn soft",href:LRN.id === "nhi" ? "#/home" : "#/week"}, LRN.id === "nhi" ? "← Trang chủ" : "← Tuần học"), h("h1",{style:"margin-top:16px"},"📚 Giáo án tổng"),
     h("div",{class:"card tint"}, h("div",{style:"font-weight:800"}, "Đã học "+doneS+" / "+totalS+" buổi"),
       h("div",{class:"bar",style:"margin:8px 0 4px"}, h("i",{style:"width:"+Math.round(doneS/totalS*100)+"%"})),
       h("div",{class:"small muted"}, haveW+" / "+RMW.length+" tuần đã có bài. Chạm vào một tuần để xem chi tiết và mở lại bài cũ.")),
@@ -3786,7 +3786,8 @@ function progressView(){
   const writings = Object.entries(S.writing);
   return h("div",null, h("h1",null,"Tiến độ"),
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,doneN),h("span",null,"buổi xong")), h("div",{class:"stat"},h("b",null,mins),h("span",null,"phút đã học")), h("div",{class:"stat"},h("b",null,Object.keys(S.vocab).length),h("span",null,"từ đã gặp"))),
-    h("a",{class:"btn soft block",href:"#/report",style:"margin-bottom:16px"},"📊 Xem báo cáo "+wTxt(weekNo()).toLowerCase()),
+    h("a",{class:"btn soft block",href:"#/report",style:"margin-bottom:10px"},"📊 Xem báo cáo "+wTxt(weekNo()).toLowerCase()),
+    LRN.id === "nhi" ? h("a",{class:"btn soft block",href:"#/plan",style:"margin-bottom:16px"},"📚 Giáo án tổng") : null,
     h("div",{class:"card"}, h("h3",null,"Chòm sao "+wTxt(weekNo()).toLowerCase()), gardenEl(true)),
     h("div",{class:"card"}, h("h3",null,"Lịch học"), calendarEl()),
     h("div",{class:"card"}, h("h3",null,(SCH ? "Thành tích" : "Bộ sưu tập sticker")), stickersEl()),
@@ -3863,7 +3864,7 @@ function draftProgress(n){
 const TABS = [["home","🏠","Trang chủ"],["week","📅","Tuần học"],["vocab","📖","Từ vựng"],["practice","✏️","Bài tập"],["progress","⭐","Tiến độ"]];
 const TAB_OF = { plan:"week", challenge:"week", lesson:"week", done:"week", placement:"week", mistakes:"practice", report:"progress" };
 const tabsEl = document.getElementById("tabs");
-tabsEl.replaceChildren(...TABS.map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, h("span",null, "#i:" + ({home:"home",week:"calendar",vocab:"book",practice:"pencil",progress:"chart"}[p] || "dot")), t)));
+tabsEl.replaceChildren(...TABS.filter(t => !(LRN.id === "nhi" && t[0] === "week")).map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, h("span",null, "#i:" + ({home:"home",week:"calendar",vocab:"book",practice:"pencil",progress:"chart"}[p] || "dot")), t)));
 /* =====================================================================
    TRANG QUẢN LÝ: tách hẳn khỏi giao diện học, luôn dùng theme của Trí
    Lối vào duy nhất: thẻ "Quản lý và soạn bài" ở trang chọn học viên (#/admin)
