@@ -3303,17 +3303,17 @@ function vCard(w, type, cb){
     const lets = w.replace(/[^A-Za-z0-9]/g,"").split(""), total = lets.length;
     let plays = 0, cd = 3, seen = false;
     inp.classList.add("vhid"); inp.placeholder = "";
-    const hint = h("div",{class:"vhint"}), cnt = h("span",{class:"vcnt"}), note = h("div",{class:"small muted"}), bar = h("i"), icon = h("span",{class:"vplay"},"🔊");
+    const hint = h("div",{class:"vhint"}), cnt = h("span",{class:"vcnt"}), bar = h("i"), icon = h("span",{class:"vplay"},"🔊");
     const shown = () => Math.min(Math.floor(plays / 3), total - 1);
     const drawHint = () => { const k = shown(), t = inp.value.replace(/[^A-Za-z0-9]/g,"").toLowerCase(); let idx = 0;
       hint.replaceChildren(...w.split(/\s+/).map(tok => h("span",{class:"vhw"}, tok.split("").map(ch => { if (!/[A-Za-z0-9]/.test(ch)) return h("span",{class:"vsep"}, ch);
         const i = idx++; if (i < t.length) return h("span",{class:"vsl "+(t[i] === lets[i].toLowerCase() ? "ok" : "bad")}, t[i]);
         return h("span",{class:"vsl"+(i < k ? " hl" : "")}, i < k ? lets[i] : ""); })))); };
     const restartBar = () => { bar.style.animation = "none"; void bar.offsetWidth; bar.style.animation = "vcd 3s linear forwards"; };
-    const upd = () => { cnt.textContent = "Lần nghe thứ "+plays+"  ·  nghe tiếp sau "+cd+" giây"; note.textContent = total+" chữ cái"+(/\s/.test(w) ? ", "+w.split(/\s+/).length+" từ" : "")+". Gõ thẳng vào các ô. Cứ 3 lần nghe hiện thêm 1 chữ gợi ý."; };
+    const upd = () => { cnt.textContent = "Lần nghe: "+plays; };
     const playNow = () => { plays++; cd = 3; say(); icon.classList.remove("vpulse"); void icon.offsetWidth; icon.classList.add("vpulse"); restartBar(); drawHint(); upd(); };
     const wrap = h("div",{class:"vhwrap"}, hint, inp); wrap.addEventListener("click", () => inp.focus()); inp.addEventListener("input", drawHint);
-    card.append(tag, h("div",{class:"vcrow"}, icon, cnt), h("div",{class:"vcdwrap"}, bar), wrap, note, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
+    card.append(tag, h("div",{class:"vcrow"}, icon, cnt), h("div",{class:"vcdwrap"}, bar), wrap, msg, h("div",{class:"row",style:"justify-content:center"}, btn, idk));
     drawHint(); setTimeout(playNow, 60);
     tm = setInterval(() => { if (fin) return clearInterval(tm); if (card.isConnected) seen = true; else if (seen) return clearInterval(tm); cd--; if (cd <= 0) playNow(); else upd(); }, 1000);
   }
