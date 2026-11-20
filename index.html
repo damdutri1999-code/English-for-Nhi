@@ -239,6 +239,9 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .gap.sel{background:var(--p100)}
 .gap.ok{background:#dcf5e3; border-bottom:3px solid #2e9e57; color:#14663a; border-radius:6px; cursor:default}
 .gap.bad{background:#fde0e0; border-bottom-color:#c0392b; color:#a02a1e; border-radius:6px}
+.rhead{margin-bottom:10px}
+.rtitle{font-size:1.25rem; font-weight:800; color:var(--p600)}
+.rsub{font-size:.9rem; color:var(--ink2); margin-top:2px}
 .mcg{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
 .mc{min-height:84px; border-radius:14px; border:2px solid var(--p300); background:var(--p100); color:var(--ink); font:inherit; font-weight:800; padding:6px; cursor:pointer; display:grid; place-items:center; text-align:center; line-height:1.2; overflow-wrap:anywhere}
 .mc .mq{font-size:1.6rem; color:var(--p500)}
@@ -3425,10 +3428,14 @@ function vocabView(sub, arg){
     return h("div",{class:"tsteps vch",style:"margin-bottom:12px"}, VCHAIN.map(([k, t], i) => [i ? h("span",{class:"tarr"},"→") : null,
       h("span",{class:"tstep"+(i === r.si ? " on" : i < r.si ? " dn" : "")}, h("b",null, i < r.si ? "✓" : String(i + 1)), t)]));
   }
+  function roundHead(r, cnt, lab, unit){
+    const tot = r.words.length, before = r.rounds.slice(0, r.ri).reduce((a, x) => a + x.length, 0);
+    return h("div",{class:"rhead"}, h("div",{class:"rtitle"},"Vòng "+(r.ri + 1)+" / "+r.rounds.length), h("div",{class:"rsub"}, lab+" ", cnt, " "+unit+" của vòng này  ·  Cả lượt: "+tot+" từ ("+before+" từ đã xong)"));
+  }
   function matchEls(r){
     const ws = r.rounds[r.ri], miss = {}; let open = [], lock = false, done = 0;
     const cards = []; ws.forEach(w => { const m = vMeans(vpool[w]); cards.push({ w, k:"en", t:w, m }, { w, k:"vi", t:m, m }); });
-    const grid = h("div",{class:"mcg"}), foot = h("div",{style:"text-align:center;margin-top:12px"}), cnt = h("span",null,"0 / "+ws.length+" cặp");
+    const grid = h("div",{class:"mcg"}), foot = h("div",{style:"text-align:center;margin-top:12px"}), cnt = h("b",null,"0 / "+ws.length);
     const fin = () => { ws.forEach(w => { const res = (miss[w] || 0) >= 3 ? "late" : "ok", cur = r.res[w]; if (cur == null || (res === "late" && cur === "ok")) r.res[w] = res; (r.ty || (r.ty = {}))[w] = "flip"; });
       const last = r.ri + 1 >= r.rounds.length;
       foot.append(h("div",{class:"fbtxt ok"},"Ghép xong cả "+ws.length+" cặp!"), h("button",{class:"btn",type:"button",onClick:() => { r.ri++; render(); window.scrollTo(0,0); }}, last ? "Sang bước Nghe" : "Vòng tiếp theo")); };
@@ -3439,16 +3446,16 @@ function vocabView(sub, arg){
         b.classList.add("up"); if (c.k === "en") playAudio({ text:c.w, rate:.8 });
         open.push(c); if (open.length < 2) return;
         const [a, d] = open; open = [];
-        if (a.k !== d.k && a.m === d.m){ [a, d].forEach(x => { x.el.classList.remove("up"); x.el.classList.add("ok"); }); done++; cnt.textContent = done+" / "+ws.length+" cặp"; if (done === ws.length) fin(); }
+        if (a.k !== d.k && a.m === d.m){ [a, d].forEach(x => { x.el.classList.remove("up"); x.el.classList.add("ok"); }); done++; cnt.textContent = done+" / "+ws.length; if (done === ws.length) fin(); }
         else { miss[a.w] = (miss[a.w] || 0) + 1; miss[d.w] = (miss[d.w] || 0) + 1; lock = true; setTimeout(() => { a.el.classList.remove("up"); d.el.classList.remove("up"); lock = false; }, 1000); }
       });
       grid.append(b); });
-    return h("div",{class:"card"}, h("div",{class:"small muted",style:"margin-bottom:6px"}, "Vòng "+(r.ri + 1)+" / "+r.rounds.length+"  ·  ", cnt),
+    return h("div",{class:"card"}, roundHead(r, cnt, "Đã ghép", "cặp"),
       h("p",{style:"margin:0 0 10px;font-weight:700"},"Lật 2 thẻ để ghép từ tiếng Anh với nghĩa tiếng Việt. Ghép đúng thì cặp thẻ chuyển xanh."), grid, foot);
   }
   function gapEls(r){
     const ws = r.rounds[r.ri], miss = {}, n = ws.length; let selChip = null, selGap = null, drag = null, done = 0;
-    const bank = h("div",{class:"gbank"}), foot = h("div",{style:"text-align:center;margin-top:12px"}), cnt = h("span",null,"0 / "+n);
+    const bank = h("div",{class:"gbank"}), foot = h("div",{style:"text-align:center;margin-top:12px"}), cnt = h("b",null,"0 / "+n);
     const fin = () => { ws.forEach(w => { const m = miss[w] || 0, res = m >= 4 ? "fail" : m >= 2 ? "late" : "ok", cur = r.res[w], rank = { ok:0, late:1, fail:2 };
         if (cur == null || rank[res] > rank[cur]) r.res[w] = res; (r.ty || (r.ty = {}))[w] = "blank"; });
       const last = r.ri + 1 >= r.rounds.length;
@@ -3469,7 +3476,7 @@ function vocabView(sub, arg){
       c.addEventListener("dragstart", e => { drag = c; try { e.dataTransfer.setData("text/plain", w); } catch(x){} playAudio({ text:w, rate:.8 }); });
       c.addEventListener("click", () => { playAudio({ text:w, rate:.8 }); if (selGap) return place(c, selGap); selChip && selChip.classList.remove("sel"); selChip = selChip === c ? null : c; selChip && selChip.classList.add("sel"); });
       bank.append(c); });
-    return h("div",{class:"card"}, h("div",{class:"small muted",style:"margin-bottom:6px"}, "Vòng "+(r.ri + 1)+" / "+r.rounds.length+"  ·  ", cnt, " câu đúng"),
+    return h("div",{class:"card"}, roundHead(r, cnt, "Đã điền đúng", "câu"),
       h("p",{style:"margin:0 0 10px;font-weight:700"},"Kéo từ vào chỗ trống cho đúng câu (hoặc chạm từ rồi chạm chỗ trống). Đúng thì chỗ trống chuyển xanh."), bank, h("div",{style:"margin-top:12px"}, rows), foot);
   }
   function chainEls(){
