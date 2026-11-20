@@ -3273,7 +3273,7 @@ function homeView(){
         constellationEl(list),
         note ? h("div",{class:"card sticky"}, h("div",{class:"small muted"},"💌 Lời nhắn cho "+nm), h("p",{style:"margin:6px 0 10px;font-weight:700"}, note.text),
           h("button",{class:"btn soft",type:"button",onClick:() => { S.teacherNote.read = true; save(); route(); }},"Đã đọc")) : null,
-        ti.state === "day" ? null : main),
+        ti.state === "rest" ? main : null),
       h("div",{class:"hm-r"}, nhiPlanEl(ti),
         h("div",{class:"stats"}, stat(sk,"ngày liên tiếp"), stat(doneN,"sao đã sáng"), stat(Object.values(S.vpass || {}).reduce((a, x) => a + (x.n || 0), 0),"lượt ôn từ")),
         S.mistakes.length ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},S.mistakes.length+" câu cần ôn lại"), h("div",{class:"small muted"},"Làm đúng thì câu sẽ biến mất")), h("a",{class:"btn soft",href:"#/mistakes"},"Ôn câu sai"))) : null));
