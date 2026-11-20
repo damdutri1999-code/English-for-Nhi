@@ -619,14 +619,15 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 .setsep .ico:empty{display:none}
 .setsep > span{justify-content:center; text-align:center}
 .card[data-k]:has(> .exset.fin){--sc:var(--ok); --sb:var(--ok-bg); border-color:var(--ok)}
-.tseq{display:flex; flex-direction:column; gap:6px}
-.tsteps{display:flex; flex-wrap:wrap; align-items:center; gap:6px}
-.tstep{display:inline-flex; align-items:center; gap:7px; background:var(--paper); border:2px solid var(--task-line,var(--p200)); border-radius:12px; padding:4px 11px 4px 5px; color:var(--task-ink,var(--ink)); font-weight:800; font-size:.9rem; line-height:1.3}
-.tstep b{flex:none; width:22px; height:22px; border-radius:50%; background:var(--task-ink,var(--p600)); color:#fff; display:grid; place-items:center; font-size:.78rem}
-.tarr{font-weight:800; font-size:1.2rem; color:var(--task-ink,var(--p600)); line-height:1}
-.ttail{font-weight:700; font-size:.88rem; color:var(--task-ink,var(--ink2))}
+.tseq{display:flex; flex-direction:row; flex-wrap:wrap; align-items:center; gap:2px 8px}
+.tsteps{display:flex; flex-wrap:wrap; align-items:center; gap:4px 5px}
+.tstep{display:inline-flex; align-items:center; gap:7px; background:var(--paper); border:2px solid var(--task-line,var(--p200)); border-radius:12px; padding:1px 8px 1px 2px; color:var(--task-ink,var(--ink)); font-weight:800; font-size:.8rem; line-height:1.2; white-space:nowrap}
+.tstep b{flex:none; width:18px; height:18px; border-radius:50%; background:var(--task-ink,var(--p600)); color:#fff; display:grid; place-items:center; font-size:.78rem}
+.tarr{font-weight:800; font-size:1.05rem; color:var(--task-ink,var(--p600)); line-height:1}
+.ttail{font-weight:700; font-size:.82rem; color:var(--task-ink,var(--ink2))}
 .tins-n.tseq,.tins-i.tseq{display:inline-flex; vertical-align:middle}
-.taskbox .tins.tseq{flex:1 1 100%}
+.taskbox .tins.tseq{flex:1 1 220px}
+.taskbox:has(.tseq){gap:4px 8px; padding:5px 9px}
 section.exset[data-type=oddone] .opts.opts.opts{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px}
 section.exset[data-type=oddone] .opts .opt{padding:8px 3px; text-align:center; min-height:48px; display:flex; align-items:center; justify-content:center; font-size:.82rem; line-height:1.25; word-break:normal; overflow-wrap:break-word; hyphens:none}
 @media (max-width:360px){section.exset[data-type=oddone] .opts.opts.opts{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -2415,7 +2416,7 @@ function exerciseSet(set, onDone, pos){
     if (seq) built.items.forEach((it, i) => { if (i > 0 && it.el) it.el.hidden = true; });
     const T = TYPES[main.type] || { icon:"", label:"", how:"" };
     const sep = pos && pos.total > 1 ? h("div",{class:"setsep"}, h("span",null, wrap.classList.contains("fin") ? "#i:check" : T.icon, " Phần "+pos.i+"/"+pos.total+": "+T.label)) : null;
-    return [sep, h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, T.icon + " " + T.label), (() => { const ins = insText(set, T); return ins ? insEl(ins, "tins") : null; })(), cntEl), meterBox,
+    return [sep, h("div",{class:"taskbox"}, sep ? null : h("span",{class:"tbadge"}, T.icon + " " + T.label), (() => { const ins = insText(set, T); return ins ? insEl(ins, "tins") : null; })(), cntEl), meterBox,
       ...built.head, ...built.items.map(i => i.el).filter(Boolean), ...(built.foot || []), scoreBox, extraHost];
   }
   wrap.replaceChildren(...build());
