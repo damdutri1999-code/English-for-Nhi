@@ -1811,9 +1811,9 @@ async function saveWeek(json){
   if (Cloud.ready){ try { await DB.set(LRN.cp+n, { json:JSON.stringify(json) }, CONTENT[n].at); } catch(e){ console.error(e); toast("Đã lưu trên máy, chưa lên được đám mây"); return false; } }
   return true;
 }
-async function deleteWeek(n){
+async function deleteWeek(n, stats){
+  clearProgress({week:n, stats});
   delete CONTENT[n]; DELETED.add(+n); saveDeleted(); saveContentLocal(); unloadWeek(n); if (!WEEKS[1]) restoreStub();
-  clearProgress({week:n});
   if (Cloud.ready){ try { await DB.set(LRN.cp+n, { json:"", deleted:true }, Date.now()); } catch(e){ console.error(e); } }
 }
 async function loadContentCloud(){
@@ -3915,7 +3915,9 @@ function clearProgress(o){
   S.log = S.log.filter(l => !ids.includes(l.id));
   const pre = o.sid ? o.sid + "." : "w" + o.week + "-";
   S.mistakes = S.mistakes.filter(m => !(m.ref && m.ref.startsWith(pre)));
-  if (!o.sid) Object.keys(S.vocab).forEach(k => { if (+S.vocab[k].w === o.week) delete S.vocab[k]; });
+  if (!o.sid){ Object.keys(S.vocab).forEach(k => { if (+S.vocab[k].w === o.week) delete S.vocab[k]; });
+    const W = WEEKS[o.week]; if (W && W.vocabList && S.vstats) W.vocabList.forEach(x => { delete S.vstats[x.en.toLowerCase()]; }); if (S.vpass) delete S.vpass[o.week]; }
+  if (o.stats) S.results = {};
   save();
 }
 
@@ -4054,14 +4056,15 @@ function adSession(id){
     adCard("Các bước trong buổi", h("div",{style:"overflow-x:auto"}, h("table",{class:"gtable"}, h("thead",null,h("tr",null,["#","Bước","Nội dung","Số câu","Học viên"].map(t => h("th",null,t)))), h("tbody",null,stepRows)))));
 }
 function adDeleteWeek(w){
-  const p = weekProg(w);
+  const p = weekProg(w); const cbStats = h("label",{class:"small",style:"display:flex;gap:8px;align-items:flex-start;margin-top:8px"}, h("input",{type:"checkbox",checked:true}), h("span",null,"Xóa luôn thống kê độ chính xác theo dạng bài. Thống kê này tính chung cho mọi tuần nên không tách riêng từng tuần được."));
   adDialog("Xóa " + wFull(w).toLowerCase() + "?", h("div",null, h("p",null,"Nội dung bài của tuần này sẽ bị xóa và biến mất khỏi mọi máy đã đồng bộ. Muốn có lại thì nạp file bài lên."),
-    hasProg(p) ? h("p",null,"Tiến độ của học viên trong tuần này cũng bị xóa theo: " + progText(p) + ".") : h("p",{class:"muted small"},"Tuần này chưa có tiến độ.")),
-    [{label:"Hủy",value:false},{label:"Xóa bài và tiến độ",kind:"danger",value:true}]).then(async ok => { if (!ok) return; await deleteWeek(w); toast("Đã xóa " + wFull(w).toLowerCase()); location.hash = "#/admin/plan"; route(); });
+    hasProg(p) ? h("p",null,"Tiến độ của học viên trong tuần này cũng bị xóa theo: " + progText(p) + ".") : h("p",{class:"muted small"},"Tuần này chưa có tiến độ."), cbStats),
+    [{label:"Hủy",value:false},{label:"Xóa bài và tiến độ",kind:"danger",value:true}]).then(async ok => { if (!ok) return; await deleteWeek(w, cbStats.querySelector("input").checked); toast("Đã xóa " + wFull(w).toLowerCase()); location.hash = "#/admin/plan"; route(); });
 }
 function adClearProgress(label, scope, p){
-  adDialog("Xóa tiến độ: " + label + "?", h("div",null, h("p",null,"Sẽ xóa: " + progText(p) + "."), h("p",{class:"muted small"},"Chuỗi ngày học và thống kê độ chính xác chung được giữ lại. Không thể hoàn tác.")),
-    [{label:"Hủy",value:false},{label:"Xóa tiến độ",kind:"danger",value:true}]).then(ok => { if (!ok) return; clearProgress(scope); toast("Đã xóa tiến độ"); route(); });
+  const cbStats = h("label",{class:"small",style:"display:flex;gap:8px;align-items:flex-start;margin-top:8px"}, h("input",{type:"checkbox",checked:true}), h("span",null,"Xóa luôn thống kê độ chính xác theo dạng bài. Thống kê này tính chung cho mọi tuần nên không tách riêng từng tuần được."));
+  adDialog("Xóa tiến độ: " + label + "?", h("div",null, h("p",null,"Sẽ xóa: " + progText(p) + "."), h("p",{class:"muted small"},"Chuỗi ngày học được giữ lại. Không thể hoàn tác."), cbStats),
+    [{label:"Hủy",value:false},{label:"Xóa tiến độ",kind:"danger",value:true}]).then(ok => { if (!ok) return; clearProgress(Object.assign({}, scope, { stats:cbStats.querySelector("input").checked })); toast("Đã xóa tiến độ"); route(); });
 }
 
 /* ---- Nạp bài: MỘT luồng duy nhất (thả file hoặc dán JSON, kiểm tra, lưu) ---- */
@@ -4160,7 +4163,7 @@ function adProgress(){
   return h("div",null, adHead("Tiến độ học · " + nm + (LRN.id === "bw" ? " · Bookworms" : ""), "Xem và xóa tiến độ theo học viên, theo tuần hoặc theo buổi (vào Giáo án, chọn buổi)."),
     h("div",{class:"adm-grid"}, kpi(doneAll, "buổi đã học"), kpi(mins, "phút đã học"), kpi(streak(), "ngày liên tiếp"), kpi(S.mistakes.length, "câu sai chờ ôn"), kpi(Object.keys(S.vocab).length, "từ trong sổ")),
     adCard("Theo tuần", weekRows.length ? weekRows : h("p",{class:"muted"},"Chưa có tuần nào.")),
-    adCard("Độ chính xác theo dạng bài", accuracyBars()),
+    adCard("Độ chính xác theo dạng bài", accuracyBars(), Object.keys(S.results || {}).length ? h("div",{style:"margin-top:10px"}, adBtn("trash","Xóa thống kê này","danger", () => adDialog("Xóa thống kê độ chính xác?", h("p",null,"Chỉ xóa các thanh phần trăm theo dạng bài. Tiến độ buổi học, từ vựng và chuỗi ngày học giữ nguyên. Không thể hoàn tác."), [{label:"Hủy",value:false},{label:"Xóa thống kê",kind:"danger",value:true}]).then(ok => { if (!ok) return; S.results = {}; save(); toast("Đã xóa thống kê"); route(); }))) : null),
     adCard("Sao lưu và khôi phục", h("p",{class:"muted small"},"Tải tiến độ về máy hoặc khôi phục từ file đã lưu."), h("div",{class:"row"}, adBtn("download","Tải về","", () => adDownload("tien-do-" + LRN.id + ".json", S)), adBtn("upload","Khôi phục từ file","", () => fileIn.click()), fileIn)),
     adCard("Xóa toàn bộ tiến độ của " + nm, h("p",{class:"muted small"},"Xóa mọi buổi đã học, bài viết, câu sai, từ vựng và chuỗi ngày. Cài đặt và ngày bắt đầu được giữ. Không thể hoàn tác."),
       h("div",{class:"row"}, adBtn("trash","Xóa toàn bộ tiến độ","danger", () => adDialog("Xóa toàn bộ tiến độ của " + nm + "?", h("p",null,"Mọi tiến độ học của " + nm + (LRN.id === "bw" ? " (Bookworms)" : "") + " sẽ bị xóa. Không thể hoàn tác."), [{label:"Hủy",value:false},{label:"Xóa toàn bộ",kind:"danger",value:true}]).then(ok => { if (ok){ clearProgress({all:true}); toast("Đã xóa toàn bộ tiến độ"); route(); } })))));
