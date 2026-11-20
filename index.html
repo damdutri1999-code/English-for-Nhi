@@ -820,6 +820,12 @@ a.adm-row:hover{background:var(--p50)}
   .adm-foot{margin-top:0; flex-direction:row; align-items:center; justify-content:space-between}
   .adm-main{padding:16px 14px 60px}
 }
+/* phần đầu buổi học (tên, vòng tiến độ, các nút phần) luôn dính ở đầu màn hình khi cuộn */
+.lstick{--lsb:rgba(251,242,236,.95); position:sticky; top:0; z-index:40; padding:6px 0 2px; background:var(--lsb); box-shadow:0 0 0 100vmax var(--lsb); clip-path:inset(0 -100vmax); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
+html[data-theme=night] .lstick{--lsb:rgba(238,150,184,.94)}
+html[data-learner=tri] .lstick{--lsb:rgba(9,20,50,.94)}
+.lstick .steps{margin-bottom:0}
+.lstick .lhead{margin-bottom:6px}
 /* thanh cuộn đồng bộ với giao diện: một bộ màu dùng được cho cả trang (nền kem, hồng, đêm) và các khung cuộn trong thẻ */
 html{--sbi-thumb:#d9688a; --sbi-track:rgba(248,225,218,.85); --sbi-hover:#b0415f}
 html[data-learner=tri]{--sbi-thumb:#f0b44f; --sbi-track:rgba(18,32,70,.55); --sbi-hover:#ffc766}
@@ -2951,9 +2957,10 @@ function lessonView(id, idx){
   const body = { sets:setsStep, read:readStep, listen:listenStep, notice:noticeStep, output:outputStep, report:reportStep, bookread:bookreadStep }[step.type](step, ctx);
   refresh();
   return h("div",null,
-    h("div",{class:"lhead"}, h("a",{class:"back",href:"#/week","aria-label":"Quay lại"},"←"), h("div",{class:"grow"}, h("h1",null,meta.title), h("div",{class:"small muted"}, meta.day+", "+KIND[meta.kind])),
+    h("div",{class:"lstick"}, h("div",{class:"lhead"}, h("a",{class:"back",href:"#/week","aria-label":"Quay lại"},"←"), h("div",{class:"grow"}, h("h1",null,meta.title), h("div",{class:"small muted"}, meta.day+", "+KIND[meta.kind])),
       pgRing(), h("div",{class:"clock",id:"clock"},"⏱ "+fmt(sess.seconds || 0)), fsBtn()),
-    nav, body, skip,
+      nav),
+    body, skip,
     h("div",{class:"lbar"}, idx > 0 ? h("button",{class:"btn soft",type:"button","aria-label":"Bước trước",onClick:() => go(idx-1)},"←") : null, next));
 }
 function finish(id){
