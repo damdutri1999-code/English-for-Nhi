@@ -626,6 +626,10 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 .tsteps{display:flex; flex-wrap:wrap; align-items:center; gap:4px 5px}
 .tstep{display:inline-flex; align-items:center; gap:7px; background:var(--paper); border:2px solid var(--task-line,var(--p200)); border-radius:12px; padding:1px 8px 1px 2px; color:var(--task-ink,var(--ink)); font-weight:800; font-size:.8rem; line-height:1.2; white-space:nowrap}
 .tstep b{flex:none; width:18px; height:18px; border-radius:50%; background:var(--task-ink,var(--p600)); color:#fff; display:grid; place-items:center; font-size:.78rem}
+.vch .tstep{opacity:.5}
+.vch .tstep.on{opacity:1; background:var(--task-ink,var(--p600)); color:#fff}
+.vch .tstep.on b{background:#fff; color:var(--task-ink,var(--p600))}
+.vch .tstep.dn{opacity:.85}
 .tarr{font-weight:800; font-size:1.05rem; color:var(--task-ink,var(--p600)); line-height:1}
 .ttail{font-weight:700; font-size:.82rem; color:var(--task-ink,var(--ink2))}
 .tins-n.tseq,.tins-i.tseq{display:inline-flex; vertical-align:middle}
@@ -1126,7 +1130,7 @@ function applyBrand(){
    TRẠNG THÁI & LƯU TRỮ (localStorage + Supabase tùy chọn)
    ===================================================================== */
 const defaultState = () => ({
-  v:2, updatedAt:0, sessions:{}, vocab:{}, mine:{}, mistakes:[], activeDays:[], writing:{}, results:{},
+  v:2, updatedAt:0, sessions:{}, vocab:{}, mine:{}, vstats:{}, vpass:{}, mistakes:[], activeDays:[], writing:{}, results:{},
   settings:{ name:"", mascot:LRN.mascot, theme:LRN.theme, startDate:null },
   teacherNote:null, feedback:{}, log:[], dayMin:{}, challenges:{},
   stats:{ plays:0, fixed:0, perfect:0, best:0 }, placement:null, lastUnlocked:[]
@@ -3090,7 +3094,7 @@ function gardenEl(big){
 }
 function homeView(){
   const list = allSessions(), doneN = list.filter(s => isDone(s.id)).length, ti = todayInfo();
-  const sk = streak(), due = dueWords().length, nm = learnerName();
+  const sk = streak(), due = NHINB ? 0 : dueWords().length, nm = learnerName();
   const note = S.teacherNote && !S.teacherNote.read ? S.teacherNote : null;
   const nextUndone = list.find(s => !isDone(s.id));
   const say = SCH ? (sk > 1 ? sk+" ngày học liên tiếp." : "Mỗi ngày "+DAYMIN+" phút, đều đặn.") : sk > 1 ? "Giỏi quá, bạn đã học "+sk+" ngày liên tiếp!" : "Mỗi ngày "+DAYMIN+" phút thôi, mình học cùng "+nm+" nhé!";
@@ -3124,7 +3128,8 @@ function homeView(){
       h("button",{class:"btn soft",type:"button",onClick:() => { S.teacherNote.read = true; save(); route(); }},"Đã đọc")) : null,
     main,
     missed.length ? h("div",{class:"card flat"}, h("h3",null,"Học bù"), h("div",{class:"chips"}, missed.map(s => h("a",{class:"pill",href:"#/lesson/"+s.id+"/0",style:"text-decoration:none"}, s.day+": "+s.title)))) : null,
-    h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,sk),h("span",null,"ngày liên tiếp")), h("div",{class:"stat"},h("b",null,doneN),h("span",null,"sao đã sáng")), h("div",{class:"stat"},h("b",null,due),h("span",null,"từ cần ôn"))),
+    h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,sk),h("span",null,"ngày liên tiếp")), h("div",{class:"stat"},h("b",null,doneN),h("span",null,"sao đã sáng")), h("div",{class:"stat"},h("b",null,NHINB ? Object.values(S.vpass || {}).reduce((a, x) => a + (x.n || 0), 0) : due),h("span",null,NHINB ? "lượt ôn từ" : "từ cần ôn"))),
+    NHINB ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},"Sổ từ vựng"), h("div",{class:"small muted"},"Mở lên là có một lượt ôn, khoảng 8 phút. Ôn thêm bao nhiêu lần cũng được.")), h("a",{class:"btn soft",href:"#/vocab"},"Ôn từ"))) :
     due ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},due+" từ đang chờ ôn"), h("div",{class:"small muted"},"Hôm nay ôn "+Math.min(due, VCAP)+" từ, khoảng "+Math.max(2, Math.round(Math.min(due, VCAP) * .25))+" phút")), h("a",{class:"btn soft",href:"#/vocab"},"Ôn ngay"))) : null,
     S.mistakes.length ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},S.mistakes.length+" câu cần ôn lại"), h("div",{class:"small muted"},"Làm đúng thì câu sẽ biến mất")), h("a",{class:"btn soft",href:"#/mistakes"},"Ôn câu sai"))) : null);
 }
@@ -3195,7 +3200,9 @@ function planView(){
 }
 const VCAP = 20;
 let vBank = null;
-const VS = () => vBank === "mine" ? NB.mine : S.vocab;
+let vpool = {};
+const NHINB = LRN.id === "nhi";
+const VS = () => vBank === "mine" ? NB.mine : vBank === "wk" ? vpool : S.vocab;
 let review = null, vtest = null;
 const vqueue = () => { const t = dkey(new Date()); return Object.keys(VS()).filter(w => VS()[w].due <= t && (vBank !== "mine" || VS()[w].m)).sort((a, b) => VS()[a].due < VS()[b].due ? -1 : VS()[a].due > VS()[b].due ? 1 : 0); };
 const VTYPE = { flip:"Nhìn từ, nhớ nghĩa", typevi:"Nhìn nghĩa, gõ từ", listen:"Nghe, gõ từ", blank:"Điền từ vào câu" };
@@ -3249,7 +3256,35 @@ function vApply(w, res, type){
   if (res === "ok"){ v.box = Math.min(v.box + 1, 4); v.due = addDays(INTERVALS[v.box]); }
   else if (res === "late"){ v.due = addDays(INTERVALS[v.box] || 1); }
   else { v.box = 0; v.due = addDays(1); }
-  v.lt = type; if (vBank === "mine") nbSave(); else save();
+  v.lt = type;
+  if (vBank === "wk"){ v.n = (v.n || 0) + 1; v.last = dkey(new Date());
+    if (v.wk){ (S.vstats || (S.vstats = {}))[w] = { box:v.box, n:v.n, last:v.last, lt:v.lt }; save(); } else nbSave(); return; }
+  if (vBank === "mine") nbSave(); else save();
+}
+/* Sổ từ vựng của Nhi: pool = từ cả tuần + từ Nhi tự thêm. Mỗi lần mở là một lượt ôn theo chuỗi cố định. */
+const VPASS = 20;
+const VCHAIN = [["list","Xem"],["flip","Lật thẻ"],["listen","Nghe"],["blank","Điền câu"]];
+const vWeeks = () => Object.keys(WEEKS).map(Number).filter(n => (WEEKS[n].vocabList || []).length).sort((a, b) => a - b);
+let vwk = null;
+function vWeekSel(){ const ws = vWeeks(); if (vwk && ws.includes(vwk)) return vwk; const cw = weekNo(); return ws.includes(cw) ? cw : (ws.filter(n => n <= cw).pop() || ws[0] || 0); }
+function vBuildPool(wk){
+  const pool = {}, W = WEEKS[wk], st = S.vstats || {};
+  ((W && W.vocabList) || []).forEach(x => { const k = x.en.toLowerCase(), s0 = st[k] || {};
+    pool[k] = { m:x.vi, pos:x.pos, ipa:x.ipa, ex:x.ex, exVi:x.exVi, sub:x.sub, up:x.up, box:s0.box || 0, n:s0.n || 0, last:s0.last, lt:s0.lt, wk:true }; });
+  Object.keys(NB.mine).forEach(k => { const e = NB.mine[k]; if (e && e.m){ if (e.box == null) e.box = 0; pool[k] = e; } });
+  return pool;
+}
+function vPassInfo(wk){ const p = (S.vpass || {})[wk] || {}, t = dkey(new Date()); return { n:p.n || 0, today:p.d === t ? (p.dn || 0) : 0 }; }
+function startPass(wk, extra){
+  vpool = vBuildPool(wk); const keys = Object.keys(vpool);
+  const sorted = extra ? shuffle(keys) : shuffle(keys).sort((a, b) => (vpool[a].box - vpool[b].box) || ((vpool[a].n || 0) - (vpool[b].n || 0)));
+  const ws = sorted.slice(0, VPASS);
+  review = { chain:true, wk, extra, words:ws, si:0, q:[], i:0, res:{}, total:ws.length };
+  vStage(0);
+}
+function vStage(si){
+  const r = review; r.si = si; r.i = 0; const ty = VCHAIN[si] && VCHAIN[si][0];
+  r.q = ty === "list" ? [] : shuffle(r.words).map(w => ({ w, again:false, ty:ty === "blank" && !(vpool[w].ex && vRegex(w).test(vpool[w].ex)) ? "typevi" : ty }));
 }
 function startReview(n){
   const q = vqueue().slice(0, n || VCAP);
@@ -3289,9 +3324,9 @@ function vTestCard(root, again){
 }
 const VHOME = COVER ? "#/" : "#/vocab";
 function vocabView(sub, arg){
-  const root = h("div"); vBank = sub === "mine" ? "mine" : null;
+  const root = h("div"); vBank = sub === "mine" ? "mine" : NHINB ? "wk" : null;
   const back = () => { review = null; vtest = null; if (vBank === "mine"){ render(); return; } location.hash = VHOME; if (!COVER) route(); };
-  function render(){ root.replaceChildren(...(vtest ? testEls() : review ? reviewEls() : vBank === "mine" ? mineEls() : listEls())); }
+  function render(){ root.replaceChildren(...(vtest ? testEls() : review && review.chain ? chainEls() : review ? reviewEls() : vBank === "mine" ? mineEls() : NHINB ? nhiEls() : listEls())); }
   function reviewEls(){
     const r = review;
     if (r.i >= r.q.length){
@@ -3336,10 +3371,69 @@ function vocabView(sub, arg){
     const M = NB.mine, words = Object.keys(M).sort(), due = vqueue();
     return [h("a",{class:"btn soft",href:VHOME},COVER ? "← Chọn học viên" : "← Sổ từ vựng"), h("h1",{style:"margin-top:16px"},"📒 Từ của "+MY_NAME()),
       h("p",{class:"muted"},"Từ bạn tự thêm, riêng với từ của bài học. Từ được ôn lại sau 1, 3, 7, 14, 30 ngày nếu bạn nhớ."),
+      NHINB ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"}, words.length+" từ"), h("div",{class:"small muted"},"Các từ này tự vào lượt ôn trong Sổ từ vựng, ôn cùng từ của tuần.")), h("a",{class:"btn",href:VHOME},"Đi ôn"))) :
       h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"}, due.length ? due.length+" từ cần ôn hôm nay" : "Hôm nay không có từ nào cần ôn"), h("div",{class:"small muted"}, words.length+" từ")),
         h("button",{class:"btn",type:"button",disabled:!due.length,onClick:() => { startReview(); render(); }},"Ôn ngay"))),
       adding ? mineAddEl(() => { adding = false; render(); }, arg) : h("button",{class:"btn block",type:"button",style:"margin-bottom:12px",onClick:() => { adding = true; arg = ""; render(); }},"➕ Thêm từ mới"),
       words.length ? h("div",{class:"card"}, words.map(w => mineRowEl(w, render, false))) : h("div",{class:"card celebrate",style:"text-align:center"}, mascot("happy"), h("p",{class:"muted"},"Chưa có từ nào. Bấm “Thêm từ mới”, hoặc chạm vào một từ trong bài đọc rồi thêm vào đây."))];
+  }
+  function chainBar(r){
+    return h("div",{class:"tsteps vch",style:"margin-bottom:12px"}, VCHAIN.map(([k, t], i) => [i ? h("span",{class:"tarr"},"→") : null,
+      h("span",{class:"tstep"+(i === r.si ? " on" : i < r.si ? " dn" : "")}, h("b",null, i < r.si ? "✓" : String(i + 1)), t)]));
+  }
+  function chainEls(){
+    const r = review, n = r.words.length;
+    if (r.si >= VCHAIN.length){
+      const bad = r.words.filter(w => r.res[w] === "fail"), late = r.words.filter(w => r.res[w] === "late");
+      r.words.forEach(w => vApply(w, r.res[w] || "ok", (r.ty || {})[w] || "flip"));
+      const P = (S.vpass || (S.vpass = {})), t = dkey(new Date()), o = P[r.wk] || {}; const dn = (o.d === t ? o.dn || 0 : 0) + 1;
+      P[r.wk] = { n:(o.n || 0) + 1, d:t, dn }; save(); review = null;
+      return [h("div",{class:"card",style:"text-align:center"}, mascot("cheer"), h("h2",null,"Xong lượt ôn!"),
+        h("p",{class:"muted"}, n+" từ: "+(n - bad.length - late.length)+" nhớ tốt"+(late.length ? ", "+late.length+" nhớ sau lần thử 2" : "")+(bad.length ? ", "+bad.length+" cần ôn lại" : "")+"."),
+        h("p",{class:"small muted"},"Đây là lượt ôn thứ "+P[r.wk].n+" của tuần này, hôm nay "+dn+" lượt."),
+        bad.length ? h("div",{class:"chips",style:"justify-content:center"}, bad.map(w => h("span",{class:"pill"}, w))) : null,
+        h("div",{class:"row",style:"justify-content:center;margin-top:12px"}, h("button",{class:"btn soft",type:"button",onClick:() => { startPass(r.wk, true); render(); window.scrollTo(0,0); }},"Ôn thêm, xào từ ngẫu nhiên"),
+          h("button",{class:"btn",type:"button",onClick:() => render()},"Về sổ từ")))];
+    }
+    const [sk, sName] = VCHAIN[r.si];
+    if (sk === "list"){
+      return [chainBar(r), h("div",{class:"card"}, h("h3",{style:"margin:0 0 4px"},"Lướt qua "+n+" từ của lượt này"), h("p",{class:"small muted",style:"margin:0 0 6px"},"Đọc, nghe thử vài từ chưa chắc. Xong thì bấm bắt đầu ôn."),
+        r.words.map(w => { const v = vpool[w]; return h("div",{class:"vrow"}, h("button",{class:"say",type:"button","aria-label":"Nghe "+w,onClick:() => playAudio({text:w,rate:.8})},"🔊"),
+          h("div",{class:"grow"}, h("b",null,w), v.pos ? h("span",{class:"small muted"},"  "+v.pos) : null, v.ipa ? h("span",{class:"small muted"},"  "+v.ipa) : null, h("div",{class:"small muted"}, vMeans(v)), v.ex ? h("div",{class:"small",style:"font-style:italic"}, v.ex) : null),
+          h("span",{class:"boxdots",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""})))); }),
+        h("button",{class:"btn block",type:"button",style:"margin-top:12px",onClick:() => { vStage(r.si + 1); render(); window.scrollTo(0,0); }},"Bắt đầu ôn"))];
+    }
+    if (r.i >= r.q.length){ vStage(r.si + 1); return chainEls(); }
+    const it = r.q[r.i], type = it.again ? "flip" : it.ty;
+    return [chainBar(r), h("div",{class:"small muted",style:"margin-bottom:4px"}, (r.i + 1)+" / "+r.q.length+(it.again ? "  ·  ôn lại từ vừa quên" : "")),
+      h("div",{class:"bar",style:"margin-bottom:10px"}, h("i",{style:"width:"+Math.round(r.i / r.q.length * 100)+"%"})),
+      vCard(it.w, type, res => { if (!it.again){ const cur = r.res[it.w], rank = { ok:0, late:1, fail:2 };
+          if (cur == null || rank[res] > rank[cur]) r.res[it.w] = res; (r.ty || (r.ty = {}))[it.w] = type;
+          if (res === "fail") r.q.push({ w:it.w, again:true }); }
+        r.i++; render(); window.scrollTo(0,0); })];
+  }
+  function nhiEls(){
+    const ws = vWeeks(), wk = vWeekSel(); vwk = wk; vpool = vBuildPool(wk);
+    const W = WEEKS[wk], L = (W && W.vocabList) || [], keys = Object.keys(vpool), mine = keys.filter(k => !vpool[k].wk).length, info = vPassInfo(wk);
+    const known = keys.filter(k => vpool[k].box >= 3).length, seen = keys.filter(k => (vpool[k].n || 0) > 0).length;
+    const subName = i => (W.subs || [])[i - 1] || "";
+    const groups = [1,2,3,4].map(i => [i, L.filter(x => !x.up && x.sub === i)]).filter(g => g[1].length); const ups = L.filter(x => x.up); if (ups.length) groups.push(["up", ups]);
+    const row = x => { const k = x.en.toLowerCase(), v = vpool[k]; if (!v) return null;
+      return h("div",{class:"vrow"}, h("button",{class:"say",type:"button","aria-label":"Nghe "+x.en,onClick:() => playAudio({text:x.en,rate:.8})},"🔊"),
+        h("div",{class:"grow"}, h("b",null,x.en), x.pos ? h("span",{class:"small muted"},"  "+x.pos) : null, x.ipa ? h("span",{class:"small muted"},"  "+x.ipa) : null, h("div",{class:"small muted"}, vMeans(v)), x.ex ? h("div",{class:"small",style:"font-style:italic"}, x.ex) : null),
+        h("span",{class:"boxdots",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""})))); };
+    const go = extra => () => { startPass(wk, extra); render(); window.scrollTo(0,0); };
+    return [h("h1",null,"Sổ từ vựng"), h("p",{class:"muted"},"Sổ gồm toàn bộ từ của tuần (kể cả từ chưa học tới) và từ bạn tự thêm. Mỗi lần mở là một lượt ôn, ôn bao nhiêu lượt cũng được."),
+      ws.length > 1 ? dd(ws.map(n => ({ v:n, t:wTxt(n)+": "+WEEKS[n].title })), { cls:"txt", label:"Chọn tuần", value:wk, onChange:v => { vwk = +v; render(); } }) : null,
+      h("div",{class:"card tint",style:"margin-top:12px"}, h("h3",{style:"margin:0 0 6px"}, keys.length ? "Lượt ôn hôm nay" : "Sổ còn trống"),
+        keys.length ? [h("div",{class:"small muted",style:"margin-bottom:8px"}, keys.length+" từ trong sổ ("+L.length+" từ tuần "+wk+(mine ? " + "+mine+" từ của bạn" : "")+"). Mỗi lượt ôn "+Math.min(VPASS, keys.length)+" từ, từ chưa chắc được xếp trước."),
+          h("div",{class:"tsteps vch",style:"margin-bottom:10px"}, VCHAIN.map(([k, t], i) => [i ? h("span",{class:"tarr"},"→") : null, h("span",{class:"tstep"}, h("b",null,String(i + 1)), t)])),
+          h("div",{class:"small",style:"margin-bottom:10px"}, "Tuần này đã ôn "+info.n+" lượt"+(info.today ? ", hôm nay "+info.today+" lượt" : "")+". Đã gặp "+seen+" từ, nhớ chắc "+known+" từ."),
+          info.today ? h("div",{class:"row"}, h("button",{class:"btn",type:"button",onClick:go(true)},"Ôn thêm, xào từ ngẫu nhiên"), h("button",{class:"btn soft",type:"button",onClick:go(false)},"Lượt ôn từ chưa chắc")) : h("div",{class:"row"}, h("button",{class:"btn",type:"button",onClick:go(false)},"Bắt đầu lượt ôn"))]
+        : h("p",{class:"muted small",style:"margin:0"},"Tuần này chưa có từ. Bạn vẫn có thể tự thêm từ ở “Từ của "+MY_NAME()+"”.")),
+      (() => { const M = NB.mine, mw = Object.keys(M);
+        return h("a",{class:"card day",href:"#/vocab/mine",style:"text-decoration:none"}, h("div",{class:"when",style:"font-size:1.7rem"},"📒"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Từ của "+MY_NAME()), h("div",{class:"small muted"}, mw.length ? mw.length+" từ, tự động vào lượt ôn." : "Tự thêm từ bạn gặp ở bài đọc hoặc bất cứ đâu.")), h("span",{class:"muted"},"›")); })(),
+      L.length ? h("div",{class:"card"}, h("h3",{style:"margin:0 0 2px"},"Từ của "+wTxt(wk)+" · "+L.length+" từ"), groups.map(([i, list]) => h("div",null, h("h4",{style:"margin:12px 0 2px"}, i === "up" ? "Từ nâng cấp" : "Sub "+i+(subName(i) ? ": "+subName(i) : "")), list.map(row)))) : null];
   }
   function listEls(){
     const words = Object.keys(S.vocab), due = vqueue(), cw = weekNo(), W = WEEKS[cw];
