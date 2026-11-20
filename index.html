@@ -242,17 +242,19 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .rhead{margin-bottom:10px}
 .rtitle{font-size:1.25rem; font-weight:800; color:var(--p600)}
 .rsub{font-size:.9rem; color:var(--ink2); margin-top:2px}
-.mcg{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
-.mc{min-height:84px; border-radius:14px; border:2px solid var(--p300); background:var(--p100); color:var(--ink); font:inherit; font-weight:800; padding:6px; cursor:pointer; display:grid; place-items:center; text-align:center; line-height:1.2; overflow-wrap:anywhere}
-.mc .mq{font-size:1.6rem; color:var(--p500)}
-.mc .mf{display:none; font-size:.95rem}
+.mc{perspective:800px; background:none; border:0; padding:0; height:84px; cursor:pointer; font:inherit; -webkit-tap-highlight-color:transparent}
+.mci{position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .5s cubic-bezier(.35,.1,.2,1)}
+.mc.up .mci,.mc.ok .mci{transform:rotateY(180deg)}
+.mq,.mf{position:absolute; inset:0; display:grid; place-items:center; text-align:center; border-radius:14px; border:2px solid; padding:6px; font-weight:800; line-height:1.2; overflow-wrap:anywhere; backface-visibility:hidden; -webkit-backface-visibility:hidden}
+.mq{background:var(--p100); border-color:var(--p300); color:var(--p500); font-size:1.6rem}
+.mf{transform:rotateY(180deg); background:var(--paper); border-color:var(--p500); color:var(--ink); font-size:.95rem; transition:background .3s .35s, border-color .3s .35s, color .3s .35s}
 .mc.en .mf{font-size:1.1rem}
-.mc.up,.mc.ok{background:var(--paper)}
-.mc.up .mq,.mc.ok .mq{display:none}
-.mc.up .mf,.mc.ok .mf{display:block}
-.mc.vi.up{background:#fdf3d9; border-color:#d9a21b}
-.mc.en.up{border-color:var(--p500)}
-.mc.ok{background:#dcf5e3; border-color:#2e9e57; color:#14663a}
+.mc.vi.up .mf{background:#fdf3d9; border-color:#d9a21b}
+.mc.ok .mf{background:#dcf5e3; border-color:#2e9e57; color:#14663a}
+.mc.ok .mci{animation:mcpop .35s .45s}
+@keyframes mcpop{50%{transform:rotateY(180deg) scale(1.06)}}
+@media (prefers-reduced-motion:reduce){.mci{transition:none}.mc.ok .mci{animation:none}}
+.mcg{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
 .vw2{align-items:flex-start}
 .vw2 .vwl{flex:0 1 46%; min-width:0}
 .vw2 .vwr{flex:1 1 0; min-width:0; padding-top:4px}
@@ -3440,7 +3442,7 @@ function vocabView(sub, arg){
       const last = r.ri + 1 >= r.rounds.length;
       foot.append(h("div",{class:"fbtxt ok"},"Ghép xong cả "+ws.length+" cặp!"), h("button",{class:"btn",type:"button",onClick:() => { r.ri++; render(); window.scrollTo(0,0); }}, last ? "Sang bước Nghe" : "Vòng tiếp theo")); };
     shuffle(cards).forEach(c => {
-      const b = h("button",{class:"mc "+c.k,type:"button","aria-label":"Thẻ"}, h("span",{class:"mq"},"?"), h("span",{class:"mf"}, c.t)); c.el = b;
+      const b = h("button",{class:"mc "+c.k,type:"button","aria-label":"Thẻ"}, h("div",{class:"mci"}, h("span",{class:"mq"},"?"), h("span",{class:"mf"}, c.t))); c.el = b;
       b.addEventListener("click", () => {
         if (lock || b.classList.contains("up") || b.classList.contains("ok")) return;
         b.classList.add("up"); if (c.k === "en") playAudio({ text:c.w, rate:.8 });
