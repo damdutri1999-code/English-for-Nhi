@@ -268,6 +268,27 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .mc.ok .mci{animation:mcpop .35s .45s}
 @keyframes mcpop{50%{transform:rotateY(180deg) scale(1.06)}}
 @media (prefers-reduced-motion:reduce){.mci{transition:none}.mc.ok .mci{animation:none}}
+.dplan{display:flex; flex-direction:column; gap:10px; margin-bottom:14px}
+.dcard{padding:12px 14px; margin:0}
+.dcard.today{border:3px solid var(--p500)}
+.dhead{display:flex; align-items:center; gap:12px}
+.dwd{flex:none; width:50px; height:50px; border-radius:14px; background:var(--p500); color:#fff; display:grid; place-items:center; font-weight:800; line-height:1.05; text-align:center; padding-top:3px}
+.dwd small{display:block; font-size:.62rem; font-weight:700; opacity:.9}
+.dcard.done .dwd{background:#2e9e57}
+.dcard.late:not(.done) .dwd{background:#b9822a}
+.dtitle{font-weight:800; line-height:1.25}
+.dtag{flex:none; font-size:.75rem; font-weight:800; padding:3px 9px; border-radius:999px; background:var(--p100); color:var(--p600); border:1.5px solid var(--p300)}
+.dtag.now{background:var(--p500); color:#fff; border-color:var(--p500)}
+.dtag.ok{background:#dcf5e3; color:#14663a; border-color:#2e9e57}
+.dsteps{display:flex; align-items:center; gap:6px; margin-top:10px}
+.dstep{flex:1 1 0; min-width:0; display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:12px; border:2px solid var(--p300); background:var(--paper); color:var(--ink); text-decoration:none; font-weight:800; font-size:.92rem}
+.dstep b{flex:none; width:22px; height:22px; border-radius:50%; background:var(--p500); color:#fff; display:grid; place-items:center; font-size:.8rem}
+.dst{display:flex; flex-direction:column; line-height:1.2; min-width:0}
+.dst small{font-weight:600; opacity:.8; font-size:.72rem}
+.dstep.ok{border-color:#2e9e57; background:#dcf5e3; color:#14663a}
+.dstep.ok b{background:#2e9e57}
+.dstep.go{background:var(--p500); border-color:var(--p500); color:#fff}
+.dstep.go b{background:#fff; color:var(--p600)}
 .mcg{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
 .vw2{align-items:flex-start}
 .vw2 .vwl{flex:0 1 46%; min-width:0}
@@ -1181,7 +1202,7 @@ function applyBrand(){
    TRẠNG THÁI & LƯU TRỮ (localStorage + Supabase tùy chọn)
    ===================================================================== */
 const defaultState = () => ({
-  v:2, updatedAt:0, sessions:{}, vocab:{}, mine:{}, vstats:{}, vpass:{}, mistakes:[], activeDays:[], writing:{}, results:{},
+  v:2, updatedAt:0, sessions:{}, vocab:{}, mine:{}, vstats:{}, vpass:{}, vdays:{}, mistakes:[], activeDays:[], writing:{}, results:{},
   settings:{ name:"", mascot:LRN.mascot, theme:LRN.theme, startDate:null },
   teacherNote:null, feedback:{}, log:[], dayMin:{}, challenges:{},
   stats:{ plays:0, fixed:0, perfect:0, best:0 }, placement:null, lastUnlocked:[]
@@ -3143,6 +3164,21 @@ function doneView(id){
 function gardenEl(big){
   return h("div",{class:"garden"+(big?" big":"")}, allSessions().map(s => h("div",{class:"pot"+(isDone(s.id)?" on":""), html:flowerSVG(isDone(s.id))+s.day.replace("Thứ ","T")})));
 }
+function nhiPlanEl(ti){
+  const wk = weekNo(), W = WEEKS[wk], ds = schedDates(wk), t = dkey(new Date()), vd = S.vdays || {};
+  const hasVoc = ((W.vocabList || []).length + Object.keys(NB.mine).length) > 0, dn = i => ["T2","T3","T4","T5","T6","T7"][i];
+  const cards = W.sessions.map((s, i) => { const d = ds[i], done = isDone(s.id), today = d === t, past = d < t, st = S.sessions[s.id];
+    const vn = vd[d] || 0, vdone = vn > 0;
+    const next = today ? (hasVoc && !vdone ? "v" : !done ? "l" : null) : null;
+    const tag = done ? "Xong" : today ? "Hôm nay" : past ? "Học bù" : "Sắp tới";
+    const step = (n, label, sub, href, ok, go) => h("a",{class:"dstep"+(ok ? " ok" : "")+(go ? " go" : ""),href}, h("b",null, ok ? "✓" : String(n)), h("span",{class:"dst"}, h("span",null,label), sub ? h("small",null,sub) : null));
+    const vsub = vn ? "đã ôn "+vn+" lượt" : "khoảng 8 phút", lsub = done ? "đã học" : st && st.seconds ? "đang học dở" : DAYMIN+" phút";
+    return h("div",{class:"card dcard"+(today ? " today" : "")+(done ? " done" : "")+(past && !done ? " late" : "")},
+      h("div",{class:"dhead"}, h("div",{class:"dwd"}, dn(i), h("small",null, d.slice(8)+"/"+d.slice(5,7))), h("div",{class:"grow"}, h("div",{class:"dtitle"}, s.title), h("div",{class:"small muted"}, KIND[s.kind])), h("span",{class:"dtag"+(today ? " now" : done ? " ok" : "")}, tag)),
+      h("div",{class:"dsteps"}, hasVoc ? [step(1, "Từ vựng", vsub, "#/vocab", vdone, next === "v"), h("span",{class:"tarr"},"→")] : null,
+        step(hasVoc ? 2 : 1, "Bài học", lsub, "#/lesson/"+s.id+"/0", done, next === "l"))); });
+  return h("div",{class:"dplan",style:"margin-top:12px"}, cards);
+}
 function homeView(){
   const list = allSessions(), doneN = list.filter(s => isDone(s.id)).length, ti = todayInfo();
   const sk = streak(), due = NHINB ? 0 : dueWords().length, nm = learnerName();
@@ -3177,10 +3213,10 @@ function homeView(){
     constellationEl(list),
     note ? h("div",{class:"card sticky"}, h("div",{class:"small muted"},"💌 Lời nhắn cho "+nm), h("p",{style:"margin:6px 0 10px;font-weight:700"}, note.text),
       h("button",{class:"btn soft",type:"button",onClick:() => { S.teacherNote.read = true; save(); route(); }},"Đã đọc")) : null,
-    main,
-    missed.length ? h("div",{class:"card flat"}, h("h3",null,"Học bù"), h("div",{class:"chips"}, missed.map(s => h("a",{class:"pill",href:"#/lesson/"+s.id+"/0",style:"text-decoration:none"}, s.day+": "+s.title)))) : null,
+    NHINB && !stubW ? [ti.state === "day" ? null : main, nhiPlanEl(ti)] : main,
+    NHINB && !stubW ? null : missed.length ? h("div",{class:"card flat"}, h("h3",null,"Học bù"), h("div",{class:"chips"}, missed.map(s => h("a",{class:"pill",href:"#/lesson/"+s.id+"/0",style:"text-decoration:none"}, s.day+": "+s.title)))) : null,
     h("div",{class:"stats"}, h("div",{class:"stat"},h("b",null,sk),h("span",null,"ngày liên tiếp")), h("div",{class:"stat"},h("b",null,doneN),h("span",null,"sao đã sáng")), h("div",{class:"stat"},h("b",null,NHINB ? Object.values(S.vpass || {}).reduce((a, x) => a + (x.n || 0), 0) : due),h("span",null,NHINB ? "lượt ôn từ" : "từ cần ôn"))),
-    NHINB ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},"Sổ từ vựng"), h("div",{class:"small muted"},"Mở lên là có một lượt ôn, khoảng 8 phút. Ôn thêm bao nhiêu lần cũng được.")), h("a",{class:"btn soft",href:"#/vocab"},"Ôn từ"))) :
+    NHINB && stubW ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},"Sổ từ vựng"), h("div",{class:"small muted"},"Mở lên là có một lượt ôn, khoảng 8 phút. Ôn thêm bao nhiêu lần cũng được.")), h("a",{class:"btn soft",href:"#/vocab"},"Ôn từ"))) :
     due ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},due+" từ đang chờ ôn"), h("div",{class:"small muted"},"Hôm nay ôn "+Math.min(due, VCAP)+" từ, khoảng "+Math.max(2, Math.round(Math.min(due, VCAP) * .25))+" phút")), h("a",{class:"btn soft",href:"#/vocab"},"Ôn ngay"))) : null,
     S.mistakes.length ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},S.mistakes.length+" câu cần ôn lại"), h("div",{class:"small muted"},"Làm đúng thì câu sẽ biến mất")), h("a",{class:"btn soft",href:"#/mistakes"},"Ôn câu sai"))) : null);
 }
@@ -3519,7 +3555,7 @@ function vocabView(sub, arg){
       const bad = r.words.filter(w => r.res[w] === "fail"), late = r.words.filter(w => r.res[w] === "late");
       r.words.forEach(w => vApply(w, r.res[w] || "ok", (r.ty || {})[w] || "flip"));
       const P = (S.vpass || (S.vpass = {})), t = dkey(new Date()), o = P[r.wk] || {}; const dn = (o.d === t ? o.dn || 0 : 0) + 1;
-      P[r.wk] = { n:(o.n || 0) + 1, d:t, dn }; save(); review = null;
+      P[r.wk] = { n:(o.n || 0) + 1, d:t, dn }; (S.vdays || (S.vdays = {}))[t] = (S.vdays[t] || 0) + 1; save(); review = null;
       return [h("div",{class:"card mcard",style:"text-align:center"}, mascot("cheer"), h("h2",null,"Xong lượt ôn!"),
         h("p",{class:"muted"}, n+" từ: "+(n - bad.length - late.length)+" nhớ tốt"+(late.length ? ", "+late.length+" nhớ sau lần thử 2" : "")+(bad.length ? ", "+bad.length+" cần ôn lại" : "")+"."),
         h("p",{class:"small muted"},"Đây là lượt ôn thứ "+P[r.wk].n+" của tuần này, hôm nay "+dn+" lượt."),
