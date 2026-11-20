@@ -3331,8 +3331,11 @@ function startPass(wk, extra){
 }
 function vStage(si){
   const r = review; r.si = si; r.i = 0; const ty = VCHAIN[si] && VCHAIN[si][0];
-  if (ty === "flip" || ty === "blank"){ const sz = ty === "flip" ? 6 : 5, ch = []; shuffle(r.words).forEach((w, i) => { if (i % sz === 0) ch.push([]); ch[ch.length - 1].push(w); });
-    if (ch.length > 1 && ch[ch.length - 1].length < 3) ch[ch.length - 2].push(...ch.pop()); r.rounds = ch; r.ri = 0; }
+  if (ty === "flip" || ty === "blank"){ const sh = shuffle(r.words), ch = [];
+    if (ty === "flip"){ let rem = sh.length, at = 0; /* mỗi vòng 6 cặp (lưới 3 cột) hoặc 4 cặp (lưới 2 cột), để lưới luôn đầy */
+      while (rem > 0){ const k = rem >= 9 || rem === 6 ? 6 : rem === 8 ? 4 : rem === 7 ? 4 : rem; ch.push(sh.slice(at, at + k)); at += k; rem -= k; } }
+    else sh.forEach((w, i) => { if (i % 5 === 0) ch.push([]); ch[ch.length - 1].push(w); });
+    if (ty === "blank" && ch.length > 1 && ch[ch.length - 1].length < 3) ch[ch.length - 2].push(...ch.pop()); r.rounds = ch; r.ri = 0; }
   r.q = ty === "list" || ty === "flip" || ty === "blank" ? [] : shuffle(r.words).map(w => ({ w, again:false, ty:ty === "blank" && !(vpool[w].ex && vRegex(w).test(vpool[w].ex)) ? "typevi" : ty }));
 }
 function startReview(n){
@@ -3437,7 +3440,7 @@ function vocabView(sub, arg){
   function matchEls(r){
     const ws = r.rounds[r.ri], miss = {}; let open = [], lock = false, done = 0;
     const cards = []; ws.forEach(w => { const m = vMeans(vpool[w]); cards.push({ w, k:"en", t:w, m }, { w, k:"vi", t:m, m }); });
-    const grid = h("div",{class:"mcg"}), foot = h("div",{style:"text-align:center;margin-top:12px"}), cnt = h("b",null,"0 / "+ws.length);
+    const grid = h("div",{class:"mcg",style:"grid-template-columns:repeat("+(ws.length * 2 % 3 === 0 ? 3 : 2)+",1fr)"}), foot = h("div",{style:"text-align:center;margin-top:12px"}), cnt = h("b",null,"0 / "+ws.length);
     const fin = () => { ws.forEach(w => { const res = (miss[w] || 0) >= 3 ? "late" : "ok", cur = r.res[w]; if (cur == null || (res === "late" && cur === "ok")) r.res[w] = res; (r.ty || (r.ty = {}))[w] = "flip"; });
       const last = r.ri + 1 >= r.rounds.length;
       foot.append(h("div",{class:"fbtxt ok"},"Ghép xong cả "+ws.length+" cặp!"), h("button",{class:"btn",type:"button",onClick:() => { r.ri++; render(); window.scrollTo(0,0); }}, last ? "Sang bước Nghe" : "Vòng tiếp theo")); };
