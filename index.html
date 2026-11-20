@@ -850,6 +850,23 @@ html[data-theme=night] .lstick{--lsb:rgba(238,150,184,.94)}
 html[data-learner=tri] .lstick{--lsb:rgba(9,20,50,.94)}
 .lstick .steps{margin-bottom:0}
 .lstick .lhead{margin-bottom:6px}
+.dlab{font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px}
+.dscene{border-left:6px solid #1f6384; background:#e6f3fa; color:#143a50; border-radius:12px; padding:8px 12px; margin:0 0 8px; font-weight:700}
+.dscene .dlab{color:#1f6384}
+.dchat{border-color:var(--doc-line)}
+.dchat>.dlab{color:#7a5a1f; margin-bottom:6px}
+.dchat .bubrow{display:flex; gap:8px; align-items:flex-end}
+.dchat .bubrow.r{flex-direction:row-reverse}
+.dchat .bubcol{display:flex; flex-direction:column; min-width:0; max-width:88%}
+.dchat .bubrow.l .bubcol{align-items:flex-start} .dchat .bubrow.r .bubcol{align-items:flex-end}
+.dchat .bubcol .bub{max-width:100%}
+.dchat .spk{flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:.8rem; color:#fff; background:#b0415f}
+.dchat .spk.b{background:#1f6384}
+.dchat .bub.target{border-color:#b0415f; border-width:3px; box-shadow:0 0 0 3px rgba(176,65,95,.15)}
+.dtag{font-size:.68rem; font-weight:800; color:#b0415f; text-transform:uppercase; letter-spacing:.05em; margin:0 4px 2px}
+.dchat .bub.ask{border-style:dashed; border-color:#1f6384; background:#e6f3fa; color:#1f6384; font-weight:800}
+.dchat .spk.ask{opacity:1}
+.qlabel.dq{display:inline-block; background:#1f6384; color:#fff; border-radius:99px; padding:3px 14px; font-weight:800; margin:6px 0}
 /* thanh cuộn đồng bộ với giao diện: một bộ màu dùng được cho cả trang (nền kem, hồng, đêm) và các khung cuộn trong thẻ */
 html{--sbi-thumb:#d9688a; --sbi-track:rgba(248,225,218,.85); --sbi-hover:#b0415f}
 html[data-learner=tri]{--sbi-thumb:#f0b44f; --sbi-track:rgba(18,32,70,.55); --sbi-hover:#ffc766}
@@ -1984,11 +2001,15 @@ const anyOk = (it, v) => [it.answer].concat(it.alt || []).some(a => same(a, v));
 const audioBar = (text, src) => h("div",{class:"row abtns"},
   h("button",{class:"btn soft",type:"button",onClick:() => { S.stats.plays++; playAudio({text, src, rate:1}); }},"🔊 Nghe"),
   h("button",{class:"btn soft",type:"button",onClick:() => { playAudio({text, src, rate:.75}); }},"🐢 Chậm"));
-const chatEl = lines => { const nxt = lines.length % 2 ? "B" : "A";
-  return h("div",null,
-    h("div",{class:"chat"}, lines.map((l,i) => h("div",{class:"bubrow "+(i%2?"r":"l")}, h("span",{class:"spk"}, i%2 ? "B" : "A"), h("div",{class:"bub "+(i%2?"r":"l")}, l))),
-      h("div",{class:"bubrow "+(lines.length%2?"r":"l")}, h("span",{class:"spk ask"}, nxt), h("div",{class:"bub ask"}, "… ?"))),
-    h("div",{class:"qlabel"}, "👇 Chọn câu "+nxt+" nên nói:")); };
+const chatEl = (lines, scene) => { const nxt = lines.length % 2 ? "B" : "A", last = lines.length - 1;
+  return h("div",{class:"dlg"},
+    scene ? h("div",{class:"dscene"}, h("div",{class:"dlab"},"📍 Bối cảnh"), h("div",null,scene)) : null,
+    h("div",{class:"chat dchat"}, h("div",{class:"dlab"},"💬 Hội thoại"),
+      lines.map((l,i) => { const who = i%2 ? "B" : "A";
+        return h("div",{class:"bubrow "+(i%2?"r":"l")}, h("span",{class:"spk "+who.toLowerCase()}, who),
+          h("div",{class:"bubcol"}, i === last ? h("div",{class:"dtag"},"Câu cần đáp lại") : null, h("div",{class:"bub "+(i%2?"r":"l")+(i === last ? " target" : "")}, l))); }),
+      h("div",{class:"bubrow "+(lines.length%2?"r":"l")}, h("span",{class:"spk ask "+nxt.toLowerCase()}, nxt), h("div",{class:"bub ask"}, "Câu "+nxt+" ở đây…"))),
+    h("div",{class:"qlabel dq"}, "👇 Chọn câu "+nxt+" nên nói để đáp lại:")); };
 
 function mcqItem(it, onChange, pre){
   let sel = -1, locked = false; const btns = [];
@@ -2355,7 +2376,7 @@ function seqlistenItem(it, onChange){
 const mapItems = (fn, pre) => (set, ch) => ({ head:[], items:set.items.map(it => fn(it, ch, pre ? pre(it) : null)) });
 const BUILD = {
   mcq:mapItems(mcqItem), transmc:mapItems(mcqItem), truefalse:mapItems(mcqItem), oddone:mapItems(mcqItem),
-  listenpick:mapItems(listenpickItem), dialogue:mapItems(mcqItem, it => it.scene ? h("div",null, h("p",{class:"scene"}, "📍 ", it.scene), chatEl(it.lines)) : chatEl(it.lines)),
+  listenpick:mapItems(listenpickItem), dialogue:mapItems(mcqItem, it => chatEl(it.lines, it.scene)),
   tap:mapItems(tapItem), multi:mapItems(multiItem), inline:mapItems(inlineItem), seqlisten:mapItems(seqlistenItem),
   gap:buildGap, cloze:buildCloze, match:buildMatch,
   reorder:mapItems(reorderItem), fix:mapItems(fixItem), form:mapItems(formItem), dictation:mapItems(dictItem),
