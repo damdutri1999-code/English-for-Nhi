@@ -289,6 +289,38 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .dstep.ok b{background:#2e9e57}
 .dstep.go{background:var(--p500); border-color:var(--p500); color:#fff}
 .dstep.go b{background:#fff; color:var(--p600)}
+@media (max-width:699px){.dhead .small{display:none}}
+.hello{margin-bottom:10px}
+.hello svg{width:60px !important; height:73px !important}
+.bubble{padding:9px 14px}
+.const{height:auto !important; aspect-ratio:358/160; margin-bottom:12px; border-radius:28px}
+.const .corner svg{width:44px; height:54px}
+.const .cb{bottom:12px; right:70px}
+.dplan{gap:8px; margin-top:0 !important}
+.dcard{padding:10px 12px !important}
+.dwd{width:44px; height:44px; border-radius:12px; font-size:.95rem}
+.dhead{gap:10px}
+.dtitle{font-size:.98rem}
+.dsteps{margin-top:8px}
+.dstep{padding:6px 9px}
+.dcard.done .dhead{cursor:pointer}
+.dcard.done:not(.open) .dsteps{display:none}
+.stats{margin-bottom:12px}
+.stat{padding:8px 4px}
+.stat b{font-size:1.35rem}
+@media (min-width:900px){
+  html:not([data-learner=tri]) body[data-pg=home] .wrap, html:not([data-learner=tri]) body[data-pg=vocab] .wrap, html:not([data-learner=tri]) body[data-pg=practice] .wrap{max-width:1040px}
+  html:not([data-learner=tri]) body[data-pg=week] .wrap, html:not([data-learner=tri]) body[data-pg=progress] .wrap{max-width:820px}
+  html:not([data-learner=tri]) body[data-pg=home] .wrap{max-width:1180px}
+  .hm{display:grid; grid-template-columns:minmax(0,4fr) minmax(0,7fr); gap:22px; align-items:start}
+  .dcard{display:flex; align-items:center; gap:12px}
+  .dcard .dhead{flex:1 1 0; min-width:0}
+  .dcard .dsteps{margin-top:0; flex:0 0 330px}
+  .dcard.done:not(.open) .dsteps{display:flex}
+  .dcard.done .dhead{cursor:default}
+  .hm-l{position:sticky; top:14px}
+  .vgrid{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:20px; align-items:start}
+}
 .mcg{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
 .vw2{align-items:flex-start}
 .vw2 .vwl{flex:0 1 46%; min-width:0}
@@ -1181,7 +1213,7 @@ function constellationEl(list){
   const dust = [[20,64,9],[318,70,8],[40,236,8],[190,230,9],[330,196,9],[150,76,7]].map(d => '<path d="'+STAR_D+'" transform="translate('+d[0]+' '+d[1]+') scale('+d[2]/20+')" fill="#fff" opacity=".8"/>').join("");
   const other = LRN.id === "tri" ? "moon" : mascotKind() === "hang" ? "bunny" : "hang";
   const el = h("div",{class:"const", role:"img", "aria-label":"Chòm sao tuần này: "+nDone+" trên 6 sao đã sáng"});
-  el.innerHTML = '<svg class="sky" viewBox="0 0 358 282" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
+  el.innerHTML = '<svg class="sky" viewBox="0 86 358 160" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
     + dust + (SCH ? "" : '<svg x="150" y="100" width="150" height="183" viewBox="0 0 200 244" opacity=".12">'+bodyOf("bunny","happy")+'</svg>')
     + (rest ? '<path d="'+rest+'" stroke="'+PCOL().dash+'" stroke-width="2.2" stroke-dasharray="1 7" stroke-linecap="round" fill="none"/>' : "")
     + (lit ? '<path d="'+lit+'" stroke="#ffe27a" stroke-width="7" fill="none" stroke-linecap="round" opacity=".45" filter="url(#cgl)"/><path d="'+lit+'" stroke="#ffe27a" stroke-width="3" fill="none" stroke-linecap="round"/>' : "")
@@ -3173,10 +3205,11 @@ function nhiPlanEl(ti){
     const tag = done ? "Xong" : today ? "Hôm nay" : past ? "Học bù" : "Sắp tới";
     const step = (n, label, sub, href, ok, go) => h("a",{class:"dstep"+(ok ? " ok" : "")+(go ? " go" : ""),href}, h("b",null, ok ? "✓" : String(n)), h("span",{class:"dst"}, h("span",null,label), sub ? h("small",null,sub) : null));
     const vsub = vn ? "đã ôn "+vn+" lượt" : "khoảng 8 phút", lsub = done ? "đã học" : st && st.seconds ? "đang học dở" : DAYMIN+" phút";
-    return h("div",{class:"card dcard"+(today ? " today" : "")+(done ? " done" : "")+(past && !done ? " late" : "")},
-      h("div",{class:"dhead"}, h("div",{class:"dwd"}, dn(i), h("small",null, d.slice(8)+"/"+d.slice(5,7))), h("div",{class:"grow"}, h("div",{class:"dtitle"}, s.title), h("div",{class:"small muted"}, KIND[s.kind])), h("span",{class:"dtag"+(today ? " now" : done ? " ok" : "")}, tag)),
+    const card = h("div",{class:"card dcard"+(today ? " today" : "")+(done ? " done" : "")+(past && !done ? " late" : "")},
+      h("div",{class:"dhead",onClick:() => { if (done) card.classList.toggle("open"); }}, h("div",{class:"dwd"}, dn(i), h("small",null, d.slice(8)+"/"+d.slice(5,7))), h("div",{class:"grow"}, h("div",{class:"dtitle"}, s.title), h("div",{class:"small muted"}, KIND[s.kind])), h("span",{class:"dtag"+(today ? " now" : done ? " ok" : "")}, tag)),
       h("div",{class:"dsteps"}, hasVoc ? [step(1, "Từ vựng", vsub, "#/vocab", vdone, next === "v"), h("span",{class:"tarr"},"→")] : null,
-        step(hasVoc ? 2 : 1, "Bài học", lsub, "#/lesson/"+s.id+"/0", done, next === "l"))); });
+        step(hasVoc ? 2 : 1, "Bài học", lsub, "#/lesson/"+s.id+"/0", done, next === "l")));
+    return card; });
   return h("div",{class:"dplan",style:"margin-top:12px"}, cards);
 }
 function homeView(){
@@ -3207,6 +3240,18 @@ function homeView(){
   const sleepy = ti.state === "rest" || (ti.state === "day" && missed.length >= 2);
   const say2 = SCH ? (ti.state === "rest" ? "Chủ nhật là ngày nghỉ." : sleepy ? "Còn "+missed.length+" buổi chưa hoàn thành trong tuần này." : say)
     : ti.state === "rest" ? "Chủ nhật rồi, mình nghỉ ngơi cho khỏe nhé!" : sleepy ? "Mình hơi buồn ngủ, học bù một chút cho tỉnh nhé?" : say;
+  if (NHINB && !stubW){
+    const stat = (b, t) => h("div",{class:"stat"}, h("b",null,b), h("span",null,t));
+    return h("div",{class:"hm"},
+      h("div",{class:"hm-l"}, h("div",{class:"hello"}, mascot(sleepy ? "sleepy" : sk > 1 ? "cheer" : "happy"), h("div",{class:"bubble"}, "Chào "+nm+"! "+say2)),
+        constellationEl(list),
+        note ? h("div",{class:"card sticky"}, h("div",{class:"small muted"},"💌 Lời nhắn cho "+nm), h("p",{style:"margin:6px 0 10px;font-weight:700"}, note.text),
+          h("button",{class:"btn soft",type:"button",onClick:() => { S.teacherNote.read = true; save(); route(); }},"Đã đọc")) : null,
+        ti.state === "day" ? null : main),
+      h("div",{class:"hm-r"}, nhiPlanEl(ti),
+        h("div",{class:"stats"}, stat(sk,"ngày liên tiếp"), stat(doneN,"sao đã sáng"), stat(Object.values(S.vpass || {}).reduce((a, x) => a + (x.n || 0), 0),"lượt ôn từ")),
+        S.mistakes.length ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},S.mistakes.length+" câu cần ôn lại"), h("div",{class:"small muted"},"Làm đúng thì câu sẽ biến mất")), h("a",{class:"btn soft",href:"#/mistakes"},"Ôn câu sai"))) : null));
+  }
   return h("div",null,
     IS_BW && curBook() ? h("div",{class:"row",style:"margin-bottom:10px;align-items:center"}, h("span",{class:"pill"},"📖 "+((bookInfo(curBook()) || {}).title || "")+" · "+((bookInfo(curBook()) || {}).level || "")), h("a",{class:"small",href:"#/books",style:"margin-left:auto"},"Đổi sách")) : null,
     h("div",{class:"hello"}, mascot(sleepy ? "sleepy" : sk > 1 ? "cheer" : "happy"), h("div",{class:"bubble"}, SCH ? nm+". "+say2 : "Chào "+nm+"! "+say2)),
@@ -3594,7 +3639,7 @@ function vocabView(sub, arg){
     const groups = [1,2,3,4].map(i => [i, L.filter(x => !x.up && x.sub === i)]).filter(g => g[1].length); const ups = L.filter(x => x.up); if (ups.length) groups.push(["up", ups]);
     const row = x => { const v = vpool[x.en.toLowerCase()]; return v ? vWordRow(x.en, v) : null; };
     const go = extra => () => { startPass(wk, extra); render(); window.scrollTo(0,0); };
-    return [h("h1",null,"Sổ từ vựng"), h("p",{class:"muted"},"Sổ gồm toàn bộ từ của tuần (kể cả từ chưa học tới) và từ bạn tự thêm. Mỗi lần mở là một lượt ôn, ôn bao nhiêu lượt cũng được."),
+    return [h("h1",{style:"margin-bottom:6px"},"Sổ từ vựng"), h("div",{class:"vgrid"}, h("div",null,
       ws.length > 1 ? dd(ws.map(n => ({ v:n, t:wTxt(n)+": "+WEEKS[n].title })), { cls:"txt", label:"Chọn tuần", value:wk, onChange:v => { vwk = +v; render(); } }) : null,
       h("div",{class:"card tint",style:"margin-top:12px"}, h("h3",{style:"margin:0 0 6px"}, keys.length ? "Lượt ôn hôm nay" : "Sổ còn trống"),
         keys.length ? [h("div",{class:"small muted",style:"margin-bottom:8px"}, keys.length+" từ trong sổ ("+L.length+" từ tuần "+wk+(mine ? " + "+mine+" từ của bạn" : "")+"). Mỗi lượt ôn "+Math.min(VPASS, keys.length)+" từ, từ chưa chắc được xếp trước."),
@@ -3603,8 +3648,8 @@ function vocabView(sub, arg){
           info.today ? h("div",{class:"row"}, h("button",{class:"btn",type:"button",onClick:go(true)},"Ôn thêm, xào từ ngẫu nhiên"), h("button",{class:"btn soft",type:"button",onClick:go(false)},"Lượt ôn từ chưa chắc")) : h("div",{class:"row"}, h("button",{class:"btn",type:"button",onClick:go(false)},"Bắt đầu lượt ôn"))]
         : h("p",{class:"muted small",style:"margin:0"},"Tuần này chưa có từ. Bạn vẫn có thể tự thêm từ ở “Từ của "+MY_NAME()+"”.")),
       (() => { const M = NB.mine, mw = Object.keys(M);
-        return h("a",{class:"card day",href:"#/vocab/mine",style:"text-decoration:none"}, h("div",{class:"when",style:"font-size:1.7rem"},"📒"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Từ của "+MY_NAME()), h("div",{class:"small muted"}, mw.length ? mw.length+" từ, tự động vào lượt ôn." : "Tự thêm từ bạn gặp ở bài đọc hoặc bất cứ đâu.")), h("span",{class:"muted"},"›")); })(),
-      L.length ? h("div",{class:"card"}, h("h3",{style:"margin:0 0 2px"},"Từ của "+wTxt(wk)+" · "+L.length+" từ"), groups.map(([i, list]) => h("div",null, h("h4",{style:"margin:12px 0 2px"}, i === "up" ? "Từ nâng cấp" : "Sub "+i+(subName(i) ? ": "+subName(i) : "")), list.map(row)))) : null];
+        return h("a",{class:"card day",href:"#/vocab/mine",style:"text-decoration:none"}, h("div",{class:"when",style:"font-size:1.7rem"},"📒"), h("div",{class:"grow"}, h("div",{style:"font-weight:800"},"Từ của "+MY_NAME()), h("div",{class:"small muted"}, mw.length ? mw.length+" từ, tự động vào lượt ôn." : "Tự thêm từ bạn gặp ở bài đọc hoặc bất cứ đâu.")), h("span",{class:"muted"},"›")); })()),
+      L.length ? h("div",{class:"card"}, h("h3",{style:"margin:0 0 2px"},"Từ của "+wTxt(wk)+" · "+L.length+" từ"), groups.map(([i, list]) => h("div",null, h("h4",{style:"margin:12px 0 2px"}, i === "up" ? "Từ nâng cấp" : "Sub "+i+(subName(i) ? ": "+subName(i) : "")), list.map(row)))) : null)];
   }
   function listEls(){
     const words = Object.keys(S.vocab), due = vqueue(), cw = weekNo(), W = WEEKS[cw];
@@ -4152,7 +4197,7 @@ function route(){
   if (["gv","content","teacher"].includes(page)){ location.replace("#/admin/" + ({gv:"plan",content:"upload",teacher:"notes"})[page]); return; }
   if (IS_BW && !curBook() && !["books","settings","admin","vocab"].includes(page)) page = "books";
   document.body.classList.toggle("admin", page === "admin"); adminTheme(page === "admin");
-  document.body.classList.toggle("immersive", page === "lesson");
+  document.body.classList.toggle("immersive", page === "lesson"); document.body.dataset.pg = page;
   let view;
   switch (page){
     case "books": view = bookShelfView(); break;
