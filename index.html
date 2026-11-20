@@ -606,8 +606,10 @@ body.immersive .bank.stick{bottom:calc(86px + env(safe-area-inset-bottom))}
 .card[data-k]{background:var(--sb); border-color:var(--sc)}
 .setsep{display:flex; align-items:center; gap:10px; margin:0 0 12px}
 .setsep::before,.setsep::after{content:""; flex:1; height:3px; border-radius:2px; background:var(--sc)}
-.setsep span{display:inline-flex; align-items:center; gap:6px; background:var(--sc); color:#fff; font-weight:800; font-size:.95rem; letter-spacing:.01em; border-radius:99px; padding:5px 14px; white-space:nowrap; max-width:100%}
-.setsep .ico{width:18px; height:18px}
+.setsep > span{display:inline-flex; align-items:center; gap:6px; background:var(--sc); color:#fff; font-weight:800; font-size:.95rem; letter-spacing:.01em; border-radius:99px; padding:5px 14px; white-space:nowrap; max-width:100%}
+.setsep .ico{width:18px; height:18px; margin:0; display:inline-block; padding:0; background:none; vertical-align:middle}
+.setsep .ico:empty{display:none}
+.setsep > span{justify-content:center; text-align:center}
 .card[data-k]:has(> .exset.fin){--sc:var(--ok); --sb:var(--ok-bg); border-color:var(--ok)}
 .taskbox .tins{flex:1 1 160px; min-width:0; color:var(--task-ink); font-weight:700; font-size:.93rem; line-height:1.35}
 .q{padding:9px 0 10px}
