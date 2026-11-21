@@ -812,6 +812,7 @@ section.exset[data-type=oddone] .opts .opt{padding:8px 3px; text-align:center; m
 .opt{padding:8px 12px; min-height:40px; border-radius:13px}
 .opts.row .opt{text-align:center}
 .q.gap{line-height:2; padding-top:8px}
+.q,.q.gap{display:block !important; text-align:left}
 .fbtxt{padding:7px 12px; margin-top:6px; font-size:.95rem}
 .fbtxt .why{font-weight:600; font-size:.9rem; margin-top:2px; line-height:1.4}
 .dhint{margin:0 0 6px; font-size:.84rem}
@@ -832,6 +833,10 @@ section.exset[data-type=oddone] .opts .opt{padding:8px 3px; text-align:center; m
 .q .bank:not(.stick)::before{display:none}
 .q .bank:not(.stick){margin-top:6px}
 .opts:has(> .opt:nth-child(4):last-child){grid-template-columns:1fr 1fr}
+.opts.row.row{grid-template-columns:repeat(var(--n,3),minmax(0,1fr))}
+.opts.row.row.lg:has(> .opt:nth-child(4)){grid-template-columns:1fr 1fr}
+.opts.row.row .opt{text-align:center; display:flex; align-items:center; justify-content:center; align-self:stretch}
+@media (max-width:560px){ .opts.row.row.lg{grid-template-columns:1fr} .opts.row.row.sh{grid-template-columns:repeat(auto-fit,minmax(84px,1fr))} }
 .chat{padding:8px; display:grid; gap:5px}
 .chat .bub{padding:5px 11px; font-size:.98rem}
 .chat .spk{width:24px; height:24px; font-size:.78rem}
@@ -2170,7 +2175,7 @@ const TYPES = {
   transmc:{label:"Dịch: chọn đáp án", icon:"🌏", desc:"Chọn bản dịch đúng", how:"Chọn bản dịch đúng cho mỗi câu."},
   oddone:{label:"Tìm từ khác loại", icon:"🧐", desc:"Tìm từ không cùng nhóm", how:"Chọn từ không cùng nhóm với các từ còn lại."},
   match:{label:"Nối cặp", icon:"🔗", desc:"Nối từ với nghĩa", how:"Nối mỗi từ bên trái với nghĩa đúng bên phải."},
-  listenpick:{label:"Nghe và chọn", icon:"🎧", desc:"Nghe rồi chọn đáp án", how:"Mỗi câu có 3 bước: nghe và chọn đáp án, nghe dò theo chữ 2 lần, rồi chép lại câu (chữ sẽ ẩn). Đúng mới sang câu sau."},
+  listenpick:{label:"Nghe và chọn", icon:"🎧", desc:"Nghe rồi chọn đáp án", how:"3 bước: nghe chọn, dò chữ, chép câu."},
   dictation:{label:"Nghe và viết lại", icon:"✍️", desc:"Nghe rồi gõ lại câu", how:"Bấm 🔊 để nghe, rồi gõ lại câu bạn nghe được."},
   dialogue:{label:"Chọn câu đáp lại", icon:"💬", desc:"Chọn câu đáp phù hợp trong hội thoại", how:"Đọc hội thoại, rồi chọn câu đáp phù hợp."},
   gap:{label:"Điền từ vào chỗ trống", icon:"🧩", desc:"Chọn từ cho sẵn để điền", how:"Kéo từ trong kho thả vào đúng chỗ trống."},
@@ -2220,7 +2225,7 @@ function mcqItem(it, onChange, pre){
   const order = fixed ? it.options.map((_, i) => i) : shuffle(it.options.map((_, i) => i));
   const fbSlot = h("div");
   const el = h("div", {class:"q"}, it.q && !it._gen ? h("p",{class:"qtext"}, it.q) : null, pre || null,
-    h("div",{class:"opts"+(it.options.length <= 4 && it.options.every(o => String(o).length <= 16) ? " row" : "")}, order.map((oi,i) => { const b = h("button",{class:"opt",type:"button",onClick:() => {
+    h("div",{class:"opts"+(it.options.every(o => String(o).length <= 34) ? " row"+(it.options.every(o => String(o).length <= 16) ? " sh" : " lg") : ""),style:"--n:"+Math.min(it.options.length, 4)}, order.map((oi,i) => { const b = h("button",{class:"opt",type:"button",onClick:() => {
       if (locked) return; sel = i; btns.forEach((x,j) => { x.classList.toggle("sel", j===i); x.classList.remove("wrong"); }); onChange(); }}, it.options[oi]); btns.push(b); return b; })), fbSlot);
   return { el, fbSlot, retry:true, isAnswered:() => sel >= 0, _sel:() => sel >= 0,
     lock(){ locked = true; btns.forEach((b,j) => { if (order[j] === it.answer) b.classList.add("right"); }); },
@@ -2421,6 +2426,10 @@ function listenpickItem(it, onChange){
     input.addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); go(); } });
     host.replaceChildren(input, btn, msg);
     base._msg = msg; base._input = input; setTimeout(() => input.focus(), 50);
+    /* đọc lặp: phát, nghỉ 5 giây, phát lại, đến khi gõ đúng */
+    const loop = () => { if (!cur || stage !== "dict" || !host.isConnected) return;
+      playAudio({text:it.say, src:it.audioSrc, rate:.9}, () => { if (cur && stage === "dict") timer = setTimeout(loop, 5000); }); };
+    cur = true; timer = setTimeout(loop, 400);
   }
   function startFollow(){
     stage = "follow";
@@ -2450,8 +2459,8 @@ function listenpickItem(it, onChange){
       if (!submitted) return { pending:true };
       submitted = false; const v = base._input.value, ok = [it.say].concat(it.alt || []).some(a => same(a, v));
       base._input.classList.remove("right","wrong"); base._input.classList.add(ok ? "right" : "wrong");
-      if (ok){ base._input.readOnly = true; stage = "done"; return { ok:true, correct:it.say, why:it.why, prompt:it.q || it.say }; }
-      base._msg.replaceChildren(h("div",{class:"fbtxt bad"}, "Chưa đúng, nghe lại rồi sửa nhé. Chữ hoa và dấu câu không quan trọng."));
+      if (ok){ base._input.readOnly = true; stage = "done"; stopAll(); return { ok:true, correct:it.say, why:it.why, prompt:it.q || it.say }; }
+      base._msg.replaceChildren(h("div",{class:"fbtxt bad"}, "Chưa đúng, nghe lại rồi sửa nhé. Chữ hoa và dấu câu không quan trọng. Âm thanh tự lặp mỗi 5 giây."));
       return { pending:true };
     } });
   return out;
