@@ -2910,7 +2910,7 @@ function wordCard(host, anchor, word, vi){
   setTimeout(() => card.scrollIntoView({ block:"nearest", behavior:"smooth" }), 30);
 }
 function readStep(step, ctx){
-  const gloss = h("div",{class:"muted small",style:"margin:0 0 8px"}, "Chạm vào bất kỳ từ nào để xem nghĩa, phiên âm, cách đọc và ví dụ.");
+  const gloss = h("div",{class:"muted small",style:"margin:0 0 4px; font-style:italic; text-align:left"}, "Chạm vào bất kỳ từ nào để xem nghĩa, phiên âm, cách đọc và ví dụ.");
   const mkBox = () => { let picked = null;
     const hasVi = Array.isArray(step.textVi) && step.textVi.length === step.text.length && step.textVi.every(x => typeof x === "string" && x.trim());
     const box = h("div",{class:"reading rd"}, step.text.flatMap((p, pi) => [h("p", null, tokenize(p).map(t => {
@@ -2929,7 +2929,7 @@ function readStep(step, ctx){
   const box = mkBox();
   const finish = () => { if (!step.noAdd) addVocab(step.vocab); ctx.done(); };
   const purpose = h("div",{class:"taskbox"}, h("span",{class:"tbadge"}, "🎯 Đọc để"), h("span",{class:"tins"}, step.purpose || "Hiểu ý chính của bài, rồi dùng bài này để làm các câu bên dưới."));
-  const left = h("div",{class:"card rleft"}, purpose, h("h2",{style:"margin-top:10px"},step.heading), gloss, box);
+  const left = h("div",{class:"card rleft"}, purpose, gloss, h("h2",{style:"margin-top:6px"},step.heading), box);
   const note = step.note ? h("p",{class:"muted"}, insEl(step.note, "tins-n")) : null;
   if (!step.sets.length){
     return h("div",null, left, note, h("button",{class:"btn block",type:"button",onClick:() => { finish(); if (!step.noAdd) toast("Đã thêm từ mới vào sổ từ vựng"); }}, "Mình đọc xong rồi"));
