@@ -1932,8 +1932,7 @@ function nhiStatsEl(sk){
   const row = (t, v, sub) => h("div",{class:"nsrow"}, h("span",null,t, sub ? h("small",null,sub) : null), h("b",null,v));
   return h("div",{class:"card nstats"}, h("h3",null,"Thống kê"),
     row("Từ đã học", String(words), "tổng từ đã ôn ít nhất một lần"),
-    row("Ngày học liên tiếp", String(sk)),
-    row("Streak dài nhất", String(bestStreak()), "ngày"),
+    row("Ngày học liên tiếp", String(sk), "dài nhất từ trước tới nay: "+bestStreak()+" ngày"),
     row("Đúng khi ôn từ", pc(VA.right, VA.total), VA.total ? VA.total+" lượt từ" : "chưa có dữ liệu"),
     row("Đúng ở bài theo ngày", pc(lr, lt), lt ? lr+"/"+lt+" câu" : "chưa có dữ liệu"));
 }
