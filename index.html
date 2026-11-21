@@ -1938,8 +1938,7 @@ const CHEERS = [
   "Càng về sau càng thấy dễ hơn. Mình đang đi đúng hướng."];
 function nhiCheerEl(doneN, total){
   const wk = weekNo(), W = WEEKS[wk] || {}, msg = CHEERS[(Math.max(1, wk) - 1) % CHEERS.length];
-  return h("div",{class:"card tint cheer"}, h("div",{class:"small muted"}, wTxt(wk)+(W.title ? " · "+W.title : "")),
-    h("p",{class:"cheer-t"}, msg),
+  return h("div",{class:"card tint cheer"}, h("p",{class:"cheer-t",style:"margin-top:0"}, msg),
     h("div",{class:"small muted"}, total ? "Đã xong "+doneN+"/"+total+" buổi tuần này" : ""));
 }
 function nhiStatsEl(sk){
@@ -3337,7 +3336,7 @@ function homeView(){
   if (NHINB && !stubW){
     const stat = (b, t) => h("div",{class:"stat"}, h("b",null,b), h("span",null,t));
     return h("div",{class:"hm"},
-      h("div",{class:"hm-l"}, nhiCheerEl(doneN, list.length),
+      h("div",{class:"hm-l"}, nhiCheerEl(doneN, list.length), constellationEl(list),
         note ? h("div",{class:"card sticky"}, h("div",{class:"small muted"},"💌 Lời nhắn cho "+nm), h("p",{style:"margin:6px 0 10px;font-weight:700"}, note.text),
           h("button",{class:"btn soft",type:"button",onClick:() => { S.teacherNote.read = true; save(); route(); }},"Đã đọc")) : null,
         ti.state === "rest" ? main : null, nhiStatsEl(sk)),
