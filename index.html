@@ -306,6 +306,8 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .dstep{padding:6px 9px}
 .dcard.done .dhead{cursor:pointer}
 .dcard.done:not(.open) .dsteps{display:none}
+.cheer{padding:16px 18px}
+.cheer-t{margin:6px 0 8px; font-size:1.15rem; font-weight:800; line-height:1.4}
 .nstats{padding:14px 16px; margin-top:12px}
 .nstats h3{margin:0 0 6px}
 .nsrow{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 0; border-top:1.5px dashed var(--line)}
@@ -1925,6 +1927,21 @@ function bestStreak(){
   }
   return Math.max(best, streak());
 }
+const CHEERS = [
+  "Bắt đầu là đã đi được nửa đường. Mỗi ngày một chút thôi, đều đặn là được.",
+  "Quen dần rồi. Nói sai cũng không sao, sai là cách nhớ lâu nhất.",
+  "Tuần này mình đã nghe và đọc nhiều hơn tuần trước. Cứ thế mà đi tiếp.",
+  "Đừng so với ai cả, chỉ cần hôm nay hơn hôm qua một chút.",
+  "Học đều quan trọng hơn học nhiều. 30 phút mỗi ngày là đủ.",
+  "Từ nào chưa nhớ thì gặp lại thêm vài lần, não sẽ giữ lại.",
+  "Nghỉ một ngày cũng được, quay lại học tiếp là giỏi rồi.",
+  "Càng về sau càng thấy dễ hơn. Mình đang đi đúng hướng."];
+function nhiCheerEl(doneN, total){
+  const wk = weekNo(), W = WEEKS[wk] || {}, msg = CHEERS[(Math.max(1, wk) - 1) % CHEERS.length];
+  return h("div",{class:"card tint cheer"}, h("div",{class:"small muted"}, wTxt(wk)+(W.title ? " · "+W.title : "")),
+    h("p",{class:"cheer-t"}, msg),
+    h("div",{class:"small muted"}, total ? "Đã xong "+doneN+"/"+total+" buổi tuần này" : ""));
+}
 function nhiStatsEl(sk){
   const pc = (r, t) => t > 0 ? Math.round(r / t * 100) + "%" : "–";
   const VA = S.vacc || {right:0,total:0}; let lr = 0, lt = 0; Object.values(S.results || {}).forEach(x => { lr += x.right || 0; lt += x.total || 0; });
@@ -3320,8 +3337,7 @@ function homeView(){
   if (NHINB && !stubW){
     const stat = (b, t) => h("div",{class:"stat"}, h("b",null,b), h("span",null,t));
     return h("div",{class:"hm"},
-      h("div",{class:"hm-l"}, h("div",{class:"hello"}, mascot(sleepy ? "sleepy" : sk > 1 ? "cheer" : "happy"), h("div",{class:"bubble"}, "Chào "+nm+"! "+say2)),
-        constellationEl(list),
+      h("div",{class:"hm-l"}, nhiCheerEl(doneN, list.length),
         note ? h("div",{class:"card sticky"}, h("div",{class:"small muted"},"💌 Lời nhắn cho "+nm), h("p",{style:"margin:6px 0 10px;font-weight:700"}, note.text),
           h("button",{class:"btn soft",type:"button",onClick:() => { S.teacherNote.read = true; save(); route(); }},"Đã đọc")) : null,
         ti.state === "rest" ? main : null, nhiStatsEl(sk)),
