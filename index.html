@@ -306,6 +306,9 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .dstep{padding:6px 9px}
 .dcard.done .dhead{cursor:pointer}
 .dcard.done:not(.open) .dsteps{display:none}
+.dstep .dst{min-width:0}
+.dstep .dst>span{white-space:nowrap}
+.dstep .dst small{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block}
 .stats{margin-bottom:12px}
 .stat{padding:8px 4px}
 .stat b{font-size:1.35rem}
@@ -3250,11 +3253,12 @@ function nhiPlanEl(ti){
     const next = today ? (hasVoc && !vdone ? "v" : !done ? "l" : null) : null;
     const tag = done ? "Xong" : today ? "Hôm nay" : past ? "Học bù" : "Sắp tới";
     const step = (n, label, sub, href, ok, go) => h("a",{class:"dstep"+(ok ? " ok" : "")+(go ? " go" : ""),href}, h("b",null, ok ? "✓" : String(n)), h("span",{class:"dst"}, h("span",null,label), sub ? h("small",null,sub) : null));
-    const vsub = vn ? "đã ôn "+vn+" lượt" : "khoảng 8 phút", lsub = done ? "đã học" : st && st.seconds ? "đang học dở" : DAYMIN+" phút";
+    const vsub = vn ? "đã ôn "+vn+" lượt" : "8 phút", lsub = done ? "đã học" : st && st.seconds ? "đang học dở" : DAYMIN+" phút";
     const card = h("div",{class:"card dcard"+(today ? " today" : "")+(done ? " done" : "")+(past && !done ? " late" : "")},
       h("div",{class:"dhead",onClick:() => { if (done) card.classList.toggle("open"); }}, h("div",{class:"dwd"}, dn(i), h("small",null, d.slice(8)+"/"+d.slice(5,7))), h("div",{class:"grow"}, h("div",{class:"dtitle"}, s.title), h("div",{class:"small muted"}, KIND[s.kind])), h("span",{class:"dtag"+(today ? " now" : done ? " ok" : "")}, tag)),
       h("div",{class:"dsteps"}, hasVoc ? [step(1, "Từ vựng", vsub, "#/vocab", vdone, next === "v"), h("span",{class:"tarr"},"→")] : null,
-        step(hasVoc ? 2 : 1, "Bài học", lsub, "#/lesson/"+s.id+"/0", done, next === "l")));
+        step(hasVoc ? 2 : 1, "Bài học", lsub, "#/lesson/"+s.id+"/0", done, next === "l"),
+        CH[s.id] ? [h("span",{class:"tarr"},"→"), step(hasVoc ? 3 : 2, "Thử thách", S.challenges[s.id] ? "đúng "+S.challenges[s.id].right+"/"+S.challenges[s.id].total : "tùy chọn", "#/challenge/"+s.id, !!S.challenges[s.id], false)] : null));
     return card; });
   return h("div",{class:"dplan",style:"margin-top:12px"}, cards);
 }
