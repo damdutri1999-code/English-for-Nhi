@@ -865,7 +865,8 @@ body.immersive .bank.stick{bottom:calc(88px + env(safe-area-inset-bottom))}
 @media (min-width:860px){
   body.immersive .wrap{max-width:1120px}
   .rsplit{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,6fr); gap:18px; align-items:start}
-  .rleft{position:sticky; top:34px; max-height:calc(100vh - 150px); overflow:auto; margin-bottom:0}
+  .rleft{margin-bottom:0}
+  .rleft.stk{position:sticky; top:34px}
   .fabread,.rsheet{display:none !important}
 }
 
@@ -873,7 +874,8 @@ body.immersive .bank.stick{bottom:calc(88px + env(safe-area-inset-bottom))}
 @media (min-width:700px){
   html[data-learner=tri] body.immersive .wrap{max-width:1280px}
   html[data-learner=tri] .rsplit{display:grid; grid-template-columns:minmax(0,1.12fr) minmax(0,1fr); gap:14px; align-items:start}
-  html[data-learner=tri] .rleft{position:sticky; top:10px; max-height:calc(100vh - 96px); overflow:auto; margin-bottom:0; padding:12px 14px}
+  html[data-learner=tri] .rleft{margin-bottom:0; padding:12px 14px}
+  html[data-learner=tri] .rleft.stk{position:sticky; top:10px}
   html[data-learner=tri] .rleft h2{font-size:1.1rem; margin:0 0 6px}
   html[data-learner=tri] .rleft .taskbox{padding:6px 10px; margin-bottom:6px}
   html[data-learner=tri] .rleft .muted.small{display:none}
@@ -4221,6 +4223,9 @@ function bookShelfView(){
     BW_BOOKS.map(card),
     h("p",{class:"muted small",style:"text-align:center"},"Sách mới sẽ xuất hiện ở đây khi thầy thêm vào."));
 }
+/* Cột bài đọc chỉ dính khi vừa màn hình; bài dài thì cuộn cùng trang, không có thanh cuộn riêng */
+function fitSticky(){ const top = LRN.id === "tri" ? 10 : 34; document.querySelectorAll(".rleft").forEach(el => el.classList.toggle("stk", el.offsetHeight <= window.innerHeight - top - 24)); }
+try { new ResizeObserver(fitSticky).observe(document.body); } catch(e){} window.addEventListener("resize", fitSticky);
 function route(){
   vBank = null; stopAudio(); activeLesson = null; review = null; pgReset();
   const parts = location.hash.replace(/^#\/?/,"").split("/"); let page = parts[0] || "home";
