@@ -306,6 +306,13 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .dstep{padding:6px 9px}
 .dcard.done .dhead{cursor:pointer}
 .dcard.done:not(.open) .dsteps{display:none}
+.nstats{padding:14px 16px; margin-top:12px}
+.nstats h3{margin:0 0 6px}
+.nsrow{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 0; border-top:1.5px dashed var(--line)}
+.nsrow:first-of-type{border-top:0}
+.nsrow span{font-weight:700; display:flex; flex-direction:column}
+.nsrow small{font-weight:600; color:var(--muted,#8a6b72); font-size:.72rem}
+.nsrow b{font-size:1.35rem; color:var(--p600); white-space:nowrap}
 .dstep .dst{min-width:0}
 .dstep .dst>span{white-space:nowrap}
 .dstep .dst small{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block}
@@ -1283,7 +1290,7 @@ function applyBrand(){
    TRẠNG THÁI & LƯU TRỮ (localStorage + Supabase tùy chọn)
    ===================================================================== */
 const defaultState = () => ({
-  v:2, updatedAt:0, sessions:{}, vocab:{}, mine:{}, vstats:{}, vpass:{}, vdays:{}, mistakes:[], activeDays:[], writing:{}, results:{},
+  v:2, updatedAt:0, sessions:{}, vocab:{}, mine:{}, vstats:{}, vpass:{}, vdays:{}, mistakes:[], activeDays:[], writing:{}, results:{}, vacc:{right:0,total:0},
   settings:{ name:"", mascot:LRN.mascot, theme:LRN.theme, startDate:null },
   teacherNote:null, feedback:{}, log:[], dayMin:{}, challenges:{},
   stats:{ plays:0, fixed:0, perfect:0, best:0 }, placement:null, lastUnlocked:[]
@@ -1908,6 +1915,27 @@ function streak(){
     d.setDate(d.getDate()-1);
   }
   return n;
+}
+function bestStreak(){
+  const days = [...activeSet()].sort(); if (!days.length) return 0;
+  const d = new Date(days[0] + "T12:00:00"), end = new Date(), set = new Set(days); let best = 0, n = 0;
+  for (let i = 0; i < 1500 && d <= end; i++){
+    if (set.has(dkey(d))){ n++; if (n > best) best = n; } else if (d.getDay() !== 0) n = 0;
+    d.setDate(d.getDate() + 1);
+  }
+  return Math.max(best, streak());
+}
+function nhiStatsEl(sk){
+  const pc = (r, t) => t > 0 ? Math.round(r / t * 100) + "%" : "–";
+  const VA = S.vacc || {right:0,total:0}; let lr = 0, lt = 0; Object.values(S.results || {}).forEach(x => { lr += x.right || 0; lt += x.total || 0; });
+  const words = Object.values(S.vstats || {}).filter(v => v.n > 0).length + Object.values(NB.mine).filter(v => v.n > 0 || v.box > 0).length;
+  const row = (t, v, sub) => h("div",{class:"nsrow"}, h("span",null,t, sub ? h("small",null,sub) : null), h("b",null,v));
+  return h("div",{class:"card nstats"}, h("h3",null,"Thống kê"),
+    row("Từ đã học", String(words), "tổng từ đã ôn ít nhất một lần"),
+    row("Ngày học liên tiếp", String(sk)),
+    row("Streak dài nhất", String(bestStreak()), "ngày"),
+    row("Đúng khi ôn từ", pc(VA.right, VA.total), VA.total ? VA.total+" lượt từ" : "chưa có dữ liệu"),
+    row("Đúng ở bài theo ngày", pc(lr, lt), lt ? lr+"/"+lt+" câu" : "chưa có dữ liệu"));
 }
 function addVocab(map){
   let added = 0;
@@ -3297,9 +3325,8 @@ function homeView(){
         constellationEl(list),
         note ? h("div",{class:"card sticky"}, h("div",{class:"small muted"},"💌 Lời nhắn cho "+nm), h("p",{style:"margin:6px 0 10px;font-weight:700"}, note.text),
           h("button",{class:"btn soft",type:"button",onClick:() => { S.teacherNote.read = true; save(); route(); }},"Đã đọc")) : null,
-        ti.state === "rest" ? main : null),
+        ti.state === "rest" ? main : null, nhiStatsEl(sk)),
       h("div",{class:"hm-r"}, nhiPlanEl(ti),
-        h("div",{class:"stats"}, stat(sk,"ngày liên tiếp"), stat(doneN,"sao đã sáng"), stat(Object.values(S.vpass || {}).reduce((a, x) => a + (x.n || 0), 0),"lượt ôn từ")),
         S.mistakes.length ? h("div",{class:"card tint"}, h("div",{class:"row"}, h("div",{class:"grow"}, h("h3",{style:"margin:0"},S.mistakes.length+" câu cần ôn lại"), h("div",{class:"small muted"},"Làm đúng thì câu sẽ biến mất")), h("a",{class:"btn soft",href:"#/mistakes"},"Ôn câu sai"))) : null));
   }
   return h("div",null,
@@ -3455,6 +3482,7 @@ function vCard(w, type, cb){
 }
 function vApply(w, res, type){
   const v = VS()[w]; if (!v) return;
+  const VA = S.vacc || (S.vacc = {right:0,total:0}); VA.total++; if (res === "ok") VA.right++;
   if (res === "ok"){ v.box = Math.min(v.box + 1, 4); v.due = addDays(INTERVALS[v.box]); }
   else if (res === "late"){ v.due = addDays(INTERVALS[v.box] || 1); }
   else { v.box = 0; v.due = addDays(1); }
@@ -3943,7 +3971,7 @@ function clearProgress(o){
   S.mistakes = S.mistakes.filter(m => !(m.ref && m.ref.startsWith(pre)));
   if (!o.sid){ Object.keys(S.vocab).forEach(k => { if (+S.vocab[k].w === o.week) delete S.vocab[k]; });
     const W = WEEKS[o.week]; if (W && W.vocabList && S.vstats) W.vocabList.forEach(x => { delete S.vstats[x.en.toLowerCase()]; }); if (S.vpass) delete S.vpass[o.week]; }
-  if (o.stats) S.results = {};
+  if (o.stats){ S.results = {}; S.vacc = {right:0,total:0}; }
   save();
 }
 
