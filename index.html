@@ -335,6 +335,24 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
   .plan-sum .grow{flex:1 1 150px}
 }
 .vnarrow{max-width:720px; margin:0 auto}
+@media (min-width:900px){
+  html:not([data-learner=tri]) body.immersive .wrap > div{display:grid; grid-template-columns:196px minmax(0,1fr); column-gap:22px; align-items:start}
+  html:not([data-learner=tri]) body.immersive .wrap > div > *:not(.lstick){grid-column:2}
+  html:not([data-learner=tri]) .lstick{display:contents}
+  html:not([data-learner=tri]) .lstick .lhead{grid-column:1 / -1; position:sticky; top:0; z-index:40; background:var(--lsb); box-shadow:0 0 0 100vmax var(--lsb); clip-path:inset(0 -100vmax); padding:8px 0; margin-bottom:12px}
+  html:not([data-learner=tri]) .lstick .steps{grid-column:1; grid-row:2 / 6; position:sticky; top:86px; display:flex; flex-direction:column; gap:6px; overflow:visible; padding:0; margin:0}
+  html:not([data-learner=tri]) .lstick .stepbtn{flex:none; flex-direction:row; justify-content:flex-start; align-items:center; gap:10px; text-align:left; padding:10px 12px; min-height:48px; font-size:.9rem}
+  html:not([data-learner=tri]) .lstick .stepbtn small{display:inline; margin-left:auto; font-size:.72rem; opacity:.75}
+}
+@media (min-width:1100px){ html:not([data-learner=tri]) body.immersive .wrap{max-width:1240px} }
+@media (min-width:900px){
+  html:not([data-learner=tri]) body.immersive .rsplit{height:calc(100vh - 205px); min-height:360px; align-items:stretch}
+  html:not([data-learner=tri]) body.immersive .rleft, html:not([data-learner=tri]) body.immersive .rright{overflow-y:auto; min-height:0; max-height:100%; position:static!important; scrollbar-width:thin; scrollbar-color:var(--sbi-thumb) transparent; overscroll-behavior:contain}
+  html:not([data-learner=tri]) body.immersive .rleft::-webkit-scrollbar, html:not([data-learner=tri]) body.immersive .rright::-webkit-scrollbar{width:8px}
+  html:not([data-learner=tri]) body.immersive .rleft::-webkit-scrollbar-track, html:not([data-learner=tri]) body.immersive .rright::-webkit-scrollbar-track{background:transparent; margin:12px 0}
+  html:not([data-learner=tri]) body.immersive .rleft::-webkit-scrollbar-thumb, html:not([data-learner=tri]) body.immersive .rright::-webkit-scrollbar-thumb{border:2px solid transparent; background-clip:padding-box}
+}
+@media (min-width:900px){ body.immersive ::-webkit-scrollbar{width:10px; height:10px} body.immersive ::-webkit-scrollbar-track{background:transparent} body.immersive ::-webkit-scrollbar-thumb{border:2px solid transparent; background-clip:padding-box} }
 .cal-g{gap:3px 6px}
 .cal-c{aspect-ratio:auto; height:34px; border-radius:12px}
 .cal-c.today{outline-width:2px}
