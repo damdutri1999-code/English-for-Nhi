@@ -4248,6 +4248,7 @@ function route(){
   vBank = null; stopAudio(); activeLesson = null; review = null; pgReset();
   const parts = location.hash.replace(/^#\/?/,"").split("/"); let page = parts[0] || "home";
   if (["gv","content","teacher"].includes(page)){ location.replace("#/admin/" + ({gv:"plan",content:"upload",teacher:"notes"})[page]); return; }
+  if (LRN.id === "nhi" && page === "week"){ location.replace("#/home"); return; }
   if (IS_BW && !curBook() && !["books","settings","admin","vocab"].includes(page)) page = "books";
   document.body.classList.toggle("admin", page === "admin"); adminTheme(page === "admin");
   document.body.classList.toggle("immersive", page === "lesson"); document.body.dataset.pg = page;
