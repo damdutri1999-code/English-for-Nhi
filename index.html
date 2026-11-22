@@ -1112,6 +1112,11 @@ html[data-theme=neural] .reading{background:#0f1436; color:#eef0ff; border-color
 html[data-theme=neural] .mascot.chipbot{filter:drop-shadow(0 0 8px rgba(110,231,255,.35))}
 html[data-theme=neural] .cvc.dan .cvm svg{filter:drop-shadow(0 0 12px rgba(110,231,255,.45))}
 html[data-theme=neural] .corner .mascot{filter:drop-shadow(0 0 8px rgba(110,231,255,.5))}
+html[data-theme=neural] .card[data-k="1"]{--sc:#c2415f; --sb:#2a1830}
+html[data-theme=neural] .card[data-k="2"]{--sc:#1c7fa8; --sb:#10284a}
+html[data-theme=neural] .card[data-k="3"]{--sc:#6a55d6; --sb:#1d1b4d}
+html[data-theme=neural] .card[data-k="4"]{--sc:#b07a1a; --sb:#2a2415}
+html[data-theme=neural] .card[data-k]:has(> .exset.fin){--sc:var(--ok); --sb:var(--ok-bg)}
 html[data-theme=neural] .lstick{--lsb:rgba(10,15,42,.95)}
 html[data-theme=neural] .lstick .lhead h1,html[data-theme=neural] .lhead h1{color:#fff}
 html[data-theme=neural] .lhead .muted{color:#a9b3e6}
@@ -3124,6 +3129,7 @@ function listenStep(step, ctx){
   /* nghe có chữ chạy theo như karaoke ngay từ đầu, tự phát 2 lần liền, học viên đọc nhẩm theo */
   const NEED = 2;
   let plays = 0, cur = null, setsDone = !step.sets.length, auto = false, timer = null;
+  const finishCheck = () => { if (setsDone && plays >= NEED) ctx.done(); };   /* xong khi đã nghe đủ lần VÀ làm hết các bộ câu hỏi, thứ tự nào cũng được */
   const info = h("div",{class:"plays"}, "Đã nghe: 0 / "+NEED+" lần");
   const kar = karaoke(step.text), prog = audioProg();
   const tBox = h("div",{class:"reading karaoke"}, kar.el);
