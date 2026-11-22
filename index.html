@@ -2018,10 +2018,10 @@ function schedStart(w){
   return st;
 }
 function schedDates(w){
-  const st = schedStart(w), o = ((S.settings.sched || {})[w] || {}).d || [];
-  return [0,1,2,3,4,5].map(i => o[i] || addK(st, i));
+  const st = schedStart(w);
+  return [0,1,2,3,4,5].map(i => addK(st, i));
 }
-const schedCustom = w => { const c = (S.settings.sched || {})[w]; return !!(c && (c.start || (c.d && c.d.some(Boolean)))); };
+const schedCustom = w => { const c = (S.settings.sched || {})[w]; return !!(c && c.start); };
 function todayInfo(){
   const t = dkey(new Date()), N = Math.max(ROADMAP.length, 30), [lo, hi] = bookRange();
   const first = schedStart(lo);
@@ -4102,20 +4102,18 @@ function adWeek(w){
   if (has){ acts.push(adBtn("eye","Xem thử","", () => adPreview("lesson/w" + w + "-mon/0"))); if (c) acts.push(adBtn("download","Tải JSON","", () => adDownload("week-" + w + ".json", c.json)));
     acts.push(adBtn("trash","Xóa bài","danger", () => adDeleteWeek(w))); }
   const sess = sidsOf(w).map((id, i) => { const meta = has ? findSession(id) : null, L = LESSONS[id], ss = S.sessions[id];
-    const dIn = h("input",{class:"txt",type:"date",value:ds[i],"aria-label":"Ngày học " + DAYN[i],onChange:e => { if (e.target.value) setSched(cc => { cc.d = cc.d || []; cc.d[i] = e.target.value; }); }});
+    const dIn = h("span",{class:"pill"}, fmtDM(ds[i]));
     return h("div",{class:"adm-row"},
       h("div",{class:"adm-wno"}, h("small",null,DAYN[i]), h("b",null,DAYN[i].replace("Thứ ","T"))),
       h("div",{class:"grow"}, h("b",null, meta ? meta.title : "Chưa có bài"), meta ? h("div",{class:"small muted"}, KIND[meta.kind] + " · " + (L && L.steps ? L.steps.length : 0) + " bước" + (CH[id] ? " · có Challenge" : "")) : null),
       h("span",{class:"pill" + (ss && ss.done ? " ok" : "")}, ss && ss.done ? "Đã xong" : ss ? "Đang học" : "Chưa học"), dIn,
       meta ? h("a",{class:"btn soft sm",href:"#/admin/plan/s/" + id,style:"text-decoration:none"},"Chi tiết") : null); });
-  const stIn = h("input",{class:"txt",type:"date",value:schedStart(w),"aria-label":"Ngày bắt đầu tuần",onChange:e => { if (e.target.value) setSched(cc => { cc.start = e.target.value; cc.d = null; }); }});
+  const stIn = h("input",{class:"txt",type:"date",style:"width:auto;flex:none",value:schedStart(w),"aria-label":"Ngày bắt đầu tuần",onChange:e => { if (e.target.value) setSched(cc => { cc.start = e.target.value; cc.d = null; }); }});
   return h("div",null, adCrumb([["Giáo án","#/admin/plan"],[monthLbl(mk),"#/admin/plan/m/" + mk],[wFull(w)]]),
     adHead(has ? wFull(w) + ": " + W.title : wFull(w), has ? "Ngữ pháp: " + W.grammar + (W.level ? " · Mức " + W.level : "") + " · " + srcOf(w) : (rm[1] ? rm[1] + (rm[2] ? " · dự kiến: " + rm[2] : "") : "Chưa có bài cho tuần này"), acts),
     has ? null : adCard(null, h("p",null,"Tuần này chưa có bài. Nạp file bài để học viên bắt đầu học."), h("div",{class:"row"}, adBtn("upload","Nạp bài","main", () => { location.hash = "#/admin/upload"; }))),
-    adCard("Các buổi trong tuần", h("p",{class:"muted small",style:"margin:0 0 6px"}, fmtDM(ds[0]) + " – " + fmtDM(ds[5]) + (has && W.vocabList ? " · " + W.vocabList.length + " từ vựng" : "")), sess),
-    adCard("Lịch học tuần này", h("div",{class:"row",style:"align-items:center"}, h("span",{class:"small"},"Bắt đầu từ"), stIn,
-        schedCustom(w) ? adBtn("refresh","Đặt lại mặc định","", () => { if (S.settings.sched){ delete S.settings.sched[w]; save(); } route(); }) : null),
-      h("p",{class:"muted small",style:"margin:8px 0 0"},"Các buổi T2 đến T7 xếp liên tiếp từ ngày bắt đầu. Muốn lệch ngày thì chỉnh ngày ở từng buổi. Các tuần sau tự dời theo.")),
+    adCard("Các buổi trong tuần", h("div",{class:"row",style:"align-items:center;margin:0 0 6px"}, h("span",{class:"small"},"Ngày bắt đầu tuần"), stIn, h("span",{class:"muted small"}, "đến " + fmtDM(ds[5]) + (has && W.vocabList ? " · " + W.vocabList.length + " từ vựng" : ""))), sess),
+    schedCustom(w) ? adCard(null, h("div",{class:"row",style:"align-items:center"}, h("span",{class:"small muted"},"Các buổi T2 đến T7 và các tuần sau tự dời theo ngày bắt đầu."), adBtn("refresh","Đặt lại mặc định","", () => { if (S.settings.sched){ delete S.settings.sched[w]; save(); } route(); }))) : null,
     adCard("Tiến độ của học viên trong tuần này", hasProg(p) ? h("p",null,progText(p) + (p.min ? ", " + p.min + " phút học" : "") + ".") : h("p",{class:"muted"},"Chưa có tiến độ."),
       h("div",{class:"row"}, adBtn("trash","Xóa tiến độ tuần này","danger", () => adClearProgress(wFull(w), { week:w }, p), !hasProg(p)))));
 }
