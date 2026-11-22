@@ -1031,6 +1031,7 @@ a.adm-row:hover{background:var(--p50)}
 .lstick{--lsb:rgba(251,242,236,.95); position:sticky; top:0; z-index:40; padding:6px 0 2px; background:var(--lsb); box-shadow:0 0 0 100vmax var(--lsb); clip-path:inset(0 -100vmax); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px)}
 html[data-theme=night] .lstick{--lsb:rgba(238,150,184,.94)}
 html[data-learner=tri] .lstick{--lsb:rgba(9,20,50,.94)}
+.chpane[hidden]{display:none}
 .lstick .steps{margin-bottom:0}
 .lstick .lhead{margin-bottom:6px}
 .dlab{font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px}
@@ -4070,6 +4071,36 @@ function practiceSetFor(type){
 }
 function challengeView(sid){
   const c = CH[sid], meta = findSession(sid);
+  if (LRN.id !== "tri" && c && meta){   /* bố cục giống buổi học: cột bước bên trái (3 chặng), nội dung rộng bên phải, mỗi lần chỉ hiện một chặng */
+    const all = c.stages.reduce((a, g) => a + g.sets.length, 0), prev = S.challenges[sid]; let left = all, right = 0, total = 0, cur = 0;
+    const dn = c.stages.map(g => 0), end = h("div");
+    Object.assign(PG, { on:true, label:"Challenge", base:0, span:0, total:0, done:0, stepDone:null });
+    const nav = h("div",{class:"steps"}), next = h("button",{class:"btn",type:"button"});
+    const panes = c.stages.map((g, gi) => { const el = h("div",{class:"chpane"}, h("h2",{style:"margin:0 0 10px"},"Chặng "+(gi+1)+": "+g.title),
+      g.sets.map(st => h("div",{class:"card"}, exerciseSet(st, (r, t) => onSet(gi, r, t)))));
+      return el; });
+    function onSet(gi, r, t){ right += r; total += t; dn[gi]++; PG.base = (all - left + 1) / all; pgDraw();
+      if (--left === 0){ S.challenges[sid] = { at:dkey(new Date()), right, total }; save(); setTimeout(petals, 200);
+        end.replaceChildren(h("div",{class:"card tint celebrate"}, mascot("cheer"), h("h2",null,"Xong Challenge rồi!"),
+          h("p",null,"Bạn làm đúng "+right+" / "+total+" câu."), h("p",{class:"muted small"},"Challenge không tính vào chuỗi ngày học, nhưng kết quả đã được ghi lại."),
+          h("a",{class:"btn",href:WKH()},WKL(true)))); }
+      refresh(); }
+    function show(i){ cur = i; panes.forEach((el, k) => { el.hidden = k !== i; }); refresh(); try { window.scrollTo({ top:0 }); } catch(e){} }
+    function refresh(){
+      nav.replaceChildren(...c.stages.map((g, i) => h("button",{class:"stepbtn"+(i === cur ? " on" : "")+(dn[i] >= g.sets.length ? " done" : ""),type:"button",onClick:() => show(i)},
+        h("span",null, dn[i] >= g.sets.length ? "#i:check" : "#i:" + (["pencil","book","pencil"][i] || "pencil")), "Chặng "+(i+1), h("small",null, dn[i]+"/"+g.sets.length))));
+      const last = cur === c.stages.length - 1; next.textContent = last ? WKL(true) : "Chặng tiếp theo";
+    }
+    next.addEventListener("click", () => { if (cur === c.stages.length - 1) location.hash = WKH(); else show(cur + 1); });
+    show(0);
+    return h("div",null,
+      h("div",{class:"lstick"}, h("div",{class:"lhead"}, h("a",{class:"back",href:WKH(),"aria-label":"Quay lại"},"←"), h("div",{class:"grow"}, h("h1",null,c.title), h("div",{class:"small muted"}, meta.day+": "+meta.title)),
+        pgRing(), fsBtn()), nav),
+      h("div",{class:"card tint flat small"}, "Bài làm thêm cho ai muốn thử sức: khoảng 20 phút, chia "+c.stages.length+" chặng. Không bắt buộc và không tính vào chuỗi ngày học."
+        + (prev ? " Lần gần nhất: "+prev.right+" / "+prev.total+" câu đúng." : "")),
+      ...panes, end,
+      h("div",{class:"lbar"}, h("button",{class:"btn soft",type:"button","aria-label":"Chặng trước",onClick:() => { if (cur > 0) show(cur - 1); else location.hash = WKH(); }},"←"), next));
+  }
   if (!c || !meta) return h("div",null, h("a",{class:"btn soft",href:WKH()},WKL(true)), h("div",{class:"card",style:"margin-top:16px"}, h("h2",null,"Buổi này chưa có Challenge")));
   const all = c.stages.reduce((a, g) => a + g.sets.length, 0); let left = all, right = 0, total = 0;
   Object.assign(PG, { on:true, label:"Challenge" });
@@ -4483,7 +4514,7 @@ function route(){
   if (NHIFAM && page === "week"){ location.replace("#/home"); return; }
   if (IS_BW && !curBook() && !["books","settings","admin","vocab"].includes(page)) page = "books";
   document.body.classList.toggle("admin", page === "admin"); adminTheme(page === "admin");
-  document.body.classList.toggle("immersive", page === "lesson"); document.body.dataset.pg = page;
+  document.body.classList.toggle("immersive", page === "lesson" || (page === "challenge" && LRN.id !== "tri")); document.body.dataset.pg = page;
   let view;
   switch (page){
     case "books": view = bookShelfView(); break;
