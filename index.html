@@ -517,8 +517,8 @@ body.cover .wrap{max-width:860px; padding-top:calc(34px + env(safe-area-inset-to
 .cvc .cvgo{margin-top:8px; font-weight:800; padding:11px 24px; border-radius:18px}
 .cvc.nhi,.cvc.bw{background:#fff; box-shadow:0 6px 0 var(--p200),0 18px 34px rgba(var(--glow),.14); border:2px solid var(--p200); color:var(--ink)}
 .cvc.nhi .cvt,.cvc.bw .cvt{background:var(--p100); color:var(--p700)} .cvc.nhi .cvgo,.cvc.bw .cvgo{background:var(--p600); color:#fff; box-shadow:0 5px 0 var(--p700)}
-.cvc.dan{background:radial-gradient(circle at 20% 0,#2a2f7a 0,#0a0f2a 70%); box-shadow:0 6px 0 #050818,0 18px 34px rgba(10,15,42,.35); border:2px solid rgba(110,231,255,.5); color:#eef0ff}
-.cvc.dan .cvt{background:rgba(110,231,255,.16); color:#6ee7ff} .cvc.dan .cvd{color:#b9c4f5} .cvc.dan .cvgo{background:#6ee7ff; color:#0a0f2a; box-shadow:0 5px 0 #2a8fa8}
+.cvc.dan{background:radial-gradient(circle at 20% 0,#2c4a78 0,#0b1729 70%); box-shadow:0 6px 0 #050d18,0 18px 34px rgba(11,23,41,.35); border:2px solid rgba(110,231,255,.5); color:#eef5ff}
+.cvc.dan .cvt{background:rgba(110,231,255,.16); color:#6ee7ff} .cvc.dan .cvd{color:#bad2f4} .cvc.dan .cvgo{background:#6ee7ff; color:#0b1729; box-shadow:0 5px 0 #2a8fa8}
 .cvc.tri{background:linear-gradient(180deg,#0b1f47 0%,#133a73 100%); box-shadow:0 6px 0 #061330,0 18px 34px rgba(7,20,46,.3); border:2px solid rgba(246,184,78,.5); color:#fff}
 .cvc.tri .cvt{background:rgba(246,184,78,.18); color:#ffd27a} .cvc.tri .cvd{color:#c9d8f2} .cvc.tri .cvgo{background:linear-gradient(180deg,#f8c05a,#f29a2e); color:#0d2552; box-shadow:0 5px 0 #b8691a}
 .cvk{display:flex; align-items:center; justify-content:center; gap:8px; margin-top:20px; color:#6b5d82; font-weight:700; font-size:.92rem}
@@ -1053,9 +1053,9 @@ html[data-learner=tri] .lstick{--lsb:rgba(9,20,50,.94)}
 .qlabel.dq{display:inline-block; background:#1f6384; color:#fff; border-radius:99px; padding:3px 14px; font-weight:800; margin:6px 0}
 /* thanh cuộn đồng bộ với giao diện: một bộ màu dùng được cho cả trang (nền kem, hồng, đêm) và các khung cuộn trong thẻ */
 html{--sbi-thumb:#d9688a; --sbi-track:rgba(248,225,218,.85); --sbi-hover:#b0415f}
-html[data-theme=neural]{--sbi-thumb:#4b5fe0; --sbi-track:#0f1436; --sbi-hover:#6ee7ff; color-scheme:dark}
-html[data-theme=neural] ::-webkit-scrollbar-thumb{border-color:#0a0f2a; box-shadow:inset 0 0 0 1px rgba(110,231,255,.35)}
-html[data-theme=neural] ::-webkit-scrollbar-track{background:#0f1436; box-shadow:inset 1px 0 0 #2a3380}
+html[data-theme=neural]{--sbi-thumb:#4f87dc; --sbi-track:#101f35; --sbi-hover:#6ee7ff; color-scheme:dark}
+html[data-theme=neural] ::-webkit-scrollbar-thumb{border-color:#0b1729; box-shadow:inset 0 0 0 1px rgba(110,231,255,.35)}
+html[data-theme=neural] ::-webkit-scrollbar-track{background:#101f35; box-shadow:inset 1px 0 0 #2c4c7e}
 html[data-learner=tri]{--sbi-thumb:#f0b44f; --sbi-track:rgba(18,32,70,.55); --sbi-hover:#ffc766}
 @supports not selector(::-webkit-scrollbar){*{scrollbar-width:thin; scrollbar-color:var(--sbi-thumb) var(--sbi-track)} .steps{scrollbar-width:none}}
 ::-webkit-scrollbar{width:14px; height:14px}
@@ -1067,74 +1067,76 @@ html[data-learner=tri]{--sbi-thumb:#f0b44f; --sbi-track:rgba(18,32,70,.55); --sb
 
 /* ===== Giao diện của Danny: mạng nơ-ron (navy, cyan, tím), robot Chip ===== */
 html[data-theme=neural]{
-  --p50:#0a0f2a; --p100:#1a2150; --p200:#2a3380; --p300:#3d4a9e; --p400:#6ee7ff; --p500:#5b6cf0; --p600:#4b5fe0; --p700:#c9d3ff;
-  --ink:#eef0ff; --ink2:#a9b3e6; --paper:#141a3a; --line:#2a3380;
+  --p50:#0b1729; --p100:#1b304f; --p200:#2c4c7e; --p300:#3f649c; --p400:#6ee7ff; --p500:#5f97ec; --p600:#4f87dc; --p700:#cadffe;
+  --ink:#eef5ff; --ink2:#abc2e4; --paper:#152439; --line:#2c4c7e;
   --ok:#4ade80; --ok-bg:#10301f; --bad:#ff8a9a; --bad-bg:#3a1b2c; --warn-bg:#3a3318;
-  --task:#1a2150; --task-line:#3d4a9e; --task-ink:#a8dcff; --doc:#1c2147; --doc-line:#3d4a9e;
-  --glow:110,231,255; --topbg:10,15,42; --c1:#3a4bb8; --c2:#2a3380; --c3:#141a3a;
+  --task:#1b304f; --task-line:#3f649c; --task-ink:#a8dcff; --doc:#1d2d46; --doc-line:#3f649c;
+  --glow:110,231,255; --topbg:8,16,38; --c1:#3d6db5; --c2:#2c4c7e; --c3:#152439;
   --lift:0 3px 0 rgba(0,0,0,.35),0 12px 26px rgba(0,0,0,.3);
-  background:#0a0f2a; color-scheme:dark;
+  background:#0b1729; color-scheme:dark;
 }
-html[data-theme=neural] body{font-family:"Inter",system-ui,sans-serif; background:radial-gradient(circle at 18% 0,#2a2f7a 0,#0a0f2a 58%) fixed; background-image:none; color:var(--ink)}
+html[data-theme=neural] body{font-family:"Inter",system-ui,sans-serif; background:radial-gradient(circle at 18% 0,#2c4a78 0,#0b1729 58%) fixed; background-image:none; color:var(--ink)}
 html[data-theme=neural] h1,html[data-theme=neural] h2,html[data-theme=neural] h3,html[data-theme=neural] .brand b,html[data-theme=neural] .cvc b,html[data-theme=neural] .cnt{font-family:"Space Grotesk","Inter",sans-serif; letter-spacing:.005em}
-html[data-theme=neural] a{color:#8fa0ff}
+html[data-theme=neural] a{color:#92bdfc}
 html[data-theme=neural] :focus-visible{outline-color:#6ee7ff}
-html[data-theme=neural] .top{background:rgba(10,15,42,.92); border-bottom:1px solid #2a3380}
+html[data-theme=neural] .top{background:rgba(11,23,41,.92); border-bottom:1px solid #2c4c7e}
 html[data-theme=neural] .brand b{color:#fff} html[data-theme=neural] .brand small{color:#6ee7ff}
-html[data-theme=neural] .sync,html[data-theme=neural] .gear{background:#141a3a; border-color:#3d4a9e; color:#eef0ff}
-html[data-theme=neural] .tabs,html[data-theme=neural] .lbar{background:#141a3a; border-color:#2a3380; box-shadow:0 10px 24px rgba(0,0,0,.4)}
-html[data-theme=neural] .tabs a{color:#a9b3e6} html[data-theme=neural] .tabs a.on{background:#1a2150; color:#6ee7ff; box-shadow:inset 0 0 0 1px #3d4a9e}
-html[data-theme=neural] .card.today{background:linear-gradient(180deg,#1f2a6e,#141a3a); border-color:#6ee7ff; box-shadow:0 0 0 1px rgba(110,231,255,.25),0 0 26px rgba(110,231,255,.18)}
-html[data-theme=neural] .card.today .pill{background:#0a0f2a; color:#6ee7ff; border-color:#3d4a9e}
-html[data-theme=neural] .btn{background:#4b5fe0; color:#fff; box-shadow:0 4px 0 #2a3aa8; position:relative; overflow:hidden; z-index:0}
+html[data-theme=neural] .sync,html[data-theme=neural] .gear{background:#152439; border-color:#3f649c; color:#eef5ff}
+html[data-theme=neural] .tabs,html[data-theme=neural] .lbar{background:#152439; border-color:#2c4c7e; box-shadow:0 10px 24px rgba(0,0,0,.4)}
+html[data-theme=neural] .tabs a{color:#abc2e4} html[data-theme=neural] .tabs a.on{background:#1b304f; color:#6ee7ff; box-shadow:inset 0 0 0 1px #3f649c}
+html[data-theme=neural] .card.today{background:linear-gradient(180deg,#213f6c,#152439); border-color:#6ee7ff; box-shadow:0 0 0 1px rgba(110,231,255,.25),0 0 26px rgba(110,231,255,.18)}
+html[data-theme=neural] .card.today .pill{background:#0b1729; color:#6ee7ff; border-color:#3f649c}
+html[data-theme=neural] .btn{background:#4f87dc; color:#fff; box-shadow:0 4px 0 #2d5da5; position:relative; overflow:hidden; z-index:0}
 html[data-theme=neural] .btn::before{content:""; position:absolute; inset:0; background:#6ee7ff; transform:translateX(-101%); transition:transform .3s; z-index:-1}
-html[data-theme=neural] .btn:hover:not(:disabled)::before{transform:none} html[data-theme=neural] .btn:hover:not(:disabled){color:#0a0f2a}
-html[data-theme=neural] .btn.soft,html[data-theme=neural] .btn.line{background:#1a2150; color:#c9d3ff; border-color:#3d4a9e; box-shadow:0 4px 0 #0a0f2a}
-html[data-theme=neural] .btn.soft:hover:not(:disabled),html[data-theme=neural] .btn.line:hover:not(:disabled){color:#0a0f2a}
-html[data-theme=neural] .btn.danger{background:#141a3a; color:var(--bad); border-color:#7a3345; box-shadow:none}
+html[data-theme=neural] .btn:hover:not(:disabled)::before{transform:none} html[data-theme=neural] .btn:hover:not(:disabled){color:#0b1729}
+html[data-theme=neural] .btn.soft,html[data-theme=neural] .btn.line{background:#1b304f; color:#cadffe; border-color:#3f649c; box-shadow:0 4px 0 #0b1729}
+html[data-theme=neural] .btn.soft:hover:not(:disabled),html[data-theme=neural] .btn.line:hover:not(:disabled){color:#0b1729}
+html[data-theme=neural] .btn.danger{background:#152439; color:var(--bad); border-color:#7a3345; box-shadow:none}
 html[data-theme=neural] .btn:disabled{opacity:.45}
-html[data-theme=neural] .pill{background:#1a2150; color:#c9d3ff}
-html[data-theme=neural] .stat{border-color:#2a3380; box-shadow:none}
-html[data-theme=neural] .const{background:linear-gradient(180deg,#1b2370,#0f1546); border-color:#3d4a9e; box-shadow:0 14px 28px rgba(0,0,0,.35)}
-html[data-theme=neural] .const .cb i,html[data-theme=neural] .const .cp{background:#6ee7ff; color:#0a0f2a}
-html[data-theme=neural] .opt{border-color:#3d4a9e; background:#141a3a}
+html[data-theme=neural] .pill{background:#1b304f; color:#cadffe}
+html[data-theme=neural] .stat{border-color:#2c4c7e; box-shadow:none}
+html[data-theme=neural] .const{background:linear-gradient(180deg,#1d3d6e,#102545); border-color:#3f649c; box-shadow:0 14px 28px rgba(0,0,0,.35)}
+html[data-theme=neural] .const .cb i,html[data-theme=neural] .const .cp{background:#6ee7ff; color:#0b1729}
+html[data-theme=neural] .opt{border-color:#3f649c; background:#152439}
 html[data-theme=neural] .opt:hover{border-color:#6ee7ff}
 html[data-theme=neural] .opt.right{background:#10301f; border-color:#4ade80; color:#4ade80; box-shadow:none}
 html[data-theme=neural] .opt.wrong{background:#3a1b2c; border-color:#ff8a9a; color:#ff8a9a; box-shadow:none}
-html[data-theme=neural] .opt.sel{background:#1f2a6e; border-color:#6ee7ff; box-shadow:inset 0 0 0 1px #6ee7ff}
-html[data-theme=neural] .stepbtn{border-color:#3d4a9e; background:#141a3a; color:#a9b3e6}
-html[data-theme=neural] .stepbtn.on{background:#1f2a6e; color:#6ee7ff; border-color:#6ee7ff}
-html[data-theme=neural] .txt,html[data-theme=neural] input,html[data-theme=neural] textarea,html[data-theme=neural] select{background:#0f1436; color:#eef0ff; border-color:#3d4a9e}
-html[data-theme=neural] ::placeholder{color:#7f8bc9}
-html[data-theme=neural] .toast{background:#141a3a; border:1px solid #6ee7ff; color:#eef0ff}
-html[data-theme=neural] .linkbtn{color:#8fa0ff}
-html[data-theme=neural] .reading{background:#0f1436; color:#eef0ff; border-color:#3d4a9e}
+html[data-theme=neural] .opt.sel{background:#213f6c; border-color:#6ee7ff; box-shadow:inset 0 0 0 1px #6ee7ff}
+html[data-theme=neural] .stepbtn{border-color:#3f649c; background:#152439; color:#abc2e4}
+html[data-theme=neural] .stepbtn.on{background:#213f6c; color:#6ee7ff; border-color:#6ee7ff}
+html[data-theme=neural] .txt,html[data-theme=neural] input,html[data-theme=neural] textarea,html[data-theme=neural] select{background:#101f35; color:#eef5ff; border-color:#3f649c}
+html[data-theme=neural] ::placeholder{color:#819dc7}
+html[data-theme=neural] .toast{background:#152439; border:1px solid #6ee7ff; color:#eef5ff}
+html[data-theme=neural] .linkbtn{color:#92bdfc}
+html[data-theme=neural] .reading{background:#101f35; color:#eef5ff; border-color:#3f649c}
 html[data-theme=neural] .mascot.chipbot{filter:drop-shadow(0 0 8px rgba(110,231,255,.35))}
 html[data-theme=neural] .cvc.dan .cvm svg{filter:drop-shadow(0 0 12px rgba(110,231,255,.45))}
 html[data-theme=neural] .corner .mascot{filter:drop-shadow(0 0 8px rgba(110,231,255,.5))}
-html[data-theme=neural] .card[data-k="1"]{--sc:#c2415f; --sb:#2a1830}
+html[data-theme=neural] .card[data-k="1"]{--sc:#c2415f; --sb:#2b1822}
 html[data-theme=neural] .card[data-k="2"]{--sc:#1c7fa8; --sb:#10284a}
-html[data-theme=neural] .card[data-k="3"]{--sc:#6a55d6; --sb:#1d1b4d}
+html[data-theme=neural] .card[data-k="3"]{--sc:#5884d3; --sb:#1c2e4c}
 html[data-theme=neural] .card[data-k="4"]{--sc:#b07a1a; --sb:#2a2415}
 html[data-theme=neural] .card[data-k]:has(> .exset.fin){--sc:var(--ok); --sb:var(--ok-bg)}
+html[data-theme=neural] .dcard.late:not(.done) .dwd{--c:#b9791a}
+html[data-theme=neural] .dcard.late:not(.done) .dtag{background:#fbeccd; color:#6b4608; border-color:#e0b565}
 html[data-theme=neural] .card[data-k="2"]{--sc:#17708f}
 html[data-theme=neural] .card[data-k="4"]{--sc:#1a8470; --sb:#0e2a2e}
-html[data-theme=neural] .tstep b{color:#0a0f2a}
-html[data-theme=neural] .vch .tstep.on{color:#0a0f2a}
-html[data-theme=neural] .exset.fin .setpill,html[data-theme=neural] .card[data-k]:has(> .exset.fin) .setpill{color:#0a0f2a}
+html[data-theme=neural] .tstep b{color:#0b1729}
+html[data-theme=neural] .vch .tstep.on{color:#0b1729}
+html[data-theme=neural] .exset.fin .setpill,html[data-theme=neural] .card[data-k]:has(> .exset.fin) .setpill{color:#0b1729}
 html[data-theme=neural] .dlab{color:#ffd27a !important}
 html[data-theme=neural] .dtag{color:#ff9bb0}
-html[data-theme=neural] .spclock{color:#8fa0ff}
-html[data-theme=neural] .lstick{--lsb:rgba(10,15,42,.95)}
+html[data-theme=neural] .spclock{color:#92bdfc}
+html[data-theme=neural] .lstick{--lsb:rgba(11,23,41,.95)}
 html[data-theme=neural] .lstick .lhead h1,html[data-theme=neural] .lhead h1{color:#fff}
-html[data-theme=neural] .lhead .muted{color:#a9b3e6}
-html[data-theme=neural] .pgring{background:#141a3a; box-shadow:0 0 0 1px #3d4a9e}
-html[data-theme=neural] .pgring .t{stroke:#2a3380} html[data-theme=neural] .pgring .f{stroke:#6ee7ff}
+html[data-theme=neural] .lhead .muted{color:#abc2e4}
+html[data-theme=neural] .pgring{background:#152439; box-shadow:0 0 0 1px #3f649c}
+html[data-theme=neural] .pgring .t{stroke:#2c4c7e} html[data-theme=neural] .pgring .f{stroke:#6ee7ff}
 html[data-theme=neural] .pgring b{color:#6ee7ff; font-family:"Space Grotesk",sans-serif}
-html[data-theme=neural] .pgring.full{background:#6ee7ff} html[data-theme=neural] .pgring.full b{color:#0a0f2a}
+html[data-theme=neural] .pgring.full{background:#6ee7ff} html[data-theme=neural] .pgring.full b{color:#0b1729}
 html[data-theme=neural] .nsrow b,html[data-theme=neural] .stat b{color:#6ee7ff}
-html[data-theme=neural] .muted,html[data-theme=neural] .small.muted{color:#a9b3e6}
-html[data-theme=neural]{--muted:#a9b3e6}
+html[data-theme=neural] .muted,html[data-theme=neural] .small.muted{color:#abc2e4}
+html[data-theme=neural]{--muted:#abc2e4}
 /* --- hiệu ứng đã chọn cho Nhi --- */
 /* 3C: chuyển bước mờ và nổi lên */
 html[data-fx=pink] body.immersive #app > div > *:not(.lstick):not(.lbar){animation:nRise .6s ease-out both}
@@ -1225,7 +1227,7 @@ const LEARNERS = {
   bw:{ id:"bw", name:"Nhi", level:"Starter · A1–A2", key:"bw-english-progress-v1", ckey:"bw-content-v1", dkey:"bw-draft-v1", docId:"learner-bw-4h8n2k6q", cp:"b", dir:"weeks-bw",
         mascot:"bunny", theme:"light", title:"Oxford Bookworms", sub:"đọc truyện cùng Thỏ ngọc", pageTitle:"Oxford Bookworms cùng Thỏ ngọc", themeColor:"#ffd0e1", levels:["A1-A2","A2","A2-B1","B1"] },
   dan:{ id:"dan", name:"Danny", level:"A1–A2", key:"dan-english-progress-v1", ckey:"dan-content-v1", dkey:"dan-draft-v1", docId:"learner-dan-6t2r9v5b", cp:"d", dir:"weeks-dan",
-        mascot:"chip", theme:"neural", title:"English for Danny", sub:"cùng Chip", pageTitle:"English for Danny · A1–A2", themeColor:"#0a0f2a", levels:["A2","A2-B1","B1"] },
+        mascot:"chip", theme:"neural", title:"English for Danny", sub:"cùng Chip", pageTitle:"English for Danny · A1–A2", themeColor:"#0b1729", levels:["A2","A2-B1","B1"] },
   tri:{ id:"tri", name:"Trí", level:"B2–C1", key:"tri-english-progress-v1", ckey:"tri-content-v1", dkey:"tri-draft-v1", docId:"learner-tri-5m8w2c4h", cp:"t", dir:"weeks-tri",
         mascot:"moon", theme:"sea", title:"English for Trí", sub:"Academic English · C1–C2", pageTitle:"English for Trí · B2–C1", themeColor:"#07142e", levels:["B2-C1","C1","C1-C2","C2"] }
 };
@@ -1381,12 +1383,12 @@ function chipSVG(mood, crop){
   const eyes = mood === "cheer" ? '<path d="M45 66q5-8 10 0M65 66q5-8 10 0" stroke="#6ee7ff" stroke-width="3.2" fill="none" stroke-linecap="round"/>'
     : mood === "sleepy" ? '<path d="M45 65h10M65 65h10" stroke="#6ee7ff" stroke-width="3" stroke-linecap="round"/>'
     : '<circle cx="52" cy="64" r="4.2" fill="#6ee7ff"/><circle cx="68" cy="64" r="4.2" fill="#6ee7ff"/><path d="M55 71q5 3.5 10 0" stroke="#6ee7ff" stroke-width="2" fill="none" stroke-linecap="round"/>';
-  const extra = mood === "cheer" ? starP(30,46,.9,"#6ee7ff")+starP(168,40,1.1,"#b79cff")+starP(172,120,.7,"#fff")
-    : mood === "sleepy" ? '<text x="150" y="70" font-family="Space Grotesk,sans-serif" font-weight="800" font-size="26" fill="#6ee7ff">z</text><text x="166" y="44" font-family="Space Grotesk,sans-serif" font-weight="800" font-size="20" fill="#b79cff">z</text>' : "";
-  return '<svg class="mascot chipbot '+mood+'" viewBox="'+(crop ? "44 62 112 112" : "0 0 200 244")+'" role="img" aria-label="Chip"><defs><linearGradient id="chip-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5a6bd8"/><stop offset="1" stop-color="#1c2566"/></linearGradient></defs>'
+  const extra = mood === "cheer" ? starP(30,46,.9,"#6ee7ff")+starP(168,40,1.1,"#9ebefd")+starP(172,120,.7,"#fff")
+    : mood === "sleepy" ? '<text x="150" y="70" font-family="Space Grotesk,sans-serif" font-weight="800" font-size="26" fill="#6ee7ff">z</text><text x="166" y="44" font-family="Space Grotesk,sans-serif" font-weight="800" font-size="20" fill="#9ebefd">z</text>' : "";
+  return '<svg class="mascot chipbot '+mood+'" viewBox="'+(crop ? "44 62 112 112" : "0 0 200 244")+'" role="img" aria-label="Chip"><defs><linearGradient id="chip-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5d8dd5"/><stop offset="1" stop-color="#1e3a64"/></linearGradient></defs>'
    + '<ellipse cx="100" cy="226" rx="46" ry="6" fill="#6ee7ff" opacity=".14"/>'
-   + '<g class="chipsway"><g class="chipbody" transform="translate(10 52) scale(1.6)"><g stroke="#b79cff" stroke-width="5" stroke-linecap="round" fill="none"><path d="M42 24v10M60 24v10M78 24v10M42 86v14M78 86v14M60 86v8M24 44h10M24 62h10M24 80h10M86 44h10M86 62h10M86 80h10"/></g>'
-   + '<path d="M36 30h38l12 12v42a6 6 0 0 1-6 6H36a6 6 0 0 1-6-6V36a6 6 0 0 1 6-6z" fill="url(#chip-g)" stroke="#6ee7ff" stroke-width="2.5" stroke-linejoin="round"/><circle cx="40" cy="38" r="2.6" fill="#6ee7ff"/><rect x="40" y="52" width="40" height="24" rx="12" fill="#0a0f2a"/>'+eyes+'</g></g>'+extra+'</svg>';
+   + '<g class="chipsway"><g class="chipbody" transform="translate(10 52) scale(1.6)"><g stroke="#9ebefd" stroke-width="5" stroke-linecap="round" fill="none"><path d="M42 24v10M60 24v10M78 24v10M42 86v14M78 86v14M60 86v8M24 44h10M24 62h10M24 80h10M86 44h10M86 62h10M86 80h10"/></g>'
+   + '<path d="M36 30h38l12 12v42a6 6 0 0 1-6 6H36a6 6 0 0 1-6-6V36a6 6 0 0 1 6-6z" fill="url(#chip-g)" stroke="#6ee7ff" stroke-width="2.5" stroke-linejoin="round"/><circle cx="40" cy="38" r="2.6" fill="#6ee7ff"/><rect x="40" y="52" width="40" height="24" rx="12" fill="#0b1729"/>'+eyes+'</g></g>'+extra+'</svg>';
 }
 function emblemSVG(){
   return '<svg class="mascot emblem" viewBox="0 0 100 100" role="img" aria-label="English for Trí"><path d="M62 14 A38 38 0 1 0 62 86 A30 30 0 1 1 62 14Z" fill="none" stroke="#f6b84e" stroke-width="3.5" stroke-linejoin="round"/>'
@@ -1405,7 +1407,7 @@ function mascotSVG(mood, kind, crop){
    + (mood === "sleepy" ? '<g transform="rotate(-4 100 232)">'+body+'</g>' : body) + spark + zz + '</svg>';
 }
 const mascot = (mood) => h("span", {html: mascotSVG(mood)});
-const PCOL = () => LRN.id === "dan" ? { off:"#3d4a9e", rest:"#3d4a9e", dash:"#6e7fdc", lit:"#6ee7ff" } : LRN.id === "tri" ? { off:"#7f9bcf", rest:"#6c8cc8", dash:"#9db4dd", lit:"#ffd27a" } : (() => { const cs = getComputedStyle(document.documentElement), g = k => cs.getPropertyValue(k).trim(); return { off:g("--p300") || "#ffb0cd", rest:g("--p600") || "#c13f7c", dash:g("--p200") || "#ffc2d8", lit:"#ffe27a" }; })();
+const PCOL = () => LRN.id === "dan" ? { off:"#3f649c", rest:"#3f649c", dash:"#719bd9", lit:"#6ee7ff" } : LRN.id === "tri" ? { off:"#7f9bcf", rest:"#6c8cc8", dash:"#9db4dd", lit:"#ffd27a" } : (() => { const cs = getComputedStyle(document.documentElement), g = k => cs.getPropertyValue(k).trim(); return { off:g("--p300") || "#ffb0cd", rest:g("--p600") || "#c13f7c", dash:g("--p200") || "#ffc2d8", lit:"#ffe27a" }; })();
 function flowerSVG(bloom){
   return bloom
    ? '<svg viewBox="-12 -12 24 24" aria-hidden="true"><circle r="11" fill="#ffe27a" opacity=".35"/>'+starP(0,0,1.05,"#ffd54d",'stroke="#e2b100" stroke-width="1"')+'</svg>'
@@ -1424,8 +1426,8 @@ function constellationEl(list){
     if (DAN){
       const sq = (fill, stroke, extra) => '<rect x="-10" y="-10" width="20" height="20" rx="5" transform="translate('+p[0]+' '+p[1]+') rotate(45)" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2" '+(extra||"")+'/>';
       if (done[i]) stars += '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="22" fill="#6ee7ff" opacity=".3" filter="url(#cgl)"/><g class="nspin" style="transform-origin:'+p[0]+'px '+p[1]+'px;animation-delay:'+(i*.18)+'s">'+sq("#6ee7ff","#fff")+'</g>';
-      else if (i === cur) stars += '<circle class="pulse" cx="'+p[0]+'" cy="'+p[1]+'" r="22" fill="none" stroke="#b79cff" stroke-width="2" stroke-dasharray="3 4"/>'+sq("#1a2150","#fff");
-      else stars += sq("#1a2150","#6e7fdc");
+      else if (i === cur) stars += '<circle class="pulse" cx="'+p[0]+'" cy="'+p[1]+'" r="22" fill="none" stroke="#9ebefd" stroke-width="2" stroke-dasharray="3 4"/>'+sq("#1b304f","#fff");
+      else stars += sq("#1b304f","#719bd9");
     } else
     if (done[i]) stars += '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="20" fill="#ffe27a" opacity=".3" filter="url(#cgl)"/>'+(SCH ? starP(p[0],p[1],1.4,"#ffe27a") : '<g class="nspin" style="transform-origin:'+p[0]+'px '+p[1]+'px;animation-delay:'+(i*.18)+'s">'+starP(p[0],p[1],1.4,"#ffe27a")+'</g>');
     else if (i === cur) stars += '<circle class="pulse" cx="'+p[0]+'" cy="'+p[1]+'" r="20" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="3 4"/>'+starP(p[0],p[1],1.4,"#fff");
