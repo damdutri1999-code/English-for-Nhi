@@ -1052,6 +1052,9 @@ html[data-learner=tri] .lstick{--lsb:rgba(9,20,50,.94)}
 .qlabel.dq{display:inline-block; background:#1f6384; color:#fff; border-radius:99px; padding:3px 14px; font-weight:800; margin:6px 0}
 /* thanh cuộn đồng bộ với giao diện: một bộ màu dùng được cho cả trang (nền kem, hồng, đêm) và các khung cuộn trong thẻ */
 html{--sbi-thumb:#d9688a; --sbi-track:rgba(248,225,218,.85); --sbi-hover:#b0415f}
+html[data-theme=neural]{--sbi-thumb:#4b5fe0; --sbi-track:#0f1436; --sbi-hover:#6ee7ff; color-scheme:dark}
+html[data-theme=neural] ::-webkit-scrollbar-thumb{border-color:#0a0f2a; box-shadow:inset 0 0 0 1px rgba(110,231,255,.35)}
+html[data-theme=neural] ::-webkit-scrollbar-track{background:#0f1436; box-shadow:inset 1px 0 0 #2a3380}
 html[data-learner=tri]{--sbi-thumb:#f0b44f; --sbi-track:rgba(18,32,70,.55); --sbi-hover:#ffc766}
 @supports not selector(::-webkit-scrollbar){*{scrollbar-width:thin; scrollbar-color:var(--sbi-thumb) var(--sbi-track)} .steps{scrollbar-width:none}}
 ::-webkit-scrollbar{width:14px; height:14px}
@@ -1064,7 +1067,7 @@ html[data-learner=tri]{--sbi-thumb:#f0b44f; --sbi-track:rgba(18,32,70,.55); --sb
 /* ===== Giao diện của Danny: mạng nơ-ron (navy, cyan, tím), robot Chip ===== */
 html[data-theme=neural]{
   --p50:#0a0f2a; --p100:#1a2150; --p200:#2a3380; --p300:#3d4a9e; --p400:#6ee7ff; --p500:#5b6cf0; --p600:#4b5fe0; --p700:#c9d3ff;
-  --ink:#eef0ff; --ink2:#a9b3e6; --paper:#141a3a; --line:#2a3380; --r:14px;
+  --ink:#eef0ff; --ink2:#a9b3e6; --paper:#141a3a; --line:#2a3380;
   --ok:#4ade80; --ok-bg:#10301f; --bad:#ff8a9a; --bad-bg:#3a1b2c; --warn-bg:#3a3318;
   --task:#1a2150; --task-line:#3d4a9e; --task-ink:#a8dcff; --doc:#1c2147; --doc-line:#3d4a9e;
   --glow:110,231,255; --topbg:10,15,42; --c1:#3a4bb8; --c2:#2a3380; --c3:#141a3a;
@@ -1077,17 +1080,17 @@ html[data-theme=neural] a{color:#8fa0ff}
 html[data-theme=neural] :focus-visible{outline-color:#6ee7ff}
 html[data-theme=neural] .top{background:rgba(10,15,42,.92); border-bottom:1px solid #2a3380}
 html[data-theme=neural] .brand b{color:#fff} html[data-theme=neural] .brand small{color:#6ee7ff}
-html[data-theme=neural] .sync,html[data-theme=neural] .gear{background:#141a3a; border:1px solid #3d4a9e; color:#eef0ff}
-html[data-theme=neural] .tabs,html[data-theme=neural] .lbar{background:#141a3a; border:1px solid #2a3380; box-shadow:0 10px 24px rgba(0,0,0,.4)}
+html[data-theme=neural] .sync,html[data-theme=neural] .gear{background:#141a3a; border-color:#3d4a9e; color:#eef0ff}
+html[data-theme=neural] .tabs,html[data-theme=neural] .lbar{background:#141a3a; border-color:#2a3380; box-shadow:0 10px 24px rgba(0,0,0,.4)}
 html[data-theme=neural] .tabs a{color:#a9b3e6} html[data-theme=neural] .tabs a.on{background:#1a2150; color:#6ee7ff; box-shadow:inset 0 0 0 1px #3d4a9e}
-html[data-theme=neural] .card.today{background:linear-gradient(180deg,#1f2a6e,#141a3a); border:1.5px solid #6ee7ff; box-shadow:0 0 0 1px rgba(110,231,255,.25),0 0 26px rgba(110,231,255,.18)}
+html[data-theme=neural] .card.today{background:linear-gradient(180deg,#1f2a6e,#141a3a); border-color:#6ee7ff; box-shadow:0 0 0 1px rgba(110,231,255,.25),0 0 26px rgba(110,231,255,.18)}
 html[data-theme=neural] .card.today .pill{background:#0a0f2a; color:#6ee7ff; border-color:#3d4a9e}
 html[data-theme=neural] .btn{background:#4b5fe0; color:#fff; box-shadow:0 4px 0 #2a3aa8; position:relative; overflow:hidden; z-index:0}
 html[data-theme=neural] .btn::before{content:""; position:absolute; inset:0; background:#6ee7ff; transform:translateX(-101%); transition:transform .3s; z-index:-1}
 html[data-theme=neural] .btn:hover:not(:disabled)::before{transform:none} html[data-theme=neural] .btn:hover:not(:disabled){color:#0a0f2a}
-html[data-theme=neural] .btn.soft,html[data-theme=neural] .btn.line{background:#1a2150; color:#c9d3ff; border:1px solid #3d4a9e; box-shadow:0 4px 0 #0a0f2a}
+html[data-theme=neural] .btn.soft,html[data-theme=neural] .btn.line{background:#1a2150; color:#c9d3ff; border-color:#3d4a9e; box-shadow:0 4px 0 #0a0f2a}
 html[data-theme=neural] .btn.soft:hover:not(:disabled),html[data-theme=neural] .btn.line:hover:not(:disabled){color:#0a0f2a}
-html[data-theme=neural] .btn.danger{background:#141a3a; color:var(--bad); border:1px solid #7a3345; box-shadow:none}
+html[data-theme=neural] .btn.danger{background:#141a3a; color:var(--bad); border-color:#7a3345; box-shadow:none}
 html[data-theme=neural] .btn:disabled{opacity:.45}
 html[data-theme=neural] .pill{background:#1a2150; color:#c9d3ff}
 html[data-theme=neural] .stat{border-color:#2a3380; box-shadow:none}
@@ -1998,6 +2001,11 @@ async function deleteWeek(n, stats){
 async function loadContentCloud(){
   if (!Cloud.ready) return;
   let rows = []; try { rows = await DB.get(Array.from({length:30}, (_, i) => LRN.cp + (i + 1))); } catch(e){ console.error(e); return; }
+  if (LRN.id === "dan"){ /* Danny học cùng bài với Nhi: tuần nào Danny chưa có bài riêng thì lấy bài của Nhi (w1..w30) */
+    try { const have = new Set(rows.map(r => parseInt(String(r.id).slice(1), 10)));
+      const nr = await DB.get(Array.from({length:30}, (_, i) => "w" + (i + 1)));
+      nr.forEach(r => { const n = parseInt(String(r.id).slice(1), 10); if (!have.has(n) && !DELETED.has(n)) rows.push({ id:"d" + n, data:r.data, at:r.at }); }); } catch(e){}
+  }
   rows.forEach(row => { try {
     const n = parseInt(String(row.id).slice(1), 10), d = row.data || {}, cur = CONTENT[n];
     if (cur && (cur.at || 0) >= (row.at || 0)) return;
@@ -3431,9 +3439,10 @@ function dnCount(node, to){   /* 4D: số % chạy lên cùng vòng tiến độ
   const t0 = performance.now(), D = 600; (function f(t){ const k = Math.min(1, (t - t0) / D); node.textContent = Math.round(from + (to - from) * (1 - Math.pow(1 - k, 3))) + "%"; if (k < 1) node._raf = requestAnimationFrame(f); })(t0);
 }
 let dnTyped = false;
-function dnTypeText(el, msg){   /* 9A: gõ từng chữ cho câu khích lệ ở trang chủ, mỗi lần mở trang một lần */
-  if (dnTyped || REDUCED()){ return; } dnTyped = true; el.textContent = ""; el.classList.add("typing"); let i = 0;
-  const t = setInterval(() => { if (!el.isConnected){ clearInterval(t); return; } el.textContent = msg.slice(0, ++i); if (i >= msg.length){ clearInterval(t); setTimeout(() => el.classList.remove("typing"), 900); } }, 38);
+function dnTypeText(el, msg){   /* 9A: gõ từng chữ cho câu khích lệ ở trang chủ, mỗi lần mở trang một lần; phần chưa gõ vẫn giữ chỗ (ẩn) để thẻ không đổi cao */
+  if (dnTyped || REDUCED()){ return; } dnTyped = true; el.textContent = "";
+  const a = h("span",{class:"typing"}), z = h("span",{style:"visibility:hidden"}, msg); el.append(a, z); let i = 0;
+  const t = setInterval(() => { if (!el.isConnected){ clearInterval(t); return; } a.textContent = msg.slice(0, ++i); z.textContent = msg.slice(i); if (i >= msg.length){ clearInterval(t); setTimeout(() => a.classList.remove("typing"), 900); } }, 38);
 }
 function pinkWaves(){   /* 7B: sóng hồng khi xong buổi (Nhi) */
   if (REDUCED()) return;
