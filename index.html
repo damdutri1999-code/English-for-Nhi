@@ -1080,26 +1080,25 @@ html[data-theme=neural] .brand b{color:#fff} html[data-theme=neural] .brand smal
 html[data-theme=neural] .sync,html[data-theme=neural] .gear{background:#141a3a; border:1px solid #3d4a9e; color:#eef0ff}
 html[data-theme=neural] .tabs,html[data-theme=neural] .lbar{background:#141a3a; border:1px solid #2a3380; box-shadow:0 10px 24px rgba(0,0,0,.4)}
 html[data-theme=neural] .tabs a{color:#a9b3e6} html[data-theme=neural] .tabs a.on{background:#1a2150; color:#6ee7ff; box-shadow:inset 0 0 0 1px #3d4a9e}
-html[data-theme=neural] .card{border-width:1px; border-radius:14px}
 html[data-theme=neural] .card.today{background:linear-gradient(180deg,#1f2a6e,#141a3a); border:1.5px solid #6ee7ff; box-shadow:0 0 0 1px rgba(110,231,255,.25),0 0 26px rgba(110,231,255,.18)}
 html[data-theme=neural] .card.today .pill{background:#0a0f2a; color:#6ee7ff; border-color:#3d4a9e}
-html[data-theme=neural] .btn{border-radius:12px; background:#4b5fe0; color:#fff; box-shadow:0 4px 0 #2a3aa8; position:relative; overflow:hidden; z-index:0}
+html[data-theme=neural] .btn{background:#4b5fe0; color:#fff; box-shadow:0 4px 0 #2a3aa8; position:relative; overflow:hidden; z-index:0}
 html[data-theme=neural] .btn::before{content:""; position:absolute; inset:0; background:#6ee7ff; transform:translateX(-101%); transition:transform .3s; z-index:-1}
 html[data-theme=neural] .btn:hover:not(:disabled)::before{transform:none} html[data-theme=neural] .btn:hover:not(:disabled){color:#0a0f2a}
 html[data-theme=neural] .btn.soft,html[data-theme=neural] .btn.line{background:#1a2150; color:#c9d3ff; border:1px solid #3d4a9e; box-shadow:0 4px 0 #0a0f2a}
 html[data-theme=neural] .btn.soft:hover:not(:disabled),html[data-theme=neural] .btn.line:hover:not(:disabled){color:#0a0f2a}
 html[data-theme=neural] .btn.danger{background:#141a3a; color:var(--bad); border:1px solid #7a3345; box-shadow:none}
 html[data-theme=neural] .btn:disabled{opacity:.45}
-html[data-theme=neural] .pill{border-radius:8px; background:#1a2150; color:#c9d3ff}
-html[data-theme=neural] .stat{border:1px solid #2a3380; border-radius:14px; box-shadow:none}
-html[data-theme=neural] .const{background:linear-gradient(180deg,#1b2370,#0f1546); border:1px solid #3d4a9e; box-shadow:0 14px 28px rgba(0,0,0,.35)}
+html[data-theme=neural] .pill{background:#1a2150; color:#c9d3ff}
+html[data-theme=neural] .stat{border-color:#2a3380; box-shadow:none}
+html[data-theme=neural] .const{background:linear-gradient(180deg,#1b2370,#0f1546); border-color:#3d4a9e; box-shadow:0 14px 28px rgba(0,0,0,.35)}
 html[data-theme=neural] .const .cb i,html[data-theme=neural] .const .cp{background:#6ee7ff; color:#0a0f2a}
-html[data-theme=neural] .opt{border:1px solid #3d4a9e; border-radius:12px; background:#141a3a}
+html[data-theme=neural] .opt{border-color:#3d4a9e; background:#141a3a}
 html[data-theme=neural] .opt:hover{border-color:#6ee7ff}
 html[data-theme=neural] .opt.right{background:#10301f; border-color:#4ade80; color:#4ade80; box-shadow:none}
 html[data-theme=neural] .opt.wrong{background:#3a1b2c; border-color:#ff8a9a; color:#ff8a9a; box-shadow:none}
 html[data-theme=neural] .opt.sel{background:#1f2a6e; border-color:#6ee7ff; box-shadow:inset 0 0 0 1px #6ee7ff}
-html[data-theme=neural] .stepbtn{border:1px solid #3d4a9e; border-radius:10px; background:#141a3a; color:#a9b3e6}
+html[data-theme=neural] .stepbtn{border-color:#3d4a9e; background:#141a3a; color:#a9b3e6}
 html[data-theme=neural] .stepbtn.on{background:#1f2a6e; color:#6ee7ff; border-color:#6ee7ff}
 html[data-theme=neural] .txt,html[data-theme=neural] input,html[data-theme=neural] textarea,html[data-theme=neural] select{background:#0f1436; color:#eef0ff; border-color:#3d4a9e}
 html[data-theme=neural] ::placeholder{color:#7f8bc9}
@@ -1395,6 +1394,7 @@ function flowerSVG(bloom){
    ? '<svg viewBox="-12 -12 24 24" aria-hidden="true"><circle r="11" fill="#ffe27a" opacity=".35"/>'+starP(0,0,1.05,"#ffd54d",'stroke="#e2b100" stroke-width="1"')+'</svg>'
    : '<svg viewBox="-12 -12 24 24" aria-hidden="true">'+starP(0,0,1.05,"none",'stroke="'+PCOL().off+'" stroke-width="1.2" stroke-dasharray="2 1.6"')+'</svg>';
 }
+function chipBodyWm(){ return chipSVG("happy").replace(/^<svg[^>]*>/,"").replace(/<\/svg>$/,""); }
 function constellationEl(list){
   const P = [[42,184],[98,148],[154,178],[210,136],[266,164],[318,122]], DAYS = ["T2","T3","T4","T5","T6","T7"];
   const done = P.map((_,i) => !!(list[i] && isDone(list[i].id))), cur = done.indexOf(false), nDone = done.filter(Boolean).length;
@@ -1419,7 +1419,7 @@ function constellationEl(list){
   const other = LRN.id === "tri" ? "moon" : LRN.id === "dan" ? "chip" : mascotKind() === "hang" ? "bunny" : "hang";
   const el = h("div",{class:"const", role:"img", "aria-label":"Chòm sao tuần này: "+nDone+" trên 6 sao đã sáng"});
   el.innerHTML = '<svg class="sky" viewBox="0 86 358 160" preserveAspectRatio="xMidYMid meet" aria-hidden="true">'
-    + dust + (SCH || DAN ? "" : '<svg x="150" y="100" width="150" height="183" viewBox="0 0 200 244" opacity=".12">'+bodyOf("bunny","happy")+'</svg>')
+    + dust + (SCH ? "" : DAN ? '<svg x="150" y="100" width="150" height="183" viewBox="0 0 200 244" opacity=".12">'+chipBodyWm()+'</svg>' : '<svg x="150" y="100" width="150" height="183" viewBox="0 0 200 244" opacity=".12">'+bodyOf("bunny","happy")+'</svg>')
     + (rest ? '<path d="'+rest+'" stroke="'+PCOL().dash+'" stroke-width="2.2" stroke-dasharray="1 7" stroke-linecap="round" fill="none"/>' : "")
     + (lit ? '<path d="'+lit+'" stroke="'+LITC+'" stroke-width="7" fill="none" stroke-linecap="round" opacity=".45" filter="url(#cgl)"/><path d="'+lit+'" stroke="'+LITC+'" stroke-width="3" fill="none" stroke-linecap="round"/>' : "")
     + stars + '<g font-family="Nunito,sans-serif" font-weight="800" font-size="12" text-anchor="middle">'+labels+'</g></svg>'
