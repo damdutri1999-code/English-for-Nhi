@@ -1999,13 +1999,19 @@ async function deleteWeek(n, stats){
   delete CONTENT[n]; DELETED.add(+n); saveDeleted(); saveContentLocal(); unloadWeek(n); if (!WEEKS[1]) restoreStub();
   if (Cloud.ready){ try { await DB.set(LRN.cp+n, { json:"", deleted:true }, Date.now()); } catch(e){ console.error(e); } }
 }
-async function loadContentCloud(){
+function prefetchContent(){   /* tải bài từ đám mây song song với đồng bộ tiến độ, không chờ nhau */
+  if (!CONFIG.supabase) return Promise.resolve(null);
+  const ids = p => Array.from({length:30}, (_, i) => p + (i + 1));
+  return Promise.all([DB.get(ids(LRN.cp)), LRN.id === "dan" ? DB.get(ids("w")).catch(() => []) : Promise.resolve([])]).then(([rows, nr]) => ({ rows, nr })).catch(e => { console.error(e); return null; });
+}
+async function loadContentCloud(pre){
   if (!Cloud.ready) return;
-  let rows = []; try { rows = await DB.get(Array.from({length:30}, (_, i) => LRN.cp + (i + 1))); } catch(e){ console.error(e); return; }
+  let got = null; try { got = pre ? await pre : null; } catch(e){}
+  if (!got) return;
+  const rows = got.rows;
   if (LRN.id === "dan"){ /* Danny học cùng bài với Nhi: tuần nào Danny chưa có bài riêng thì lấy bài của Nhi (w1..w30) */
-    try { const have = new Set(rows.map(r => parseInt(String(r.id).slice(1), 10)));
-      const nr = await DB.get(Array.from({length:30}, (_, i) => "w" + (i + 1)));
-      nr.forEach(r => { const n = parseInt(String(r.id).slice(1), 10); if (!have.has(n) && !DELETED.has(n)) rows.push({ id:"d" + n, data:r.data, at:r.at }); }); } catch(e){}
+    const have = new Set(rows.map(r => parseInt(String(r.id).slice(1), 10)));
+    got.nr.forEach(r => { const n = parseInt(String(r.id).slice(1), 10); if (!have.has(n) && !DELETED.has(n)) rows.push({ id:"d" + n, data:r.data, at:r.at }); });
   }
   rows.forEach(row => { try {
     const n = parseInt(String(row.id).slice(1), 10), d = row.data || {}, cur = CONTENT[n];
@@ -4507,6 +4513,7 @@ function bookShelfView(){
 /* Cột bài đọc chỉ dính khi vừa màn hình; bài dài thì cuộn cùng trang, không có thanh cuộn riêng */
 function fitSticky(){ const top = LRN.id === "tri" ? 10 : 34; document.querySelectorAll(".rleft").forEach(el => el.classList.toggle("stk", el.offsetHeight <= window.innerHeight - top - 24)); }
 try { new ResizeObserver(fitSticky).observe(document.body); } catch(e){} window.addEventListener("resize", fitSticky);
+let LOADING = true, LOADWAIT = false;
 function route(){
   vBank = null; stopAudio(); activeLesson = null; review = null; pgReset();
   const parts = location.hash.replace(/^#\/?/,"").split("/"); let page = parts[0] || "home";
@@ -4515,8 +4522,9 @@ function route(){
   if (IS_BW && !curBook() && !["books","settings","admin","vocab"].includes(page)) page = "books";
   document.body.classList.toggle("admin", page === "admin"); adminTheme(page === "admin");
   document.body.classList.toggle("immersive", page === "lesson" || (page === "challenge" && LRN.id !== "tri")); document.body.dataset.pg = page;
-  let view;
-  switch (page){
+  let view; const wait = LOADING && ["home","lesson","challenge","done","week","plan"].includes(page) && !Object.keys(WEEKS).some(n => !WEEKS[n].stub);
+  if (wait){ LOADWAIT = true; view = h("div",{style:"text-align:center;padding:60px 0"}, mascot("happy"), h("p",{class:"muted"},"Đang tải bài học...")); }
+  else switch (page){
     case "books": view = bookShelfView(); break;
     case "week": view = weekView(); break;
     case "plan": view = planView(); break;
@@ -4693,10 +4701,11 @@ async function boot(){
   window.addEventListener("hashchange", route);
   route();
   const sig = () => JSON.stringify([S.updatedAt, NB.updatedAt, Object.keys(WEEKS).map(n => n + ":" + (WEEKS[n].src || "") + ":" + (WEEKS[n].stub ? 1 : 0))]);
-  const before = sig();
-  await Promise.all([initCloud(), nbCloud()]); nbMigrate(); applyBrand();
-  await loadContentCloud(); await loadContentStatic();
-  if (sig() !== before){
+  const before = sig(), pre = prefetchContent();
+  setTimeout(() => { if (LOADING){ LOADING = false; route(); } }, 4000);
+  await Promise.all([initCloud(), nbCloud(), pre]); nbMigrate(); applyBrand();
+  await loadContentCloud(pre); await loadContentStatic(); LOADING = false;
+  if (sig() !== before || LOADWAIT){ LOADWAIT = false;
     const hs = location.hash, page = hs.replace(/^#\/?/,"").split("/")[0] || "home";
     const adm = hs.replace(/^#\/?/,"").split("/")[1] || "overview";
     const ok = ["home","week","plan","vocab","progress","books","mistakes"].includes(page) && !review && !vtest
