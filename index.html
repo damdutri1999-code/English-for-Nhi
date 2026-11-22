@@ -284,6 +284,9 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .dtag{flex:none; font-size:.75rem; font-weight:800; padding:3px 9px; border-radius:999px; background:var(--p100); color:var(--p600); border:1.5px solid var(--p300)}
 .dtag.now{background:var(--p500); color:#fff; border-color:var(--p500)}
 .dtag.ok{background:#dcf5e3; color:#14663a; border-color:#2e9e57}
+.dcard.soon .dwd{background:#2f7fb5}
+.dcard.soon .dtag{background:#e1f0fa; color:#17557f; border-color:#8cbfe0}
+.dcard.today:not(.done) .dtag{background:var(--p500); color:#fff; border-color:var(--p500)}
 .dsteps{display:flex; align-items:center; gap:6px; margin-top:10px}
 .dstep{flex:1 1 0; min-width:0; display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:12px; border:2px solid var(--p300); background:var(--paper); color:var(--ink); text-decoration:none; font-weight:800; font-size:.92rem}
 .dstep b{flex:none; width:22px; height:22px; border-radius:50%; background:var(--p500); color:#fff; display:grid; place-items:center; font-size:.8rem}
@@ -3309,7 +3312,7 @@ function nhiPlanEl(ti){
     const tag = done ? "Xong" : today ? "Hôm nay" : past ? "Học bù" : "Sắp tới";
     const step = (n, label, sub, href, ok, go) => h("a",{class:"dstep"+(ok ? " ok" : "")+(go ? " go" : ""),href}, h("b",null, ok ? "✓" : String(n)), h("span",{class:"dst"}, h("span",null,label), sub ? h("small",null,sub) : null));
     const vsub = vn ? "đã ôn "+vn+" lượt" : "8 phút", lsub = done ? "đã học" : st && st.seconds ? "đang học dở" : DAYMIN+" phút";
-    const card = h("div",{class:"card dcard"+(today ? " today" : "")+(done ? " done" : "")+(past && !done ? " late" : "")},
+    const card = h("div",{class:"card dcard"+(today ? " today" : "")+(done ? " done" : "")+(past && !done ? " late" : "")+(!today && !past && !done ? " soon" : "")},
       h("div",{class:"dhead",onClick:() => { if (done) card.classList.toggle("open"); }}, h("div",{class:"dwd"}, dn(i), h("small",null, d.slice(8)+"/"+d.slice(5,7))), h("div",{class:"grow"}, h("div",{class:"dtitle"}, s.title), h("div",{class:"small muted"}, KIND[s.kind])), h("span",{class:"dtag"+(today ? " now" : done ? " ok" : "")}, tag)),
       h("div",{class:"dsteps"}, hasVoc ? [step(1, "Từ vựng", vsub, "#/vocab", vdone, next === "v"), h("span",{class:"tarr"},"→")] : null,
         step(hasVoc ? 2 : 1, "Bài học", lsub, "#/lesson/"+s.id+"/0", done, next === "l"),
