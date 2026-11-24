@@ -708,8 +708,6 @@ body.hasprog{padding-top:20px}
 .kw.past{color:var(--ink2)}
 .kw.on{background:var(--p200); color:var(--p700); font-weight:800}
 .vcnt{min-height:1.2em}
-.vtype{margin-top:6px; max-width:220px; font-size:1.05rem; padding:6px 10px}
-.vtype.bad{border-color:#c2415f}
 .vtc{margin-top:4px; font-weight:700}
 .vtc.ok{color:var(--ok,#1f7a45)}
 .hkb{margin:6px auto 12px; width:100%; max-width:600px}
@@ -3763,23 +3761,27 @@ let vRowStop = null;
 function vWordRow(w, v){
   const wb = h("div",{class:"vwb"}, w), cnt = h("div",{class:"small muted vcnt"}, "");
   let timer = null, on = false, typed = 0;
-  /* gõ theo 3 lần để luyện chính tả: gõ đúng từ là tự tính 1 lần và xóa ô để gõ tiếp */
-  const inp = h("input",{class:"txt vtype",type:"text",autocomplete:"off",autocapitalize:"none",spellcheck:"false",placeholder:"Gõ lại từ này",hidden:true,"aria-label":"Gõ lại từ "+w});
-  const tc = h("div",{class:"small vtc",hidden:true}, "");
-  const lc = x => x.toLowerCase().replace(/\s+/g," ").trim();
-  inp.addEventListener("input", () => { const x = lc(inp.value), t = lc(w);
-    inp.classList.toggle("bad", x !== "" && !t.startsWith(x));
-    if (x === t){ typed++; inp.value = ""; inp.classList.remove("bad"); tc.textContent = typed >= 3 ? "Gõ đủ 3 lần rồi, giỏi quá!" : "Gõ đúng: "+typed+" / 3"; tc.classList.toggle("ok", typed >= 3); if (typed >= 3) inp.disabled = true; } });
+  /* gõ theo 3 lần để luyện chính tả: ô dạng _ _ _ _, chữ đúng hiện xanh, sai hiện đỏ; gõ đủ đúng cả từ là tính 1 lần */
+  const lets = w.replace(/[^A-Za-z0-9]/g,"").split(""), total = lets.length;
+  const inp = h("input",{class:"txt vin vhid",type:"text",autocomplete:"off",autocapitalize:"none",spellcheck:"false",placeholder:"","aria-label":"Gõ lại từ "+w});
+  const hint = h("div",{class:"vhint"}), wrapIn = h("div",{class:"vhwrap",hidden:true}, hint, inp), tc = h("div",{class:"small vtc",hidden:true}, "");
+  const drawHint = () => { const t = inp.value.replace(/[^A-Za-z0-9]/g,"").toLowerCase().slice(0, total); let idx = 0;
+    hint.replaceChildren(...w.split(/\s+/).map(tok => h("span",{class:"vhw"}, tok.split("").map(ch => { if (!/[A-Za-z0-9]/.test(ch)) return h("span",{class:"vsep"}, ch);
+      const i = idx++; return i < t.length ? h("span",{class:"vsl "+(t[i] === lets[i].toLowerCase() ? "ok" : "bad")}, t[i]) : h("span",{class:"vsl"}, ""); })))); };
+  wrapIn.addEventListener("click", () => inp.focus()); drawHint();
+  inp.addEventListener("input", () => { drawHint(); const t = inp.value.replace(/[^A-Za-z0-9]/g,"").toLowerCase();
+    if (t === lets.join("").toLowerCase()){ typed++; tc.textContent = typed >= 3 ? "Gõ đủ 3 lần rồi, giỏi quá!" : "Gõ đúng: "+typed+" / 3"; tc.classList.toggle("ok", typed >= 3);
+      if (typed >= 3){ inp.disabled = true; return; } setTimeout(() => { inp.value = ""; drawHint(); }, 350); } });
   const reset = () => { on = false; clearTimeout(timer); wb.classList.remove("kon"); cnt.textContent = ""; };
-  const typeOff = () => { typed = 0; inp.value = ""; inp.disabled = false; inp.hidden = true; tc.hidden = true; tc.classList.remove("ok"); inp.classList.remove("bad"); };
+  const typeOff = () => { typed = 0; inp.value = ""; inp.disabled = false; wrapIn.hidden = true; tc.hidden = true; tc.classList.remove("ok"); drawHint(); };
   const run = n => { if (!on) return; cnt.textContent = "Lần "+n+"/3"; wb.classList.add("kon");
     playAudio({text:w,rate:.8}, ok => { wb.classList.remove("kon"); if (!on) return; if (!ok || n >= 3){ reset(); return; }
       cnt.textContent = "Đọc theo...  ("+n+"/3)"; timer = setTimeout(() => run(n + 1), 3000); }); };
   const btn = h("button",{class:"say",type:"button","aria-label":"Nghe "+w+" 3 lần",onClick:() => {
     if (on){ reset(); typeOff(); stopAudio(); vRowStop = null; return; }
-    if (vRowStop) vRowStop(); vRowStop = () => { reset(); typeOff(); }; typeOff(); inp.hidden = false; tc.hidden = false; tc.textContent = "Nghe và gõ lại từ này 3 lần"; on = true; run(1); inp.focus(); }},"🔊");
+    if (vRowStop) vRowStop(); vRowStop = () => { reset(); typeOff(); }; typeOff(); wrapIn.hidden = false; tc.hidden = false; tc.textContent = "Nghe và gõ lại từ này 3 lần"; on = true; run(1); inp.focus(); }},"🔊");
   return h("div",{class:"vrow vw2"}, btn,
-    h("div",{class:"vwl"}, wb, v.pos ? h("div",{class:"small muted"}, v.pos) : null, v.ipa ? h("div",{class:"vipa"}, v.ipa) : null, cnt, inp, tc, h("span",{class:"boxdots",style:"margin-top:6px",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""})))),
+    h("div",{class:"vwl"}, wb, v.pos ? h("div",{class:"small muted"}, v.pos) : null, v.ipa ? h("div",{class:"vipa"}, v.ipa) : null, cnt, wrapIn, tc, h("span",{class:"boxdots",style:"margin-top:6px",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""})))),
     h("div",{class:"vwr"}, h("div",{class:"vmean"}, vMeans(v)), v.ex ? h("div",{class:"small vex"}, v.ex) : null));
 }
 /* nhắc đặt tay đúng trên bàn phím trước bước Nghe và gõ (chỉ Nhi) */
