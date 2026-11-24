@@ -707,6 +707,8 @@ body.hasprog{padding-top:20px}
 .kw{padding:1px 2px; border-radius:6px; transition:background .12s,color .12s}
 .kw.past{color:var(--ink2)}
 .kw.on{background:var(--p200); color:var(--p700); font-weight:800}
+.vcnt{min-height:1.2em}
+.vwb.kon{color:var(--p600)}
 .karaoke p{line-height:1.8}
 
 .bubrow{display:flex; align-items:flex-end; gap:8px; max-width:100%}
@@ -3743,9 +3745,20 @@ function vApply(w, res, type){
 }
 /* Sổ từ vựng của Nhi: pool = từ cả tuần + từ Nhi tự thêm. Mỗi lần mở là một lượt ôn theo chuỗi cố định. */
 const VPASS = 20;
+let vRowStop = null;
+/* bước Xem: mỗi từ đọc 3 lần, nghỉ 3 giây giữa các lần để học viên đọc theo */
 function vWordRow(w, v){
-  return h("div",{class:"vrow vw2"}, h("button",{class:"say",type:"button","aria-label":"Nghe "+w,onClick:() => playAudio({text:w,rate:.8})},"🔊"),
-    h("div",{class:"vwl"}, h("div",{class:"vwb"}, w), v.pos ? h("div",{class:"small muted"}, v.pos) : null, v.ipa ? h("div",{class:"vipa"}, v.ipa) : null, h("span",{class:"boxdots",style:"margin-top:6px",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""})))),
+  const wb = h("div",{class:"vwb"}, w), cnt = h("div",{class:"small muted vcnt"}, "");
+  let timer = null, on = false;
+  const reset = () => { on = false; clearTimeout(timer); wb.classList.remove("kon"); cnt.textContent = ""; };
+  const run = n => { if (!on) return; cnt.textContent = "Lần "+n+"/3"; wb.classList.add("kon");
+    playAudio({text:w,rate:.8}, ok => { wb.classList.remove("kon"); if (!on) return; if (!ok || n >= 3){ reset(); return; }
+      cnt.textContent = "Đọc theo...  ("+n+"/3)"; timer = setTimeout(() => run(n + 1), 3000); }); };
+  const btn = h("button",{class:"say",type:"button","aria-label":"Nghe "+w+" 3 lần",onClick:() => {
+    if (on){ reset(); stopAudio(); vRowStop = null; return; }
+    if (vRowStop) vRowStop(); vRowStop = () => { reset(); }; on = true; run(1); }},"🔊");
+  return h("div",{class:"vrow vw2"}, btn,
+    h("div",{class:"vwl"}, wb, v.pos ? h("div",{class:"small muted"}, v.pos) : null, v.ipa ? h("div",{class:"vipa"}, v.ipa) : null, cnt, h("span",{class:"boxdots",style:"margin-top:6px",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""})))),
     h("div",{class:"vwr"}, h("div",{class:"vmean"}, vMeans(v)), v.ex ? h("div",{class:"small vex"}, v.ex) : null));
 }
 const VCHAIN = [["list","Xem"],["flip","Lật ghép"],["listen","Nghe"],["blank","Kéo thả"]];
