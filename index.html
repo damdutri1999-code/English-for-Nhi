@@ -3757,7 +3757,7 @@ function vApply(w, res, type){
 /* Sổ từ vựng của Nhi: pool = từ cả tuần + từ Nhi tự thêm. Mỗi lần mở là một lượt ôn theo chuỗi cố định. */
 const VPASS = 20;
 let vRowStop = null;
-/* bước Xem: mỗi từ đọc 3 lần, nghỉ 3 giây giữa các lần để học viên đọc theo */
+/* bước Xem: đọc lặp (nghỉ 3 giây giữa các lần) cho tới khi học viên gõ đúng 3 lần */
 function vWordRow(w, v){
   const wb = h("div",{class:"vwb"}, w), cnt = h("div",{class:"small muted vcnt"}, "");
   let timer = null, on = false, typed = 0;
@@ -3771,12 +3771,12 @@ function vWordRow(w, v){
   wrapIn.addEventListener("click", () => inp.focus()); drawHint();
   inp.addEventListener("input", () => { drawHint(); const t = inp.value.replace(/[^A-Za-z0-9]/g,"").toLowerCase();
     if (t === lets.join("").toLowerCase()){ typed++; tc.textContent = typed >= 3 ? "Gõ đủ 3 lần rồi, giỏi quá!" : "Gõ đúng: "+typed+" / 3"; tc.classList.toggle("ok", typed >= 3);
-      if (typed >= 3){ inp.disabled = true; return; } setTimeout(() => { inp.value = ""; drawHint(); }, 350); } });
+      if (typed >= 3){ inp.disabled = true; reset(); stopAudio(); return; } setTimeout(() => { inp.value = ""; drawHint(); }, 350); } });
   const reset = () => { on = false; clearTimeout(timer); wb.classList.remove("kon"); cnt.textContent = ""; };
   const typeOff = () => { typed = 0; inp.value = ""; inp.disabled = false; wrapIn.hidden = true; tc.hidden = true; tc.classList.remove("ok"); drawHint(); };
-  const run = n => { if (!on) return; cnt.textContent = "Lần "+n+"/3"; wb.classList.add("kon");
-    playAudio({text:w,rate:.8}, ok => { wb.classList.remove("kon"); if (!on) return; if (!ok || n >= 3){ reset(); return; }
-      cnt.textContent = "Đọc theo...  ("+n+"/3)"; timer = setTimeout(() => run(n + 1), 3000); }); };
+  const run = n => { if (!on) return; cnt.textContent = "Lần nghe: "+n; wb.classList.add("kon");
+    playAudio({text:w,rate:.8}, ok => { wb.classList.remove("kon"); if (!on) return; if (!ok){ reset(); return; }
+      cnt.textContent = "Đọc theo... (lần nghe: "+n+")"; timer = setTimeout(() => run(n + 1), 3000); }); };
   const btn = h("button",{class:"say",type:"button","aria-label":"Nghe "+w+" 3 lần",onClick:() => {
     if (on){ reset(); typeOff(); stopAudio(); vRowStop = null; return; }
     if (vRowStop) vRowStop(); vRowStop = () => { reset(); typeOff(); }; typeOff(); wrapIn.hidden = false; tc.hidden = false; tc.textContent = "Nghe và gõ lại từ này 3 lần"; on = true; run(1); inp.focus(); }},"🔊");
