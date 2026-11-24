@@ -708,6 +708,10 @@ body.hasprog{padding-top:20px}
 .kw.past{color:var(--ink2)}
 .kw.on{background:var(--p200); color:var(--p700); font-weight:800}
 .vcnt{min-height:1.2em}
+.mcwrap{position:relative}
+.mccd{position:absolute; inset:-6px; z-index:5; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; text-align:center; background:var(--paper); border-radius:var(--r,14px); padding:12px}
+.mccdm{font-weight:800; font-size:1.25rem; color:var(--ink)}
+.mccdn{font-weight:800; font-size:4.5rem; line-height:1; color:var(--p600); min-height:1em}
 .vwb.kon{color:var(--p600)}
 .karaoke p{line-height:1.8}
 
@@ -3890,6 +3894,7 @@ function vocabView(sub, arg){
   }
   function matchEls(r){
     const ws = r.rounds[r.ri], miss = {}; let open = [], lock = false, done = 0;
+    const needCd = r.cdRi !== r.ri; if (needCd) lock = true;
     const cards = []; ws.forEach(w => { const m = vMeans(vpool[w]); cards.push({ w, k:"en", t:w, m }, { w, k:"vi", t:m, m }); });
     const grid = h("div",{class:"mcg",style:"grid-template-columns:repeat("+(ws.length * 2 % 3 === 0 ? 3 : 2)+",1fr)"}), foot = h("div",{style:"text-align:center;margin-top:12px"}), cnt = h("b",null,"0 / "+ws.length);
     const fin = () => { ws.forEach(w => { const res = (miss[w] || 0) >= 3 ? "late" : "ok", cur = r.res[w]; if (cur == null || (res === "late" && cur === "ok")) r.res[w] = res; (r.ty || (r.ty = {}))[w] = "flip"; });
@@ -3906,8 +3911,15 @@ function vocabView(sub, arg){
         else { miss[a.w] = (miss[a.w] || 0) + 1; miss[d.w] = (miss[d.w] || 0) + 1; lock = true; setTimeout(() => { a.el.classList.remove("up"); d.el.classList.remove("up"); lock = false; }, 1000); }
       });
       grid.append(b); });
+    /* hiệu lệnh đầu mỗi vòng: nhắc đọc theo, đếm ngược 3 2 1 rồi mới cho lật thẻ */
+    const wrap = h("div",{class:"mcwrap"}, grid);
+    if (needCd){
+      r.cdRi = r.ri; const big = h("div",{class:"mccdn"}, ""), msg = h("div",{class:"mccdm"}, "Hãy đọc theo từ được lật nhé"), ov = h("div",{class:"mccd",role:"status"}, msg, big); wrap.append(ov);
+      const step = n => { if (!ov.isConnected) return; if (n === 0){ ov.remove(); lock = false; return; } msg.textContent = "Bắt đầu sau"; big.textContent = String(n); setTimeout(() => step(n - 1), 1000); };
+      setTimeout(() => { if (ov.isConnected) step(3); }, 2200);
+    }
     return h("div",{class:"card"}, roundHead(r, cnt, "Đã ghép", "cặp"),
-      h("p",{style:"margin:0 0 10px;font-weight:700"},"Lật 2 thẻ để ghép từ tiếng Anh với nghĩa tiếng Việt. Ghép đúng thì cặp thẻ chuyển xanh."), grid, foot);
+      h("p",{style:"margin:0 0 10px;font-weight:700"},"Lật 2 thẻ để ghép từ tiếng Anh với nghĩa tiếng Việt. Ghép đúng thì cặp thẻ chuyển xanh."), wrap, foot);
   }
   function gapEls(r){
     const ws = r.rounds[r.ri], miss = {}, n = ws.length; let selChip = null, selGap = null, drag = null, done = 0;
