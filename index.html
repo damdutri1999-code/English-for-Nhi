@@ -1554,7 +1554,7 @@ async function initCloud(){
   try {
     const rows = await DB.get(CONFIG.docId), row = rows[0];
     if (row && row.data && (row.at || 0) > (S.updatedAt || 0)) {
-      S = normalize(row.data); ensureStart();
+      S = normalize(row.data); ensureStart(); clearStepCache();
       try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){}
     }
     Cloud.ready = true;
@@ -1740,6 +1740,7 @@ function compileWeek(j){
   WEEKS[n] = { id:n, title:j.title, grammar:j.grammar, subs, sessions, json:true, level:j.level || "", focus:j.focus || "", vocabList:vlist };
 }
 function unloadWeek(n){
+  clearStepCache();
   const w = WEEKS[n]; if (!w) return;
   w.sessions.forEach(s => { delete LESSONS[s.id]; delete CH[s.id]; });
   Object.keys(SET).forEach(k => { if (k.startsWith("w"+n+"-")) delete SET[k]; });
@@ -2419,7 +2420,10 @@ function pgDraw(){
   el.querySelector(".f").setAttribute("stroke-dashoffset", String(131.9 * (1 - v))); if (LRN.id !== "tri") dnCount(el.lastChild, pct); else el.lastChild.textContent = pct + "%"; el.classList.toggle("full", pct >= 100);
   const t = PG.label + (PG.total ? " · " + PG.done + "/" + PG.total + " câu" : ""); el.title = t; el.setAttribute("aria-label", "Tiến độ buổi học " + pct + "%. " + t);
 }
-function pgReset(){ Object.assign(PG, { on:false, total:0, done:0, base:0, span:1, label:"", stepDone:null }); pgDraw(); }
+/* giữ nguyên bài đang làm dở: màn hình của từng bước (và từng Challenge) được giữ trong bộ nhớ khi học viên đổi bước hoặc thoát ra rồi quay lại */
+const STEPCACHE = {}, CHCACHE = {}; let pgOwner = null;
+function clearStepCache(){ Object.keys(STEPCACHE).forEach(k => delete STEPCACHE[k]); Object.keys(CHCACHE).forEach(k => delete CHCACHE[k]); pgOwner = null; }
+function pgReset(){ if (pgOwner){ pgOwner.pg = Object.assign({}, PG); pgOwner = null; } Object.assign(PG, { on:false, total:0, done:0, base:0, span:1, label:"", stepDone:null }); pgDraw(); }
 /* kéo thả bằng chuột và cảm ứng. Chạm nhẹ = chọn từ, rồi chạm vào ô để thả. */
 function dragSource(el, getPayload, onTap, canDrag){
   el.classList.add("drg");
@@ -3174,6 +3178,7 @@ function listenStep(step, ctx){
         { i:si+1, total:step.sets.length, next:nx ? ltl(nx) : "", go:nx ? () => lcards[si+1].scrollIntoView({behavior:"smooth", block:"start"}) : null }));
       lcards.push(c); rr.append(c); });
   }
+  out.__resume = () => { clearTimeout(timer); cur = null; setIdle(); prog.reset(); kar.clear(); };
   return out;
 }
 function grammarBox(){
@@ -3417,6 +3422,8 @@ function lessonView(id, idx){
   const sess = ensureSession(id); activeLesson = id;
   const steps = lesson.steps; idx = Math.max(0, Math.min(steps.length-1, isNaN(idx) ? 0 : idx));
   const step = steps[idx], last = idx === steps.length-1;
+  const ck = id + "/" + idx, cachable = step.mode !== "speak" && !["bookread","report"].includes(step.type), hit = cachable ? STEPCACHE[ck] : null;
+  if (hit){ Object.assign(PG, hit.pg || { on:true }); pgOwner = hit; if (hit.root.__resume) hit.root.__resume(); setTimeout(pgDraw, 0); return hit.root; }
   const go = i => { location.hash = "#/lesson/"+id+"/"+i; };
   const nav = h("div",{class:"steps"}), next = h("button",{class:"btn",type:"button"});
   const skip = h("div",{style:"text-align:center"});
@@ -3434,14 +3441,17 @@ function lessonView(id, idx){
   next.addEventListener("click", () => { if (last){ finish(id); } else go(idx+1); });
   const body = { sets:setsStep, read:readStep, listen:listenStep, notice:noticeStep, output:outputStep, report:reportStep, bookread:bookreadStep }[step.type](step, ctx);
   refresh();
-  return h("div",null,
+  const root = h("div",null,
     h("div",{class:"lstick"}, h("div",{class:"lhead"}, h("a",{class:"back",href:WKH(),"aria-label":"Quay lại"},"←"), h("div",{class:"grow"}, h("h1",null,meta.title), h("div",{class:"small muted"}, meta.day+", "+KIND[meta.kind])),
       pgRing(), h("div",{class:"clock",id:"clock"},"⏱ "+fmt(sess.seconds || 0)), fsBtn()),
       nav),
     body, skip,
     h("div",{class:"lbar"}, idx > 0 ? h("button",{class:"btn soft",type:"button","aria-label":"Bước trước",onClick:() => go(idx-1)},"←") : null, next));
+  if (cachable){ const ent = { root, pg:null }; STEPCACHE[ck] = ent; pgOwner = ent; }
+  return root;
 }
 function finish(id){
+  Object.keys(STEPCACHE).forEach(k => { if (k.startsWith(id + "/")) delete STEPCACHE[k]; });
   const before = unlockedIds();
   const s = ensureSession(id); if (!s.done){ s.done = true; s.doneAt = Date.now(); }
   introVocab(id);
@@ -4095,6 +4105,7 @@ function practiceSetFor(type){
 function challengeView(sid){
   const c = CH[sid], meta = findSession(sid);
   if (LRN.id !== "tri" && c && meta){   /* bố cục giống buổi học: cột bước bên trái (3 chặng), nội dung rộng bên phải, mỗi lần chỉ hiện một chặng */
+    if (CHCACHE[sid]){ const ent = CHCACHE[sid]; Object.assign(PG, ent.pg || { on:true, label:"Challenge", span:0 }); pgOwner = ent; setTimeout(pgDraw, 0); return ent.root; }
     const all = c.stages.reduce((a, g) => a + g.sets.length, 0), prev = S.challenges[sid]; let left = all, right = 0, total = 0, cur = 0;
     const dn = c.stages.map(g => 0), end = h("div");
     Object.assign(PG, { on:true, label:"Challenge", base:0, span:0, total:0, done:0, stepDone:null });
@@ -4103,7 +4114,7 @@ function challengeView(sid){
       g.sets.map(st => h("div",{class:"card"}, exerciseSet(st, (r, t) => onSet(gi, r, t)))));
       return el; });
     function onSet(gi, r, t){ right += r; total += t; dn[gi]++; PG.base = (all - left + 1) / all; pgDraw();
-      if (--left === 0){ S.challenges[sid] = { at:dkey(new Date()), right, total }; save(); setTimeout(petals, 200);
+      if (--left === 0){ delete CHCACHE[sid]; S.challenges[sid] = { at:dkey(new Date()), right, total }; save(); setTimeout(petals, 200);
         end.replaceChildren(h("div",{class:"card tint celebrate"}, mascot("cheer"), h("h2",null,"Xong Challenge rồi!"),
           h("p",null,"Bạn làm đúng "+right+" / "+total+" câu."), h("p",{class:"muted small"},"Challenge không tính vào chuỗi ngày học, nhưng kết quả đã được ghi lại."),
           h("a",{class:"btn",href:WKH()},WKL(true)))); }
@@ -4116,13 +4127,15 @@ function challengeView(sid){
     }
     next.addEventListener("click", () => { if (cur === c.stages.length - 1) location.hash = WKH(); else show(cur + 1); });
     show(0);
-    return h("div",null,
+    const root = h("div",null,
       h("div",{class:"lstick"}, h("div",{class:"lhead"}, h("a",{class:"back",href:WKH(),"aria-label":"Quay lại"},"←"), h("div",{class:"grow"}, h("h1",null,c.title), h("div",{class:"small muted"}, meta.day+": "+meta.title)),
         pgRing(), fsBtn()), nav),
       h("div",{class:"card tint flat small"}, "Bài làm thêm cho ai muốn thử sức: khoảng 20 phút, chia "+c.stages.length+" chặng. Không bắt buộc và không tính vào chuỗi ngày học."
         + (prev ? " Lần gần nhất: "+prev.right+" / "+prev.total+" câu đúng." : "")),
       ...panes, end,
       h("div",{class:"lbar"}, h("button",{class:"btn soft",type:"button","aria-label":"Chặng trước",onClick:() => { if (cur > 0) show(cur - 1); else location.hash = WKH(); }},"←"), next));
+    { const ent = { root, pg:null }; CHCACHE[sid] = ent; pgOwner = ent; }
+    return root;
   }
   if (!c || !meta) return h("div",null, h("a",{class:"btn soft",href:WKH()},WKL(true)), h("div",{class:"card",style:"margin-top:16px"}, h("h2",null,"Buổi này chưa có Challenge")));
   const all = c.stages.reduce((a, g) => a + g.sets.length, 0); let left = all, right = 0, total = 0;
@@ -4217,6 +4230,7 @@ const hasProg = p => !!(p.started || p.writing || p.ch || p.mist || p.vocab);
 const progText = p => [p.done + " buổi xong" + (p.started > p.done ? " (" + (p.started - p.done) + " đang học)" : ""), p.writing ? p.writing + " bài viết" : "", p.ch ? p.ch + " challenge" : "", p.mist ? p.mist + " câu sai" : "", p.vocab ? p.vocab + " từ vựng" : ""].filter(Boolean).join(", ");
 /* o = {all:true} | {week:n} | {sid:"w1-mon"} */
 function clearProgress(o){
+  clearStepCache();
   if (o.all){ const keep = S.settings; S = defaultState(); S.settings = Object.assign(S.settings, keep); save(); return; }
   const ids = o.sid ? [o.sid] : sidsOf(o.week);
   ids.forEach(id => { delete S.sessions[id]; delete S.writing[id]; delete S.feedback[id]; delete S.challenges[id]; });
@@ -4459,7 +4473,7 @@ function adProgress(){
   const doneAll = Object.values(S.sessions).filter(s => s.done).length, mins = Math.round(Object.values(S.sessions).reduce((a, s) => a + (s.seconds || 0), 0) / 60);
   const kpi = (b, t) => h("div",{class:"adm-kpi"}, h("b",null,String(b)), h("span",null,t));
   const fileIn = h("input",{type:"file",accept:"application/json",hidden:true,onChange:e => { const f = e.target.files[0]; if (!f) return; const rd = new FileReader();
-    rd.onload = () => { try { S = normalize(JSON.parse(rd.result)); ensureStart(); save(); toast("Đã khôi phục tiến độ"); route(); } catch(x){ toast("File không hợp lệ"); } }; rd.readAsText(f); }});
+    rd.onload = () => { try { S = normalize(JSON.parse(rd.result)); clearStepCache(); ensureStart(); save(); toast("Đã khôi phục tiến độ"); route(); } catch(x){ toast("File không hợp lệ"); } }; rd.readAsText(f); }});
   const all = { started:doneAll, done:doneAll, writing:Object.keys(S.writing).length, ch:Object.keys(S.challenges).length, mist:S.mistakes.length, vocab:Object.keys(S.vocab).length };
   const weekRows = ws.map(w => { const p = weekProg(w);
     return h("div",{class:"adm-row"}, h("div",{class:"adm-wno"}, h("small",null,IS_BW ? "Sách " + Math.ceil(w / 3) : "Tuần"), h("b",null,String(IS_BW ? "T" + wLbl(w) : w))),
