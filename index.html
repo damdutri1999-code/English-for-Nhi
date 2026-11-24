@@ -2289,6 +2289,21 @@ function audDropzone(onAdded, small){
   return h("div", null, drop, fileIn);
 }
 
+/* Âm báo đúng/sai (bộ D: "ting" như nhặt xu và "wah" trượt xuống), chỉ cho Nhi và Danny, tắt được trong Cài đặt, lưu theo thiết bị */
+const SFX = (() => {
+  let ctx = null, master = null; const KEY = "a1-sfx";
+  const on = () => { if (LRN.id === "tri") return false; try { return localStorage.getItem(KEY) !== "0"; } catch(e){ return true; } };
+  const setOn = v => { try { localStorage.setItem(KEY, v ? "1" : "0"); } catch(e){} };
+  const ac = () => { if (!ctx){ const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; ctx = new C(); master = ctx.createGain(); master.gain.value = .6; master.connect(ctx.destination); }
+    if (ctx.state === "suspended") ctx.resume(); return ctx; };
+  const tone = (f, at, dur, type, gain, cut, f2) => { const c = ac(); if (!c) return; const t0 = c.currentTime + at, o = c.createOscillator(), g = c.createGain(), lp = c.createBiquadFilter();
+    o.type = type; o.frequency.setValueAtTime(f, t0); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t0 + dur);
+    lp.type = "lowpass"; lp.frequency.value = cut; g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(gain, t0 + .008); g.gain.exponentialRampToValueAtTime(.0001, t0 + dur);
+    o.connect(lp); lp.connect(g); g.connect(master); o.start(t0); o.stop(t0 + dur + .05); };
+  const ok = () => { if (!on()) return; try { tone(988, 0, .07, "square", .09, 4000); tone(1319, .07, .35, "square", .09, 4000); } catch(e){} };
+  const bad = () => { if (!on()) return; try { tone(330, 0, .38, "sawtooth", .13, 700, 110); } catch(e){} };
+  return { on, setOn, ok, bad };
+})();
 function playAudio({text, src, rate}, onend, onprog){
   src = resolveAudio(src); stopAudio(); const my = audioToken; let timer = null; const L = (text || "").length;
   const stopT = () => { if (timer){ clearInterval(timer); timer = null; } };
@@ -2842,6 +2857,7 @@ function exerciseSet(set, onDone, pos){
       if (done[i] || !built) return; const it = built.items[i]; if (!it.isAnswered()) return;
       const r = it.check();
       if (r.pending) return;
+      if (!r.self){ if (r.ok) SFX.ok(); else SFX.bad(); }
       if (r.retry){ tried[i] = true; lastR[i] = r;
         const msg = /^(gap|cloze)$/.test(main.type) && main.mode !== "type" ? "Chưa đúng. Kéo từ khác vào để thay nhé." : MCQLIKE.includes(main.type) || main.type === "tap" ? "Chưa đúng, bạn chọn lại nhé." : /^(reorder|seqlisten)$/.test(main.type) ? "Chưa đúng, bạn xếp lại nhé." : main.type === "multi" ? "Chưa đúng, bạn đổi lại các đáp án đã chọn nhé." : main.type === "inline" ? "Chưa đúng, bạn đổi lại các ô sai nhé." : "Chưa đúng, bạn sửa lại rồi kiểm tra lại nhé.";
         if (!it.quietRetry) it.fbSlot.replaceChildren(h("div",{class:"fbtxt bad"}, msg + " ", it.lock ? h("button",{class:"linkbtn",type:"button",onClick:() => reveal(i)}, "Xem đáp án") : null)); return; }
@@ -4055,6 +4071,9 @@ function settingsView(){
   return h("div",null, h("h1",null,"Cài đặt"),
     IS_BW ? h("div",{class:"card"}, h("h3",null,"📖 Sách đang học"), h("p",{class:"muted small"}, bwOn ? ((bookInfo(curBook()) || {}).title || "")+" · "+((bookInfo(curBook()) || {}).series || "") : "Chưa chọn sách."), h("a",{class:"btn soft",href:"#/books"},"📚 Chọn sách khác")) : null,
     voiceCard(),
+    LRN.id === "tri" ? null : (() => { const bt = h("button",{class:"btn soft sm",type:"button"}); const paint = () => { bt.textContent = SFX.on() ? "Đang bật, bấm để tắt" : "Đang tắt, bấm để bật"; };
+      bt.addEventListener("click", () => { SFX.setOn(!SFX.on()); paint(); if (SFX.on()) SFX.ok(); }); paint();
+      return h("div",{class:"card"}, h("h3",null,"Âm báo đúng sai"), h("p",{class:"muted small"},"Tiếng ting khi chọn đúng, tiếng wah khi chọn sai. Cài riêng trên từng thiết bị."), bt); })(),
     h("div",{class:"card"}, h("h3",null,"Toàn màn hình"), h("p",{class:"muted small"}, FS.app() ? "Bạn đang mở app ở chế độ toàn màn hình." : FS.can() ? "Ẩn thanh địa chỉ của trình duyệt để học cho tập trung." : "Trên iPhone: bấm nút Chia sẻ, chọn “Thêm vào MH chính”, rồi mở app từ biểu tượng trên màn hình, app sẽ chạy toàn màn hình."),
       FS.app() ? null : h("button",{class:"btn fsbtn",type:"button",onClick:FS.toggle,html:FS_TXT(FS.on())})),
     h("div",{class:"card"}, h("h3",null,"Học viên: "+LRN.name+" ("+LRN.level+")"), h("p",{class:"muted small"},"Tên hiện trong lời chào ở trang chủ."), nameIn,
