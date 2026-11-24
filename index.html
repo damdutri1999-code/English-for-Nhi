@@ -708,6 +708,11 @@ body.hasprog{padding-top:20px}
 .kw.past{color:var(--ink2)}
 .kw.on{background:var(--p200); color:var(--p700); font-weight:800}
 .vcnt{min-height:1.2em}
+.hkb{margin:6px auto 12px; width:100%; max-width:600px}
+.hkb svg{display:block; width:100%; height:auto}
+.hlist{margin:0 auto 14px; padding-left:1.4em; line-height:1.55; font-weight:600; text-align:left; max-width:640px; list-style:decimal}
+.hlist li{display:list-item; text-align:left}
+.hlist li{margin:0 0 4px}
 .mcwrap{position:relative}
 .mccd{position:absolute; inset:-6px; z-index:5; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; text-align:center; background:var(--paper); border-radius:var(--r,14px); padding:12px}
 .mccdm{font-weight:800; font-size:1.25rem; color:var(--ink)}
@@ -3765,6 +3770,32 @@ function vWordRow(w, v){
     h("div",{class:"vwl"}, wb, v.pos ? h("div",{class:"small muted"}, v.pos) : null, v.ipa ? h("div",{class:"vipa"}, v.ipa) : null, cnt, h("span",{class:"boxdots",style:"margin-top:6px",title:"Mức nhớ"}, [0,1,2,3,4].map(i => h("i",{class:i<=v.box&&v.box>0?"f":""})))),
     h("div",{class:"vwr"}, h("div",{class:"vmean"}, vMeans(v)), v.ex ? h("div",{class:"small vex"}, v.ex) : null));
 }
+/* nhắc đặt tay đúng trên bàn phím trước bước Nghe và gõ (chỉ Nhi) */
+function handsSvg(){
+  const rows = [["QWERTYUIOP",0],["ASDFGHJKL;",.28],["ZXCVBNM,./",.72]], P = 52, K = 46, X0 = 14, Y0 = 14;
+  const col = { Q:"#f4c2cf",A:"#f4c2cf",Z:"#f4c2cf",W:"#f7d9a8",S:"#f7d9a8",X:"#f7d9a8",E:"#f6ec9e",D:"#f6ec9e",C:"#f6ec9e",
+    R:"#bfe3b4",F:"#bfe3b4",V:"#bfe3b4",T:"#bfe3b4",G:"#bfe3b4",B:"#bfe3b4",Y:"#a9d8ee",H:"#a9d8ee",N:"#a9d8ee",U:"#a9d8ee",J:"#a9d8ee",M:"#a9d8ee",
+    I:"#f6ec9e",K:"#f6ec9e",",":"#f6ec9e",O:"#f7d9a8",L:"#f7d9a8",".":"#f7d9a8",P:"#f4c2cf",";":"#f4c2cf","/":"#f4c2cf" };
+  let o = '<svg viewBox="0 0 580 232" role="img" aria-label="Cách đặt hai tay trên bàn phím: ngón trỏ trên F và J, các ngón khác trên A S D và K L, hai ngón cái trên phím cách" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:640px">';
+  rows.forEach(([ks, off], ri) => ks.split("").forEach((c, i) => { const x = X0 + (i + off) * P, y = Y0 + ri * P, home = ri === 1 && "ASDFJKL;".includes(c);
+    o += '<rect x="'+x+'" y="'+y+'" width="'+K+'" height="'+K+'" rx="8" fill="'+col[c]+'" stroke="'+(home ? "#3b2428" : "#b9a59c")+'" stroke-width="'+(home ? 3 : 1.5)+'"/>'
+      + '<text x="'+(x + K / 2)+'" y="'+(y + K / 2 + 6)+'" text-anchor="middle" font-size="18" font-weight="700" fill="#3b2428" font-family="Inter,system-ui,sans-serif">'+c+'</text>';
+    if (c === "F" || c === "J") o += '<rect x="'+(x + K / 2 - 8)+'" y="'+(y + K - 9)+'" width="16" height="3.5" rx="2" fill="#3b2428"/>';
+    if (home) o += '<circle cx="'+(x + K / 2)+'" cy="'+(y - 4)+'" r="7" fill="#3b2428"/>'; }));
+  const sy = Y0 + 3 * P; o += '<rect x="150" y="'+sy+'" width="260" height="'+K+'" rx="10" fill="#e8dfd8" stroke="#b9a59c" stroke-width="1.5"/>'
+    + '<text x="280" y="'+(sy + 29)+'" text-anchor="middle" font-size="16" font-weight="700" fill="#3b2428" font-family="Inter,system-ui,sans-serif">phím cách (hai ngón cái)</text>'
+    + '<circle cx="230" cy="'+(sy - 4)+'" r="7" fill="#3b2428"/><circle cx="330" cy="'+(sy - 4)+'" r="7" fill="#3b2428"/>';
+  return o + '</svg>';
+}
+function handsGate(onOk){
+  const pic = h("div",{class:"hkb"}); pic.innerHTML = handsSvg();
+  const go = h("button",{class:"btn",type:"button",onClick:() => { document.removeEventListener("keydown", onKey); onOk(); }},"Mình đã đặt tay đúng, bắt đầu nghe");
+  const onKey = e => { if (!go.isConnected){ document.removeEventListener("keydown", onKey); return; } if (e.key === "Enter" && !e.repeat){ e.preventDefault(); go.click(); } };
+  setTimeout(() => document.addEventListener("keydown", onKey), 300);
+  return h("div",{class:"card tint vq"}, h("div",{class:"vtag"},"Trước khi gõ"), h("h3",{style:"margin:0 0 6px"},"Đặt tay đúng chỗ trên bàn phím nhé"), pic,
+    h("ol",{class:"hlist"}, h("li",null,"Hai ngón trỏ đặt lên phím F và J (có gờ nhỏ nổi lên để sờ).") , h("li",null,"Các ngón còn lại đặt lên hàng giữa: A S D bên trái, K L ; bên phải."), h("li",null,"Hai ngón cái đặt nhẹ lên phím cách."), h("li",null,"Gõ phím nào thì dùng đúng ngón của vùng màu đó, cố gắng không nhìn bàn phím.")),
+    h("div",{class:"row",style:"justify-content:center"}, go));
+}
 const VCHAIN = [["list","Xem"],["flip","Lật ghép"],["listen","Nghe"],["blank","Kéo thả"]];
 const vWeeks = () => Object.keys(WEEKS).map(Number).filter(n => (WEEKS[n].vocabList || []).length).sort((a, b) => a - b);
 let vwk = null;
@@ -3977,6 +4008,7 @@ function vocabView(sub, arg){
     }
     if (r.i >= r.q.length){ vStage(r.si + 1); return chainEls(); }
     const it = r.q[r.i], type = it.again ? "flip" : it.ty;
+    if (type === "listen" && LRN.id === "nhi" && r.handsSi !== r.si) return [chainBar(r), handsGate(() => { r.handsSi = r.si; render(); window.scrollTo(0,0); })];
     return [chainBar(r), h("div",{class:"small muted",style:"margin-bottom:4px"}, (r.i + 1)+" / "+r.q.length+(it.again ? "  ·  ôn lại từ vừa quên" : "")),
       h("div",{class:"bar",style:"margin-bottom:10px"}, h("i",{style:"width:"+Math.round(r.i / r.q.length * 100)+"%"})),
       vCard(it.w, type, res => { if (!it.again){ const cur = r.res[it.w], rank = { ok:0, late:1, fail:2 };
