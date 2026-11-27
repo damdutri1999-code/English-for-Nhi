@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#f1cbc3">
 <script>try{var L=new URLSearchParams(location.search).get("l");var OK={nhi:1,tri:1,bw:1,dan:1};if(!OK[L])L=sessionStorage.getItem("a1-learner");if(!OK[L])L=localStorage.getItem("a1-learner-keep");
 if(L==="tri"||location.hash.indexOf("#/admin")===0){document.documentElement.setAttribute("data-learner","tri");document.documentElement.setAttribute("data-theme","sea")}
-else if(L==="dan"){document.documentElement.setAttribute("data-learner","nhi");document.documentElement.setAttribute("data-theme","neural")}
+else if(L==="dan"){document.documentElement.setAttribute("data-learner","nhi");document.documentElement.setAttribute("data-theme","neural");document.write('<script src="zh-hant.js"><\/script>')}
 else{if(L==="nhi"||L==="bw")document.documentElement.setAttribute("data-learner","nhi");var t=localStorage.getItem("a1-theme");if(t==="night"||t==="light")document.documentElement.setAttribute("data-theme",t)}}catch(e){}</script>
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -20,8 +20,8 @@ else{if(L==="nhi"||L==="bw")document.documentElement.setAttribute("data-learner"
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Baloo 2 và Nunito đều có đủ dấu tiếng Việt -->
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Chakra+Petch:wght@500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Chakra+Petch:wght@500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Chakra+Petch:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Chakra+Petch:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{
   --p50:#fbf2ec; --p100:#f8e1da; --p200:#f1cbc3; --p300:#e8aaa6; --p400:#dd8590;
@@ -328,6 +328,8 @@ textarea.txt{resize:vertical; min-height:120px; font-weight:600; line-height:1.6
 .dstep .dst{min-width:0}
 .dstep .dst>span{white-space:nowrap}
 .dstep .dst small{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block}
+html[lang="zh-Hant"] .dstep .dst small{font-size:.66rem; letter-spacing:-.02em}
+html[lang="zh-Hant"] .dstep{gap:6px; padding-left:8px; padding-right:8px}
 .stats{margin-bottom:12px}
 .stat{padding:8px 4px}
 .stat b{font-size:1.35rem}
@@ -1089,7 +1091,7 @@ html[data-theme=neural]{
   --lift:0 3px 0 rgba(0,0,0,.35),0 12px 26px rgba(0,0,0,.3);
   background:#0b1729; color-scheme:dark;
 }
-html[data-theme=neural] body{font-family:"Inter",system-ui,sans-serif; background:radial-gradient(circle at 18% 0,#2c4a78 0,#0b1729 58%) fixed; background-image:none; color:var(--ink)}
+html[data-theme=neural] body{font-family:"Inter","Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif; background:radial-gradient(circle at 18% 0,#2c4a78 0,#0b1729 58%) fixed; background-image:none; color:var(--ink)}
 /* font Danny: Chakra Petch cho tiêu đề, từ vựng, số liệu; Inter cho chữ thường */
 html[data-theme=neural] h1,
 html[data-theme=neural] h2,
@@ -1108,7 +1110,7 @@ html[data-theme=neural] .const .ct,
 html[data-theme=neural] .bkclock,
 html[data-theme=neural] .vwb,
 html[data-theme=neural] .mccdn,
-html[data-theme=neural] .mccdm{font-family:"Chakra Petch","Inter",sans-serif; letter-spacing:.005em}
+html[data-theme=neural] .mccdm{font-family:"Chakra Petch","Inter","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif; letter-spacing:.005em}
 html[data-theme=neural] a{color:#92bdfc}
 html[data-theme=neural] :focus-visible{outline-color:#6ee7ff}
 html[data-theme=neural] .top{background:rgba(11,23,41,.92); border-bottom:1px solid #2c4c7e}
@@ -3521,6 +3523,7 @@ function dnCount(node, to){   /* 4D: số % chạy lên cùng vòng tiến độ
 }
 let dnTyped = false;
 function dnTypeText(el, msg){   /* 9A: gõ từng chữ cho câu khích lệ ở trang chủ, mỗi lần mở trang một lần; phần chưa gõ vẫn giữ chỗ (ẩn) để thẻ không đổi cao */
+  if (window.ZH) msg = ZH.tr(msg);
   if (dnTyped || REDUCED()){ return; } dnTyped = true; el.textContent = "";
   const a = h("span",{class:"typing"}), z = h("span",{style:"visibility:hidden"}, msg); el.append(a, z); let i = 0;
   const t = setInterval(() => { if (!el.isConnected){ clearInterval(t); return; } a.textContent = msg.slice(0, ++i); z.textContent = msg.slice(i); if (i >= msg.length){ clearInterval(t); setTimeout(() => a.classList.remove("typing"), 900); } }, 38);
