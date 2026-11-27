@@ -20,8 +20,8 @@ else{if(L==="nhi"||L==="bw")document.documentElement.setAttribute("data-learner"
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Baloo 2 và Nunito đều có đủ dấu tiếng Việt -->
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Chakra+Petch:wght@500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Nunito:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=Chakra+Petch:wght@500;600;700&family=Source+Serif+4:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{
   --p50:#fbf2ec; --p100:#f8e1da; --p200:#f1cbc3; --p300:#e8aaa6; --p400:#dd8590;
@@ -1090,7 +1090,25 @@ html[data-theme=neural]{
   background:#0b1729; color-scheme:dark;
 }
 html[data-theme=neural] body{font-family:"Inter",system-ui,sans-serif; background:radial-gradient(circle at 18% 0,#2c4a78 0,#0b1729 58%) fixed; background-image:none; color:var(--ink)}
-html[data-theme=neural] h1,html[data-theme=neural] h2,html[data-theme=neural] h3,html[data-theme=neural] .brand b,html[data-theme=neural] .cvc b,html[data-theme=neural] .cnt{font-family:"Space Grotesk","Inter",sans-serif; letter-spacing:.005em}
+/* font Danny: Chakra Petch cho tiêu đề, từ vựng, số liệu; Inter cho chữ thường */
+html[data-theme=neural] h1,
+html[data-theme=neural] h2,
+html[data-theme=neural] h3,
+html[data-theme=neural] .brand b,
+html[data-theme=neural] .cvc b,
+html[data-theme=neural] .cnt,
+html[data-theme=neural] .pgring b,
+html[data-theme=neural] .stat b,
+html[data-theme=neural] .gtable td:nth-child(2),
+html[data-theme=neural] .flash .w,
+html[data-theme=neural] .vq .vw,
+html[data-theme=neural] .vq .w,
+html[data-theme=neural] .spclock,
+html[data-theme=neural] .const .ct,
+html[data-theme=neural] .bkclock,
+html[data-theme=neural] .vwb,
+html[data-theme=neural] .mccdn,
+html[data-theme=neural] .mccdm{font-family:"Chakra Petch","Inter",sans-serif; letter-spacing:.005em}
 html[data-theme=neural] a{color:#92bdfc}
 html[data-theme=neural] :focus-visible{outline-color:#6ee7ff}
 html[data-theme=neural] .top{background:rgba(11,23,41,.92); border-bottom:1px solid #2c4c7e}
@@ -1146,7 +1164,7 @@ html[data-theme=neural] .lstick .lhead h1,html[data-theme=neural] .lhead h1{colo
 html[data-theme=neural] .lhead .muted{color:#abc2e4}
 html[data-theme=neural] .pgring{background:#152439; box-shadow:0 0 0 1px #3f649c}
 html[data-theme=neural] .pgring .t{stroke:#2c4c7e} html[data-theme=neural] .pgring .f{stroke:#6ee7ff}
-html[data-theme=neural] .pgring b{color:#6ee7ff; font-family:"Space Grotesk",sans-serif}
+html[data-theme=neural] .pgring b{color:#6ee7ff}
 html[data-theme=neural] .pgring.full{background:#6ee7ff} html[data-theme=neural] .pgring.full b{color:#0b1729}
 html[data-theme=neural] .nsrow b,html[data-theme=neural] .stat b{color:#6ee7ff}
 html[data-theme=neural] .muted,html[data-theme=neural] .small.muted{color:#abc2e4}
