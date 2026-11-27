@@ -3976,7 +3976,7 @@ function vocabView(sub, arg){
     const place = (chip, gap) => {
       if (!chip || !gap || gap.dataset.ok) return;
       const cw = chip.dataset.w, tw = gap.dataset.w; selChip && selChip.classList.remove("sel"); selGap && selGap.classList.remove("sel"); selChip = selGap = null;
-      if (cw === tw){ gap.dataset.ok = "1"; gap.textContent = cw; gap.classList.add("ok"); chip.remove(); done++; cnt.textContent = done+" / "+n; if (done === n) fin(); }
+      if (cw === tw){ gap.dataset.ok = "1"; gap.textContent = cw; gap.classList.add("ok"); chip.remove(); done++; const full = vpool[tw] && vpool[tw].ex; if (full) playAudio({ text:full, rate:.9 }); cnt.textContent = done+" / "+n; if (done === n) fin(); }
       else { miss[cw] = (miss[cw] || 0) + 1; miss[tw] = (miss[tw] || 0) + 1; gap.textContent = cw; gap.classList.add("bad"); setTimeout(() => { gap.classList.remove("bad"); gap.textContent = ""; }, 800); }
     };
     const rows = shuffle(ws).map(w => { const v = vpool[w], m = v.ex ? vRegex(w).exec(v.ex) : null;
