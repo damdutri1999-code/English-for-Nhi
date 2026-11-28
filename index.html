@@ -502,7 +502,7 @@ html[data-theme=night] .card.today .pill{background:#fff}
 /* ===== Trang bìa chọn học viên ===== */
 body.cover{background:linear-gradient(135deg,#fbf2ec 0%,#f4eff1 48%,#e9eef5 100%); background-image:none}
 body.cover .top,body.cover .tabs{display:none}
-body.cover .wrap{max-width:860px; padding-top:calc(34px + env(safe-area-inset-top))}
+body.cover .wrap{max-width:none; padding-left:max(24px,3vw); padding-right:max(24px,3vw); padding-top:calc(34px + env(safe-area-inset-top))}
 .cover .cvh{text-align:center; margin-bottom:22px}
 .cover .cvh h1{font-size:2.1rem; margin:0 0 4px; color:#3b2a55}
 .cover .cvh p{color:#6b5d82; margin:0; font-weight:700}
@@ -510,6 +510,7 @@ body.cover .wrap{max-width:860px; padding-top:calc(34px + env(safe-area-inset-to
 .reading.showvi .vi{display:block}
 .vitog{margin:0 0 10px; cursor:pointer}
 .cvgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:18px}
+@media (min-width:900px){ .cvgrid{grid-template-columns:repeat(4,1fr)} }
 @media (max-width:640px){ .cvgrid{grid-template-columns:1fr} }
 .cvc{display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; border:0; border-radius:30px; padding:22px 18px 20px; cursor:pointer; transition:transform .12s}
 .cvc:hover{transform:translateY(-3px)} .cvc:active{transform:translateY(1px)}
