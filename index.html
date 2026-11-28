@@ -2636,7 +2636,7 @@ function formItem(it, onChange){
 }
 function listenpickItem(it, onChange){
   /* 3 chặng: chọn đáp án (chọn sai được chọn lại) -> nghe dò theo chữ chạy như karaoke 2 lần -> chữ ẩn đi, gõ lại câu, đúng mới sang câu sau */
-  let stage = "pick", submitted = false, plays = 0, cur = false, timer = null;
+  let stage = "pick", submitted = false, plays = 0, cur = false, timer = null, giveUp = false, wrongN = 0;
   const base = mcqItem(it, () => onChange(), audioBar(it.say, it.audioSrc));
   const mcCheck = base.check, mcLock = base.lock;
   const host = h("div",{class:"lpstage"});
@@ -2659,24 +2659,27 @@ function listenpickItem(it, onChange){
     stage = "follow";
     const kar = karaoke([it.say]), prog = audioProg(), info = h("span",{class:"small muted"}, "Đã nghe theo: 0/2 lần");
     const btn = h("button",{class:"btn sm",type:"button"}, "▶ Nghe và dò theo chữ (2 lần)");
+    const skip = h("button",{class:"linkbtn",type:"button",hidden:true,onClick:() => { stopAll(); startDict(); }}, "Không nghe được? Sang bước gõ câu");
     const finishRound = () => { cur = false; btn.textContent = "▶ Nghe và dò theo chữ (2 lần)"; };
     function round(){
       if (!cur) return; kar.clear(); prog.start();
       playAudio({text:kar.plain, src:it.audioSrc, rate:.9}, ok => {
         if (!cur) return;
-        if (!ok){ finishRound(); prog.reset(); kar.clear(); return; }
+        if (!ok){ finishRound(); prog.reset(); kar.clear(); skip.hidden = false; return; }
         kar.done(); plays++; S.stats.plays++; save(); info.textContent = "Đã nghe theo: "+plays+"/2 lần";
         if (plays >= 2){ finishRound(); timer = setTimeout(startDict, 700); } else timer = setTimeout(round, 700);
       }, (f, ci) => { prog.set(f); kar.set(ci); });
     }
     btn.addEventListener("click", () => { if (cur){ stopAll(); finishRound(); prog.reset(); kar.clear(); return; }
       cur = true; btn.textContent = "⏹ Dừng"; round(); });
-    host.replaceChildren(h("div",{class:"reading karaoke"}, kar.el), prog.el, h("div",{class:"row abtns"}, btn, info));
+    host.replaceChildren(h("div",{class:"reading karaoke"}, kar.el), prog.el, h("div",{class:"row abtns"}, btn, info, skip));
   }
   const out = Object.assign(base, { quietRetry:false,
     isAnswered(){ return stage !== "pick" || base._sel(); },
     lock(){ mcLock(); stage = "done"; stopAll(); host.replaceChildren(h("div",{class:"lphead"}, "📄 Câu trong bài nghe: ", h("b",null,it.say))); },
     check(){
+      if (giveUp && stage !== "done"){ mcLock(); stage = "done"; stopAll(); host.replaceChildren(h("div",{class:"lphead"}, "📄 Câu trong bài nghe: ", h("b",null,it.say)));
+        return { ok:false, retry:false, correct:it.say, why:it.why, prompt:it.q || it.say }; }
       if (stage === "done") return { ok:true, correct:it.say, why:it.why, prompt:it.q || it.say };
       if (stage === "pick"){ const r = mcCheck.call(base); if (r.ok){ startFollow(); return { pending:true }; } return r; }
       if (stage === "follow") return { pending:true };
@@ -2684,7 +2687,9 @@ function listenpickItem(it, onChange){
       submitted = false; const v = base._input.value, ok = [it.say].concat(it.alt || []).some(a => same(a, v));
       base._input.classList.remove("right","wrong"); base._input.classList.add(ok ? "right" : "wrong");
       if (ok){ base._input.readOnly = true; stage = "done"; stopAll(); return { ok:true, correct:it.say, why:it.why, prompt:it.q || it.say }; }
-      base._msg.replaceChildren(h("div",{class:"fbtxt bad"}, "Chưa đúng, nghe lại rồi sửa nhé. Chữ hoa và dấu câu không quan trọng. Âm thanh tự lặp mỗi 5 giây."));
+      wrongN++;
+      base._msg.replaceChildren(h("div",{class:"fbtxt bad"}, "Chưa đúng, nghe lại rồi sửa nhé. Chữ hoa và dấu câu không quan trọng. Âm thanh tự lặp mỗi 5 giây. ",
+        wrongN >= 2 ? h("button",{class:"linkbtn",type:"button",onClick:() => { giveUp = true; onChange(); }}, "Xem đáp án") : null));
       return { pending:true };
     } });
   return out;
