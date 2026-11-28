@@ -1112,6 +1112,8 @@ html[data-theme=neural] .bkclock,
 html[data-theme=neural] .vwb,
 html[data-theme=neural] .mc.vi.up .mf{background:#14304f; border-color:#6ee7ff; color:#eaf4ff}
 html[data-theme=neural] .mc.ok .mf{background:#0f3a2c; border-color:#3ddc97; color:#c4f7df}
+.zhtip{position:fixed; z-index:9999; max-width:min(340px,86vw); padding:8px 12px; border-radius:10px; background:#0b1a30; color:#eaf4ff; border:1.5px solid #6ee7ff; box-shadow:0 6px 20px rgba(0,0,0,.45); font:600 .95rem/1.45 "Noto Sans TC","PingFang TC","Microsoft JhengHei",Inter,sans-serif; pointer-events:none; white-space:pre-wrap}
+.zhtip[hidden]{display:none}
 html[data-theme=neural] .mccdn,
 html[data-theme=neural] .mccdm{font-family:"Chakra Petch","Inter","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif; letter-spacing:.005em}
 html[data-theme=neural] a{color:#92bdfc}
@@ -3531,7 +3533,7 @@ function dnCount(node, to){   /* 4D: số % chạy lên cùng vòng tiến độ
 }
 let dnTyped = false;
 function dnTypeText(el, msg){   /* 9A: gõ từng chữ cho câu khích lệ ở trang chủ, mỗi lần mở trang một lần; phần chưa gõ vẫn giữ chỗ (ẩn) để thẻ không đổi cao */
-  if (window.ZH) msg = ZH.tr(msg);
+  if (window.ZH){ const zm = ZH.zh(msg); msg = ZH.tr(msg); if (zm) el.setAttribute("data-zh", zm); }
   if (dnTyped || REDUCED()){ return; } dnTyped = true; el.textContent = "";
   const a = h("span",{class:"typing"}), z = h("span",{style:"visibility:hidden"}, msg); el.append(a, z); let i = 0;
   const t = setInterval(() => { if (!el.isConnected){ clearInterval(t); return; } a.textContent = msg.slice(0, ++i); z.textContent = msg.slice(i); if (i >= msg.length){ clearInterval(t); setTimeout(() => a.classList.remove("typing"), 900); } }, 38);
