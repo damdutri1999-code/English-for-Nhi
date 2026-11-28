@@ -4307,7 +4307,7 @@ function draftProgress(n){
 const TABS = [["home","🏠","Trang chủ"],["week","📅","Tuần học"],["vocab","📖","Từ vựng"],["practice","✏️","Bài tập"],["progress","⭐","Tiến độ"]];
 const TAB_OF = { plan:"week", challenge:"week", lesson:"week", done:"week", placement:"week", mistakes:"practice", report:"progress" };
 const tabsEl = document.getElementById("tabs");
-tabsEl.replaceChildren(...TABS.filter(t => !(NHIFAM && t[0] === "week")).map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, h("span",null, "#i:" + ({home:"home",week:"calendar",vocab:"book",practice:"pencil",progress:"chart"}[p] || "dot")), t)));
+tabsEl.replaceChildren(...TABS.map(t => NHIFAM && t[0] === "week" ? ["plan","📚","Bài cũ"] : t).map(([p,ic,t]) => h("a",{href:"#/"+p,"data-p":p}, h("span",null, "#i:" + ({home:"home",week:"calendar",plan:"calendar",vocab:"book",practice:"pencil",progress:"chart"}[p] || "dot")), t)));
 /* =====================================================================
    TRANG QUẢN LÝ: tách hẳn khỏi giao diện học, luôn dùng theme của Trí
    Lối vào duy nhất: thẻ "Quản lý và soạn bài" ở trang chọn học viên (#/admin)
@@ -4704,7 +4704,7 @@ function route(){
   }
   app.replaceChildren(view); window.scrollTo(0,0);
   if (PREVIEW && page !== "admin") app.prepend(h("div",{class:"adm-prev"}, h("span",null,"Đang xem thử: tiến độ không được lưu."), h("button",{class:"btn sm",type:"button",onClick:exitPreview},"Thoát xem thử")));
-  const tab = (NHIFAM && TAB_OF[page] === "week") ? "home" : (TAB_OF[page] || page);
+  const tab = NHIFAM && page === "plan" ? "plan" : (NHIFAM && TAB_OF[page] === "week") ? "home" : (TAB_OF[page] || page);
   tabsEl.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.dataset.p === tab));
 }
 setInterval(() => {
