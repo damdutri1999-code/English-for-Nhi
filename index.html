@@ -3796,11 +3796,12 @@ function vWordRow(w, v){
     hint.replaceChildren(...w.split(/\s+/).map(tok => h("span",{class:"vhw"}, tok.split("").map(ch => { if (!/[A-Za-z0-9]/.test(ch)) return h("span",{class:"vsep"}, ch);
       const i = idx++; return i < t.length ? h("span",{class:"vsl "+(t[i] === lets[i].toLowerCase() ? "ok" : "bad")}, t[i]) : h("span",{class:"vsl"}, ""); })))); };
   wrapIn.addEventListener("click", () => inp.focus()); drawHint();
-  inp.addEventListener("input", () => { drawHint(); const t = inp.value.replace(/[^A-Za-z0-9]/g,"").toLowerCase();
-    if (t === lets.join("").toLowerCase()){ typed++; tc.textContent = typed >= 3 ? "Gõ đủ 3 lần rồi, giỏi quá!" : "Gõ đúng: "+typed+" / 3"; tc.classList.toggle("ok", typed >= 3);
-      if (typed >= 3){ inp.disabled = true; reset(); stopAudio(); return; } setTimeout(() => { inp.value = ""; drawHint(); }, 350); } });
+  let busy = false;
+  inp.addEventListener("input", () => { drawHint(); if (busy) return; const t = inp.value.replace(/[^A-Za-z0-9]/g,"").toLowerCase().slice(0, total);   /* chữ gõ dư phía sau không làm mất lần đúng */
+    if (t === lets.join("").toLowerCase()){ busy = true; typed++; tc.textContent = typed >= 3 ? "Gõ đủ 3 lần rồi, giỏi quá!" : "Gõ đúng: "+typed+" / 3"; tc.classList.toggle("ok", typed >= 3);
+      if (typed >= 3){ inp.disabled = true; reset(); stopAudio(); return; } setTimeout(() => { inp.value = inp.value.replace(/[^A-Za-z0-9]/g,"").slice(total); busy = false; drawHint(); if (inp.value) inp.dispatchEvent(new Event("input")); }, 350); } });
   const reset = () => { on = false; clearTimeout(timer); wb.classList.remove("kon"); cnt.textContent = ""; };
-  const typeOff = () => { typed = 0; inp.value = ""; inp.disabled = false; wrapIn.hidden = true; tc.hidden = true; tc.classList.remove("ok"); drawHint(); };
+  const typeOff = () => { typed = 0; busy = false; inp.value = ""; inp.disabled = false; wrapIn.hidden = true; tc.hidden = true; tc.classList.remove("ok"); drawHint(); };
   const run = n => { if (!on) return; cnt.textContent = "Lần nghe: "+n; wb.classList.add("kon");
     playAudio({text:w,rate:.8}, ok => { wb.classList.remove("kon"); if (!on) return; if (!ok){ reset(); return; }
       cnt.textContent = "Đọc theo... (lần nghe: "+n+")"; timer = setTimeout(() => run(n + 1), 3000); }); };
