@@ -4433,7 +4433,7 @@ function adOverview(){
 
 /* ---- Giáo án: tháng, tuần, buổi ---- */
 function adWeeks(){
-  const set = new Set(ROADMAP.map(r => r[0])); Object.keys(WEEKS).map(Number).filter(hasWeek).forEach(n => set.add(n));
+  const hid = (S.settings && S.settings.hiddenWeeks) || []; const set = new Set(ROADMAP.map(r => r[0]).filter(n => !hid.includes(n))); Object.keys(WEEKS).map(Number).filter(hasWeek).forEach(n => set.add(n));
   return [...set].sort((a, b) => a - b).map(w => { const ds = schedDates(w); return { w, ds, m:ds[0].slice(0, 7) }; });
 }
 function adPlan(a){
@@ -4449,10 +4449,18 @@ function adMonth(mk){
     return h("a",{class:"adm-row",href:"#/admin/plan/w/" + x.w},
       h("div",{class:"adm-wno"}, h("small",null,IS_BW ? "Sách " + Math.ceil(x.w / 3) : "Tuần"), h("b",null,String(IS_BW ? "T" + wLbl(x.w) : x.w))),
       h("div",{class:"grow"}, h("b",null, has ? W.title : (rm[1] || "Chưa có bài")), h("div",{class:"small muted"}, fmtDM(x.ds[0]) + " – " + fmtDM(x.ds[5]) + (has ? " · " + W.grammar : rm[2] ? " · dự kiến: " + rm[2] : ""))),
-      h("span",{class:"pill" + (has ? " ok" : " lock")}, has ? "Có bài" : "Chưa có bài"), h("span",{class:"pill"}, p.done + "/6 buổi"), aic("chev")); });
+      h("span",{class:"pill" + (has ? " ok" : " lock")}, has ? "Có bài" : "Chưa có bài"), h("span",{class:"pill"}, p.done + "/6 buổi"),
+      h("button",{class:"btn danger sm",type:"button",title:has ? "Xóa bài tuần này" : "Xóa tuần này khỏi giáo án","aria-label":"Xóa",onClick:e => { e.preventDefault(); e.stopPropagation(); adRemoveWeek(x.w, has); }}, aic("trash")), aic("chev")); });
+  const hidN = ((S.settings && S.settings.hiddenWeeks) || []).length;
   return h("div",null, adCrumb([["Giáo án"],[monthLbl(mk)]]), adHead("Giáo án · " + LRN.name + (LRN.id === "bw" ? " · Bookworms" : ""), "Xem theo tháng, bấm vào một tuần để xem từng buổi."),
     h("div",{class:"adm-tabs"}, months.map(m => h("a",{class:"adm-tab" + (m === mk ? " on" : ""),href:"#/admin/plan/m/" + m}, monthLbl(m)))),
-    adCard(monthLbl(mk), h("p",{class:"muted small",style:"margin:0 0 6px"}, inM.length + " tuần · " + real + " tuần có bài · " + done + " buổi đã học"), rows));
+    adCard(monthLbl(mk), h("p",{class:"muted small",style:"margin:0 0 6px"}, inM.length + " tuần · " + real + " tuần có bài · " + done + " buổi đã học"), rows),
+    hidN ? h("div",{class:"row",style:"margin-top:10px;align-items:center"}, h("span",{class:"small muted"}, hidN + " tuần đã xóa khỏi giáo án."), adBtn("refresh","Khôi phục","", () => { S.settings.hiddenWeeks = []; save(); route(); })) : null);
+}
+function adRemoveWeek(w, has){
+  if (has) return adDeleteWeek(w);
+  adDialog("Xóa " + wFull(w).toLowerCase() + " khỏi giáo án?", h("p",null,"Tuần này chưa có bài. Tuần sẽ biến khỏi danh sách giáo án trong trang quản trị, có thể khôi phục lại bất cứ lúc nào."),
+    [{label:"Hủy",value:false},{label:"Xóa tuần",kind:"danger",value:true}]).then(ok => { if (!ok) return; S.settings.hiddenWeeks = [...new Set([...(S.settings.hiddenWeeks || []), w])]; save(); toast("Đã xóa " + wFull(w).toLowerCase()); route(); });
 }
 function adWeek(w){
   const W = WEEKS[w], has = hasWeek(w), c = CONTENT[w], rm = ROADMAP.find(r => r[0] === w) || [], ds = schedDates(w), p = weekProg(w), mk = ds[0].slice(0, 7);
